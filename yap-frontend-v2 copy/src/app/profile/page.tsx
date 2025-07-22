@@ -34,34 +34,37 @@ export default function ProfilePage() {
     ? walletAddress.slice(0, 6) + '...'
     : 'Unknown';
 
+  const YAP_CONTRACT = '0x47423334c145002467a24bA1B41Ac93e2f503cc6';
+  const SEI_RPC = 'https://evm-rpc.atlantic-2.seinetwork.io'; // Sei testnet RPC
 
+  const CW20_ABI = [
+    'function balanceOf(address) view returns (uint256)',
+    'function decimals() view returns (uint8)',
+  ];
 
-    const YAP_CONTRACT = '0x47423334c145002467a24bA1B41Ac93e2f503cc6';
-    const SEI_RPC = 'https://evm-rpc.atlantic-2.seinetwork.io'; // Sei testnet RPC
-    
-    const CW20_ABI = [
-      'function balanceOf(address) view returns (uint256)',
-      'function decimals() view returns (uint8)'
-    ];
-    
-     const fetchYapBalanceEvm = async (walletAddress: string): Promise<number> => {
-      try {
-        const provider = new ethers.JsonRpcProvider(SEI_RPC);
-        const contract = new ethers.Contract(YAP_CONTRACT, CW20_ABI, provider);
-        
-        const [rawBalance, decimals] = await Promise.all([
-          contract.balanceOf(walletAddress),
-          contract.decimals(),
-        ]);
-    
-        return Number(rawBalance) / 10 ** decimals;
-      } catch (err) {
-        console.error('Failed to fetch YAP balance via EVM:', err);
-        return 0;
-      }
-    };
-    
+  const fetchYapBalanceEvm = async (walletAddress: string): Promise<number> => {
+    try {
+      const provider = new ethers.JsonRpcProvider(SEI_RPC);
+      const contract = new ethers.Contract(YAP_CONTRACT, CW20_ABI, provider);
 
+      const [rawBalance, decimals] = await Promise.all([
+        contract.balanceOf(walletAddress),
+        contract.decimals(),
+      ]);
+
+      return Number(rawBalance) / 10 ** decimals;
+    } catch (err) {
+      console.error('Failed to fetch YAP balance via EVM:', err);
+      return 0;
+    }
+  };
+
+  useEffect(() => {
+    if (wallets?.length) {
+      const addr = wallets[0].address;
+      localStorage.setItem('evmAddress', addr);
+    }
+  }, [wallets]);
   useEffect(() => {
     if (!user?.id) return;
 
@@ -82,15 +85,14 @@ export default function ProfilePage() {
   useEffect(() => {
     const wallet = wallets?.[0];
     if (!wallet?.address) return;
-  
+
     const loadBalance = async () => {
       const balance = await fetchYapBalanceEvm(wallet.address);
       setTokenBalance(balance);
     };
-  
+
     loadBalance();
   }, [wallets]);
-  
 
   if (activePage !== 'menu') {
     return (
@@ -177,7 +179,7 @@ export default function ProfilePage() {
               isImage
             />
           </div>
-        </div> 
+        </div>
 
         {/* Others */}
         <div className="w-full mt-6 pb-20">

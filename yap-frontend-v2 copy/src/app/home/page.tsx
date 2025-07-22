@@ -28,6 +28,7 @@ export default function HomePage() {
     console.log('Button clicked!');
 =======
   useEffect(() => {
+<<<<<<< HEAD
     // Force all lessons to available for debugging / UI testing
     const computedLessons = Object.values(allLessons).map((lesson: any) => ({
       id: lesson.lesson_id,
@@ -36,10 +37,65 @@ export default function HomePage() {
       status: 'available',
     }));
 >>>>>>> e5dabff (auth flow needs fixing)
+=======
+    const fetchCompletedLessons = async () => {
+      if (!userId) return;
+>>>>>>> 61c99a3 (onchain lesson completion works)
 
-    setLessons(computedLessons);
-    setLoading(false);
-  }, []);
+      try {
+        const res = await fetch(
+          `http://localhost:4000/api/user-lessons/${userId}`
+        );
+        const data = await res.json();
+
+        const completedSet = new Set(data.completedLessons || []);
+
+        const computedLessons = Object.values(allLessons).map((lesson: any) => {
+          const prerequisites = lesson.prerequisite_lessons || [];
+          const isCompleted = completedSet.has(lesson.lesson_id);
+          const isFirstLesson = lesson.lesson_id === 'SPA1_001';
+
+          const isAvailable =
+            isFirstLesson ||
+            (!isCompleted &&
+              prerequisites.every((prereq: string) =>
+                completedSet.has(prereq)
+              ));
+
+          return {
+            id: lesson.lesson_id,
+            title: lesson.title,
+            description: lesson.title,
+            status: isCompleted
+              ? 'completed'
+              : isAvailable
+              ? 'available'
+              : 'locked',
+          };
+        });
+
+        setLessons(computedLessons);
+      } catch (err) {
+        console.error('Failed to fetch user lesson progress:', err);
+
+        // Fallback: Show all lessons and force SPA1_001 as available
+        const fallbackLessons = Object.values(allLessons).map(
+          (lesson: any) => ({
+            id: lesson.lesson_id,
+            title: lesson.title,
+            description: lesson.title,
+            status: lesson.lesson_id === 'SPA1_001' ? 'available' : 'locked',
+          })
+        );
+
+        setLessons(fallbackLessons);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompletedLessons();
+  }, [userId]);
 
   return (
     <div className="bg-background-primary min-h-screen w-full flex flex-col">
@@ -51,12 +107,14 @@ export default function HomePage() {
         <div className="mt-4">
           <DailyStreak />
         </div>
+
         <h3 className="text-secondary text-xl font-semibold mt-2">Lessons</h3>
         <div className="mt-2">
           <div className="flex gap-4 overflow-x-auto no-scrollbar w-full">
             {lessons.map((lesson) => (
               <LessonCard
-                key={lesson.id}
+                key={lesson.id} // ← React key
+                lessonId={lesson.id} // ← pass along the lesson ID
                 id={lesson.id}
                 title={lesson.title}
                 description={lesson.description}
@@ -65,6 +123,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
         {/* Talk to Spanish Teacher Button */}
@@ -80,6 +139,9 @@ export default function HomePage() {
         {/* Daily Quiz */}
 =======
 >>>>>>> e5dabff (auth flow needs fixing)
+=======
+
+>>>>>>> 61c99a3 (onchain lesson completion works)
         <h3 className="text-secondary text-xl font-semibold mt-4 mb-2">
           Daily Quiz
         </h3>

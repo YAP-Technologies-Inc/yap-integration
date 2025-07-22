@@ -43,6 +43,8 @@ export default function SignUpForm() {
         throw new Error(data.error || 'Failed to save user');
       }
   
+      localStorage.setItem('userId', data.user_id);
+
     } catch (err) {
       console.error('Failed to save user:', err);
       alert('Something went wrong. Please try again.');

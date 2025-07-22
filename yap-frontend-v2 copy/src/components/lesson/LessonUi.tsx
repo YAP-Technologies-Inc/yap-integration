@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
 
 interface LessonUiProps {
+  lessonId: string;          // ← we need this prop
   stepIndex: number;
   setStepIndex: React.Dispatch<React.SetStateAction<number>>;
   allSteps: {
@@ -22,6 +23,7 @@ interface LessonUiProps {
 }
 
 export default function LessonUi({
+  lessonId,                                 
   stepIndex,
   setStepIndex,
   allSteps,
@@ -82,25 +84,17 @@ export default function LessonUi({
     const formData = new FormData();
     formData.append('audio', audioBlob, 'recording.webm');
     formData.append('referenceText', currentItem.question);
-    console.log('Submitting referenceText:', currentItem.question);
+
     try {
       const res = await fetch(
         'http://localhost:4000/api/pronunciation-assessment-upload',
-        {
-          method: 'POST',
-          body: formData,
-        }
+        { method: 'POST', body: formData }
       );
       const result = await res.json();
-      console.log('Raw Azure Result:', result);
 
       const rawScore =
         result.NBest?.[0]?.PronScore ||
         result.NBest?.[0]?.PronunciationAssessment?.AccuracyScore;
-      console.log('Raw Score:', rawScore);
-      console.log('Full NBest:', result.NBest);
-      console.log('Words:', result.NBest?.[0]?.Words);
-
       const scaled = Math.round((rawScore || 0) * 0.8);
 
       setScore(scaled);
@@ -112,14 +106,16 @@ export default function LessonUi({
       setFeedback(tips?.join('\n') || 'Nice work!');
 
       // Automatically move to next card after scoring
-      setTimeout(() => {
+      setTimeout(async () => {
         if (stepIndex + 1 >= totalSteps) {
+          // use the prop `lessonId`, not an undefined variable
+          await markLessonComplete(lessonId);
+          console.log('Calling complete-lesson with lessonId →', lessonId);
           onComplete();
         } else {
           setStepIndex(stepIndex + 1);
         }
 
-        // Reset recording UI state
         setAudioBlob(null);
         setAudioURL(null);
         setScore(null);
@@ -134,26 +130,29 @@ export default function LessonUi({
 
   const markLessonComplete = async (currentLessonId: string) => {
     const userId = localStorage.getItem('userId');
-    const seiAddress = localStorage.getItem('seiAddress');
-  
+    const walletAddress = localStorage.getItem('evmAddress');
+
     try {
       const res = await fetch('http://localhost:4000/api/complete-lesson', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, walletAddress: seiAddress, lessonId: currentLessonId }),
+        body: JSON.stringify({
+          userId,
+          walletAddress: walletAddress,
+          lessonId: currentLessonId,
+        }),
       });
-  
       const data = await res.json();
       if (res.ok) {
-        alert('Lesson complete! YAP token sent 🎉');
+        alert('Lesson complete! YAP token sent');
       } else {
         alert(`Error: ${data.error}`);
       }
-    } catch (err) {
+    } catch {
       alert('Failed to complete lesson');
     }
   };
-  
+
   return (
     <div className="min-h-screen w-full bg-background-primary flex flex-col pt-4 pb-28 px-4">
       {/* Exit + Progress bar */}
@@ -177,7 +176,6 @@ export default function LessonUi({
 
         {/* Main Card */}
         <div className="relative z-10 bg-white w-full h-[45vh] rounded-2xl shadow-xl px-6 py-6 flex flex-col items-center justify-center text-center">
-          {/* Count Progress */}
           <div className="absolute top-3 right-4 text-xs text-secondary">
             {currentItem?.type === 'word'
               ? `Words ${
@@ -207,20 +205,15 @@ export default function LessonUi({
 
       {/* Bottom Controls */}
       <div className="fixed bottom-6 left-0 right-0 flex justify-center items-center gap-4 w-full px-6 flex-wrap">
-        {/* Replay audio */}
         <button
           className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
           onClick={() => {
-            if (audioRef.current) {
-              audioRef.current.currentTime = 0;
-              audioRef.current.play();
-            }
+            audioRef.current && ((audioRef.current.currentTime = 0), audioRef.current.play());
           }}
         >
           <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
         </button>
 
-        {/* Toggle mic button */}
         <button
           onClick={() => {
             isRecording ? stopRecording() : startRecording();
@@ -234,39 +227,29 @@ export default function LessonUi({
           )}
         </button>
 
-        {/* Score Button */}
         {audioURL && (
-          <button
-            className="bg-green-500 text-white px-4 py-2 rounded-full shadow"
-            onClick={assessPronunciation}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Scoring...' : 'Get Score'}
-          </button>
-        )}
-
-        {/* Play last recording */}
-        {audioURL && (
-          <button
-            className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
-            onClick={() => {
-              if (audioRef.current) {
-                audioRef.current.currentTime = 0;
-                audioRef.current.play();
-              }
-            }}
-          >
-            <TablerVolume className="w-6 h-6 text-[#EF4444]" />
-          </button>
+          <>
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-full shadow"
+              onClick={assessPronunciation}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Scoring...' : 'Get Score'}
+            </button>
+            <button
+              className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
+              onClick={() => {
+                audioRef.current && ((audioRef.current.currentTime = 0), audioRef.current.play());
+              }}
+            >
+              <TablerVolume className="w-6 h-6 text-[#EF4444]" />
+            </button>
+          </>
         )}
       </div>
 
-      {/* Audio element */}
-      {audioURL && (
-        <audio ref={audioRef} src={audioURL} className="hidden" controls />
-      )}
+      {audioURL && <audio ref={audioRef} src={audioURL} className="hidden" controls />}
 
-      {/* Feedback */}
       {score !== null && (
         <div className="mt-6 text-center px-4">
           <p className="text-xl font-bold text-secondary">Score: {score}/100</p>

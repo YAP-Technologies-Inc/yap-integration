@@ -28,37 +28,41 @@ export default function LessonPage() {
   }
 
   // Prepare vocabulary and speaking exercises
-  const vocabItems = (lessonData.vocabulary_items || []).map((word: string) => ({
-    question: word,
-    example_answer: '',
-    type: 'word' as const,
-  }));
+  const vocabItems = (lessonData.vocabulary_items || []).map(
+    (word: string) => ({
+      question: word,
+      example_answer: '',
+      type: 'word' as const,
+    })
+  );
 
-  const speakingItems = (lessonData.speaking_tasks || []).flatMap((task: any) => {
-    if (task.type === 'listen_and_repeat') {
-      return [
-        {
-          question: task.content,
-          example_answer: '',
+  const speakingItems = (lessonData.speaking_tasks || []).flatMap(
+    (task: any) => {
+      if (task.type === 'listen_and_repeat') {
+        return [
+          {
+            question: task.content,
+            example_answer: '',
+            type: 'sentence' as const,
+          },
+        ];
+      } else if (task.type === 'role_play') {
+        return task.prompts.map((prompt: string, i: number) => ({
+          question: prompt,
+          example_answer: task.expected_output?.[i] || '',
           type: 'sentence' as const,
-        },
-      ];
-    } else if (task.type === 'role_play') {
-      return task.prompts.map((prompt: string, i: number) => ({
-        question: prompt,
-        example_answer: task.expected_output?.[i] || '',
-        type: 'sentence' as const,
-      }));
-    } else if (task.type === 'pronunciation_practice') {
-      return task.words.map((word: string) => ({
-        question: word,
-        example_answer: '',
-        type: 'word' as const,
-      }));
-    } else {
-      return [];
+        }));
+      } else if (task.type === 'pronunciation_practice') {
+        return task.words.map((word: string) => ({
+          question: word,
+          example_answer: '',
+          type: 'word' as const,
+        }));
+      } else {
+        return [];
+      }
     }
-  });
+  );
 
   const allSteps = [...vocabItems, ...speakingItems];
   const firstInitial = mockUserProfile.name.charAt(0).toUpperCase();
@@ -84,7 +88,9 @@ export default function LessonPage() {
         <h1 className="text-2xl font-extrabold text-secondary">
           Welcome {mockUserProfile.name}
         </h1>
-        <p className="text-sm text-secondary">¡Buena suerte con esta lección!</p>
+        <p className="text-sm text-secondary">
+          ¡Buena suerte con esta lección!
+        </p>
       </div>
 
       <div className="mt-10" />
@@ -98,6 +104,7 @@ export default function LessonPage() {
     </div>
   ) : (
     <LessonUi
+      lessonId={lessonData.lesson_id}
       stepIndex={stepIndex}
       setStepIndex={setStepIndex}
       allSteps={allSteps}

@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import AuthCard from '@/components/auth/AuthCard';
 import SignUpForm from '@/components/auth/SignUpForm';
-import AuthLogo from '@/components/auth/AuthLogo';
-import group from '@/assets/group.png';
 import { setThemeColor, themeColors } from '@/utils/themeColor';
 
 export default function AuthPage() {
