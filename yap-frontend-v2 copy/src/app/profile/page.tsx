@@ -1,13 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { useState } from 'react';
 import BottomNavBar from '@/components/layout/BottomNavBar';
 import Button from '@/components/ui/Button';
 import StatCard from '@/components/ui/StatCard';
 import InfoListCard from '@/components/ui/InfoListCard';
 import coin from '@/assets/coin.png';
-import { JsonRpcProvider, Contract, formatUnits } from 'ethers';
 import {
   TablerInfoCircle,
   TablerHelp,
@@ -18,79 +16,30 @@ import {
 type InfoPage = 'menu' | 'about' | 'help' | 'terms';
 
 export default function ProfilePage() {
-  // Use Privy to get user info and wallets once
-  const { user } = usePrivy();
-  const { wallets } = useWallets();
-
   const [activePage, setActivePage] = useState<InfoPage>('menu');
-  const [profile, setProfile] = useState<{
-    name: string;
-    language_to_learn: string;
-  } | null>(null);
-  const [tokenBalance, setTokenBalance] = useState<number>(0);
 
-  // Persist the EVM address locally as soon as Privy gives it to us
-  useEffect(() => {
-    if (wallets?.[0]?.address) {
-      localStorage.setItem('evmAddress', wallets[0].address);
-    }
-  }, [wallets]);
+  // Safely read from localStorage (guard for SSR)
+  const name =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('name') || ''
+      : '';
+  const language =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('language') || ''
+      : '';
+  const evmAddr =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('evmAddress') || ''
+      : '';
+  const tokenBalance =
+    typeof window !== 'undefined'
+      ? parseFloat(localStorage.getItem('tokenBalance') || '0')
+      : 0;
 
-  //Retrieve the EVM address from localStorage
-  const walletAddress = localStorage.getItem('evmAddress') ?? '';
-  const walletShort = walletAddress
-    ? `${walletAddress.slice(0, 6)}...`
-    : 'Unknown';
+  const walletShort = evmAddr ? `${evmAddr.slice(0, 6)}...` : 'Unknown';
+  const firstInitial = name ? name.charAt(0).toUpperCase() : '?';
 
-  //YAP Token contract and RPC
-  const YAP_CONTRACT = '0x47423334c145002467a24bA1B41Ac93e2f503cc6';
-  const SEI_RPC = 'https://evm-rpc-testnet.sei-apis.com';
-
-  const CW20_ABI = [
-    'function balanceOf(address) view returns (uint256)',
-    'function decimals() view returns (uint8)',
-  ];
-
-  // Fetch + format the on‑chain balance
-  const fetchYapBalanceEvm = async (addr: string): Promise<number> => {
-    try {
-      const provider = new JsonRpcProvider(SEI_RPC);
-      const contract = new Contract(YAP_CONTRACT, CW20_ABI, provider);
-
-      const [rawBalance, decimals] = await Promise.all([
-        contract.balanceOf(addr),
-        contract.decimals(),
-      ]);
-
-      // formatUnits turns the bigint into a decimal string
-      return parseFloat(formatUnits(rawBalance, decimals));
-    } catch (err) {
-      console.error('Failed to fetch YAP balance via EVM:', err);
-      return 0;
-    }
-  };
-
-  //Fetch profile data from backend
-  useEffect(() => {
-    if (!user?.id) return;
-    (async () => {
-      try {
-        const res = await fetch(`http://localhost:4000/api/profile/${user.id}`);
-        if (!res.ok) throw new Error(res.statusText);
-        setProfile(await res.json());
-      } catch (err) {
-        console.error('Failed to fetch profile:', err);
-      }
-    })();
-  }, [user]);
-
-  //Load on‑chain balance once we have an address stored
-  useEffect(() => {
-    if (!walletAddress) return;
-    fetchYapBalanceEvm(walletAddress).then(setTokenBalance);
-  }, [walletAddress]);
-
-  // Handle info page navigation
+  // If we're on one of the sub‑pages (about/help/terms), show that
   if (activePage !== 'menu') {
     return (
       <div className="min-h-screen bg-background-primary p-6 flex flex-col">
@@ -106,16 +55,10 @@ export default function ProfilePage() {
         </h1>
         <div className="text-sm text-[#444] leading-relaxed">
           {activePage === 'about' && (
-            <p>
-              This app helps you learn languages while earning rewards. Built
-              with love at YAP Tech.
-            </p>
+            <p>This app helps you learn languages while earning rewards. Built with love at YAP Tech.</p>
           )}
           {activePage === 'help' && (
-            <p>
-              Need help? Contact us at support@goyap.ai or check out the FAQ on
-              our site.
-            </p>
+            <p>Need help? Contact us at support@goyap.ai or check out the FAQ on our site.</p>
           )}
           {activePage === 'terms' && (
             <p>By using this app, you agree to our terms and conditions.</p>
@@ -125,38 +68,32 @@ export default function ProfilePage() {
     );
   }
 
-  //Sets users profile name initial for avatar
-  const firstInitial = profile?.name?.charAt(0).toUpperCase() ?? '?';
-
   return (
     <div className="bg-background-primary min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4 pt-4">
         {/* Title */}
-        <div className="text-xl font-bold text-secondary text-center">
-          Account
-        </div>
+        <div className="text-xl font-bold text-secondary text-center">Account</div>
 
         {/* Avatar + Name */}
         <div className="mt-4 flex flex-col items-center">
           <div className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center">
-            <span className="text-white text-2xl font-semibold">
-              {firstInitial}
-            </span>
+            <span className="text-white text-2xl font-semibold">{firstInitial}</span>
           </div>
-          <div className="mt-2 text-lg font-light text-secondary">
-            {profile?.name ?? 'Loading...'}
-          </div>
+          <div className="mt-2 text-lg font-light text-secondary">{name || 'Loading…'}</div>
+          {language && (
+            <div className="text-sm text-[#666] mt-1">Learning: {language}</div>
+          )}
         </div>
 
         {/* Wallet */}
-        <div className="mt-2 w-full flex justify-center">
+        <div className="mt-4 w-full flex justify-center">
           <Button
             label={`View Wallet (${walletShort})`}
             className="w-full text-black bg-white px-6 py-3 border-black rounded-xl shadow-md transition-colors"
             onClick={() =>
-              walletAddress
+              evmAddr
                 ? window.open(
-                    `https://seitrace.com/address/${walletAddress}?chain=atlantic-2`,
+                    `https://seitrace.com/address/${evmAddr}?chain=atlantic-2`,
                     '_blank'
                   )
                 : alert('No wallet connected.')
@@ -167,15 +104,10 @@ export default function ProfilePage() {
         {/* Stats */}
         <div className="w-full mt-6">
           <h2 className="text-md font-bold text-secondary mb-4">Statistics</h2>
-          <div className="grid grid-cols-3 gap-x-3 gap-y-4">
+          <div className="grid grid-cols-3 gap-4">
             <StatCard icon="⏰" label="Practiced" value="12" />
             <StatCard icon="🔥" label="Streak" value="5" />
-            <StatCard
-              icon={coin.src}
-              label="Total $YAP"
-              value={tokenBalance}
-              isImage
-            />
+            <StatCard icon={coin.src} label="Total $YAP" value={tokenBalance} isImage />
           </div>
         </div>
 
@@ -184,21 +116,9 @@ export default function ProfilePage() {
           <h2 className="text-md font-bold text-secondary mb-3">Others</h2>
           <InfoListCard
             items={[
-              {
-                icon: <TablerInfoCircle />,
-                label: 'About app',
-                onClick: () => setActivePage('about'),
-              },
-              {
-                icon: <TablerHelp />,
-                label: 'Help & Support',
-                onClick: () => setActivePage('help'),
-              },
-              {
-                icon: <TablerFileTextShield />,
-                label: 'Terms & Conditions',
-                onClick: () => setActivePage('terms'),
-              },
+              { icon: <TablerInfoCircle />, label: 'About app', onClick: () => setActivePage('about') },
+              { icon: <TablerHelp />,       label: 'Help & Support', onClick: () => setActivePage('help') },
+              { icon: <TablerFileTextShield />, label: 'Terms & Conditions', onClick: () => setActivePage('terms') },
             ]}
           />
         </div>

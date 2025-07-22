@@ -21,7 +21,7 @@ export default function BottomNavBar() {
           </a>
         </div>
 
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <TablerFileText className="text-[#999595] w-6 h-6" />
           <a href="/learn" className="text-[#999595] text-sm">
             Learn
@@ -32,7 +32,7 @@ export default function BottomNavBar() {
           <a href="/progress" className="text-[#999595] text-sm">
             Progress
           </a>
-        </div>
+        </div> */}
         <div className="flex flex-col items-center">
           <TablerUser className="text-[#999595] w-6 h-6" />
           <a href="/profile" className="text-[#999595] text-sm">

@@ -12,8 +12,9 @@ import BottomNavBar from '@/components/layout/BottomNavBar';
 import LessonCard from '@/components/dashboard/LessonCard';
 import DailyQuizCard from '@/components/dashboard/DailyQuizPrompt';
 import allLessons from '@/mock/allLessons';
-
+import { useInitializeUser } from '@/hooks/useUserInitalizer';
 export default function HomePage() {
+  useInitializeUser();
   const [lessons, setLessons] = useState<
     { id: string; title: string; description: string; status: 'locked' | 'available' | 'completed' }[]
   >([]);
@@ -26,6 +27,7 @@ export default function HomePage() {
 
   // Load lessons based on user progress, will always render first lesson as available
   // and will update based on completed lessons
+  
   useEffect(() => {
     const fetchCompletedLessons = async () => {
       if (!userId) {

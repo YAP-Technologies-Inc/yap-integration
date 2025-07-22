@@ -13,7 +13,6 @@ export default function ClientWrapper({
   children: React.ReactNode;
 }) {
   useSafariUIManager();
-
   return (
     <>
 

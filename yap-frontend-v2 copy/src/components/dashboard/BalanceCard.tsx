@@ -3,8 +3,9 @@
 // It shows the amount of $YAP tokens the user has.
 // The balance is fetched from the mock user profile and displayed with a coin icon for now
 
-import { mockUserProfile } from '@/mock/mockUser';
+
 import coin from '@/assets/coin.png';
+const tokenBalance = localStorage.getItem('tokenBalance') || '0';
 
 export default function BalanceCard() {
   return (
@@ -14,8 +15,8 @@ export default function BalanceCard() {
           Available Balance
         </span>
         <span className="text-2xl font-bold text-secondary">
-          {mockUserProfile.tokenBalance.toLocaleString()}{' '}
-          <span className="text-base font-semibold">YAP</span>
+          {tokenBalance} 
+          <span className="text-base font-semibold"> YAP</span>
         </span>
       </div>
       <img src={coin.src} alt="Coin" className="w-10 h-10" />
