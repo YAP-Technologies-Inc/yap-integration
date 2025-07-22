@@ -16,8 +16,8 @@ export default function HomePage() {
   const [lessons, setLessons] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const { wallets } = useWallets();
-  const seiAddress = '0xBdB8684F477016906c68Aba78d665867e4eB81eA';
+  // const { wallets } = useWallets();
+  // const seiAddress = '0xBdB8684F477016906c68Aba78d665867e4eB81eA';
   const userId =
     typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
@@ -113,8 +113,8 @@ export default function HomePage() {
           <div className="flex gap-4 overflow-x-auto no-scrollbar w-full">
             {lessons.map((lesson) => (
               <LessonCard
-                key={lesson.id} // ← React key
-                lessonId={lesson.id} // ← pass along the lesson ID
+                key={lesson.id} // React key
+                lessonId={lesson.id} // pass along the lesson ID
                 id={lesson.id}
                 title={lesson.title}
                 description={lesson.description}

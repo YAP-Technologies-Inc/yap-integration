@@ -81,7 +81,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, [user]);
 
-  // You can later replace this with actual SEI CW20 balance call
+  // replace this with actual SEI CW20 balance call
   useEffect(() => {
     const wallet = wallets?.[0];
     if (!wallet?.address) return;

@@ -11,7 +11,7 @@ export default function LessonPage() {
   const { lessonId } = useParams();
   const router = useRouter();
 
-  // ✅ Grab lessonData from allLessons using new lesson ID format
+  // Grab lessonData from allLessons using new lesson ID format
   const lessonData = allLessons[lessonId as string];
   const lessonTitle = lessonData?.title || 'Start Lesson';
 
