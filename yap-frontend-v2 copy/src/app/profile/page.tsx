@@ -20,13 +20,9 @@ export default function ProfilePage() {
 
   // Safely read from localStorage (guard for SSR)
   const name =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('name') || ''
-      : '';
+    typeof window !== 'undefined' ? localStorage.getItem('name') || '' : '';
   const language =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('language') || ''
-      : '';
+    typeof window !== 'undefined' ? localStorage.getItem('language') || '' : '';
   const evmAddr =
     typeof window !== 'undefined'
       ? localStorage.getItem('evmAddress') || ''
@@ -34,6 +30,10 @@ export default function ProfilePage() {
   const tokenBalance =
     typeof window !== 'undefined'
       ? parseFloat(localStorage.getItem('tokenBalance') || '0')
+      : 0;
+  const totalStreak =
+    typeof window !== 'undefined'
+      ? parseInt(localStorage.getItem('total-streak') || '0')
       : 0;
 
   const walletShort = evmAddr ? `${evmAddr.slice(0, 6)}...` : 'Unknown';
@@ -55,10 +55,16 @@ export default function ProfilePage() {
         </h1>
         <div className="text-sm text-[#444] leading-relaxed">
           {activePage === 'about' && (
-            <p>This app helps you learn languages while earning rewards. Built with love at YAP Tech.</p>
+            <p>
+              This app helps you learn languages while earning rewards. Built
+              with love at YAP Tech.
+            </p>
           )}
           {activePage === 'help' && (
-            <p>Need help? Contact us at support@goyap.ai or check out the FAQ on our site.</p>
+            <p>
+              Need help? Contact us at support@goyap.ai or check out the FAQ on
+              our site.
+            </p>
           )}
           {activePage === 'terms' && (
             <p>By using this app, you agree to our terms and conditions.</p>
@@ -72,14 +78,20 @@ export default function ProfilePage() {
     <div className="bg-background-primary min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4 pt-4">
         {/* Title */}
-        <div className="text-xl font-bold text-secondary text-center">Account</div>
+        <div className="text-xl font-bold text-secondary text-center">
+          Account
+        </div>
 
         {/* Avatar + Name */}
         <div className="mt-4 flex flex-col items-center">
           <div className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center">
-            <span className="text-white text-2xl font-semibold">{firstInitial}</span>
+            <span className="text-white text-2xl font-semibold">
+              {firstInitial}
+            </span>
           </div>
-          <div className="mt-2 text-lg font-light text-secondary">{name || 'Loading…'}</div>
+          <div className="mt-2 text-lg font-light text-secondary">
+            {name || 'Loading…'}
+          </div>
           {language && (
             <div className="text-sm text-[#666] mt-1">Learning: {language}</div>
           )}
@@ -104,11 +116,15 @@ export default function ProfilePage() {
         {/* Stats */}
         <div className="w-full mt-6">
           <h2 className="text-md font-bold text-secondary mb-4">Statistics</h2>
-          <div className="grid grid-cols-3 gap-4">
-            <StatCard icon="⏰" label="Practiced" value="12" />
-            <StatCard icon="🔥" label="Streak" value="5" />
-            <StatCard icon={coin.src} label="Total $YAP" value={tokenBalance} isImage />
-          </div>
+            <div className="grid grid-cols-3 gap-4 items-end justify-center">
+            <StatCard icon="🔥" label="Streak" value={totalStreak} />
+            <StatCard
+              icon={coin.src}
+              label="Total $YAP"
+              value={tokenBalance}
+              isImage
+            />
+            </div>
         </div>
 
         {/* Others */}
@@ -116,9 +132,21 @@ export default function ProfilePage() {
           <h2 className="text-md font-bold text-secondary mb-3">Others</h2>
           <InfoListCard
             items={[
-              { icon: <TablerInfoCircle />, label: 'About app', onClick: () => setActivePage('about') },
-              { icon: <TablerHelp />,       label: 'Help & Support', onClick: () => setActivePage('help') },
-              { icon: <TablerFileTextShield />, label: 'Terms & Conditions', onClick: () => setActivePage('terms') },
+              {
+                icon: <TablerInfoCircle />,
+                label: 'About app',
+                onClick: () => setActivePage('about'),
+              },
+              {
+                icon: <TablerHelp />,
+                label: 'Help & Support',
+                onClick: () => setActivePage('help'),
+              },
+              {
+                icon: <TablerFileTextShield />,
+                label: 'Terms & Conditions',
+                onClick: () => setActivePage('terms'),
+              },
             ]}
           />
         </div>

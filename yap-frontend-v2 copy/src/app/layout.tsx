@@ -11,7 +11,6 @@ import ClientWrapper from '@/components/ClientWrapper';
 //   variable: "--font-geist-mono",
 //   subsets: ["latin"],
 // });
-
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-outfit',

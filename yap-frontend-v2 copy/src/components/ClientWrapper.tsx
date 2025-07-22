@@ -7,6 +7,7 @@ import { useSafariUIManager } from '@/hooks/SafariUIManager';
 import ScrollToTop from './ScrollToTop';
 import Providers from '@/app/providers';
 
+
 export default function ClientWrapper({
   children,
 }: {
