@@ -19,10 +19,13 @@ export default function HomePage() {
   >([]);
   const [loading, setLoading] = useState(true);
 
-  const { wallets } = useWallets(); // if you need wallets later
+  // Retrive user ID from localStorage
+  const { wallets } = useWallets(); 
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
   const router = useRouter();
 
+  // Load lessons based on user progress, will always render first lesson as available
+  // and will update based on completed lessons
   useEffect(() => {
     const fetchCompletedLessons = async () => {
       if (!userId) {
@@ -59,7 +62,7 @@ export default function HomePage() {
         setLessons(computed);
       } catch (err) {
         console.error('Failed to fetch lessons:', err);
-        // fallback: make only the first lesson available
+        // Fall back incase first fetch fails and we need to render 1st lesson
         setLessons(
           Object.values(allLessons).map((lesson: any) => ({
             id: lesson.lesson_id,

@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
 
 interface LessonUiProps {
-  lessonId: string;          // ← we need this prop
+  lessonId: string;
   stepIndex: number;
   setStepIndex: React.Dispatch<React.SetStateAction<number>>;
   allSteps: {
@@ -23,7 +23,7 @@ interface LessonUiProps {
 }
 
 export default function LessonUi({
-  lessonId,                                 
+  lessonId,
   stepIndex,
   setStepIndex,
   allSteps,
@@ -110,7 +110,6 @@ export default function LessonUi({
         if (stepIndex + 1 >= totalSteps) {
           // use the prop `lessonId`, not an undefined variable
           await markLessonComplete(lessonId);
-          console.log('Calling complete-lesson with lessonId →', lessonId);
           onComplete();
         } else {
           setStepIndex(stepIndex + 1);
@@ -127,7 +126,10 @@ export default function LessonUi({
       setIsLoading(false);
     }
   };
-
+  // Function to mark lesson as complete and send YAP token
+  // This will be called when the user completes the last step of the lesson
+  // We grab from local storage again, need the this to run async in the background and need a toast notification
+  // to notify the user that the lesson is complete and YAP token has been sent 
   const markLessonComplete = async (currentLessonId: string) => {
     const userId = localStorage.getItem('userId');
     const walletAddress = localStorage.getItem('evmAddress');
@@ -202,13 +204,15 @@ export default function LessonUi({
           )}
         </div>
       </div>
+      {/* Need these bottom controls more figured out but quick fix later */}
 
       {/* Bottom Controls */}
       <div className="fixed bottom-6 left-0 right-0 flex justify-center items-center gap-4 w-full px-6 flex-wrap">
         <button
           className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
           onClick={() => {
-            audioRef.current && ((audioRef.current.currentTime = 0), audioRef.current.play());
+            audioRef.current &&
+              ((audioRef.current.currentTime = 0), audioRef.current.play());
           }}
         >
           <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
@@ -239,7 +243,8 @@ export default function LessonUi({
             <button
               className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
               onClick={() => {
-                audioRef.current && ((audioRef.current.currentTime = 0), audioRef.current.play());
+                audioRef.current &&
+                  ((audioRef.current.currentTime = 0), audioRef.current.play());
               }}
             >
               <TablerVolume className="w-6 h-6 text-[#EF4444]" />
@@ -248,7 +253,9 @@ export default function LessonUi({
         )}
       </div>
 
-      {audioURL && <audio ref={audioRef} src={audioURL} className="hidden" controls />}
+      {audioURL && (
+        <audio ref={audioRef} src={audioURL} className="hidden" controls />
+      )}
 
       {score !== null && (
         <div className="mt-6 text-center px-4">

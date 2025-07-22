@@ -11,12 +11,13 @@ export default function AuthPage() {
   const [formType, setFormType] = useState<'signup' | null>(null);
   const [showModal, setShowModal] = useState(false);
 
-  // Track if user canceled login
+  // Attempt at trying to hid our auth card but we need a way to make it look cooler and sleeker
+  // As well as secure :)
   useEffect(() => {
     if (!authenticated && showModal) {
       const timeout = setTimeout(() => {
-        setShowModal(false); // Restore AuthCard if modal was dismissed
-      }, 5000); // adjust as needed
+        setShowModal(false); 
+      }, 5000); 
 
       return () => clearTimeout(timeout);
     }
@@ -29,6 +30,7 @@ export default function AuthPage() {
     }
   }, [authenticated, user]);
 
+  // Set theme color based on form type for mobile
   useEffect(() => {
     if (formType === null) {
       setThemeColor(themeColors.secondary);
@@ -52,11 +54,12 @@ export default function AuthPage() {
       <div className="flex-grow w-full flex items-end justify-center transition-all duration-300 ease-in-out">
         {formType === 'signup' && authenticated && <SignUpForm />}
 
+        {/* need to configure this as well  */}
         {!authenticated && !showModal && (
           <AuthCard
             onEmailClick={() => {
               setShowModal(true);
-              setTimeout(() => login(), 100); // or shorter delay
+              setTimeout(() => login(), 100); 
             }}
           />
         )}

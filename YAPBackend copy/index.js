@@ -43,6 +43,7 @@ const tokenAbi = [
   'function transfer(address to, uint256 amount) public returns (bool)',
 ];
 
+// Endpoint to redeem YAP token
 app.post('/api/redeem-yap', async (req, res) => {
   try {
     const { walletAddress } = req.body;
@@ -64,6 +65,10 @@ app.post('/api/redeem-yap', async (req, res) => {
     res.status(500).json({ success: false, error: 'Transfer failed' });
   }
 });
+
+// Function to send YAP token to a user's wallet
+// This is called when a user completes a lesson
+// It checks if the wallet address is valid, sends 1 YAP token, and returns
 async function sendYAPToWallet(toAddress) {
   if (!isAddress(toAddress)) {
     throw new Error(`Invalid wallet address: ${toAddress}`);
@@ -74,11 +79,18 @@ async function sendYAPToWallet(toAddress) {
   console.log(`Sent 1 YAP to ${toAddress}, txHash=${tx.hash}`);
   return tx.hash;
 }
+// Endpoint to complete a lesson
+// This will:
+// 1) Check if the user has already completed this lesson
+// 2) Send the YAP token to their wallet address
+// 3) Record the completion in the user_lessons table
+// 4) Respond with the transaction hash
+
 app.post('/api/complete-lesson', async (req, res) => {
   const { userId, walletAddress, lessonId } = req.body;
 
   try {
-    // 1) Prevent duplicate completions
+    // 1
     const check = await db.query(
       'SELECT 1 FROM user_lessons WHERE user_id=$1 AND lesson_id=$2',
       [userId, lessonId]
@@ -87,10 +99,10 @@ app.post('/api/complete-lesson', async (req, res) => {
       return res.status(400).json({ error: 'Lesson already completed.' });
     }
 
-    // 2) Send the token first
+    // 2
     const txHash = await sendYAPToWallet(walletAddress);
 
-    // 3) Now record in user_lessons (including tx_hash column)
+    // 3
     await db.query(
       `INSERT INTO user_lessons
          (user_id, lesson_id, completed_at, tx_hash)
@@ -98,7 +110,7 @@ app.post('/api/complete-lesson', async (req, res) => {
       [userId, lessonId, txHash]
     );
 
-    // 4) Respond with the hash
+    // 4
     res.json({ success: true, txHash });
 
   } catch (err) {

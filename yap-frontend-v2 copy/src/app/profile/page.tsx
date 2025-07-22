@@ -7,7 +7,7 @@ import Button from '@/components/ui/Button';
 import StatCard from '@/components/ui/StatCard';
 import InfoListCard from '@/components/ui/InfoListCard';
 import coin from '@/assets/coin.png';
-import ethers from 'ethers';
+import { JsonRpcProvider, Contract, formatUnits } from 'ethers';
 import {
   TablerInfoCircle,
   TablerHelp,
@@ -18,6 +18,7 @@ import {
 type InfoPage = 'menu' | 'about' | 'help' | 'terms';
 
 export default function ProfilePage() {
+  // Use Privy to get user info and wallets once
   const { user } = usePrivy();
   const { wallets } = useWallets();
 
@@ -28,72 +29,68 @@ export default function ProfilePage() {
   } | null>(null);
   const [tokenBalance, setTokenBalance] = useState<number>(0);
 
-  const wallet = wallets[0];
-  const walletAddress = wallet?.address ?? '';
+  // Persist the EVM address locally as soon as Privy gives it to us
+  useEffect(() => {
+    if (wallets?.[0]?.address) {
+      localStorage.setItem('evmAddress', wallets[0].address);
+    }
+  }, [wallets]);
+
+  //Retrieve the EVM address from localStorage
+  const walletAddress = localStorage.getItem('evmAddress') ?? '';
   const walletShort = walletAddress
-    ? walletAddress.slice(0, 6) + '...'
+    ? `${walletAddress.slice(0, 6)}...`
     : 'Unknown';
 
+  //YAP Token contract and RPC
   const YAP_CONTRACT = '0x47423334c145002467a24bA1B41Ac93e2f503cc6';
-  const SEI_RPC = 'https://evm-rpc.atlantic-2.seinetwork.io'; // Sei testnet RPC
+  const SEI_RPC = 'https://evm-rpc-testnet.sei-apis.com';
 
   const CW20_ABI = [
     'function balanceOf(address) view returns (uint256)',
     'function decimals() view returns (uint8)',
   ];
 
-  const fetchYapBalanceEvm = async (walletAddress: string): Promise<number> => {
+  // Fetch + format the on‑chain balance
+  const fetchYapBalanceEvm = async (addr: string): Promise<number> => {
     try {
-      const provider = new ethers.JsonRpcProvider(SEI_RPC);
-      const contract = new ethers.Contract(YAP_CONTRACT, CW20_ABI, provider);
+      const provider = new JsonRpcProvider(SEI_RPC);
+      const contract = new Contract(YAP_CONTRACT, CW20_ABI, provider);
 
       const [rawBalance, decimals] = await Promise.all([
-        contract.balanceOf(walletAddress),
+        contract.balanceOf(addr),
         contract.decimals(),
       ]);
 
-      return Number(rawBalance) / 10 ** decimals;
+      // formatUnits turns the bigint into a decimal string
+      return parseFloat(formatUnits(rawBalance, decimals));
     } catch (err) {
       console.error('Failed to fetch YAP balance via EVM:', err);
       return 0;
     }
   };
 
-  useEffect(() => {
-    if (wallets?.length) {
-      const addr = wallets[0].address;
-      localStorage.setItem('evmAddress', addr);
-    }
-  }, [wallets]);
+  //Fetch profile data from backend
   useEffect(() => {
     if (!user?.id) return;
-
-    const fetchProfile = async () => {
+    (async () => {
       try {
         const res = await fetch(`http://localhost:4000/api/profile/${user.id}`);
-        const data = await res.json();
-        if (res.ok) setProfile(data);
+        if (!res.ok) throw new Error(res.statusText);
+        setProfile(await res.json());
       } catch (err) {
         console.error('Failed to fetch profile:', err);
       }
-    };
-
-    fetchProfile();
+    })();
   }, [user]);
 
-  // replace this with actual SEI CW20 balance call
+  //Load on‑chain balance once we have an address stored
   useEffect(() => {
-    const wallet = wallets?.[0];
-    if (!wallet?.address) return;
+    if (!walletAddress) return;
+    fetchYapBalanceEvm(walletAddress).then(setTokenBalance);
+  }, [walletAddress]);
 
-    const loadBalance = async () => {
-      const balance = await fetchYapBalanceEvm(wallet.address);
-      setTokenBalance(balance);
-    };
-
-    loadBalance();
-  }, [wallets]);
-
+  // Handle info page navigation
   if (activePage !== 'menu') {
     return (
       <div className="min-h-screen bg-background-primary p-6 flex flex-col">
@@ -128,6 +125,7 @@ export default function ProfilePage() {
     );
   }
 
+  //Sets users profile name initial for avatar
   const firstInitial = profile?.name?.charAt(0).toUpperCase() ?? '?';
 
   return (

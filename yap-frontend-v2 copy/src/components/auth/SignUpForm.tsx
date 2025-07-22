@@ -21,6 +21,13 @@ export default function SignUpForm() {
     }
   };
 
+
+  //Handles final submission after language selection
+  // This will save the user profile and redirect to the home page
+  // It will also set the userId in localStorage for future use
+  // This is the last step in the signup process
+  // Need this to be secure and handle errors properly
+  // TODO: if user already exists, we should redirect them to the home page instead of asking for name again
   const handleFinalSubmit = async (language: string) => {
     setStep('loading');
   
@@ -48,7 +55,7 @@ export default function SignUpForm() {
     } catch (err) {
       console.error('Failed to save user:', err);
       alert('Something went wrong. Please try again.');
-      setStep('language'); // ⬅️ send them back to language step
+      setStep('language'); 
     }
   };
   

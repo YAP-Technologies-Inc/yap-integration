@@ -11,7 +11,7 @@ export default function LessonPage() {
   const { lessonId } = useParams();
   const router = useRouter();
 
-  // Grab lessonData from allLessons using new lesson ID format
+  // Ensure lessonId is valid and grab it
   const lessonData = allLessons[lessonId as string];
   const lessonTitle = lessonData?.title || 'Start Lesson';
 
@@ -36,6 +36,7 @@ export default function LessonPage() {
     })
   );
 
+  // Prepares speaking tasks based on lesson data, needs work
   const speakingItems = (lessonData.speaking_tasks || []).flatMap(
     (task: any) => {
       if (task.type === 'listen_and_repeat') {
@@ -64,7 +65,9 @@ export default function LessonPage() {
     }
   );
 
+  //Combines vocabulary and speaking tasks into allSteps
   const allSteps = [...vocabItems, ...speakingItems];
+  
   const firstInitial = mockUserProfile.name.charAt(0).toUpperCase();
 
   return !started ? (
