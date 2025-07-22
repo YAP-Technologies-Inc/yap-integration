@@ -1,11 +1,13 @@
 'use client';
-import { useState } from 'react';
-import BottomNavBar from '../../components/layout/BottomNavBar';
-import { mockUserProfile } from '@/mock/mockUser';
-import Button from '../../components/ui/Button';
+
+import { useEffect, useState } from 'react';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
+import BottomNavBar from '@/components/layout/BottomNavBar';
+import Button from '@/components/ui/Button';
 import StatCard from '@/components/ui/StatCard';
-import coin from '@/assets/coin.png';
 import InfoListCard from '@/components/ui/InfoListCard';
+import coin from '@/assets/coin.png';
+import ethers from 'ethers';
 import {
   TablerInfoCircle,
   TablerHelp,
@@ -13,39 +15,83 @@ import {
   TablerChevronLeft,
 } from '@/icons';
 
-const firstInitial = mockUserProfile.name.charAt(0).toUpperCase();
-const userName = mockUserProfile.name;
-const walletSubstring = mockUserProfile.wallet.substring(0, 6);
-
 type InfoPage = 'menu' | 'about' | 'help' | 'terms';
 
 export default function ProfilePage() {
+  const { user } = usePrivy();
+  const { wallets } = useWallets();
+
   const [activePage, setActivePage] = useState<InfoPage>('menu');
+  const [profile, setProfile] = useState<{
+    name: string;
+    language_to_learn: string;
+  } | null>(null);
+  const [tokenBalance, setTokenBalance] = useState<number>(0);
 
-  const renderInfoContent = () => {
-    switch (activePage) {
-      case 'about':
-        return (
-          <p>
-            This app helps you learn languages while earning rewards. Built with
-            love at YAP Tech.
-          </p>
-        );
-      case 'help':
-        return (
-          <p>
-            Need help? Contact us at support@goyap.ai or check out the FAQ on
-            our site.
-          </p>
-        );
-      case 'terms':
-        return <p>By using this app, you agree to our terms and conditions.</p>;
-      default:
-        return null;
-    }
-  };
+  const wallet = wallets[0];
+  const walletAddress = wallet?.address ?? '';
+  const walletShort = walletAddress
+    ? walletAddress.slice(0, 6) + '...'
+    : 'Unknown';
 
-  // Render the About / Help / Terms content
+
+
+    const YAP_CONTRACT = '0x47423334c145002467a24bA1B41Ac93e2f503cc6';
+    const SEI_RPC = 'https://evm-rpc.atlantic-2.seinetwork.io'; // Sei testnet RPC
+    
+    const CW20_ABI = [
+      'function balanceOf(address) view returns (uint256)',
+      'function decimals() view returns (uint8)'
+    ];
+    
+     const fetchYapBalanceEvm = async (walletAddress: string): Promise<number> => {
+      try {
+        const provider = new ethers.JsonRpcProvider(SEI_RPC);
+        const contract = new ethers.Contract(YAP_CONTRACT, CW20_ABI, provider);
+        
+        const [rawBalance, decimals] = await Promise.all([
+          contract.balanceOf(walletAddress),
+          contract.decimals(),
+        ]);
+    
+        return Number(rawBalance) / 10 ** decimals;
+      } catch (err) {
+        console.error('Failed to fetch YAP balance via EVM:', err);
+        return 0;
+      }
+    };
+    
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`http://localhost:4000/api/profile/${user.id}`);
+        const data = await res.json();
+        if (res.ok) setProfile(data);
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+      }
+    };
+
+    fetchProfile();
+  }, [user]);
+
+  // You can later replace this with actual SEI CW20 balance call
+  useEffect(() => {
+    const wallet = wallets?.[0];
+    if (!wallet?.address) return;
+  
+    const loadBalance = async () => {
+      const balance = await fetchYapBalanceEvm(wallet.address);
+      setTokenBalance(balance);
+    };
+  
+    loadBalance();
+  }, [wallets]);
+  
+
   if (activePage !== 'menu') {
     return (
       <div className="min-h-screen bg-background-primary p-6 flex flex-col">
@@ -57,14 +103,30 @@ export default function ProfilePage() {
           Back
         </button>
         <h1 className="text-xl font-bold text-secondary mb-4 capitalize">
-          {activePage.replace('-', ' ')}
+          {activePage}
         </h1>
         <div className="text-sm text-[#444] leading-relaxed">
-          {renderInfoContent()}
+          {activePage === 'about' && (
+            <p>
+              This app helps you learn languages while earning rewards. Built
+              with love at YAP Tech.
+            </p>
+          )}
+          {activePage === 'help' && (
+            <p>
+              Need help? Contact us at support@goyap.ai or check out the FAQ on
+              our site.
+            </p>
+          )}
+          {activePage === 'terms' && (
+            <p>By using this app, you agree to our terms and conditions.</p>
+          )}
         </div>
       </div>
     );
   }
+
+  const firstInitial = profile?.name?.charAt(0).toUpperCase() ?? '?';
 
   return (
     <div className="bg-background-primary min-h-screen flex flex-col items-center">
@@ -82,43 +144,42 @@ export default function ProfilePage() {
             </span>
           </div>
           <div className="mt-2 text-lg font-light text-secondary">
-            {userName}
+            {profile?.name ?? 'Loading...'}
           </div>
         </div>
 
-        {/* Wallet button */}
+        {/* Wallet */}
         <div className="mt-2 w-full flex justify-center">
           <Button
-            label={`View Wallet (${walletSubstring}...)`}
+            label={`View Wallet (${walletShort})`}
             className="w-full text-black bg-white px-6 py-3 border-black rounded-xl shadow-md transition-colors"
-            onClick={() => alert('View Wallet Clicked')}
+            onClick={() =>
+              walletAddress
+                ? window.open(
+                    `https://seitrace.com/address/${walletAddress}?chain=atlantic-2`,
+                    '_blank'
+                  )
+                : alert('No wallet connected.')
+            }
           />
         </div>
 
-        {/* Stats cards */}
+        {/* Stats */}
         <div className="w-full mt-6">
           <h2 className="text-md font-bold text-secondary mb-4">Statistics</h2>
           <div className="grid grid-cols-3 gap-x-3 gap-y-4">
-            <StatCard
-              icon="⏰"
-              label="Practiced"
-              value={mockUserProfile.streakDays}
-            />
-            <StatCard
-              icon="🔥"
-              label="Streak"
-              value={mockUserProfile.highestStreak}
-            />
+            <StatCard icon="⏰" label="Practiced" value="12" />
+            <StatCard icon="🔥" label="Streak" value="5" />
             <StatCard
               icon={coin.src}
               label="Total $YAP"
-              value={mockUserProfile.tokenBalance}
+              value={tokenBalance}
               isImage
             />
           </div>
-        </div>
+        </div> 
 
-        {/* Others section */}
+        {/* Others */}
         <div className="w-full mt-6 pb-20">
           <h2 className="text-md font-bold text-secondary mb-3">Others</h2>
           <InfoListCard

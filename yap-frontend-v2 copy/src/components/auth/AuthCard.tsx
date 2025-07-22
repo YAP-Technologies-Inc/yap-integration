@@ -1,26 +1,21 @@
-// AuthCard.tsx
 'use client';
 
-import { useLogin } from '@privy-io/react-auth';
 import { TablerChevronRight } from '@/icons';
-import group from '@/assets/group.png';
 import AuthLogo from '@/components/auth/AuthLogo';
+import group from '@/assets/group.png';
 
 interface AuthCardProps {
   onEmailClick: () => void;
-  onSwitch: () => void;
 }
 
-export default function AuthCard({ onEmailClick, onSwitch }: AuthCardProps) {
-  const { login } = useLogin();
-
-
+export default function AuthCard({ onEmailClick }: AuthCardProps) {
   return (
     <div className="min-h-screen w-full overflow-x-hidden flex flex-col items-center justify-start bg-quaternary">
+      {/* Logo */}
       <AuthLogo />
 
       {/* Group Image */}
-      <div className="w-full max-w-md pt-18 px-6 overflow-hidden">
+      <div className="w-full max-w-md pt-6 px-6 overflow-hidden">
         <img
           src={group.src}
           alt="Group"
@@ -28,7 +23,7 @@ export default function AuthCard({ onEmailClick, onSwitch }: AuthCardProps) {
         />
       </div>
 
-      {/* Auth Card */}
+      {/* Auth Card (bottom panel) */}
       <div
         className="bg-background-primary w-full px-6 py-10 rounded-t-3xl shadow-lg
                    sm:max-w-md sm:px-8 sm:py-12
@@ -43,22 +38,15 @@ export default function AuthCard({ onEmailClick, onSwitch }: AuthCardProps) {
             The only app that pays you to practice languages.
           </p>
 
-          {/* Single Login Button */}
+          {/* Continue with Privy button */}
           <button
-            onClick={login}
+            onClick={onEmailClick}
             className="w-full bg-secondary text-white font-semibold py-3 rounded-full shadow-md mt-2 mb-2 flex items-center justify-center gap-2"
           >
             Continue with Privy
             <TablerChevronRight className="w-4 h-4" />
           </button>
         </div>
-
-        <p className="text-center text-sm mt-8 text-[#5C4B4B]">
-          Already have an account?{' '}
-          <span className="underline cursor-pointer" onClick={onSwitch}>
-            Sign in
-          </span>
-        </p>
       </div>
     </div>
   );

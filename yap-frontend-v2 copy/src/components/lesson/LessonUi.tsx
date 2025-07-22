@@ -1,5 +1,3 @@
-// TODO: Need to style better
-// TODO: Add audio functionailty with a libaray most likley a webapi or media recorder not sure
 'use client';
 
 import {
@@ -10,7 +8,7 @@ import {
   TablerVolume,
 } from '@/icons';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 interface LessonUiProps {
   stepIndex: number;
@@ -32,16 +30,130 @@ export default function LessonUi({
   const router = useRouter();
   const totalSteps = allSteps.length;
   const currentItem = allSteps[stepIndex];
-  const [isRecording, setIsRecording] = useState(false);
 
-  const handleNext = () => {
-    if (stepIndex + 1 >= totalSteps) {
-      onComplete();
-    } else {
-      setStepIndex(stepIndex + 1);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
+    null
+  );
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [audioURL, setAudioURL] = useState<string | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [score, setScore] = useState<number | null>(null);
+  const [feedback, setFeedback] = useState<string | null>(null);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+      };
+
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(blob);
+        setAudioBlob(blob);
+        setAudioURL(url);
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+    } catch (e) {
+      alert('Microphone permission denied or not found');
     }
   };
 
+  const stopRecording = () => {
+    mediaRecorder?.stop();
+    setIsRecording(false);
+  };
+
+  const assessPronunciation = async () => {
+    if (!audioBlob) return;
+    setIsLoading(true);
+    setScore(null);
+    setFeedback(null);
+
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'recording.webm');
+    formData.append('referenceText', currentItem.question);
+    console.log('Submitting referenceText:', currentItem.question);
+    try {
+      const res = await fetch(
+        'http://localhost:4000/api/pronunciation-assessment-upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      const result = await res.json();
+      console.log('Raw Azure Result:', result);
+
+      const rawScore =
+        result.NBest?.[0]?.PronScore ||
+        result.NBest?.[0]?.PronunciationAssessment?.AccuracyScore;
+      console.log('Raw Score:', rawScore);
+      console.log('Full NBest:', result.NBest);
+      console.log('Words:', result.NBest?.[0]?.Words);
+
+      const scaled = Math.round((rawScore || 0) * 0.8);
+
+      setScore(scaled);
+      const tips = result.NBest?.[0]?.Words?.flatMap((w: any) =>
+        (w.Phonemes || [])
+          .filter((p: any) => p.ErrorType !== 'None')
+          .map((p: any) => `Improve "${p.Phoneme}" (${p.ErrorType})`)
+      );
+      setFeedback(tips?.join('\n') || 'Nice work!');
+
+      // Automatically move to next card after scoring
+      setTimeout(() => {
+        if (stepIndex + 1 >= totalSteps) {
+          onComplete();
+        } else {
+          setStepIndex(stepIndex + 1);
+        }
+
+        // Reset recording UI state
+        setAudioBlob(null);
+        setAudioURL(null);
+        setScore(null);
+        setFeedback(null);
+      }, 1500);
+    } catch (e: any) {
+      alert('Assessment failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const markLessonComplete = async (currentLessonId: string) => {
+    const userId = localStorage.getItem('userId');
+    const seiAddress = localStorage.getItem('seiAddress');
+  
+    try {
+      const res = await fetch('http://localhost:4000/api/complete-lesson', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, walletAddress: seiAddress, lessonId: currentLessonId }),
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        alert('Lesson complete! YAP token sent 🎉');
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err) {
+      alert('Failed to complete lesson');
+    }
+  };
+  
   return (
     <div className="min-h-screen w-full bg-background-primary flex flex-col pt-4 pb-28 px-4">
       {/* Exit + Progress bar */}
@@ -94,22 +206,24 @@ export default function LessonUi({
       </div>
 
       {/* Bottom Controls */}
-      <div className="fixed bottom-6 left-0 right-0 flex justify-center items-center gap-6 w-full px-6">
+      <div className="fixed bottom-6 left-0 right-0 flex justify-center items-center gap-4 w-full px-6 flex-wrap">
         {/* Replay audio */}
         <button
           className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
-          onClick={() => console.log('Replay audio')}
+          onClick={() => {
+            if (audioRef.current) {
+              audioRef.current.currentTime = 0;
+              audioRef.current.play();
+            }
+          }}
         >
           <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
         </button>
 
-          {/* Toggle mic button */}
+        {/* Toggle mic button */}
         <button
           onClick={() => {
-            setIsRecording((prev) => !prev);
-            console.log(
-              isRecording ? 'Recording stopped' : 'Recording started'
-            );
+            isRecording ? stopRecording() : startRecording();
           }}
           className="w-16 h-16 bg-[#EF4444] rounded-full flex items-center justify-center shadow-md"
         >
@@ -120,22 +234,49 @@ export default function LessonUi({
           )}
         </button>
 
-          {/* Rehear audio */}
-        <button
-          className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
-          onClick={() => console.log('Re-hear audio')}
-        >
-          <TablerVolume className="w-6 h-6 text-[#EF4444]" />
-        </button>
+        {/* Score Button */}
+        {audioURL && (
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded-full shadow"
+            onClick={assessPronunciation}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Scoring...' : 'Get Score'}
+          </button>
+        )}
 
-        {/* TEST ONLY: Skip Button */}
-        <button
-          className="w-12 h-12 rounded-full bg-gray-300 shadow flex items-center justify-center"
-          onClick={handleNext}
-        >
-          <span className="text-sm font-bold text-secondary">⏭</span>
-        </button>
+        {/* Play last recording */}
+        {audioURL && (
+          <button
+            className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
+            onClick={() => {
+              if (audioRef.current) {
+                audioRef.current.currentTime = 0;
+                audioRef.current.play();
+              }
+            }}
+          >
+            <TablerVolume className="w-6 h-6 text-[#EF4444]" />
+          </button>
+        )}
       </div>
+
+      {/* Audio element */}
+      {audioURL && (
+        <audio ref={audioRef} src={audioURL} className="hidden" controls />
+      )}
+
+      {/* Feedback */}
+      {score !== null && (
+        <div className="mt-6 text-center px-4">
+          <p className="text-xl font-bold text-secondary">Score: {score}/100</p>
+          {feedback && (
+            <p className="text-sm mt-2 text-secondary whitespace-pre-line">
+              {feedback}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

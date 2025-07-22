@@ -60,6 +60,50 @@ app.post('/api/redeem-yap', async (req, res) => {
   }
 });
 
+app.post('/api/complete-lesson', async (req, res) => {
+  const { userId, walletAddress, lessonId } = req.body;
+
+  try {
+    // Check if lesson already completed
+    const check = await db.query(
+      'SELECT * FROM user_lessons WHERE user_id = $1 AND lesson_id = $2',
+      [userId, lessonId]
+    );
+    if (check.rows.length > 0) {
+      return res.status(400).json({ error: 'Lesson already completed.' });
+    }
+
+    // Store completion
+    await db.query(
+      'INSERT INTO user_lessons (user_id, lesson_id, completed_at) VALUES ($1, $2, NOW())',
+      [userId, lessonId]
+    );
+
+    // Send token reward
+    const txHash = await sendYAPToWallet(walletAddress);
+
+    res.json({ success: true, txHash });
+  } catch (err) {
+    console.error('Lesson completion error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get('/api/user-lessons/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const result = await db.query(
+      'SELECT lesson_id FROM user_lessons WHERE user_id = $1',
+      [userId]
+    );
+    const completedLessons = result.rows.map((row) => row.lesson_id);
+    res.json({ completedLessons });
+  } catch (err) {
+    console.error('Error fetching user lessons:', err);
+    res.status(500).json({ error: 'Failed to fetch completed lessons' });
+  }
+});
+
 
 // Set your Flowglad secret key (from your dashboard)
 flowglad.secretKey = process.env.FLOWGLAD_SECRET_KEY;
@@ -82,34 +126,30 @@ app.post('/api/create-payment-session', async (req, res) => {
 // Demo signup endpoint for mobile app
 app.post('/api/auth/secure-signup', async (req, res) => {
   try {
-    console.log('Received signup request:', req.body);
-    const { name, email, password, language_to_learn, native_language, encrypted_mnemonic, sei_address, eth_address } = req.body;
-    if (!name || !email || !password || !language_to_learn || !native_language) {
-      console.error('Missing required fields:', req.body);
+    const { user_id, name, language_to_learn } = req.body;
+
+    if (!user_id || !name || !language_to_learn) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
     }
-    // Hash the password with bcrypt
-    const password_hash = await bcrypt.hash(password, 10);
-    const userId = crypto.randomBytes(32).toString('hex');
+
     await db.query(
-      `INSERT INTO users (user_id, name, email, password_hash, language_to_learn, native_language, sei_address, eth_address, encrypted_mnemonic)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-      [userId, name, email, password_hash, language_to_learn, native_language, sei_address, eth_address, encrypted_mnemonic]
+      `INSERT INTO users (user_id, name, language_to_learn)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (user_id) DO UPDATE SET name = $2, language_to_learn = $3`,
+      [user_id, name, language_to_learn]
     );
-    res.json({
+
+    return res.json({
       success: true,
-      userId,
-      token: crypto.randomBytes(32).toString('hex'),
-      sei_address,
-      eth_address,
-      encrypted_mnemonic,
-      message: 'Secure wallet account created and saved to DB!',
+      user_id,
+      message: 'User saved to DB successfully',
     });
   } catch (err) {
-    console.error('Signup error:', err);
+    console.error('Secure signup error:', err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
 
 // Login endpoint
 app.post('/api/auth/login', async (req, res) => {
@@ -152,10 +192,14 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+// /api/profile/:userId
 app.get('/api/profile/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
-    const result = await db.query('SELECT name, email, sei_address, eth_address FROM users WHERE user_id = $1', [userId]);
+    const result = await db.query(
+      'SELECT name, language_to_learn FROM users WHERE user_id = $1',
+      [userId]
+    );
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
@@ -165,6 +209,7 @@ app.get('/api/profile/:userId', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
 
 // Pronunciation Assessment Endpoint
 app.post('/api/pronunciation-assessment', async (req, res) => {
