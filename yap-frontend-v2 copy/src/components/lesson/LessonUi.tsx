@@ -6,6 +6,7 @@ import {
   TablerPlayerPauseFilled,
   TablerMicrophone,
   TablerVolume,
+  TablerChevronRight,
 } from '@/icons';
 import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
@@ -129,7 +130,7 @@ export default function LessonUi({
   // Function to mark lesson as complete and send YAP token
   // This will be called when the user completes the last step of the lesson
   // We grab from local storage again, need the this to run async in the background and need a toast notification
-  // to notify the user that the lesson is complete and YAP token has been sent 
+  // to notify the user that the lesson is complete and YAP token has been sent
   const markLessonComplete = async (currentLessonId: string) => {
     const userId = localStorage.getItem('userId');
     const walletAddress = localStorage.getItem('evmAddress');
@@ -237,13 +238,6 @@ export default function LessonUi({
         {audioURL && (
           <>
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded-full shadow"
-              onClick={assessPronunciation}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Scoring...' : 'Get Score'}
-            </button>
-            <button
               className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
               onClick={() => {
                 audioRef.current &&
@@ -251,6 +245,13 @@ export default function LessonUi({
               }}
             >
               <TablerVolume className="w-6 h-6 text-[#EF4444]" />
+            </button>
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-full shadow"
+              onClick={assessPronunciation}
+              disabled={isLoading}
+            >
+              <TablerChevronRight className="w-6 h-6" />
             </button>
           </>
         )}

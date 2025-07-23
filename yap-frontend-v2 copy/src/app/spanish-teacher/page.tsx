@@ -18,8 +18,8 @@ export default function SpanishTeacherConversation() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Use your ElevenLabs API key and agent ID
-  const ELEVENLABS_API_KEY = 'sk_3d18455ea5f8f28b7a8fe3b8539d1b8ee54f75c8951406af';
+  const ELEVENLABS_API_KEY =
+    'sk_3d18455ea5f8f28b7a8fe3b8539d1b8ee54f75c8951406af';
   const AGENT_ID = 'agent_01k0mav3kjfk3s4xbwkka4yg28';
 
   const conversation = useConversation({
@@ -35,24 +35,27 @@ export default function SpanishTeacherConversation() {
       }
     },
     onError: (error) => {
-      setError(`Connection error: ${typeof error === 'string' ? error : 'Unknown error'}`);
+      setError(
+        `Connection error: ${
+          typeof error === 'string' ? error : 'Unknown error'
+        }`
+      );
       setDebugInfo(`Error details: ${JSON.stringify(error)}`);
     },
   });
 
   const addMessage = (text: string, sender: 'user' | 'ai') => {
-    setMessages(prev => [
-      ...prev, 
-      { 
+    setMessages((prev) => [
+      ...prev,
+      {
         id: Date.now().toString(),
         text,
         sender,
-        timestamp: new Date()
-      }
+        timestamp: new Date(),
+      },
     ]);
   };
 
-  // Auto-scroll to the bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -67,7 +70,9 @@ export default function SpanishTeacherConversation() {
       await conversation.startSession();
       setDebugInfo('Session started with Spanish Teacher');
     } catch (error: any) {
-      setError('Failed to start conversation: ' + (error?.message || 'Unknown error'));
+      setError(
+        'Failed to start conversation: ' + (error?.message || 'Unknown error')
+      );
     }
     setIsLoading(false);
   }, [conversation]);
@@ -78,175 +83,88 @@ export default function SpanishTeacherConversation() {
   }, [conversation]);
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#f7f3ec',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        padding: '32px 8px',
-      }}
-    >
-      <button
-        onClick={() => router.push('/home')}
-        style={{
-          position: 'absolute',
-          top: 24,
-          left: 24,
-          zIndex: 100,
-          background: '#fff',
-          border: '1px solid #ccc',
-          borderRadius: 8,
-          padding: '8px 16px',
-          fontWeight: 600,
-          cursor: 'pointer',
-          boxShadow: '0 1px 4px rgba(0,0,0,0.06)'
-        }}
-      >
-        &lt; Back
-      </button>
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 480,
-          background: '#fffbe6',
-          borderRadius: 18,
-          boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
-          padding: '32px 24px 24px 24px',
-          marginTop: 24,
-          marginBottom: 32,
-          textAlign: 'center',
-        }}
-      >
-        <h2 style={{ fontSize: 28, fontWeight: 700, color: '#2D1C1C', marginBottom: 8 }}>
-          AI Spanish Teacher
-        </h2>
-        <p style={{ fontSize: 16, color: '#5C4B4B', marginBottom: 18 }}>
-          Practice your Spanish conversation
-        </p>
-        {conversation.status === 'connected' && (
-          <button
-            onClick={stopConversation}
-            style={{
-              background: '#e74c3c',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 8,
-              padding: '10px 20px',
-              fontWeight: 600,
-              fontSize: 16,
-              marginBottom: 0,
-              cursor: 'pointer',
-              boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
-            }}
-          >
-            End Conversation
-          </button>
-        )}
-      </div>
+    <div className="min-h-screen bg-[#f7f3ec] flex flex-col items-center justify-start p-8">
+      <div>
+        <button
+          onClick={() => router.push('/home')}
+          className="absolute top-6 left-6 z-10 bg-white border border-gray-300 rounded-lg px-4 py-2 font-semibold shadow-sm"
+        >
+          &lt; Back
+        </button>
+        <div className="w-full max-w-md bg-[#fffbe6] rounded-2xl shadow-lg p-8 mt-6 mb-8 text-center">
+          <h2 className="text-2xl font-bold text-[#2D1C1C] mb-2">
+            AI Spanish Teacher
+          </h2>
+          <p className="text-base text-[#5C4B4B] mb-4">
+            Practice your Spanish conversation
+          </p>
+          {conversation.status === 'connected' && (
+            <button
+              onClick={stopConversation}
+              className="bg-red-500 text-white rounded-lg px-5 py-2 font-semibold text-lg shadow-md"
+            >
+              End Conversation
+            </button>
+          )}
+        </div>
 
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 480,
-          background: '#fff',
-          borderRadius: 18,
-          boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
-          padding: '24px 18px',
-          minHeight: 320,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-        }}
-      >
-        {error && (
-          <div style={{
-            color: '#e74c3c',
-            background: '#fff0f0',
-            borderRadius: 8,
-            padding: '8px 12px',
-            marginBottom: 12,
-            textAlign: 'center',
-            fontWeight: 500,
-          }}>
-            {error}
-          </div>
-        )}
-        {debugInfo && (
-          <div style={{
-            color: '#888',
-            background: '#f7f3ec',
-            borderRadius: 8,
-            padding: '6px 10px',
-            marginBottom: 10,
-            fontSize: 13,
-            textAlign: 'left',
-          }}>
-            <strong>Debug:</strong> {debugInfo}
-          </div>
-        )}
-        <div style={{ flex: 1, overflowY: 'auto', marginBottom: 16 }}>
-          {messages.length === 0 ? (
-            <div style={{ textAlign: 'center', marginTop: 32 }}>
-              <h3 style={{ fontSize: 20, fontWeight: 600, color: '#2D1C1C', marginBottom: 18 }}>
-                Ask the AI Spanish Teacher anything in Spanish!
-              </h3>
-              <button
-                onClick={startConversation}
-                disabled={conversation.status === 'connected' || isLoading}
-                style={{
-                  background: '#2D1C1C',
-                  color: '#FFD166',
-                  border: 'none',
-                  borderRadius: 8,
-                  padding: '14px 32px',
-                  fontWeight: 700,
-                  fontSize: 18,
-                  cursor: conversation.status === 'connected' || isLoading ? 'not-allowed' : 'pointer',
-                  opacity: conversation.status === 'connected' || isLoading ? 0.6 : 1,
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
-                }}
-              >
-                {isLoading ? 'Connecting...' : 'Start Conversation'}
-              </button>
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 min-h-[320px] flex flex-col justify-end">
+          {error && (
+            <div className="text-red-500 bg-red-100 rounded-lg px-3 py-2 mb-3 text-center font-medium">
+              {error}
             </div>
-          ) : (
-            messages.map((msg) => (
-              <div
-                key={msg.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                  marginBottom: 10,
-                }}
-              >
-                <div
-                  style={{
-                    background: msg.sender === 'user' ? '#FFD166' : '#f7f3ec',
-                    color: '#2D1C1C',
-                    borderRadius: 12,
-                    padding: '10px 16px',
-                    maxWidth: '80%',
-                    fontSize: 16,
-                    fontWeight: 500,
-                    boxShadow: msg.sender === 'user'
-                      ? '0 1px 4px rgba(255,209,102,0.15)'
-                      : '0 1px 4px rgba(0,0,0,0.04)',
-                  }}
+          )}
+          {debugInfo && (
+            <div className="text-gray-600 bg-[#f7f3ec] rounded-lg px-3 py-2 mb-2 text-sm">
+              <strong>Debug:</strong> {debugInfo}
+            </div>
+          )}
+          <div className="flex-1 overflow-y-auto mb-4">
+            {messages.length === 0 ? (
+              <div className="text-center mt-8">
+                <h3 className="text-lg font-semibold text-[#2D1C1C] mb-4">
+                  Ask the AI Spanish Teacher anything in Spanish!
+                </h3>
+                <button
+                  onClick={startConversation}
+                  disabled={conversation.status === 'connected' || isLoading}
+                  className={`bg-[#2D1C1C] text-[#FFD166] rounded-lg px-8 py-3 font-bold text-lg shadow-md ${
+                    conversation.status === 'connected' || isLoading
+                      ? 'opacity-60 cursor-not-allowed'
+                      : 'cursor-pointer'
+                  }`}
                 >
-                  <div style={{ marginBottom: 4 }}>{msg.text}</div>
-                  <div style={{ fontSize: 12, color: '#A59C9C', textAlign: 'right' }}>
-                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {isLoading ? 'Connecting...' : 'Start Conversation'}
+                </button>
+              </div>
+            ) : (
+              messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex ${
+                    msg.sender === 'user' ? 'justify-end' : 'justify-start'
+                  } mb-2`}
+                >
+                  <div
+                    className={`${
+                      msg.sender === 'user' ? 'bg-[#FFD166]' : 'bg-[#f7f3ec]'
+                    } text-[#2D1C1C] rounded-lg px-4 py-2 max-w-[80%] text-base font-medium shadow-sm`}
+                  >
+                    <div className="mb-1">{msg.text}</div>
+                    <div className="text-xs text-gray-500 text-right">
+                      {msg.timestamp.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          )}
-          <div ref={messagesEndRef} />
+              ))
+            )}
+            <div ref={messagesEndRef} />
+          </div>
         </div>
       </div>
     </div>
   );
-} 
+}
