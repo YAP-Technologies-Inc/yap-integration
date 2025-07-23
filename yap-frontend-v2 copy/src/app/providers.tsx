@@ -33,8 +33,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         embeddedWallets: {
           createOnLogin: "users-without-wallets",
         },
-        supportedChains: [seiTestnet],     // ✅ Use SEI testnet
-        defaultChain: seiTestnet,          // ✅ Default to SEI
+        supportedChains: [seiTestnet],     
+        defaultChain: seiTestnet,        
         appearance: {
           theme: "#F6F0E8",
           landingHeader: "Welcome to Yap",
