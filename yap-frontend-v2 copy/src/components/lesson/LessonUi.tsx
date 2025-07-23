@@ -146,6 +146,9 @@ export default function LessonUi({
       });
       const data = await res.json();
       if (res.ok) {
+        const old = parseFloat(localStorage.getItem('tokenBalance') || '0');
+        const updated = old + 1;
+        localStorage.setItem('tokenBalance', updated.toString());
         alert('Lesson complete! YAP token sent');
       } else {
         alert(`Error: ${data.error}`);

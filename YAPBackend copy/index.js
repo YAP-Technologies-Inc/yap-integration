@@ -86,31 +86,48 @@ async function sendYAPToWallet(toAddress) {
 // 3) Record the completion in the user_lessons table
 // 4) Respond with the transaction hash
 
+// index.js (Express)
+
 app.post('/api/complete-lesson', async (req, res) => {
   const { userId, walletAddress, lessonId } = req.body;
 
   try {
-    // 1
-    const check = await db.query(
-      'SELECT 1 FROM user_lessons WHERE user_id=$1 AND lesson_id=$2',
+    // 1) Prevent double‑completions
+    const { rows: already } = await db.query(
+      `SELECT 1
+         FROM user_lessons
+        WHERE user_id   = $1
+          AND lesson_id = $2`,
       [userId, lessonId]
     );
-    if (check.rows.length) {
+    if (already.length) {
       return res.status(400).json({ error: 'Lesson already completed.' });
     }
 
-    // 2
+    // 2) Send 1 YAP on‑chain
     const txHash = await sendYAPToWallet(walletAddress);
 
-    // 3
+    // 3) Record in user_lessons
     await db.query(
       `INSERT INTO user_lessons
-         (user_id, lesson_id, completed_at, tx_hash)
-       VALUES ($1, $2, NOW(), $3)`,
+           (user_id, lesson_id, completed_at, tx_hash)
+         VALUES ($1, $2, NOW(), $3)`,
       [userId, lessonId, txHash]
     );
 
-    // 4
+    // 4) Upsert into user_stats
+    await db.query(
+      `INSERT INTO user_stats
+           (user_id, token_balance, current_streak, highest_streak, total_yap_earned)
+         VALUES ($1, 1, 0, 0, 1)
+         ON CONFLICT (user_id) DO UPDATE
+           SET token_balance    = user_stats.token_balance   + 1,
+               total_yap_earned = user_stats.total_yap_earned + 1,
+               updated_at       = NOW()`,
+      [userId]
+    );
+
+    // 5) Return success
     res.json({ success: true, txHash });
 
   } catch (err) {
@@ -118,6 +135,7 @@ app.post('/api/complete-lesson', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 app.get('/api/user-lessons/:userId', async (req, res) => {
   const { userId } = req.params;
