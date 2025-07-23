@@ -137,9 +137,9 @@ export default function DailyStreak() {
             <div key={idx} className="flex flex-col items-center">
               <div
                 className={`
-                  w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold
+                  w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold ring-white opacity-50 ring-2
                   ${
-                    done ? 'bg-[#3B2727] text-white' : 'bg-[#2D1C1C] opacity-60'
+                    done ? 'bg-secondary text-white' : 'bg-secondary opacity-60'
                   }
                   ${isToday ? 'ring-2 ring-tertiary' : ''}
                 `}

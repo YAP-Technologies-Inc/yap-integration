@@ -36,8 +36,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         supportedChains: [seiTestnet],     
         defaultChain: seiTestnet,        
         appearance: {
-          theme: "#F6F0E8",
-          landingHeader: "Welcome to Yap",
+          theme: "#F0EBE1",
+          landingHeader: "Welcome to YAP",
           loginMessage: "The only app that pays you to practice languages.",
           showWalletLoginFirst: false,
         },
