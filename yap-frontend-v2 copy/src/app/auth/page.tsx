@@ -1,17 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter }        from 'next/navigation';
-import { usePrivy }         from '@privy-io/react-auth';
-import AuthCard             from '@/components/auth/AuthCard';
-import SignUpForm           from '@/components/auth/SignUpForm';
+import { useRouter } from 'next/navigation';
+import { usePrivy } from '@privy-io/react-auth';
+import AuthCard from '@/components/auth/AuthCard';
+import SignUpForm from '@/components/auth/SignUpForm';
 
 export default function AuthPage() {
   const { ready, authenticated, login, user } = usePrivy();
   const router = useRouter();
 
-  const [hideFooter, setHideFooter]     = useState(false);
-  const [hasProfile, setHasProfile]     = useState<boolean|null>(null);
+  const [hideFooter, setHideFooter] = useState(false);
+  const [hasProfile, setHasProfile] = useState<boolean | null>(null);
 
   //Modal detection to hide footer
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function AuthPage() {
     if (authenticated && user?.id) {
       setHasProfile(null);
       fetch(`http://localhost:4000/api/profile/${user.id}`)
-        .then(res => {
+        .then((res) => {
           if (res.ok) {
             setHasProfile(true);
             localStorage.setItem('userId', user.id);
@@ -45,7 +45,7 @@ export default function AuthPage() {
             setHasProfile(false);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.error('Profile fetch failed:', err);
           setHasProfile(false);
         });

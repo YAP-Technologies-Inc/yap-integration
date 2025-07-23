@@ -135,6 +135,52 @@ app.get('/api/user-lessons/:userId', async (req, res) => {
   }
 });
 
+// GET /api/user-stats/:userId
+app.get('/api/user-stats/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const { rows } = await db.query(
+      `SELECT token_balance,
+              current_streak,
+              highest_streak,
+              total_yap_earned,
+              updated_at
+       FROM user_stats
+       WHERE user_id = $1`,
+      [userId]
+    );
+    if (rows.length === 0) {
+      // Can auto create stats if not found if we need to
+      return res.status(404).json({ error: 'Stats not found' });
+    }
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('Error fetching user stats:', err);
+    res.status(500).json({ error: 'Failed to fetch user stats' });
+  }
+});
+
+app.post('/api/user-stats/:userId/streak', async (req, res) => {
+  const { userId } = req.params;
+  const { currentStreak, highestStreak } = req.body;
+
+  try {
+    await db.query(
+      `UPDATE user_stats
+         SET current_streak = $2,
+             highest_streak = GREATEST(highest_streak, $3),
+             updated_at     = NOW()
+       WHERE user_id = $1`,
+      [userId, currentStreak, highestStreak]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error updating streak:', err);
+    res.status(500).json({ error: 'Failed to update streak' });
+  }
+});
+
+
 // Set your Flowglad secret key (from your dashboard)
 flowglad.secretKey = process.env.FLOWGLAD_SECRET_KEY;
 
@@ -157,30 +203,42 @@ app.post('/api/create-payment-session', async (req, res) => {
 app.post('/api/auth/secure-signup', async (req, res) => {
   try {
     const { user_id, name, language_to_learn } = req.body;
-
     if (!user_id || !name || !language_to_learn) {
       return res
         .status(400)
         .json({ success: false, error: 'Missing required fields' });
     }
 
+    // 1) Upsert into users
     await db.query(
       `INSERT INTO users (user_id, name, language_to_learn)
        VALUES ($1, $2, $3)
-       ON CONFLICT (user_id) DO UPDATE SET name = $2, language_to_learn = $3`,
+       ON CONFLICT (user_id)
+         DO UPDATE SET name = EXCLUDED.name,
+                       language_to_learn = EXCLUDED.language_to_learn`,
       [user_id, name, language_to_learn]
+    );
+
+    // 2) Initialize stats row with sensible defaults
+    await db.query(
+      `INSERT INTO user_stats 
+         (user_id, token_balance, current_streak, highest_streak, total_yap_earned)
+       VALUES ($1, 0, 1, 1, 0)
+       ON CONFLICT (user_id) DO NOTHING`,
+      [user_id]
     );
 
     return res.json({
       success: true,
       user_id,
-      message: 'User saved to DB successfully',
+      message: 'User (and stats) saved to DB successfully',
     });
   } catch (err) {
     console.error('Secure signup error:', err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
 
 // Login endpoint
 app.post('/api/auth/login', async (req, res) => {
