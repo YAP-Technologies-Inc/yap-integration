@@ -12,10 +12,10 @@ export default function AuthPage() {
 
   const [hideFooter, setHideFooter] = useState(false);
   const [hasProfile, setHasProfile] = useState<boolean | null>(null);
+  const [checkingProfile, setCheckingProfile] = useState(false);
 
-  //Modal detection to hide footer
+  // Detect Privy modal
   useEffect(() => {
-    if (typeof window === 'undefined') return;
     const MODAL_SELECTOR = '#headlessui-portal-root';
     let wasOpen = false;
     const observer = new MutationObserver(() => {
@@ -29,51 +29,45 @@ export default function AuthPage() {
     return () => observer.disconnect();
   }, []);
 
-  //Check if user has a profile in the DB
+  // Check for profile, but don’t block LCP
   useEffect(() => {
     if (authenticated && user?.id) {
-      setHasProfile(null);
+      setCheckingProfile(true);
       fetch(`http://localhost:4000/api/profile/${user.id}`)
         .then((res) => {
           if (res.ok) {
             setHasProfile(true);
             localStorage.setItem('userId', user.id);
-          } else if (res.status === 404) {
-            setHasProfile(false);
           } else {
-            console.error('Profile lookup error:', res.status);
             setHasProfile(false);
           }
         })
-        .catch((err) => {
-          console.error('Profile fetch failed:', err);
-          setHasProfile(false);
-        });
+        .catch(() => setHasProfile(false))
+        .finally(() => setCheckingProfile(false));
     }
   }, [authenticated, user]);
 
-  //Use if still checking auth status or profile
-  if (!ready || (authenticated && hasProfile === null)) {
+  // Redirect to home once profile is confirmed
+  useEffect(() => {
+    if (authenticated && hasProfile) {
+      router.push('/home');
+    }
+  }, [authenticated, hasProfile]);
+
+  if (!ready) {
     return (
       <div className="h-screen flex items-center justify-center bg-background-secondary">
-        {/* spinner */}
         <div className="animate-spin h-12 w-12 border-4 border-secondary border-t-transparent rounded-full" />
       </div>
     );
   }
 
-  //Already authenticated and has profile -> redirect to home
-  if (authenticated && hasProfile) {
-    router.push('/home');
-    return null;
-  }
-
-  //Privy is ok but no profile -> show sign up form
-  if (authenticated && hasProfile === false) {
+  // Authenticated but no profile yet — show signup form
+  if (authenticated && hasProfile === false && !checkingProfile) {
     return <SignUpForm />;
   }
 
-  //Not authenticated yet -> show login card
+  // Default state — render AuthCard even if still checking
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-background-secondary">
       <AuthCard

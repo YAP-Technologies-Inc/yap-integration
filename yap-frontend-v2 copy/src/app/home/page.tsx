@@ -1,4 +1,3 @@
-// /src/app/home/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -12,79 +11,66 @@ import BottomNavBar from '@/components/layout/BottomNavBar';
 import LessonCard from '@/components/dashboard/LessonCard';
 import DailyQuizCard from '@/components/dashboard/DailyQuizPrompt';
 import allLessons from '@/mock/allLessons';
+
 import { useInitializeUser } from '@/hooks/useUserInitalizer';
+import { useCompletedLessons } from '@/hooks/useCompletedLessons';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useUserStats } from '@/hooks/useUserStats';
+import { useOnChainBalance } from '@/hooks/useOnBlockChain';
+import isEqual from 'lodash.isequal';
+
 export default function HomePage() {
   useInitializeUser();
+
   const [lessons, setLessons] = useState<
     { id: string; title: string; description: string; status: 'locked' | 'available' | 'completed' }[]
   >([]);
-  const [loading, setLoading] = useState(true);
 
-  // Retrive user ID from localStorage
-  const { wallets } = useWallets(); 
-  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+  const { wallets } = useWallets();
   const router = useRouter();
 
-  // Load lessons based on user progress, will always render first lesson as available
-  // and will update based on completed lessons
-  
-  useEffect(() => {
-    const fetchCompletedLessons = async () => {
-      if (!userId) {
-        setLoading(false);
-        return;
-      }
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+  const evmAddress = typeof window !== 'undefined' ? localStorage.getItem('evmAddress') : null;
 
-      try {
-        const res = await fetch(`http://localhost:4000/api/user-lessons/${userId}`);
-        const data = await res.json();
-        const completedSet = new Set<string>(data.completedLessons || []);
+  // Fetch user-related data with SWR hooks
+  const { completedLessons, isLoading: isLessonsLoading } = useCompletedLessons(userId);
+  const { profile, isLoading: isProfileLoading } = useUserProfile(userId);
+  const { stats, isLoading: isStatsLoading } = useUserStats(userId);
+  const { balance: onChainBalance, isLoading: isBalanceLoading } = useOnChainBalance(evmAddress);
 
-        const computed = Object.values(allLessons).map((lesson: any) => {
-          const isCompleted = completedSet.has(lesson.lesson_id);
-          const isFirst = lesson.lesson_id === 'SPA1_001';
-          const prereqs = lesson.prerequisite_lessons || [];
+  // Compute lesson availability based on completed lessons
+ useEffect(() => {
+  if (!completedLessons) return;
 
-          const isAvailable =
-            isFirst ||
-            (!isCompleted && prereqs.every((p: string) => completedSet.has(p)));
+  const completedSet = new Set<string>(completedLessons);
 
-          return {
-            id: lesson.lesson_id,
-            title: lesson.title,
-            description: lesson.description,
-            status: isCompleted
-              ? 'completed'
-              : isAvailable
-              ? 'available'
-              : 'locked',
-          };
-        });
+  const computed = Object.values(allLessons).map((lesson: any) => {
+    const isCompleted = completedSet.has(lesson.lesson_id);
+    const isFirst = lesson.lesson_id === 'SPA1_001';
+    const prereqs = lesson.prerequisite_lessons || [];
 
-        setLessons(computed);
-      } catch (err) {
-        console.error('Failed to fetch lessons:', err);
-        // Fall back incase first fetch fails and we need to render 1st lesson
-        setLessons(
-          Object.values(allLessons).map((lesson: any) => ({
-            id: lesson.lesson_id,
-            title: lesson.title,
-            description: lesson.description,
-            status: lesson.lesson_id === 'SPA1_001' ? 'available' : 'locked',
-          }))
-        );
-      } finally {
-        setLoading(false);
-      }
+    const isAvailable =
+      isFirst || (!isCompleted && prereqs.every((p: string) => completedSet.has(p)));
+
+    return {
+      id: lesson.lesson_id,
+      title: lesson.title,
+      description: lesson.description,
+      status: isCompleted ? 'completed' : isAvailable ? 'available' : 'locked',
     };
+  });
 
-    fetchCompletedLessons();
-  }, [userId]);
+  //Only update state if it's actually changed
+  if (!isEqual(computed, lessons)) {
+    setLessons(computed);
+  }
+}, [completedLessons, lessons]);
 
-  if (loading) {
+  // Unified loading state
+  if (isLessonsLoading || isProfileLoading || isStatsLoading || isBalanceLoading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <p>Loading lessons…</p>
+        <p>Loading dashboard…</p>
       </div>
     );
   }
@@ -128,9 +114,7 @@ export default function HomePage() {
         </div>
 
         {/* Daily Quiz */}
-        <h3 className="text-secondary text-xl font-semibold mt-8 mb-2">
-          Daily Quiz
-        </h3>
+        <h3 className="text-secondary text-xl font-semibold mt-8 mb-2">Daily Quiz</h3>
         <div className="relative z-0">
           <DailyQuizCard isUnlocked={false} />
         </div>

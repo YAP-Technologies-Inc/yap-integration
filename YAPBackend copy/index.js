@@ -18,6 +18,7 @@ const db = new Pool({
   password: '1234', // use your actual password
   port: 5432,
 });
+
 const bcrypt = require('bcryptjs'); // Add at the top if you want to hash passwords
 const { assessPronunciation } = require('./azurePronunciation');
 const multer = require('multer');

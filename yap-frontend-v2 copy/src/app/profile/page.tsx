@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import useSWR from 'swr';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 import BottomNavBar from '@/components/layout/BottomNavBar';
 import Button from '@/components/ui/Button';
 import StatCard from '@/components/ui/StatCard';
@@ -13,33 +15,43 @@ import {
   TablerChevronLeft,
 } from '@/icons';
 
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 type InfoPage = 'menu' | 'about' | 'help' | 'terms';
 
 export default function ProfilePage() {
   const [activePage, setActivePage] = useState<InfoPage>('menu');
+  const { user } = usePrivy();
+  const { wallets } = useWallets();
+  const userId = user?.id || null;
+  const evmAddr = wallets?.[0]?.address || '';
 
-  // Safely read from localStorage (guard for SSR)
-  const name =
-    typeof window !== 'undefined' ? localStorage.getItem('name') || '' : '';
-  const language =
-    typeof window !== 'undefined' ? localStorage.getItem('language') || '' : '';
-  const evmAddr =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('evmAddress') || ''
-      : '';
-  const tokenBalance =
-    typeof window !== 'undefined'
-      ? parseFloat(localStorage.getItem('tokenBalance') || '0')
-      : 0;
-  const totalStreak =
-    typeof window !== 'undefined'
-      ? parseInt(localStorage.getItem('total-streak') || '0')
-      : 0;
+  const { data: profileData, isLoading: profileLoading } = useSWR(
+    userId ? `http://localhost:4000/api/profile/${userId}` : null,
+    fetcher
+  );
+
+  const { data: statsData, isLoading: statsLoading } = useSWR(
+    userId ? `http://localhost:4000/api/user-stats/${userId}` : null,
+    fetcher
+  );
+
+  const name = profileData?.name || '';
+  const language = profileData?.language_to_learn || '';
+  const tokenBalance = statsData?.token_balance || 0;
+  const totalStreak = statsData?.current_streak || 0;
 
   const walletShort = evmAddr ? `${evmAddr.slice(0, 6)}...` : 'Unknown';
   const firstInitial = name ? name.charAt(0).toUpperCase() : '?';
 
-  // If we're on one of the sub‑pages (about/help/terms), show that
+  if (profileLoading || statsLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
+
   if (activePage !== 'menu') {
     return (
       <div className="min-h-screen bg-background-primary p-6 flex flex-col">
@@ -77,12 +89,10 @@ export default function ProfilePage() {
   return (
     <div className="bg-background-primary min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4 pt-4">
-        {/* Title */}
         <div className="text-xl font-bold text-secondary text-center">
           Account
         </div>
 
-        {/* Avatar + Name */}
         <div className="mt-4 flex flex-col items-center">
           <div className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center">
             <span className="text-white text-2xl font-semibold">
@@ -97,7 +107,6 @@ export default function ProfilePage() {
           )}
         </div>
 
-        {/* Wallet */}
         <div className="mt-4 w-full flex justify-center">
           <Button
             label={`View Wallet (${walletShort})`}
@@ -113,10 +122,9 @@ export default function ProfilePage() {
           />
         </div>
 
-        {/* Stats */}
         <div className="w-full mt-6">
           <h2 className="text-md font-bold text-secondary mb-4">Statistics</h2>
-            <div className="grid grid-cols-3 gap-4 items-end justify-center">
+          <div className="grid grid-cols-3 gap-4 items-end justify-center">
             <StatCard icon="🔥" label="Streak" value={totalStreak} />
             <StatCard
               icon={coin.src}
@@ -124,10 +132,9 @@ export default function ProfilePage() {
               value={tokenBalance}
               isImage
             />
-            </div>
+          </div>
         </div>
 
-        {/* Others */}
         <div className="w-full mt-6 pb-20">
           <h2 className="text-md font-bold text-secondary mb-3">Others</h2>
           <InfoListCard

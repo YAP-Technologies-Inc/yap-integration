@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { TablerChevronRight } from '@/icons';
-import AuthLogo from '@/components/auth/AuthLogo';
-import group from '@/assets/group.png';
+import { TablerChevronRight } from "@/icons";
+import AuthLogo from "@/components/auth/AuthLogo";
+import group from "@/assets/group.webp";
+import Image from "next/image";
 
 interface AuthCardProps {
   onEmailClick: () => void;
@@ -15,39 +16,42 @@ export default function AuthCard({
 }: AuthCardProps) {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-start bg-quaternary">
-      {/* Logo */}
       <AuthLogo />
 
-      {/* Group image */}
-      <div className="w-full max-w-md pt-6 px-6 overflow-hidden">
-        <img
-          src={group.src}
+      <div className="w-full max-w-md pt-20 px-6 overflow-hidden">
+        <Image
+          src={group}
           alt="Group"
-          className="w-full object-cover rounded-xl"
+          className=""
+          width={320}
+          height={240}
+          priority
+          placeholder="blur"
+          style={{
+            width: "100%",
+            height: "auto",
+            objectFit: "cover",
+            contentVisibility: "auto",
+          }}
         />
       </div>
 
-      {/* Footer panel: slide up when hideFooter */}
       <div
         className={[
-          'bg-background-primary w-full px-6 h-[37vh] rounded-t-3xl shadow-lg mt-auto sm:max-w-md',
-          'transform transition-transform duration-300 ease-in-out',
-          hideFooter ? 'translate-y-full' : 'translate-y-0',
-        ].join(' ')}
+          "w-full px-6 h-[30vh] rounded-t-3xl shadow-lg mt-auto sm:max-w-md",
+          "transform transition-transform duration-300 ease-in-out",
+          hideFooter ? "translate-y-full" : "translate-y-0",
+        ].join(" ")}
       >
-        <h1 className="text-2xl font-bold text-center text-[#2D1C1C] mb-2">
-          Welcome to Yap
-        </h1>
-        <p className="text-sm text-center text-[#5C4B4B] mb-6">
-          The only app that pays you to practice languages.
-        </p>
-        <button
-          onClick={onEmailClick}
-          className="w-full bg-secondary text-white font-semibold py-3 rounded-full shadow-md flex items-center justify-center gap-2"
-        >
-          Continue with Privy
-          <TablerChevronRight className="w-4 h-4" />
-        </button>
+        <div className="flex items-center justify-center h-full">
+          <button
+            onClick={onEmailClick}
+            className="w-full bg-background-primary text-secondary font-semibold py-4 rounded-full shadow-md flex items-center justify-center gap-2 text-lg"
+          >
+            Continue with Privy
+            <TablerChevronRight className="w-5 h-5" />
+          </button>
+        </div>
       </div>
     </div>
   );

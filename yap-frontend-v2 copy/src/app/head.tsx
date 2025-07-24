@@ -8,6 +8,12 @@ export default function Head() {
         name="viewport"
         content="width=device-width, initial-scale=1, viewport-fit=cover"
       />
+      <link
+        rel="preload"
+        as="image"
+        href="/_next/static/media/group.792e246a.webp"
+        type="image/webp"
+      />
 
       <link rel="manifest" href="/manifest.json" />
 

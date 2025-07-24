@@ -1,16 +1,9 @@
+// app/layout.tsx
+import './globals.css';
 import type { Metadata } from 'next';
 import { Outfit } from 'next/font/google';
-import './globals.css';
-import ClientWrapper from '@/components/ClientWrapper';
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
+import RootProvider from '@/components/RootProvider';
 
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-outfit',
@@ -21,11 +14,10 @@ export const metadata: Metadata = {
   title: 'Yap2Learn',
   description: 'Making language learning fun and rewarding',
 };
+
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="bg-secondary">
       <body
@@ -34,7 +26,7 @@ export default function RootLayout({
           fontFamily: 'var(--font-outfit), Arial, Helvetica, sans-serif',
         }}
       >
-        <ClientWrapper>{children}</ClientWrapper>
+        <RootProvider>{children}</RootProvider>
       </body>
     </html>
   );

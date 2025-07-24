@@ -10,14 +10,15 @@
   },
   "dependencies": {
     "@11labs/react": "^0.1.4",
+    "@next/bundle-analyzer": "^15.4.3",
     "@privy-io/react-auth": "^2.19.0",
-    "@tanstack/react-query": "^5.83.0",
     "@wagmi/core": "^2.18.0",
-    "axios": "^1.10.0",
+    "ethers": "^6.15.0",
+    "lodash.isequal": "^4.5.0",
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "viem": "^2.32.1"
+    "swr": "^2.3.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
