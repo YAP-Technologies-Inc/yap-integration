@@ -67,7 +67,7 @@ export default function LessonPage() {
 
   //Combines vocabulary and speaking tasks into allSteps
   const allSteps = [...vocabItems, ...speakingItems];
-  
+
   const firstInitial = mockUserProfile.name.charAt(0).toUpperCase();
 
   return !started ? (
@@ -83,13 +83,13 @@ export default function LessonPage() {
       </button>
 
       <div className="flex flex-col items-center text-center mt-8 space-y-4">
-        <div className="w-24 h-24 rounded-full bg-yellow-300 flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full bg-blue-300 flex items-center justify-center">
           <span className="text-4xl font-extrabold text-secondary">
             {firstInitial}
           </span>
         </div>
         <h1 className="text-2xl font-extrabold text-secondary">
-          Welcome {mockUserProfile.name}
+          Welcome {mockUserProfile.name || 'Student'}
         </h1>
         <p className="text-sm text-secondary">
           ¡Buena suerte con esta lección!

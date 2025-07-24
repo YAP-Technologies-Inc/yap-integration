@@ -72,7 +72,7 @@ export default function DailyStreak() {
     // 4) Sync up to server
     const userId = localStorage.getItem('userId');
     if (userId) {
-      fetch(`/api/user-stats/${userId}/streak`, {
+      fetch(`http://localhost:4000/api/user-stats/${userId}/streak`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

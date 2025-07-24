@@ -172,116 +172,128 @@ export default function LessonUi({
   };
 
   return (
-    <div className="min-h-screen w-full bg-background-primary flex flex-col pt-4 pb-28 px-4">
+    <div className="relative min-h-screen w-full bg-background-primary flex flex-col pt-4 pb-28 px-4">
       {/* Exit + Progress bar */}
       <div className="w-screen flex items-center gap-3 px-6 mb-4 -ml-4">
-        <button onClick={() => router.push('/home')} className="text-secondary">
-          <TablerX className="w-6 h-6" />
-        </button>
-        <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-yellow-400 transition-all duration-300"
-            style={{ width: `${((stepIndex + 1) / totalSteps) * 100}%` }}
-          />
-        </div>
+      <button onClick={() => router.push('/home')} className="text-secondary">
+        <TablerX className="w-6 h-6" />
+      </button>
+      <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div
+        className="h-full bg-yellow-400 transition-all duration-300"
+        style={{ width: `${((stepIndex + 1) / totalSteps) * 100}%` }}
+        />
+      </div>
       </div>
 
-      {/* Flashcard */}
+      {/* Flashcard + Shadows */}
       <div className="relative w-full max-w-sm mx-auto flex-1 flex items-center justify-center">
-        {/* Shadow Layers */}
-        <div className="absolute z-0 w-full h-[45vh] rounded-2xl bg-white shadow-md opacity-30 top-4" />
-        <div className="absolute z-0 w-full h-[45vh] rounded-2xl bg-white shadow-md opacity-20 top-8" />
+      <div className="relative w-full h-[45vh]">
+        {/* Shadow Layers directly behind */}
+        <div className="absolute inset-0 rounded-2xl bg-white shadow-md opacity-30" />
+        <div className="absolute inset-0 rounded-2xl bg-white shadow-md opacity-20" />
 
         {/* Main Card */}
-        <div className="relative z-10 bg-white w-full h-[45vh] rounded-2xl shadow-xl px-6 py-6 flex flex-col items-center justify-center text-center">
-          <div className="absolute top-3 right-4 text-xs text-secondary">
-            {currentItem?.type === 'word'
-              ? `Words ${
-                  allSteps
-                    .slice(0, stepIndex + 1)
-                    .filter((step) => step.type === 'word').length
-                }/${allSteps.filter((step) => step.type === 'word').length}`
-              : `Sentences ${
-                  allSteps
-                    .slice(0, stepIndex + 1)
-                    .filter((step) => step.type === 'sentence').length
-                }/${
-                  allSteps.filter((step) => step.type === 'sentence').length
-                }`}
-          </div>
-
-          <h2 className="text-2xl font-bold text-secondary mb-2">
-            {currentItem?.question || ''}
-          </h2>
-          {currentItem?.example_answer && (
-            <p className="text-secondary text-base leading-snug">
-              {currentItem.example_answer}
-            </p>
-          )}
+        <div className="relative z-10 w-full h-full bg-white rounded-2xl shadow-xl px-6 py-6 flex flex-col items-center justify-center text-center">
+        <div className="absolute top-3 right-4 text-xs text-secondary">
+          {currentItem.type === 'word'
+          ? `Words ${
+            allSteps
+              .slice(0, stepIndex + 1)
+              .filter((s) => s.type === 'word').length
+            }/${allSteps.filter((s) => s.type === 'word').length}`
+          : `Sentences ${
+            allSteps
+              .slice(0, stepIndex + 1)
+              .filter((s) => s.type === 'sentence').length
+            }/${allSteps.filter((s) => s.type === 'sentence').length}`}
+        </div>
+        <h2 className="text-2xl font-bold text-secondary mb-2">
+          {currentItem.question}
+        </h2>
+        {currentItem.example_answer && (
+          <p className="text-secondary text-base leading-snug">
+          {currentItem.example_answer}
+          </p>
+        )}
         </div>
       </div>
-      {/* Need these bottom controls more figured out but quick fix later */}
+      </div>
 
       {/* Bottom Controls */}
-      <div className="fixed bottom-6 left-0 right-0 flex justify-center items-center gap-4 w-full px-6 flex-wrap">
-        <button
-          className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
-          onClick={() => {
-            audioRef.current &&
-              ((audioRef.current.currentTime = 0), audioRef.current.play());
-          }}
-        >
-          <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
-        </button>
-
-        <button
-          onClick={() => {
-            isRecording ? stopRecording() : startRecording();
-          }}
-          className="w-16 h-16 bg-[#EF4444] rounded-full flex items-center justify-center shadow-md"
-        >
-          {isRecording ? (
-            <TablerPlayerPauseFilled className="w-7 h-7 text-white" />
-          ) : (
-            <TablerMicrophone className="w-7 h-7 text-white" />
-          )}
-        </button>
-
-        {audioURL && (
-          <>
-            <button
-              className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center"
-              onClick={() => {
-                audioRef.current &&
-                  ((audioRef.current.currentTime = 0), audioRef.current.play());
-              }}
-            >
-              <TablerVolume className="w-6 h-6 text-[#EF4444]" />
-            </button>
-            <button
-              className="bg-green-500 text-white px-4 py-2 rounded-full shadow"
-              onClick={assessPronunciation}
-              disabled={isLoading}
-            >
-              <TablerChevronRight className="w-6 h-6" />
-            </button>
-          </>
-        )}
-      </div>
-
-      {audioURL && (
-        <audio ref={audioRef} src={audioURL} className="hidden" controls />
-      )}
-
-      {score !== null && (
-        <div className="mt-6 text-center px-4">
+      <div className="fixed bottom-6 left-0 right-0 pointer-events-none">
+      <div className="relative w-full flex flex-col items-center gap-4">
+        {/* Score overlay above the mic */}
+        {score !== null && (
+        <div className="text-center pointer-events-none">
           <p className="text-xl font-bold text-secondary">Score: {score}/100</p>
           {feedback && (
-            <p className="text-sm mt-2 text-secondary whitespace-pre-line">
-              {feedback}
-            </p>
+          <p className="text-sm mt-2 text-secondary whitespace-pre-line">
+            {feedback}
+          </p>
           )}
         </div>
+        )}
+        {/* Submit */}
+        {audioURL && (
+        <button
+          onClick={assessPronunciation}
+          disabled={isLoading}
+          className="text-sm px-3 py-2 rounded-full bg-green-500 text-white shadow pointer-events-auto"
+        >
+          Submit
+        </button>
+        )}
+
+        <div className="w-full h-16 flex items-center justify-center gap-6">
+        {/* Redo */}
+        {audioURL && (
+          <button
+          onClick={() => {
+            setAudioBlob(null);
+            setAudioURL(null);
+            setScore(null);
+            setFeedback(null);
+          }}
+          className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center pointer-events-auto"
+          >
+          <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
+          </button>
+        )}
+
+        {/* Mic / Pause centered */}
+        <button
+          onClick={() => (isRecording ? stopRecording() : startRecording())}
+          className="w-16 h-16 bg-[#EF4444] rounded-full flex items-center justify-center shadow-md pointer-events-auto"
+        >
+          {isRecording ? (
+          <TablerPlayerPauseFilled className="w-7 h-7 text-white" />
+          ) : (
+          <TablerMicrophone className="w-7 h-7 text-white" />
+          )}
+        </button>
+
+        {/* Rehear */}
+        {audioURL && (
+          <button
+          onClick={() => {
+            audioRef.current!.currentTime = 0;
+            audioRef.current!.play();
+          }}
+          className="w-12 h-12 rounded-full bg-white shadow flex items-center justify-center pointer-events-auto"
+          >
+          <TablerVolume className="w-6 h-6 text-[#EF4444]" />
+          </button>
+        )}
+        </div>
+
+        
+      </div>
+      </div>
+
+      {/* Hidden audio for replay */}
+      {audioURL && (
+      <audio ref={audioRef} src={audioURL} className="hidden" controls />
       )}
     </div>
   );
