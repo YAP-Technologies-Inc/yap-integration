@@ -1,7 +1,7 @@
+// src/app/profile/page.tsx  (or wherever your ProfilePage lives)
 'use client';
 
-import { useState, useEffect } from 'react';
-import useSWR from 'swr';
+import { useState } from 'react';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
 import BottomNavBar from '@/components/layout/BottomNavBar';
 import Button from '@/components/ui/Button';
@@ -15,35 +15,38 @@ import {
   TablerChevronLeft,
 } from '@/icons';
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+// import your custom hooks
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useUserStats }   from '@/hooks/useUserStats';
 
 type InfoPage = 'menu' | 'about' | 'help' | 'terms';
 
 export default function ProfilePage() {
   const [activePage, setActivePage] = useState<InfoPage>('menu');
-  const { user } = usePrivy();
+
+  const { user }    = usePrivy();
   const { wallets } = useWallets();
-  const userId = user?.id || null;
-  const evmAddr = wallets?.[0]?.address || '';
+  const userId      = user?.id || null;
+  const evmAddr     = wallets?.[0]?.address || '';
 
-  const { data: profileData, isLoading: profileLoading } = useSWR(
-    userId ? `http://localhost:4000/api/profile/${userId}` : null,
-    fetcher
-  );
+  // now just call your hooks
+  const {
+    name,
+    language,
+    isLoading: profileLoading,
+    isError: profileError,
+  } = useUserProfile(userId);
 
-  const { data: statsData, isLoading: statsLoading } = useSWR(
-    userId ? `http://localhost:4000/api/user-stats/${userId}` : null,
-    fetcher
-  );
+  const {
+    stats,
+    isLoading: statsLoading,
+    isError: statsError,
+  } = useUserStats(userId);
 
-  const name = profileData?.name || '';
-  const language = profileData?.language_to_learn || '';
-  const tokenBalance = statsData?.token_balance || 0;
-  const totalStreak = statsData?.current_streak || 0;
+  const tokenBalance = stats?.tokenBalance || 0;
+  const currentStreak = stats?.currentStreak || 0;
 
-  const walletShort = evmAddr ? `${evmAddr.slice(0, 6)}...` : 'Unknown';
-  const firstInitial = name ? name.charAt(0).toUpperCase() : '?';
-
+  // loading or error handling
   if (profileLoading || statsLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -51,6 +54,16 @@ export default function ProfilePage() {
       </div>
     );
   }
+  if (profileError || statsError) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-red-500">
+        <p>Failed to load account data.</p>
+      </div>
+    );
+  }
+
+  const walletShort  = evmAddr ? `${evmAddr.slice(0, 6)}...` : 'Unknown';
+  const firstInitial = name.charAt(0).toUpperCase() || '?';
 
   if (activePage !== 'menu') {
     return (
@@ -100,7 +113,7 @@ export default function ProfilePage() {
             </span>
           </div>
           <div className="mt-2 text-lg font-light text-secondary">
-            {name || 'Loading…'}
+            {name}
           </div>
           {language && (
             <div className="text-sm text-[#666] mt-1">Learning: {language}</div>
@@ -123,15 +136,12 @@ export default function ProfilePage() {
         </div>
 
         <div className="w-full mt-6">
-          <h2 className="text-md font-bold text-secondary mb-4">Statistics</h2>
-          <div className="grid grid-cols-3 gap-4 items-end justify-center">
-            <StatCard icon="🔥" label="Streak" value={totalStreak} />
-            <StatCard
-              icon={coin.src}
-              label="Total $YAP"
-              value={tokenBalance}
-              isImage
-            />
+          <h2 className="text-md font-bold text-secondary mb-4 text-center">
+            Statistics
+          </h2>
+          <div className="flex items-center justify-center gap-4">
+            <StatCard icon="🔥" label="Streak" value={currentStreak} />
+            <StatCard icon={coin.src} label="Total $YAP" value={tokenBalance} isImage />
           </div>
         </div>
 

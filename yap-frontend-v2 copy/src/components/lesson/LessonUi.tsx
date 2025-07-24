@@ -77,6 +77,7 @@ export default function LessonUi({
       setIsRecording(true);
     } catch (e) {
       pushToast('Microphone permission denied or not found', 'error');
+      router.push('/home');
     }
   };
 
