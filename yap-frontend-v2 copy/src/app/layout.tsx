@@ -2,7 +2,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Outfit } from 'next/font/google';
-import RootProvider from '@/components/RootProvider';
+import ClientProviders from '@/components/ClientProviders';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -26,7 +26,7 @@ export default function RootLayout({
           fontFamily: 'var(--font-outfit), Arial, Helvetica, sans-serif',
         }}
       >
-        <RootProvider>{children}</RootProvider>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );

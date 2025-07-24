@@ -28,7 +28,7 @@ export default function LessonCard({
       ? 'bg-red-500 border-b-2 border-red-700 text-white'
       : status === 'locked'
       ? 'bg-gray-200 border-b-2 border-gray-400 text-gray-500 cursor-not-allowed'
-      : 'bg-white border-b-2 border-gray-300 text-[#2D1C1C] cursor-pointer hover:scale-[1.02]';
+      : 'bg-white border-b-2 border-gray-300 text-[#2D1C1C]';
 
   const handleClick = () => {
     if (status === 'available') {

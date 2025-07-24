@@ -6,8 +6,10 @@ import { usePrivy } from '@privy-io/react-auth';
 import SelectLanguageForm from '@/components/auth/SelectLanguageForm';
 import SecuringLoader from '../loading/SecuringLoader';
 import AuthLogo from '@/components/auth/AuthLogo';
+import { useToast } from '../ui/ToastProvider';
 
 export default function SignUpForm() {
+  const {pushToast} = useToast();
   const { user } = usePrivy();
   const router = useRouter();
 
@@ -54,7 +56,7 @@ export default function SignUpForm() {
 
     } catch (err) {
       console.error('Failed to save user:', err);
-      alert('Something went wrong. Please try again.');
+      pushToast('Something went wrong. Please try again.', 'error');
       setStep('language'); 
     }
   };

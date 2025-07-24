@@ -12,6 +12,7 @@ export function useUserProfile(userId: string | null) {
   return {
     name: data?.name || '',
     language: data?.language_to_learn || '',
+    wallet: data?.wallet || '',
     isLoading,
     isError: error,
   };

@@ -18,3 +18,4 @@ export { TablerChevronRight } from './ChevronRight';
 export { TablerInfoCircle } from './Info';
 export { TablerHelp } from './Help';
 export {TablerFileTextShield} from './TextShield';
+export { TablerAlertCircle } from './AlertCircle';

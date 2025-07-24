@@ -10,6 +10,8 @@ import {
 } from '@/icons';
 import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
+import { useToast } from '@/components/ui/ToastProvider';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 
 interface LessonUiProps {
   lessonId: string;
@@ -46,6 +48,13 @@ export default function LessonUi({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  const { pushToast } = useToast();
+  const { user } = usePrivy();
+  const { wallets } = useWallets();
+  // derive once at top
+  const userId = user?.id;
+  const walletAddress = wallets?.[0]?.address;
+
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -67,7 +76,7 @@ export default function LessonUi({
       setMediaRecorder(recorder);
       setIsRecording(true);
     } catch (e) {
-      alert('Microphone permission denied or not found');
+      pushToast('Microphone permission denied or not found', 'error');
     }
   };
 
@@ -99,12 +108,12 @@ export default function LessonUi({
       const scaled = Math.round((rawScore || 0) * 0.8);
 
       setScore(scaled);
-      const tips = result.NBest?.[0]?.Words?.flatMap((w: any) =>
-        (w.Phonemes || [])
-          .filter((p: any) => p.ErrorType !== 'None')
-          .map((p: any) => `Improve "${p.Phoneme}" (${p.ErrorType})`)
-      );
-      setFeedback(tips?.join('\n') || 'Nice work!');
+      // const tips = result.NBest?.[0]?.Words?.flatMap((w: any) =>
+      //   (w.Phonemes || [])
+      //     .filter((p: any) => p.ErrorType !== 'None')
+      //     .map((p: any) => `Improve "${p.Phoneme}" (${p.ErrorType})`)
+      // );
+      // setFeedback(tips?.join('\n') || 'Nice work!');
 
       // Automatically move to next card after scoring
       setTimeout(async () => {
@@ -122,7 +131,7 @@ export default function LessonUi({
         setFeedback(null);
       }, 1500);
     } catch (e: any) {
-      alert('Assessment failed');
+      pushToast('Assessment failed', 'info');
     } finally {
       setIsLoading(false);
     }
@@ -132,8 +141,11 @@ export default function LessonUi({
   // We grab from local storage again, need the this to run async in the background and need a toast notification
   // to notify the user that the lesson is complete and YAP token has been sent
   const markLessonComplete = async (currentLessonId: string) => {
-    const userId = localStorage.getItem('userId');
-    const walletAddress = localStorage.getItem('evmAddress');
+    // guard early
+    if (!userId || !walletAddress) {
+      pushToast('No user or wallet detected. Please log in.', 'error');
+      return;
+    }
 
     try {
       const res = await fetch('http://localhost:4000/api/complete-lesson', {
@@ -141,7 +153,7 @@ export default function LessonUi({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId,
-          walletAddress: walletAddress,
+          walletAddress,
           lessonId: currentLessonId,
         }),
       });
@@ -150,12 +162,12 @@ export default function LessonUi({
         const old = parseFloat(localStorage.getItem('tokenBalance') || '0');
         const updated = old + 1;
         localStorage.setItem('tokenBalance', updated.toString());
-        alert('Lesson complete! YAP token sent');
+        pushToast('Lesson complete! YAP token sent', 'success');
       } else {
-        alert(`Error: ${data.error}`);
+        pushToast(`Error: ${data.error}`, 'error');
       }
     } catch {
-      alert('Failed to complete lesson');
+      pushToast('Failed to complete lesson', 'info');
     }
   };
 
