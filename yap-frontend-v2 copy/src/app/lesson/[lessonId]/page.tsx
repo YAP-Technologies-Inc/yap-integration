@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -12,17 +12,8 @@ export default function LessonPage() {
   const { lessonId } = useParams();
   const router = useRouter();
 
-  // Lookup lesson data
+  // 1) Find the lesson
   const lessonData = allLessons[lessonId as string];
-  const lessonTitle = lessonData?.title || 'Start Lesson';
-
-  const [stepIndex, setStepIndex] = useState(0);
-  const [started, setStarted] = useState(false);
-
-  // Get user profile
-  const { userId } = useUserContext();
-  const { name, isLoading: profileLoading } = useUserProfile(userId);
-
   if (!lessonData) {
     return (
       <div className="p-6 text-center">
@@ -32,44 +23,74 @@ export default function LessonPage() {
     );
   }
 
-  // Build steps
-  const vocabItems = lessonData.vocabulary_items.map((word: string) => ({
-    question: word,
-    example_answer: '',
-    type: 'word' as const,
+  const [started, setStarted] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
+
+  // 2) Load the user
+  const { userId } = useUserContext();
+  const { name, isLoading: profileLoading } = useUserProfile(userId);
+
+  // 3) Build our four step‑variants
+  // 3a) Vocabulary
+  type StepVocab = { variant: 'vocab'; front: string; back: string; example?: string };
+  const vocabSteps: StepVocab[] = lessonData.vocabulary_items.map(item => ({
+    variant: 'vocab',
+    front: item.es,
+    back: item.en,
+    example: item.example,
   }));
 
-  const speakingItems = (lessonData.speaking_tasks || []).flatMap((task: any) => {
+  // 3b) Grammar
+  type StepGrammar = { variant: 'grammar'; rule: string; examples: string[] };
+  const grammarSteps: StepGrammar[] = lessonData.grammar_explanations.map(g => ({
+    variant: 'grammar',
+    rule: g.rule,
+    examples: g.examples,
+  }));
+
+  // 3c) Comprehension
+  type StepComp = {
+    variant: 'comprehension';
+    text: string;
+    audioUrl?: boolean; // if your data uses `audio: true` & you want TTS, leave undefined
+    questions: { question: string; answer: string }[];
+  };
+  const compSteps: StepComp[] = (lessonData.comprehension_tasks || []).map(c => ({
+    variant: 'comprehension',
+    text: c.text,
+    questions: c.questions,
+  }));
+
+  // 3d) Sentence / speaking tasks
+  type StepSentence = { variant: 'sentence'; question: string };
+  const sentenceSteps: StepSentence[] = (lessonData.speaking_tasks || []).flatMap(task => {
     switch (task.type) {
       case 'listen_and_repeat':
-        return [{ question: task.content, example_answer: '', type: 'sentence' as const }];
+        return [{ variant: 'sentence', question: task.content }];
       case 'role_play':
-        return task.prompts.map((prompt: string, i: number) => ({
-          question: prompt,
-          example_answer: task.expected_output?.[i] || '',
-          type: 'sentence' as const,
-        }));
-      case 'pronunciation_practice':
-        return task.words.map((w: string) => ({ question: w, example_answer: '', type: 'word' as const }));
+        return task.prompts.map((p: string) => ({ variant: 'sentence', question: p }));
       case 'q_and_a':
-        return task.questions.map((q: string, i: number) => ({
-          question: q,
-          example_answer: task.guide_answers?.[i] || '',
-          type: 'sentence' as const,
-        }));
+        return task.questions.map((q: string) => ({ variant: 'sentence', question: q }));
       case 'conversation_building':
-        return [
-          { question: task.starter, example_answer: '', type: 'sentence' as const },
-        ];
+        return [{ variant: 'sentence', question: task.starter }];
+      case 'pronunciation_practice':
+        return task.words.map((w: string) => ({ variant: 'sentence', question: w }));
       default:
         return [];
     }
   });
 
-  const allSteps = [...vocabItems, ...speakingItems];
+  // 4) Combine
+  const allSteps = [
+    ...vocabSteps,
+    ...grammarSteps,
+    ...compSteps,
+    ...sentenceSteps,
+  ];
 
+  // 5) Pre‑start screen
   if (!started) {
-    if (profileLoading) return <p>Loading...</p>;
+    if (profileLoading) return <p>Loading…</p>;
     const firstInitial = name.charAt(0).toUpperCase() || '?';
 
     return (
@@ -83,11 +104,9 @@ export default function LessonPage() {
 
         <div className="flex flex-col items-center text-center mt-8 space-y-4">
           <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center">
-            <span className="text-4xl font-extrabold text-secondary">{firstInitial}</span>
+            <span className="text-4xl font-extrabold text-white">{firstInitial}</span>
           </div>
-          <h1 className="text-2xl font-extrabold text-secondary">
-            Welcome {name}
-          </h1>
+          <h1 className="text-2xl font-extrabold text-secondary">Welcome {name}</h1>
           <p className="text-sm text-secondary">¡Buena suerte con esta lección!</p>
         </div>
 
@@ -95,12 +114,13 @@ export default function LessonPage() {
           onClick={() => setStarted(true)}
           className="mt-10 w-full max-w-xs py-4 rounded-full bg-secondary text-white font-semibold shadow-md"
         >
-          {lessonTitle}
+          {lessonData.title}
         </button>
       </div>
     );
   }
 
+  // 6) Lesson in progress
   return (
     <LessonUi
       lessonId={lessonData.lesson_id}
