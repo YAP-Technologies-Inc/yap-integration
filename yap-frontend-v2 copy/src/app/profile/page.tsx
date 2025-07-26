@@ -1,35 +1,43 @@
-// src/app/profile/page.tsx  (or wherever your ProfilePage lives)
-'use client';
+// src/app/profile/page.tsx
+"use client";
 
-import { useState } from 'react';
-import { usePrivy, useWallets } from '@privy-io/react-auth';
-import BottomNavBar from '@/components/layout/BottomNavBar';
-import Button from '@/components/ui/Button';
-import StatCard from '@/components/ui/StatCard';
-import InfoListCard from '@/components/ui/InfoListCard';
-import coin from '@/assets/coin.png';
+import { useState } from "react";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
+import BottomNavBar from "@/components/layout/BottomNavBar";
+import Button from "@/components/ui/Button";
+import StatCard from "@/components/ui/StatCard";
+import InfoListCard from "@/components/ui/InfoListCard";
+import coin from "@/assets/coin.png";
 import {
   TablerInfoCircle,
   TablerHelp,
   TablerFileTextShield,
   TablerChevronLeft,
-} from '@/icons';
+} from "@/icons";
 
-// import your custom hooks
-import { useUserProfile } from '@/hooks/useUserProfile';
-import { useUserStats }   from '@/hooks/useUserStats';
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { useOnChainBalance } from "@/hooks/useOnBlockChain";
 
-type InfoPage = 'menu' | 'about' | 'help' | 'terms';
+type InfoPage = "menu" | "about" | "help" | "terms";
 
 export default function ProfilePage() {
-  const [activePage, setActivePage] = useState<InfoPage>('menu');
-
-  const { user }    = usePrivy();
+  const [activePage, setActivePage] = useState<InfoPage>("menu");
+  const { user } = usePrivy();
   const { wallets } = useWallets();
-  const userId      = user?.id || null;
-  const evmAddr     = wallets?.[0]?.address || '';
 
-  // now just call your hooks
+  const userId = user?.id ?? null;
+  // find the Privy‐embedded wallet and grab its address
+  const evmAddress =
+    wallets.find((w) => w.walletClientType === "privy")?.address ?? "";
+
+  // pull on‐chain balance (in YAP) for that address
+  const {
+    balance: onChainBalance,
+    isLoading: isBalanceLoading,
+    isError: balanceError,
+  } = useOnChainBalance(evmAddress);
+
+  // still fetch profile for name / language
   const {
     name,
     language,
@@ -37,24 +45,15 @@ export default function ProfilePage() {
     isError: profileError,
   } = useUserProfile(userId);
 
-  const {
-    stats,
-    isLoading: statsLoading,
-    isError: statsError,
-  } = useUserStats(userId);
-
-  const tokenBalance = stats?.tokenBalance || 0;
-  const currentStreak = stats?.currentStreak || 0;
-
-  // loading or error handling
-  if (profileLoading || statsLoading) {
+  // global loading / error
+  if (profileLoading || isBalanceLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>Loading profile...</p>
+        <p>Loading profile…</p>
       </div>
     );
   }
-  if (profileError || statsError) {
+  if (profileError || balanceError) {
     return (
       <div className="flex items-center justify-center min-h-screen text-red-500">
         <p>Failed to load account data.</p>
@@ -62,14 +61,21 @@ export default function ProfilePage() {
     );
   }
 
-  const walletShort  = evmAddr ? `${evmAddr.slice(0, 6)}...` : 'Unknown';
-  const firstInitial = name.charAt(0).toUpperCase() || '?';
+  // shorthand for display
+  const walletShort = evmAddress
+    ? `${evmAddress.slice(0, 6)}…${evmAddress.slice(-4)}`
+    : "Unknown";
+  const firstInitial = name.charAt(0).toUpperCase() || "?";
 
-  if (activePage !== 'menu') {
+  // use the on‐chain balance instead of stats.tokenBalance
+  const tokenBalance = onChainBalance ?? 0;
+
+  // menu vs info pages
+  if (activePage !== "menu") {
     return (
       <div className="min-h-screen bg-background-primary p-6 flex flex-col">
         <button
-          onClick={() => setActivePage('menu')}
+          onClick={() => setActivePage("menu")}
           className="flex items-center text-gray-600 mb-6"
         >
           <TablerChevronLeft className="mr-1" />
@@ -79,19 +85,19 @@ export default function ProfilePage() {
           {activePage}
         </h1>
         <div className="text-sm text-[#444] leading-relaxed">
-          {activePage === 'about' && (
+          {activePage === "about" && (
             <p>
               This app helps you learn languages while earning rewards. Built
               with love at YAP Tech.
             </p>
           )}
-          {activePage === 'help' && (
+          {activePage === "help" && (
             <p>
               Need help? Contact us at support@goyap.ai or check out the FAQ on
               our site.
             </p>
           )}
-          {activePage === 'terms' && (
+          {activePage === "terms" && (
             <p>By using this app, you agree to our terms and conditions.</p>
           )}
         </div>
@@ -112,9 +118,7 @@ export default function ProfilePage() {
               {firstInitial}
             </span>
           </div>
-          <div className="mt-2 text-lg font-light text-secondary">
-            {name}
-          </div>
+          <div className="mt-2 text-lg font-light text-secondary">{name}</div>
           {language && (
             <div className="text-sm text-[#666] mt-1">Learning: {language}</div>
           )}
@@ -125,12 +129,12 @@ export default function ProfilePage() {
             label={`View Wallet (${walletShort})`}
             className="w-full text-black bg-white px-6 py-3 border-black rounded-xl shadow-md transition-colors"
             onClick={() =>
-              evmAddr
+              evmAddress
                 ? window.open(
-                    `https://seitrace.com/address/${evmAddr}?chain=atlantic-2`,
-                    '_blank'
+                    `https://seitrace.com/address/${evmAddress}?chain=atlantic-2`,
+                    "_blank"
                   )
-                : alert('No wallet connected.')
+                : alert("No wallet connected.")
             }
           />
         </div>
@@ -140,8 +144,13 @@ export default function ProfilePage() {
             Statistics
           </h2>
           <div className="flex items-center justify-center gap-4">
-            <StatCard icon="🔥" label="Streak" value={currentStreak} />
-            <StatCard icon={coin.src} label="Total $YAP" value={tokenBalance} isImage />
+            <StatCard icon="🔥" label="Streak" value={0 /* you can keep streak from stats */} />
+            <StatCard
+              icon={coin.src}
+              label="Total $YAP"
+              value={tokenBalance}
+              isImage
+            />
           </div>
         </div>
 
@@ -151,18 +160,18 @@ export default function ProfilePage() {
             items={[
               {
                 icon: <TablerInfoCircle />,
-                label: 'About app',
-                onClick: () => setActivePage('about'),
+                label: "About app",
+                onClick: () => setActivePage("about"),
               },
               {
                 icon: <TablerHelp />,
-                label: 'Help & Support',
-                onClick: () => setActivePage('help'),
+                label: "Help & Support",
+                onClick: () => setActivePage("help"),
               },
               {
                 icon: <TablerFileTextShield />,
-                label: 'Terms & Conditions',
-                onClick: () => setActivePage('terms'),
+                label: "Terms & Conditions",
+                onClick: () => setActivePage("terms"),
               },
             ]}
           />

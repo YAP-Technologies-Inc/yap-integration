@@ -21,3 +21,9 @@ CREATE TABLE IF NOT EXISTS user_stats (
   total_yap_earned INT         NOT NULL DEFAULT 0,
   updated_at       TIMESTAMP   NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE teacher_sessions (
+  id SERIAL PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL
+);
