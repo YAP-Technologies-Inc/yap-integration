@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #4372c4;
+  --color-secondary: #2f1a1b;
+  --color-tertiary: #f8b702;
+  --color-error: #ef4648;
+
+  --color-background-primary: #f0ebe1;
+  --color-background-secondary: #2f1a1b;
+  --color-text-dark-bg: #fbf5f2;
+
+  --color-foreground: #000000;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body,
+html {
+  background: var(--color-background-primary);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100svh;
+  overflow-x: hidden; /* prevent sideways scroll only */
+  overscroll-behavior-y: none; /* optional: prevents iOS rubber banding */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  /* change these to something better later */
+  --privy-color-background: #f0ebe1;
+  --privy-color-foreground: #2d1c1c;
+  --privy-color-accent: #2f1a1b;
+  --privy-border-radius-md: 24px;
+  --privy-border-radius-lg: 32px;
+  --privy-color-background-2: #f0ebe1;
+  --privy-color-background-3: #f0ebe1;
+
+  /* --privy-border-radius-sm: 'your-custom-value';
+  --privy-border-radius-md: 'your-custom-value';
+  --privy-border-radius-lg: 'your-custom-value';
+  --privy-border-radius-full: 'your-custom-value';
+  --privy-color-background: 'your-custom-value';
+  --privy-color-background-2: 'your-custom-value';
+  --privy-color-background-3: 'your-custom-value';
+  --privy-color-foreground: 'your-custom-value';
+  --privy-color-foreground-2: 'your-custom-value';
+  --privy-color-foreground-3: 'your-custom-value';
+  --privy-color-foreground-4: 'your-custom-value';
+  --privy-color-foreground-accent: 'your-custom-value';
+  --privy-color-accent: 'your-custom-value';
+  --privy-color-accent-light: 'your-custom-value';
+  --privy-color-accent-lightest: 'your-custom-value';
+  --privy-color-accent-dark: 'your-custom-value';
+  --privy-color-accent-darkest: 'your-custom-value';
+  --privy-color-success: 'your-custom-value';
+  --privy-color-error: 'your-custom-value';
+  --privy-color-error-light: 'your-custom-value'; */
+}
+
+/* Used to remove default browser eye icons from popping up beside our icon */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-inner-spin-button,
+input[type="password"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
