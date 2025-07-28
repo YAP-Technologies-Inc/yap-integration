@@ -65,7 +65,8 @@ export default function LessonUi({
 
   const current = allSteps[stepIndex];
   const total = allSteps.length;
-
+  
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
@@ -146,7 +147,7 @@ export default function LessonUi({
 
     try {
       const res = await fetch(
-        "http://localhost:4000/api/pronunciation-assessment-upload",
+        `${API_URL}/api/pronunciation-assessment-upload`,
         {
           method: "POST",
           body: fd,
@@ -163,7 +164,7 @@ export default function LessonUi({
 
       setTimeout(async () => {
         if (stepIndex + 1 >= total) {
-          await fetch("http://localhost:4000/api/complete-lesson", {
+          await fetch(`${API_URL}/api/complete-lesson`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userId, walletAddress, lessonId }),

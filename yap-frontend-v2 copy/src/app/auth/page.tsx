@@ -9,7 +9,7 @@ import SignUpForm from '@/components/auth/SignUpForm';
 export default function AuthPage() {
   const { ready, authenticated, login, user } = usePrivy();
   const router = useRouter();
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [hideFooter, setHideFooter] = useState(false);
   const [hasProfile, setHasProfile] = useState<boolean | null>(null);
 
@@ -33,7 +33,7 @@ export default function AuthPage() {
   useEffect(() => {
     if (authenticated && user?.id) {
       setHasProfile(null);
-      fetch(`http://localhost:4000/api/profile/${user.id}`)
+      fetch(`${API_URL}/api/profile/${user.id}`)
         .then((res) => {
           if (res.ok) {
             setHasProfile(true);

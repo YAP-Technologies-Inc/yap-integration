@@ -101,7 +101,7 @@ export default function HomePage() {
 
   const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
   const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const handleSpanishTeacherAccess = async () => {
     setCheckingAccess(true);
 
@@ -120,7 +120,7 @@ export default function HomePage() {
       let hasAccess = false;
       try {
         const sessionRes = await fetch(
-          `http://localhost:4000/api/teacher-session/${userId}`
+          `${API_URL}/api/teacher-session/${userId}`
         );
         if (sessionRes.ok) {
           const { hasAccess: accessFlag } = (await sessionRes.json()) as {
@@ -170,7 +170,7 @@ export default function HomePage() {
 
       // record the new session on backend (expires_at gets set there)
       try {
-        await fetch("http://localhost:4000/api/request-spanish-teacher", {
+        await fetch(`${API_URL}api/request-spanish-teacher`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId, txHash: tx.hash }),
@@ -190,8 +190,8 @@ export default function HomePage() {
   };
 
   return (
-    <div className="bg-background-primary min-h-screen w-full flex flex-col">
-      <div className="flex-1 w-full max-w-4xl mx-auto pt-4 px-4">
+    <div className="bg-background-primary min-h-screen w-full flex flex-col overflow-y-auto pb-24">
+      <div className="flex-1 w-full max-w-4xl mx-auto px-4">
         <HeaderGreeting />
         <div className="mt-2">
           <BalanceCard />
@@ -200,7 +200,7 @@ export default function HomePage() {
           <DailyStreak />
         </div>
 
-        <h3 className="text-secondary text-xl font-semibold mt-6">Lessons</h3>
+        <h3 className="text-secondary text-xl font-semibold mt-2">Lessons</h3>
         <div className="mt-2">
           <div className="flex gap-4 overflow-x-auto no-scrollbar">
             {lessons.map((lesson) => (
@@ -218,10 +218,10 @@ export default function HomePage() {
         </div>
 
         {/* Talk to Spanish Teacher */}
-        <div className="mt-8">
+        <div className="mt-4">
           <button
             onClick={handleSpanishTeacherAccess}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded"
+            className="w-full bg-secondary hover:bg-secondary-dark text-white font-bold py-3 rounded"
             disabled={checkingAccess}
           >
             {checkingAccess ? "Checking access…" : "Talk to Spanish Teacher"}
@@ -229,7 +229,7 @@ export default function HomePage() {
         </div>
 
         {/* Daily Quiz */}
-        <h3 className="text-secondary text-xl font-semibold mt-8 mb-2">
+        <h3 className="text-secondary text-xl font-semibold mt-2 mb-2">
           Daily Quiz
         </h3>
         <div className="relative z-0">

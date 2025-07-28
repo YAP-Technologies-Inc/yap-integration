@@ -2,10 +2,10 @@
 import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export function useUserProfile(userId: string | null) {
   const { data, error, isLoading } = useSWR(
-    userId ? `http://localhost:4000/api/profile/${userId}` : null,
+    userId ? `${API_URL}/api/profile/${userId}` : null,
     fetcher
   );
 

@@ -323,69 +323,75 @@ app.get("/api/profile/:userId", async (req, res) => {
 });
 
 // Pronunciation Assessment Endpoint
-app.post("/api/pronunciation-assessment", async (req, res) => {
+app.post('/api/pronunciation-assessment', async (req, res) => {
   try {
     const { audioPath, referenceText } = req.body;
     if (!audioPath || !referenceText) {
       return res
         .status(400)
-        .json({ error: "audioPath and referenceText are required." });
+        .json({ error: 'audioPath and referenceText are required.' });
     }
     const result = await assessPronunciation(audioPath, referenceText);
     res.json(result);
   } catch (err) {
-    console.error("Pronunciation assessment error:", err);
+    console.error('Pronunciation assessment error:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
+//TODO: Ensure we cover more audio formats, or allow ffpmeg to auto-detect
 app.post(
-  "/api/pronunciation-assessment-upload",
-  upload.single("audio"),
+  '/api/pronunciation-assessment-upload',
+  upload.single('audio'),
   async (req, res) => {
     try {
       const { referenceText } = req.body;
       if (!req.file || !referenceText) {
         return res
           .status(400)
-          .json({ error: "audio and referenceText are required." });
+          .json({ error: 'audio and referenceText are required.' });
       }
-      const webmPath = req.file.path;
-      const wavPath = webmPath + ".wav";
 
-      // Convert webm to wav (16kHz mono)
+      const inputPath = req.file.path;
+      const inputMime = req.file.mimetype;
+      const format = inputMime.split('/')[1];
+      const wavPath = inputPath + '.wav';
+
+      console.log('Converting from format:', format, 'MIME:', inputMime);
+
+      // Convert to WAV with proper format detection
       await new Promise((resolve, reject) => {
-        ffmpeg(webmPath)
+        ffmpeg(inputPath)
           .audioChannels(1)
           .audioFrequency(16000)
-          .toFormat("wav")
-          .on("end", resolve)
-          .on("error", reject)
+          .toFormat('wav')
+          .on('end', resolve)
+          .on('error', (err) => {
+            console.error('FFmpeg conversion error:', err.message);
+            reject(err);
+          })
           .save(wavPath);
       });
 
-      // Log the size of the wav file
       const wavStats = fs.statSync(wavPath);
-      console.log("Converted WAV file size:", wavStats.size, "bytes");
+      console.log('WAV file size:', wavStats.size, 'bytes');
       if (wavStats.size < 1000) {
-        console.warn("WAV file is very small. Likely silent or invalid audio.");
+        console.warn('WAV likely silent or failed conversion.');
       }
 
-      // Call your existing assessment function
       const result = await assessPronunciation(wavPath, referenceText);
-      console.log("Assessment Result:", JSON.stringify(result, null, 2));
-      // Don't delete the wav file yet
-      // fs.unlinkSync(wavPath);
 
       res.json({
         ...result,
         wavUrl: `/uploads/${path.basename(wavPath)}`,
       });
     } catch (err) {
+      console.error('Pronunciation assessment error:', err);
       res.status(500).json({ error: err.message });
     }
   }
 );
+
 
 app.post("/api/request-spanish-teacher", async (req, res) => {
   console.log("POST /request-spanish-teacher body:", req.body);

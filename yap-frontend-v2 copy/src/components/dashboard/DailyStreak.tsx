@@ -8,7 +8,7 @@ import { useUserStats } from '@/hooks/useUserStats';
 
 const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 const STORAGE_KEY = 'login-days';
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const getStartOfWeek = () => {
   const d = new Date();
   const day = d.getDay();
@@ -77,7 +77,7 @@ export default function DailyStreak() {
 
     // sync your new total and highest streak up to the server
     if (userId) {
-      fetch(`http://localhost:4000/api/user-stats/${userId}/streak`, {
+      fetch(`${API_URL}/api/user-stats/${userId}/streak`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
