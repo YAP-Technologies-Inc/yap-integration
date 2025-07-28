@@ -21,7 +21,7 @@ import isEqual from "lodash.isequal";
 import { ethers } from "ethers";
 import { tokenAbi } from "@/app/abis/YAPToken";
 import { useToast } from "@/components/ui/ToastProvider";
-
+import TestingNoticeModal from "@/components/TestingNoticeModal";
 export default function HomePage() {
   useInitializeUser();
   const { pushToast } = useToast();
@@ -189,6 +189,7 @@ export default function HomePage() {
   };
 
   return (
+    
     <div className="bg-background-primary min-h-screen w-full flex flex-col overflow-y-auto pb-24">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
         <HeaderGreeting />
@@ -198,7 +199,7 @@ export default function HomePage() {
         <div className="mt-4">
           <DailyStreak />
         </div>
-
+        <TestingNoticeModal />
         <h3 className="text-secondary text-xl font-semibold mt-2">Lessons</h3>
         <div className="mt-2">
           <div className="flex gap-4 overflow-x-auto no-scrollbar">

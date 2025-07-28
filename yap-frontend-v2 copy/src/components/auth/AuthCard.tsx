@@ -15,9 +15,9 @@ export default function AuthCard({
   hideFooter = false,
 }: AuthCardProps) {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-start bg-quaternary">
+    <div className="min-h-screen w-full flex flex-col items-center bg-background-secondary justify-start bg-quaternary">
       <AuthLogo />
-
+ 
       <div className="w-full max-w-md pt-20 px-6 overflow-hidden">
         <Image
           src={group}
