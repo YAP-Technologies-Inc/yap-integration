@@ -18,6 +18,7 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import { useUserStats } from '@/hooks/useUserStats';
 import { useOnChainBalance } from '@/hooks/useOnBlockChain';
 import isEqual from 'lodash.isequal';
+import AudioFormatTest from "@/components/debug/AudioFormatTest"
 
 export default function HomePage() {
   useInitializeUser();
@@ -85,7 +86,7 @@ export default function HomePage() {
         <div className="mt-4">
           <DailyStreak />
         </div>
-
+        <AudioFormatTest />
         <h3 className="text-secondary text-xl font-semibold mt-6">Lessons</h3>
         <div className="mt-2">
           <div className="flex gap-4 overflow-x-auto no-scrollbar">
@@ -120,6 +121,7 @@ export default function HomePage() {
         </div>
       </div>
 
+        
       <BottomNavBar />
     </div>
   );
