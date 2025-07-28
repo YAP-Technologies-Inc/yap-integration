@@ -30,6 +30,7 @@ export default function DailyStreak() {
   const totalStreak = stats?.currentStreak ?? 0;
   const highestStreak = stats?.highestStreak ?? 0;
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   // weekly check‑in
   const [completedDays, setCompletedDays] = useState<boolean[]>(
     Array(7).fill(false)
@@ -77,7 +78,7 @@ export default function DailyStreak() {
 
     // sync your new total and highest streak up to the server
     if (userId) {
-      fetch(`http://localhost:4000/api/user-stats/${userId}/streak`, {
+      fetch(`${API_URL}/api/user-stats/${userId}/streak`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

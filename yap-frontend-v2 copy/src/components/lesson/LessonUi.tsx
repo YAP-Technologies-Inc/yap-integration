@@ -55,23 +55,42 @@ export default function LessonUi({
   const userId = user?.id;
   const walletAddress = wallets?.[0]?.address;
 
+  const getSupportedMimeType = (): string => {
+    const possibleTypes = [
+      'audio/mp4',
+      'audio/webm;codecs=opus',
+      'audio/webm',
+      'audio/ogg',
+    ];
+    return (
+      possibleTypes.find((type) => MediaRecorder.isTypeSupported(type)) || ''
+    );
+  };
+  
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
+  
+      const mimeType = getSupportedMimeType();
+      if (!mimeType) {
+        pushToast('No supported recording format found', 'error');
+        return;
+      }
+  
+      const recorder = new MediaRecorder(stream, { mimeType });
       const chunks: Blob[] = [];
-
+  
       recorder.ondataavailable = (e) => {
         if (e.data.size > 0) chunks.push(e.data);
       };
-
+  
       recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/webm' });
+        const blob = new Blob(chunks, { type: mimeType });
         const url = URL.createObjectURL(blob);
         setAudioBlob(blob);
         setAudioURL(url);
       };
-
+  
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);
@@ -80,7 +99,8 @@ export default function LessonUi({
       router.push('/home');
     }
   };
-
+  
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const stopRecording = () => {
     mediaRecorder?.stop();
     setIsRecording(false);
@@ -98,7 +118,7 @@ export default function LessonUi({
 
     try {
       const res = await fetch(
-        'http://localhost:4000/api/pronunciation-assessment-upload',
+        `${API_URL}/api/pronunciation-assessment-upload`,
         { method: 'POST', body: formData }
       );
       const result = await res.json();
@@ -149,7 +169,7 @@ export default function LessonUi({
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/complete-lesson', {
+      const res = await fetch(`${API_URL}/api/complete-lesson`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

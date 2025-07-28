@@ -1,3 +1,12 @@
 .env
 YAPBackend copy/.env
 yap-frontend-v2 copy/.env
+/node_modules
+node_modules/
+.env
+.DS_Store
+uploads/
+*.log
+dist/
+build/
+.next/

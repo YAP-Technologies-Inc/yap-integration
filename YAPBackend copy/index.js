@@ -362,7 +362,6 @@ app.post(
       // Convert to WAV with proper format detection
       await new Promise((resolve, reject) => {
         ffmpeg(inputPath)
-          .inputFormat(format) 
           .audioChannels(1)
           .audioFrequency(16000)
           .toFormat('wav')

@@ -9,13 +9,14 @@ export interface UserStats {
   totalYapEarned: number;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export function useUserStats(userId: string | null): {
   stats: UserStats | null;
   isLoading: boolean;
   isError: boolean;
 } {
   const { data, error, isLoading } = useSWR(
-    userId ? `http://localhost:4000/api/user-stats/${encodeURIComponent(userId)}` : null,
+    userId ? `${API_URL}/api/user-stats/${encodeURIComponent(userId)}` : null,
     fetcher
   );
 
