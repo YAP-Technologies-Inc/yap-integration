@@ -30,6 +30,7 @@ export default function SignUpForm() {
   // This is the last step in the signup process
   // Need this to be secure and handle errors properly
   // TODO: if user already exists, we should redirect them to the home page instead of asking for name again
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const handleFinalSubmit = async (language: string) => {
     setStep('loading');
   
@@ -40,14 +41,16 @@ export default function SignUpForm() {
     };
   
     try {
-      const res = await fetch(`${API_URL}api/auth/secure-signup`, {
+      const res = await fetch(`${API_URL}/api/auth/secure-signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        
       });
   
       const data = await res.json();
-  
+      console.log('User saved:', data);
+
       if (!res.ok || !data.success) {
         throw new Error(data.error || 'Failed to save user');
       }

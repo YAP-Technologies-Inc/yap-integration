@@ -422,32 +422,32 @@ app.post("/api/request-spanish-teacher", async (req, res) => {
 app.get("/api/teacher-session/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
-    // Grab the most recent expiry for this user
-    // GET /api/teacher-session/:userId
     const { rows } = await db.query(
       `SELECT expires_at
-     FROM teacher_sessions
-    WHERE user_id = $1
-    ORDER BY expires_at DESC
-    LIMIT 1`,
+       FROM teacher_sessions
+       WHERE user_id = $1
+       ORDER BY expires_at DESC
+       LIMIT 1`,
       [userId]
     );
 
     if (rows.length === 0) {
-      // never paid before
       return res.json({ hasAccess: false });
     }
 
     const expiresAt = new Date(rows[0].expires_at);
     const now = new Date();
 
-    // still within 20‑minute window?
-    return res.json({ hasAccess: expiresAt > now });
+    return res.json({
+      hasAccess: expiresAt > now,
+      expiresAt: expiresAt.toISOString(), 
+    });
   } catch (err) {
     console.error("Session check failed:", err);
     return res.status(500).json({ error: "Failed to check session" });
   }
 });
+
 
 app.use("/uploads", express.static("uploads"));
 

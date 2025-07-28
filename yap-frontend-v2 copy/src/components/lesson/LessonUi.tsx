@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/ToastProvider";
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/ToastProvider';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 
 import {
   TablerX,
@@ -11,30 +11,30 @@ import {
   TablerPlayerPauseFilled,
   TablerMicrophone,
   TablerVolume,
-} from "@/icons";
+} from '@/icons';
 
-import Flashcard from "@/components/cards/Flashcard";
-import { GrammarCard } from "@/components/cards/GrammarCard";
-import { ComprehensionCard } from "@/components/cards/ComprehensionCard";
+import Flashcard from '@/components/cards/Flashcard';
+import { GrammarCard } from '@/components/cards/GrammarCard';
+import { ComprehensionCard } from '@/components/cards/ComprehensionCard';
 
 interface StepVocab {
-  variant: "vocab";
+  variant: 'vocab';
   front: string;
   back: string;
   example?: string;
 }
 interface StepGrammar {
-  variant: "grammar";
+  variant: 'grammar';
   rule: string;
   examples: string[];
 }
 interface StepComp {
-  variant: "comprehension";
+  variant: 'comprehension';
   text: string;
   questions: { question: string; answer: string }[];
 }
 interface StepSentence {
-  variant: "sentence";
+  variant: 'sentence';
   question: string;
 }
 
@@ -65,7 +65,7 @@ export default function LessonUi({
 
   const current = allSteps[stepIndex];
   const total = allSteps.length;
-  
+
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
@@ -79,14 +79,14 @@ export default function LessonUi({
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const needsSpeaking =
-    current.variant === "sentence" || current.variant === "vocab";
+    current.variant === 'sentence' || current.variant === 'vocab';
 
   const referenceText =
-    current.variant === "sentence"
+    current.variant === 'sentence'
       ? current.question
-      : current.variant === "vocab"
+      : current.variant === 'vocab'
       ? current.front
-      : "";
+      : '';
 
   const next = () => {
     if (stepIndex + 1 >= total) {
@@ -103,30 +103,47 @@ export default function LessonUi({
     setScore(null);
     setFeedback(null);
   };
-
+  const getSupportedMimeType = (): string => {
+    const possibleTypes = [
+      'audio/mp4',
+      'audio/webm;codecs=opus',
+      'audio/webm',
+      'audio/ogg',
+    ];
+    return (
+      possibleTypes.find((type) => MediaRecorder.isTypeSupported(type)) || ''
+    );
+  };
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
+  
+      const mimeType = getSupportedMimeType();
+      if (!mimeType) {
+        pushToast('No supported recording format found', 'error');
+        return;
+      }
+  
+      const recorder = new MediaRecorder(stream, { mimeType });
       const chunks: Blob[] = [];
-
+  
       recorder.ondataavailable = (e) => {
         if (e.data.size > 0) chunks.push(e.data);
       };
-
+  
       recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: "audio/webm" });
+        const blob = new Blob(chunks, { type: mimeType });
         const url = URL.createObjectURL(blob);
         setAudioBlob(blob);
         setAudioURL(url);
       };
-
+  
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);
-    } catch {
-      pushToast("Mic permission denied", "error");
-      router.push("/home");
+    } catch (e) {
+      pushToast('Microphone permission denied or not found', 'error');
+      router.push('/home');
     }
   };
 
@@ -142,14 +159,14 @@ export default function LessonUi({
     setFeedback(null);
 
     const fd = new FormData();
-    fd.append("audio", audioBlob, "recording.webm");
-    fd.append("referenceText", referenceText);
+    fd.append('audio', audioBlob, 'recording.webm');
+    fd.append('referenceText', referenceText);
 
     try {
       const res = await fetch(
         `${API_URL}/api/pronunciation-assessment-upload`,
         {
-          method: "POST",
+          method: 'POST',
           body: fd,
         }
       );
@@ -160,16 +177,16 @@ export default function LessonUi({
         0;
       const scaled = Math.round(raw * 0.8);
       setScore(scaled);
-      setFeedback("Nice work!");
+      setFeedback('Nice work!');
 
       setTimeout(async () => {
         if (stepIndex + 1 >= total) {
           await fetch(`${API_URL}/api/complete-lesson`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, walletAddress, lessonId }),
           });
-          pushToast("Lesson complete! YAP token sent", "success");
+          pushToast('Lesson complete! YAP token sent', 'success');
           onComplete();
         } else {
           next();
@@ -177,17 +194,17 @@ export default function LessonUi({
       }, 1500);
     } catch (err) {
       console.error(err);
-      pushToast("Assessment failed", "error");
+      pushToast('Assessment failed', 'error');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-background-primary flex flex-col pt-4 pb-28 px-4">
+    <div className="fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
       {/* Exit + Progress bar */}
-      <div className="flex items-center mb-4">
-        <button onClick={() => router.push("/home")} className="text-secondary">
+      <div className="flex items-center">
+        <button onClick={() => router.push('/home')} className="text-secondary">
           <TablerX className="w-6 h-6" />
         </button>
         <div className="flex-1 h-2 bg-gray-200 rounded-full ml-4 overflow-hidden">
@@ -199,25 +216,26 @@ export default function LessonUi({
       </div>
 
       {/* Card area */}
-      <div className="flex-1 flex items-center justify-center">
-        {current.variant === "vocab" && (
+      <div className="flex flex-1 items-start justify-center mt-8">
+        {current.variant === 'vocab' && (
           <Flashcard
             front={current.front}
             back={current.back}
             example={current.example}
           />
         )}
-        {current.variant === "grammar" && (
+        {/* commented out for testing  */}
+        {/* {current.variant === 'grammar' && (
           <GrammarCard rule={current.rule} examples={current.examples} />
         )}
-        {current.variant === "comprehension" && (
+        {current.variant === 'comprehension' && (
           <ComprehensionCard
             text={current.text}
             questions={current.questions}
           />
-        )}
-        {current.variant === "sentence" && (
-          <div className="relative w-full max-w-sm h-[45vh]">
+        )} 
+        {current.variant === 'sentence' && (
+          <div className="relative w-full max-w-sm">
             <div className="absolute inset-0 rounded-2xl bg-white shadow-md opacity-30" />
             <div className="absolute inset-0 rounded-2xl bg-white shadow-md opacity-20" />
             <div className="relative z-10 w-full h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center justify-center text-center">
@@ -225,8 +243,8 @@ export default function LessonUi({
                 {current.question}
               </h2>
             </div>
-          </div>
-        )}
+          </div> 
+        )} */}
       </div>
 
       {/* Mic controls for speaking steps */}
@@ -245,7 +263,7 @@ export default function LessonUi({
               disabled={isLoading}
               className="text-sm px-3 py-2 bg-green-500 text-white rounded-full shadow"
             >
-              {isLoading ? "Scoring…" : "Submit"}
+              {isLoading ? 'Scoring…' : 'Submit'}
             </button>
           )}
 
@@ -288,18 +306,6 @@ export default function LessonUi({
           {audioURL && (
             <audio ref={audioRef} src={audioURL} className="hidden" />
           )}
-        </div>
-      )}
-
-      {/* Next button for non-speaking steps */}
-      {!needsSpeaking && (
-        <div className="flex justify-center mt-4">
-          <button
-            onClick={next}
-            className="px-6 py-2 bg-secondary text-white rounded-full shadow-md"
-          >
-            Next
-          </button>
         </div>
       )}
     </div>

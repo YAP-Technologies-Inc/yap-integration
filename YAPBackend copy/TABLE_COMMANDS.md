@@ -22,8 +22,9 @@ CREATE TABLE IF NOT EXISTS user_stats (
   updated_at       TIMESTAMP   NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE teacher_sessions (
+CREATE TABLE IF NOT EXISTS teacher_sessions (
   id SERIAL PRIMARY KEY,
   user_id TEXT NOT NULL,
-  expires_at TIMESTAMPTZ NOT NULL
+  tx_hash TEXT NOT NULL,
+  expires_at TIMESTAMP NOT NULL
 );

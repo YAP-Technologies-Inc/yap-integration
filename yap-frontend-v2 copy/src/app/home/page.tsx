@@ -170,7 +170,7 @@ export default function HomePage() {
 
       // record the new session on backend (expires_at gets set there)
       try {
-        await fetch(`${API_URL}api/request-spanish-teacher`, {
+        await fetch(`${API_URL}/api/request-spanish-teacher`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId, txHash: tx.hash }),
@@ -181,9 +181,8 @@ export default function HomePage() {
 
       // finally take them through
       router.push("/spanish-teacher");
-    } catch (outer) {
-      console.error("Payment error:", outer);
-      pushToast((outer as Error).message || "Could not process payment.", "error");
+    } catch (error) {
+      pushToast("Could not process payment.", "error");
     } finally {
       setCheckingAccess(false);
     }
