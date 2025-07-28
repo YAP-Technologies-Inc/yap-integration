@@ -20,6 +20,8 @@ const getStartOfWeek = () => {
 
 export default function DailyStreak() {
   const { userId } = useUserContext();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   // pull your current & highest streak straight from the DB
   const {
     stats,
@@ -77,7 +79,7 @@ export default function DailyStreak() {
 
     // sync your new total and highest streak up to the server
     if (userId) {
-      fetch(`http://localhost:4000/api/user-stats/${userId}/streak`, {
+      fetch(`${API_URL}/api/user-stats/${userId}/streak`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

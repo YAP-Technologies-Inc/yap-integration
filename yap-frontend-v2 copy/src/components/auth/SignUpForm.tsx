@@ -32,7 +32,8 @@ export default function SignUpForm() {
   // TODO: if user already exists, we should redirect them to the home page instead of asking for name again
   const handleFinalSubmit = async (language: string) => {
     setStep('loading');
-  
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
     const payload = {
       user_id: user?.id,
       name,
@@ -40,7 +41,7 @@ export default function SignUpForm() {
     };
   
     try {
-      const res = await fetch(`http://localhost:4000/api/auth/secure-signup`, {
+      const res = await fetch(`${API_URL}/api/auth/secure-signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
