@@ -27,9 +27,10 @@ export default function TestingNoticeModal() {
         </h2>
         <p className="text-sm text-gray-600 mb-4">
           You’re using an early test version of our app. If you see any bugs,
-          broken features, or error messages, please let us know! AI Spanish teacher is under development as there is no way to sponsor your gas fee
+          broken features, or error messages, please let us know! AI Spanish
+          teacher is under development as there is no way to sponsor your gas
+          fee currently.
         </p>
-
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a
             href="https://discord.com/invite/6uZFtMhM2z"

@@ -9,10 +9,11 @@ import SignUpForm from '@/components/auth/SignUpForm';
 export default function AuthPage() {
   const { ready, authenticated, login, user } = usePrivy();
   const router = useRouter();
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  // const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const API_URL = "https://api.dev.yapapp.io";
+
   const [hideFooter, setHideFooter] = useState(false);
   const [hasProfile, setHasProfile] = useState<boolean | null>(null);
-
   //Modal detection to hide footer
   useEffect(() => {
     if (typeof window === 'undefined') return;

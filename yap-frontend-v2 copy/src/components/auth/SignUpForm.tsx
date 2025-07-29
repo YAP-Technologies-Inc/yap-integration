@@ -31,6 +31,8 @@ export default function SignUpForm() {
   // Need this to be secure and handle errors properly
   // TODO: if user already exists, we should redirect them to the home page instead of asking for name again
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  // const API_URL = "https://api.dev.yapapp.io";
+
   const handleFinalSubmit = async (language: string) => {
     setStep('loading');
   
@@ -47,7 +49,7 @@ export default function SignUpForm() {
         body: JSON.stringify(payload),
         
       });
-  
+
       const data = await res.json();
       console.log('User saved:', data);
 

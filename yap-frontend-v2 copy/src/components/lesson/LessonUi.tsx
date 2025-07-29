@@ -13,7 +13,7 @@ import {
   TablerVolume,
 } from '@/icons';
 
-import Flashcard from '@/components/cards/Flashcard';
+import  Flashcard  from '@/components/cards/FlashCard';
 import { GrammarCard } from '@/components/cards/GrammarCard';
 import { ComprehensionCard } from '@/components/cards/ComprehensionCard';
 
@@ -67,6 +67,8 @@ export default function LessonUi({
   const total = allSteps.length;
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  // const API_URL = "https://api.dev.yapapp.io";
+
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
@@ -117,27 +119,27 @@ export default function LessonUi({
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  
+
       const mimeType = getSupportedMimeType();
       if (!mimeType) {
         pushToast('No supported recording format found', 'error');
         return;
       }
-  
+
       const recorder = new MediaRecorder(stream, { mimeType });
       const chunks: Blob[] = [];
-  
+
       recorder.ondataavailable = (e) => {
         if (e.data.size > 0) chunks.push(e.data);
       };
-  
+
       recorder.onstop = () => {
         const blob = new Blob(chunks, { type: mimeType });
         const url = URL.createObjectURL(blob);
         setAudioBlob(blob);
         setAudioURL(url);
       };
-  
+
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);

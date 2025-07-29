@@ -3,6 +3,8 @@ import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// const API_URL = "https://api.dev.yapapp.io";
+
 export function useUserProfile(userId: string | null) {
   const { data, error, isLoading } = useSWR(
     userId ? `${API_URL}/api/profile/${userId}` : null,

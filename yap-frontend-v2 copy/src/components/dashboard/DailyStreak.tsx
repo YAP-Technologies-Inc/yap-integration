@@ -9,6 +9,8 @@ import { useUserStats } from '@/hooks/useUserStats';
 const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 const STORAGE_KEY = 'login-days';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// const API_URL = "https://api.dev.yapapp.io";
+
 const getStartOfWeek = () => {
   const d = new Date();
   const day = d.getDay();

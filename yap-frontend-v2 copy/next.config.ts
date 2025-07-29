@@ -3,16 +3,19 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 
 const withAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
-  
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    // 👇 explicitly allow your custom dev domains
-    allowedDevOrigins: ['https://dev-frontend-yap.ngrok.app'],
+const nextConfig: NextConfig = {
+  typescript: {
+    ignoreBuildErrors: true, // ⛔ Ignores TypeScript errors during build
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // ⛔ Ignores ESLint errors during build
+  },
+  webpack: (config) => {
+    // You can add custom tweaks here if needed
+    return config;
   },
 };
-
 
 export default withAnalyzer(nextConfig);

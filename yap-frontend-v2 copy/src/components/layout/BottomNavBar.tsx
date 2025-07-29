@@ -14,7 +14,7 @@ export default function BottomNavBar() {
   return (
     <div className="fixed w-full h-16 bottom-0 left-0 right-0  text-black ">
       <nav className="fixed bottom-0 left-0 w-full h-16 bg-background-primary z-50 flex justify-around items-center">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center hover:cursor-pointer">
           <TablerHome className="text-[#999595] w-6 h-6" />
           <a href="/home" className="text-[#999595] text-sm">
             Home
@@ -33,7 +33,7 @@ export default function BottomNavBar() {
             Progress
           </a>
         </div> */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center hover:cursor-pointer">
           <TablerUser className="text-[#999595] w-6 h-6" />
           <a href="/profile" className="text-[#999595] text-sm">
             Profile
