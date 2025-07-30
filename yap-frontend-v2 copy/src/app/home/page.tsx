@@ -24,6 +24,9 @@ import { useToast } from '@/components/ui/ToastProvider';
 import TestingNoticeModal from '@/components/TestingNoticeModal';
 export default function HomePage() {
   useInitializeUser();
+  const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
+  const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { pushToast } = useToast();
   const [lessons, setLessons] = useState<
     {
@@ -51,7 +54,7 @@ export default function HomePage() {
     useOnChainBalance(evmAddress);
   const [hasAccess, setHasAccess] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(false);
-
+  const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
   // Compute lesson availability based on completed lessons
   useEffect(() => {
     if (!completedLessons) return;
@@ -85,6 +88,15 @@ export default function HomePage() {
     }
   }, [completedLessons, lessons]);
 
+  useEffect(() => {
+    if (!userId) return;
+    fetch(`${API_URL}/api/daily-quiz-status/${userId}`)
+      .then(res => res.json())
+      .then(data => setDailyQuizCompleted(data.completed))
+      .catch(() => {});
+  }, [userId]);
+
+
   // Unified loading state
   if (
     isLessonsLoading ||
@@ -99,9 +111,7 @@ export default function HomePage() {
     );
   }
 
-  const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
-  const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const handleSpanishTeacherAccess = async () => {
     setCheckingAccess(true);
 
@@ -193,6 +203,20 @@ export default function HomePage() {
     }
   };
 
+  const dailyQuizUnlocked = completedLessons?.includes('SPA1_005');
+const handleDailyQuizUnlocked = () => {
+  if (!dailyQuizUnlocked) {
+    pushToast('Complete SPA1_005 to unlock the Daily Quiz!', 'info');
+    return;
+  }
+  if (dailyQuizCompleted) {
+    pushToast('You’ve already completed today’s Daily Quiz!', 'info');
+    return;
+  }
+  router.push('/daily-quiz');
+};
+
+  
   return (
     <div className="bg-background-primary min-h-screen w-full flex flex-col overflow-y-auto pb-24">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
@@ -238,12 +262,14 @@ export default function HomePage() {
         <h3 className="text-secondary text-xl font-semibold mt-2 mb-2">
           Daily Quiz
         </h3>
-        <div className="relative z-0">
-          <DailyQuizCard isUnlocked={false} />
+        <div className="relative z-0 " onClick={handleDailyQuizUnlocked}>
+          <DailyQuizCard
+            isUnlocked={dailyQuizUnlocked}
+            isCompleted={dailyQuizCompleted}
+          />
         </div>
       </div>
 
-        
       <BottomNavBar />
     </div>
   );

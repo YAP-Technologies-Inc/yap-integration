@@ -22,9 +22,18 @@ CREATE TABLE IF NOT EXISTS user_stats (
   updated_at       TIMESTAMP   NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS teacher_sessions (
+CREATE TABLE teacher_sessions (
   id SERIAL PRIMARY KEY,
   user_id TEXT NOT NULL,
   tx_hash TEXT NOT NULL,
   expires_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE daily_quiz (
+  id SERIAL PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  tx_hash TEXT,
+  reward_sent BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
