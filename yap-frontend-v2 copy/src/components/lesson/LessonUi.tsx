@@ -13,9 +13,11 @@ import {
   TablerVolume,
 } from '@/icons';
 
-import  Flashcard  from '@/components/cards/FlashCard';
+import Flashcard from '@/components/cards/FlashCard';
 import { GrammarCard } from '@/components/cards/GrammarCard';
 import { ComprehensionCard } from '@/components/cards/ComprehensionCard';
+
+import { getRandomFeedbackPhrase } from '@/utils/feedbackPhrase'; 
 
 interface StepVocab {
   variant: 'vocab';
@@ -67,7 +69,6 @@ export default function LessonUi({
   const total = allSteps.length;
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  // const API_URL = "https://api.dev.yapapp.io";
 
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
@@ -127,18 +128,18 @@ export default function LessonUi({
       }
       const recorder = new MediaRecorder(stream, { mimeType });
       const chunks: Blob[] = [];
-  
+
       recorder.ondataavailable = (e) => {
         if (e.data.size > 0) chunks.push(e.data);
       };
-  
+
       recorder.onstop = () => {
         const blob = new Blob(chunks, { type: mimeType });
         const url = URL.createObjectURL(blob);
         setAudioBlob(blob);
         setAudioURL(url);
       };
-  
+
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);
@@ -147,7 +148,6 @@ export default function LessonUi({
       router.push('/home');
     }
   };
-  
 
   const stopRecording = () => {
     mediaRecorder?.stop();
@@ -179,7 +179,8 @@ export default function LessonUi({
         0;
       const scaled = Math.round(raw * 0.8);
       setScore(scaled);
-      setFeedback('Nice work!');
+      const randomPhrase = getRandomFeedbackPhrase(scaled);
+      setFeedback(randomPhrase);
 
       setTimeout(async () => {
         if (stepIndex + 1 >= total) {
