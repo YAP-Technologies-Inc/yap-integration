@@ -24,7 +24,6 @@ export default function SpanishTeacherConversation() {
   const ELEVENLABS_API_KEY = 'sk_3d18455ea5f8f28b7a8fe3b8539d1b8ee54f75c8951406af';
   const AGENT_ID = 'agent_01k0mav3kjfk3s4xbwkka4yg28';
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  // const API_URL = "https://api.dev.yapapp.io";
 
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
@@ -52,50 +51,50 @@ export default function SpanishTeacherConversation() {
   };
 
   //TODO: FIX THIS it doesnt log the time and wont route if time expires only when we exit and come back will it then not render this page
-  // const checkAccess = async () => {
-  //   if (!userId) return router.push('/home');
+  const checkAccess = async () => {
+    if (!userId) return router.push('/home');
 
-  //   try {
-  //     const res = await fetch(`${API_URL}/api/teacher-session/${userId}`);
-  //     const data = await res.json();
+    try {
+      const res = await fetch(`${API_URL}/api/teacher-session/${userId}`);
+      const data = await res.json();
 
-  //     if (data.hasAccess) {
-  //       setHasAccess(true);
+      if (data.hasAccess) {
+        setHasAccess(true);
 
-  //       if (data.expires_at) {
-  //         const interval = setInterval(() => {
-  //           const timeLeft = new Date(data.expires_at).getTime() - Date.now();
-  //           const mins = Math.floor(timeLeft / 1000 / 60);
-  //           const secs = Math.floor((timeLeft / 1000) % 60);
+        if (data.expires_at) {
+          const interval = setInterval(() => {
+            const timeLeft = new Date(data.expires_at).getTime() - Date.now();
+            const mins = Math.floor(timeLeft / 1000 / 60);
+            const secs = Math.floor((timeLeft / 1000) % 60);
 
-  //           console.log(`Time left: ${mins}m ${secs}s`);
+            console.log(`Time left: ${mins}m ${secs}s`);
 
-  //           if (timeLeft <= 5 * 60 * 1000 && timeLeft > 4.9 * 60 * 1000) {
-  //             alert('You have 5 minutes left in your session.');
-  //           }
+            if (timeLeft <= 5 * 60 * 1000 && timeLeft > 4.9 * 60 * 1000) {
+              alert('You have 5 minutes left in your session.');
+            }
 
-  //           if (timeLeft <= 0) {
-  //             alert('Session expired. Redirecting...');
-  //             router.push('/home');
-  //           }
-  //         }, 10000);
+            if (timeLeft <= 0) {
+              alert('Session expired. Redirecting...');
+              router.push('/home');
+            }
+          }, 10000);
 
-  //         return () => clearInterval(interval);
-  //       }
-  //     } else {
-  //       setHasAccess(false);
-  //       setTimeout(() => router.push('/home'), 3000);
-  //     }
-  //   } catch (err) {
-  //     console.error('Access check failed:', err);
-  //     setHasAccess(false);
-  //     setTimeout(() => router.push('/home'), 3000);
-  //   }
-  // };
+          return () => clearInterval(interval);
+        }
+      } else {
+        setHasAccess(false);
+        setTimeout(() => router.push('/home'), 3000);
+      }
+    } catch (err) {
+      console.error('Access check failed:', err);
+      setHasAccess(false);
+      setTimeout(() => router.push('/home'), 3000);
+    }
+  };
 
-  // useEffect(() => {
-  //   checkAccess();
-  // }, []);
+  useEffect(() => {
+    checkAccess();
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -122,24 +121,24 @@ export default function SpanishTeacherConversation() {
     await conversation.endSession();
   }, [conversation]);
 
-  // if (hasAccess === false) {
-  //   return (
-  //     <div className="min-h-screen bg-[#fff8f5] flex items-center justify-center px-4">
-  //       <div className="bg-white border border-red-200 rounded-xl shadow-md p-6 text-center max-w-sm">
-  //         <h2 className="text-xl font-bold text-red-600 mb-2">Access Denied</h2>
-  //         <p className="text-sm text-gray-700">You don't have access. Redirecting…</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (hasAccess === false) {
+    return (
+      <div className="min-h-screen bg-[#fff8f5] flex items-center justify-center px-4">
+        <div className="bg-white border border-red-200 rounded-xl shadow-md p-6 text-center max-w-sm">
+          <h2 className="text-xl font-bold text-red-600 mb-2">Access Denied</h2>
+          <p className="text-sm text-gray-700">You don't have access. Redirecting…</p>
+        </div>
+      </div>
+    );
+  }
 
-  // if (hasAccess === null) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center bg-[#fefbf5]">
-  //       <p className="text-gray-500 text-sm font-medium animate-pulse">Checking access…</p>
-  //     </div>
-  //   );
-  // }
+  if (hasAccess === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#fefbf5]">
+        <p className="text-gray-500 text-sm font-medium animate-pulse">Checking access…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#f7f3ec] flex flex-col items-center py-10 px-4 relative">

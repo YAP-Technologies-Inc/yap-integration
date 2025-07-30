@@ -482,6 +482,67 @@ app.get('/api/teacher-session/:userId', async (req, res) => {
 });
 
 
+// This endpoing exists to allow users to complete a daily quiz if they 
+// have not already done so today. It rewards them with 1 YAP token. If they 
+// have already completed the quiz today, it returns a 409 conflict error.
+app.post('/api/complete-daily-quiz', async (req, res) => {
+  const { userId, walletAddress } = req.body;
+  if (!userId || !walletAddress) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
+
+  try {
+    const { rows } = await db.query(
+      `SELECT id 
+         FROM daily_quiz 
+        WHERE user_id = $1 
+          AND date = CURRENT_DATE`,
+      [userId]
+    );
+    if (rows.length > 0) {
+      return res.status(409).json({ error: "Already completed today" });
+    }
+
+    const provider = new ethers.JsonRpcProvider(SEI_RPC);
+    const wallet    = new ethers.Wallet(PRIVATE_KEY, provider);
+    const token     = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, wallet);
+    const oneYap    = ethers.parseUnits("1", 18);
+
+    const tx = await token.transfer(walletAddress, oneYap);
+    await tx.wait();
+
+    const insert = await db.query(
+      `INSERT INTO daily_quiz (user_id, tx_hash, reward_sent)
+           VALUES ($1, $2, true)
+        RETURNING id`,
+      [userId, tx.hash]
+    );
+
+    console.log("Daily quiz reward logged, id:", insert.rows[0].id);
+    return res.json({ success: true, txHash: tx.hash });
+
+  } catch (err) {
+    console.error("Error completing daily quiz:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// GET /api/daily-quiz-status/:userId
+app.get('/api/daily-quiz-status/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const { rows } = await db.query(
+      `SELECT 1 FROM daily_quiz WHERE user_id = $1 AND date = CURRENT_DATE`,
+      [userId]
+    );
+    return res.json({ completed: rows.length > 0 });
+  } catch (err) {
+    console.error('Quiz status check error:', err);
+    return res.status(500).json({ error: 'Internal error' });
+  }
+});
+
 app.use('/uploads', express.static('uploads'));
 
 const PORT = process.env.PORT || 4000;
