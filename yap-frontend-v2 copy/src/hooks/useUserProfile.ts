@@ -2,7 +2,6 @@
 import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export function useUserProfile(userId: string | null) {
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;

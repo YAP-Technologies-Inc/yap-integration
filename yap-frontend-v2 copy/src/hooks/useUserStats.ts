@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export interface UserStats {
   tokenBalance: number;
@@ -8,7 +8,6 @@ export interface UserStats {
   highestStreak: number;
   totalYapEarned: number;
 }
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export function useUserStats(userId: string | null): {
   stats: UserStats | null;

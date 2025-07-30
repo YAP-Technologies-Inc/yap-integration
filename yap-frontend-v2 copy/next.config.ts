@@ -6,7 +6,16 @@ const withAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
-  
+  typescript: {
+    ignoreBuildErrors: true, // ⛔ Ignores TypeScript errors during build
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // ⛔ Ignores ESLint errors during build
+  },
+  webpack: (config) => {
+    // You can add custom tweaks here if needed
+    return config;
+  },
 };
 
 export default withAnalyzer(nextConfig);

@@ -1,4 +1,4 @@
-// src/app/profile/page.tsx  (or wherever your ProfilePage lives)
+// src/app/profile/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -15,21 +15,30 @@ import {
   TablerChevronLeft,
 } from '@/icons';
 
-// import your custom hooks
 import { useUserProfile } from '@/hooks/useUserProfile';
-import { useUserStats }   from '@/hooks/useUserStats';
+import { useOnChainBalance } from '@/hooks/useOnBlockChain';
+import { useToast } from '@/components/ui/ToastProvider';
 
 type InfoPage = 'menu' | 'about' | 'help' | 'terms';
 
 export default function ProfilePage() {
   const [activePage, setActivePage] = useState<InfoPage>('menu');
-
-  const { user }    = usePrivy();
+  const { user } = usePrivy();
   const { wallets } = useWallets();
-  const userId      = user?.id || null;
-  const evmAddr     = wallets?.[0]?.address || '';
+  const { pushToast } = useToast();
+  const userId = user?.id ?? null;
+  // find the Privy‐embedded wallet and grab its address
+  const evmAddress =
+    wallets.find((w) => w.walletClientType === 'privy')?.address ?? '';
 
-  // now just call your hooks
+  // pull on‐chain balance (in YAP) for that address
+  const {
+    balance: onChainBalance,
+    isLoading: isBalanceLoading,
+    isError: balanceError,
+  } = useOnChainBalance(evmAddress);
+
+  // still fetch profile for name / language
   const {
     name,
     language,
@@ -37,24 +46,15 @@ export default function ProfilePage() {
     isError: profileError,
   } = useUserProfile(userId);
 
-  const {
-    stats,
-    isLoading: statsLoading,
-    isError: statsError,
-  } = useUserStats(userId);
-
-  const tokenBalance = stats?.tokenBalance || 0;
-  const currentStreak = stats?.currentStreak || 0;
-
-  // loading or error handling
-  if (profileLoading || statsLoading) {
+  // global loading / error
+  if (profileLoading || isBalanceLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>Loading profile...</p>
+        <p>Loading profile…</p>
       </div>
     );
   }
-  if (profileError || statsError) {
+  if (profileError || balanceError) {
     return (
       <div className="flex items-center justify-center min-h-screen text-red-500">
         <p>Failed to load account data.</p>
@@ -62,23 +62,29 @@ export default function ProfilePage() {
     );
   }
 
-  const walletShort  = evmAddr ? `${evmAddr.slice(0, 6)}...` : 'Unknown';
+  // shorthand for display
+  const walletShort = evmAddress
+    ? `${evmAddress.slice(0, 6)}…${evmAddress.slice(-4)}`
+    : 'Unknown';
   const firstInitial = name.charAt(0).toUpperCase() || '?';
 
+  // use the on‐chain balance instead of stats.tokenBalance
+  const tokenBalance = onChainBalance ?? 0;
+
+  // menu vs info pages
   if (activePage !== 'menu') {
     return (
-      <div className="min-h-screen bg-background-primary p-6 flex flex-col">
+      <div className="min-h-screen bg-background-primary p-6 flex flex-col ">
         <button
           onClick={() => setActivePage('menu')}
-          className="flex items-center text-gray-600 mb-6"
+          className="flex items-center font-bold text-gray-500 mb-6"
         >
-          <TablerChevronLeft className="mr-1" />
-          Back
+          <TablerChevronLeft className="mr-1 hover:cursor-pointer" />
         </button>
         <h1 className="text-xl font-bold text-secondary mb-4 capitalize">
           {activePage}
         </h1>
-        <div className="text-sm text-[#444] leading-relaxed">
+        <div className="text-sm text-gray-500 leading-relaxed">
           {activePage === 'about' && (
             <p>
               This app helps you learn languages while earning rewards. Built
@@ -101,52 +107,61 @@ export default function ProfilePage() {
 
   return (
     <div className="bg-background-primary min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full max-w-4xl mx-auto px-4 pt-4">
+      <div className="flex-1 w-full max-w-4xl mx-auto px-4">
         <div className="text-xl font-bold text-secondary text-center">
           Account
         </div>
 
-        <div className="mt-4 flex flex-col items-center">
+        <div className="mt-1 flex flex-col items-center">
           <div className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center">
             <span className="text-white text-2xl font-semibold">
               {firstInitial}
             </span>
           </div>
-          <div className="mt-2 text-lg font-light text-secondary">
+          <div className="mt-1 text-lg font-semibold text-secondary">
             {name}
           </div>
           {language && (
-            <div className="text-sm text-[#666] mt-1">Learning: {language}</div>
+            <div className="text-sm text-secondary mt-1 font-light">
+              Learning: {language}
+            </div>
           )}
         </div>
 
-        <div className="mt-4 w-full flex justify-center">
+        <div className="mt-4 px-8 w-full flex justify-center hover:cursor-pointer">
           <Button
             label={`View Wallet (${walletShort})`}
-            className="w-full text-black bg-white px-6 py-3 border-black rounded-xl shadow-md transition-colors"
+            className="w-full text-black bg-white px-6 py-3 border-black rounded-xl shadow-md transition-colors hover:pointer-cursor"
             onClick={() =>
-              evmAddr
+              evmAddress
                 ? window.open(
-                    `https://seitrace.com/address/${evmAddr}?chain=atlantic-2`,
+                    `https://seitrace.com/address/${evmAddress}?chain=atlantic-2`,
                     '_blank'
                   )
-                : alert('No wallet connected.')
+                : pushToast('No wallet connected.', 'error')
             }
           />
         </div>
 
-        <div className="w-full mt-6">
+        <div className="w-full mt-6 flex flex-col items-center">
           <h2 className="text-md font-bold text-secondary mb-4 text-center">
             Statistics
           </h2>
-          <div className="flex items-center justify-center gap-4">
-            <StatCard icon="🔥" label="Streak" value={currentStreak} />
-            <StatCard icon={coin.src} label="Total $YAP" value={tokenBalance} isImage />
+          <div className="flex items-center justify-center gap-24">
+            <StatCard icon="🔥" label="Streak" value={0} />
+            <StatCard
+              icon={coin.src}
+              label="Total $YAP"
+              value={tokenBalance}
+              isImage
+            />
           </div>
         </div>
 
-        <div className="w-full mt-6 pb-20">
-          <h2 className="text-md font-bold text-secondary mb-3">Others</h2>
+        <div className="w-full mt-6 pb-20 flex flex-col items-center">
+          <h2 className="text-md font-bold text-secondary mb-3 text-center hover:cursor-pointer">
+            Others
+          </h2>
           <InfoListCard
             items={[
               {

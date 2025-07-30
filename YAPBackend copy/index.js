@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const flowglad = require('@flowglad/server');
 const bip39 = require('bip39');
+const ethers = require('ethers');
 const {
   JsonRpcProvider,
   Wallet,
@@ -12,10 +13,10 @@ const {
 const crypto = require('crypto');
 const { Pool } = require('pg');
 const db = new Pool({
-  user: 'yapuser',
+  user: 'postgres',
   host: 'localhost',
   database: 'yapdb',
-  password: '1234', // use your actual password
+  password: '8908', // use your actual password
   port: 5432,
 });
 
@@ -391,6 +392,95 @@ app.post(
     }
   }
 );
+
+app.post('/api/request-spanish-teacher', async (req, res) => {
+  const { userId, txHash, walletAddress } = req.body;
+
+  if (!userId || !txHash || !walletAddress) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
+
+  try {
+    const provider = new ethers.JsonRpcProvider(SEI_RPC);
+    const tx = await provider.getTransaction(txHash);
+
+    if (!tx) {
+      return res.status(404).json({ error: "Transaction not found" });
+    }
+
+    // Optional: wait until it's mined
+    await tx.wait();
+
+    const token = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, provider);
+    const oneYap = ethers.parseUnits("1", 18);
+
+    const expectedData = token.interface.encodeFunctionData("transfer", [
+      TREASURY_ADDRESS,
+      oneYap,
+    ]);
+
+    const txSender = tx.from.toLowerCase();
+    const txTo = tx.to.toLowerCase();
+    const txData = tx.data;
+
+    if (
+      txSender !== walletAddress.toLowerCase() ||
+      txTo !== TOKEN_ADDRESS.toLowerCase() ||
+      txData !== expectedData
+    ) {
+      return res.status(403).json({ error: "Invalid payment transaction" });
+    }
+
+    // All good → log session
+    const expiresAt = new Date(Date.now() + 20 * 60 * 1000);
+
+    const result = await db.query(
+      `INSERT INTO teacher_sessions (user_id, tx_hash, expires_at)
+       VALUES ($1, $2, $3)
+       RETURNING id`,
+      [userId, txHash, expiresAt]
+    );
+
+    console.log("Inserted session id:", result.rows[0].id);
+    return res.json({ success: true });
+
+  } catch (err) {
+    console.error("Verification or DB error:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+app.get('/api/teacher-session/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const { rows } = await db.query(
+      `SELECT expires_at
+       FROM teacher_sessions
+       WHERE user_id = $1
+       ORDER BY expires_at DESC
+       LIMIT 1`,
+      [userId]
+    );
+
+    if (rows.length === 0) {
+      return res.json({ hasAccess: false });
+    }
+
+    const expiresAt = new Date(rows[0].expires_at);
+    const now = new Date();
+
+    return res.json({
+      hasAccess: expiresAt > now,
+      expiresAt: expiresAt.toISOString(),
+    });
+  } catch (err) {
+    console.error('Session check failed:', err);
+    return res.status(500).json({ error: 'Failed to check session' });
+  }
+});
+
 
 app.use('/uploads', express.static('uploads'));
 

@@ -9,11 +9,9 @@ import SignUpForm from '@/components/auth/SignUpForm';
 export default function AuthPage() {
   const { ready, authenticated, login, user } = usePrivy();
   const router = useRouter();
-
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [hideFooter, setHideFooter] = useState(false);
   const [hasProfile, setHasProfile] = useState<boolean | null>(null);
-
   //Modal detection to hide footer
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -34,7 +32,7 @@ export default function AuthPage() {
   useEffect(() => {
     if (authenticated && user?.id) {
       setHasProfile(null);
-      fetch(`${API_URL}}/api/profile/${user.id}`)
+      fetch(`${API_URL}/api/profile/${user.id}`)
         .then((res) => {
           if (res.ok) {
             setHasProfile(true);
