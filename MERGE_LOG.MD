@@ -13,3 +13,8 @@
 - Feature: Enhanced UI for mobile
 - Conflicts: None
 - Notes: Mainly fixed styling for safari on mobile
+## July 31, 2025 – Merged `style/desktop-test` → `main`
+- Merged by: Landon Hadre
+- Feature: Enhanced UI for desktop
+- Conflicts: None
+- Notes: Mainly fixed some spacing issues as well as added hover effects for the mouse
