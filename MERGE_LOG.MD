@@ -8,3 +8,8 @@
 - Feature: Added functionality to daily quiz card 
 - Conflicts: None
 - Notes: Only has working flow with 5 mock quesitons for TESTING
+## July 31, 2025 – Merged `style/internal-test` → `main`
+- Merged by: Landon Hadre
+- Feature: Enhanced UI for mobile
+- Conflicts: None
+- Notes: Mainly fixed styling for safari on mobile
