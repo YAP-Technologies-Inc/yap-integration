@@ -17,5 +17,6 @@ export { TablerVolume } from './Audio';
 export { TablerChevronRight } from './ChevronRight';
 export { TablerInfoCircle } from './Info';
 export { TablerHelp } from './Help';
-export {TablerFileTextShield} from './TextShield';
+export { TablerFileTextShield } from './TextShield';
 export { TablerAlertCircle } from './AlertCircle';
+export { TablerBrandDiscordFilled } from './Discord';

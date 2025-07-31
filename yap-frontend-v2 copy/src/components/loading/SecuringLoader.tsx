@@ -12,12 +12,20 @@ export default function SecuringLoader() {
   const router = useRouter();
   const [showSplash, setShowSplash] = useState(false);
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+  
+
   // Phase 1: "Securing your account..." loader
   // Then after 3 seconds, show the splash screen
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(true); 
-    }, 3000);
+    }, 3000); //
 
     return () => clearTimeout(timer);
   }, []);
@@ -32,7 +40,7 @@ export default function SecuringLoader() {
   if (showSplash) return <SplashScreen onFinish={handleFinishSplash} />;
 
   return (
-    <div className="loader-screen bg-background-primary">
+    <div className="min-h-[100dvh] overflow-hidden loader-screen bg-background-primary">
       <div className="loader-container"></div>
       <p className="loader-message">Securing your account...</p>
     </div>

@@ -80,3 +80,13 @@ input[type="password"]::-webkit-inner-spin-button,
 input[type="password"]::-webkit-calendar-picker-indicator {
   display: none !important;
 }
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+.pb-nav{
+  padding-bottom: calc(env(safe-area-inset-bottom) + 5rem);
+}

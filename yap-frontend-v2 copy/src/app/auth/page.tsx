@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { usePrivy } from '@privy-io/react-auth';
 import AuthCard from '@/components/auth/AuthCard';
 import SignUpForm from '@/components/auth/SignUpForm';
+import { themeColors, setThemeColor } from '@/utils/themeColor';
 
 export default function AuthPage() {
   const { ready, authenticated, login, user } = usePrivy();
@@ -12,6 +13,22 @@ export default function AuthPage() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [hideFooter, setHideFooter] = useState(false);
   const [hasProfile, setHasProfile] = useState<boolean | null>(null);
+  
+  // Dynamically update browser theme color
+  useEffect(() => {
+    if (!ready) return;
+
+    // User not logged in → use dark theme
+    if (!authenticated) {
+      setThemeColor(themeColors.secondary);
+    }
+
+    // User is logged in → use light background
+    else if (authenticated && hasProfile !== null) {
+      setThemeColor(themeColors.backgroundPrimary);
+    }
+  }, [ready, authenticated, hasProfile]);
+
   //Modal detection to hide footer
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -74,7 +91,7 @@ export default function AuthPage() {
 
   //Not authenticated yet -> show login card
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-background-secondary">
+    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-background-secondary pt-safe pb-safe px-4 overflow-hidden">
       <AuthCard
         hideFooter={hideFooter}
         onEmailClick={() => {

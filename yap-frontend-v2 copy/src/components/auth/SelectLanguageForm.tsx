@@ -12,9 +12,13 @@ interface Props {
   onSelect: (lang: string) => void;
 }
 
-export default function SelectLanguageForm({ onNext, onBack, onSelect }: Props) {
+export default function SelectLanguageForm({
+  onNext,
+  onBack,
+  onSelect,
+}: Props) {
   return (
-    <div className="min-h-screen w-full bg-background-primary px-6 relative flex flex-col">
+    <div className="min-h-[100dvh] w-full bg-background-primary px-6 relative flex flex-col overflow-hidden">
       <button
         onClick={onBack}
         className="absolute left-2 top-2 text-2xl font-semibold text-secondary"
@@ -27,7 +31,9 @@ export default function SelectLanguageForm({ onNext, onBack, onSelect }: Props) 
       <AuthLogo />
 
       <div className="mt-6 mb-4 text-center">
-        <h2 className="text-sm font-semibold text-[#2D1C1C]">Select a language</h2>
+        <h2 className="text-sm font-semibold text-[#2D1C1C]">
+          Select a language
+        </h2>
         <p className="text-lg font-bold text-[#2D1C1C] mt-1">
           What language would you like to learn?
         </p>

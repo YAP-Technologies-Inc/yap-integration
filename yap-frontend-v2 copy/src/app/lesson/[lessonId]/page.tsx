@@ -31,8 +31,13 @@ export default function LessonPage() {
   const { name, isLoading: profileLoading } = useUserProfile(userId);
 
   // 3a) Vocabulary
-  type StepVocab = { variant: 'vocab'; front: string; back: string; example?: string };
-  const vocabSteps: StepVocab[] = lessonData.vocabulary_items.map(item => ({
+  type StepVocab = {
+    variant: 'vocab';
+    front: string;
+    back: string;
+    example?: string;
+  };
+  const vocabSteps: StepVocab[] = lessonData.vocabulary_items.map((item) => ({
     variant: 'vocab',
     front: item.es,
     back: item.en,
@@ -93,7 +98,7 @@ export default function LessonPage() {
     const firstInitial = name.charAt(0).toUpperCase() || '?';
 
     return (
-      <div className="min-h-screen w-full bg-background-primary flex flex-col items-center px-6 pt-4 relative">
+      <div className="min-h-[100dvh] w-full bg-background-primary flex flex-col items-center px-4 relative pb-2">
         <button
           onClick={() => router.push('/home')}
           className="absolute left-2 top-2 text-2xl font-semibold text-secondary"
@@ -101,19 +106,25 @@ export default function LessonPage() {
           <TablerChevronLeft />
         </button>
 
-        <div className="flex flex-col items-center text-center mt-8 space-y-4">
+        <div className="flex flex-col items-center text-center pt-2 space-y-4">
           <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center">
-            <span className="text-4xl font-extrabold text-white">{firstInitial}</span>
+            <span className="text-4xl font-extrabold text-white">
+              {firstInitial}
+            </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-secondary">Welcome {name}</h1>
-          <p className="text-sm text-secondary">¡Buena suerte con esta lección!</p>
+          <h1 className="text-2xl font-extrabold text-secondary">
+            Welcome {name}
+          </h1>
+          <p className="text-sm text-secondary">
+            ¡Buena suerte con esta lección!
+          </p>
         </div>
 
         <div className="flex-grow" />
 
         <button
           onClick={() => setStarted(true)}
-          className="mb-30 w-full max-w-xs py-4 rounded-full bg-secondary text-white font-semibold shadow-md"
+          className="w-full max-w-xs py-4 rounded-full bg-secondary text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
         >
           {lessonData.title}
         </button>

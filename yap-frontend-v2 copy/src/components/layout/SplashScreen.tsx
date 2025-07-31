@@ -1,9 +1,3 @@
-// SplashScreen.tsx
-// This component displays a 3-slide onboarding splash screen
-// and allows users to skip or proceed to the main app.
-// It is used after the "Securing your account..." loader.
-// And renders after the loader completes.
-
 'use client';
 import { useState } from 'react';
 import cardImage from '@/assets/card.png';
@@ -30,26 +24,25 @@ const splashSlides = [
     text: 'Keep your streak',
   },
 ];
+
 export default function SplashScreen({ onFinish }: SplashScreenProps) {
   const [index, setIndex] = useState(0);
   const isLastSlide = index === splashSlides.length - 1;
 
   return (
-    <div className="min-h-screen w-full bg-background-primary px-6 relative flex flex-col">
+    <div className="min-h-[100dvh] w-full bg-background-primary px-6 flex flex-col pb-2">
       {/* Logo and Skip */}
-      <div className="relative flex items-center justify-center">
-        <div className="mt-2">
-          <YapIcon />
-        </div>
+      <div className="relative flex items-center justify-center mt-2">
+        <YapIcon />
         <button
           onClick={onFinish}
-          className="absolute right-0 top-2 text-sm text-secondary"
+          className="absolute right-6 top-0 text-sm text-secondary"
         >
           Skip
         </button>
       </div>
 
-      {/* Image + Text + Next button */}
+      {/* Content */}
       <div className="flex flex-col items-center mt-12 px-4">
         <div className="w-full max-w-sm mb-4 h-[360px] flex items-center justify-center">
           <Image
@@ -64,7 +57,9 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
         <p className="text-2xl font-semibold text-secondary text-center max-w-xs mb-6">
           {splashSlides[index].text.toUpperCase()}
         </p>
+      </div>
 
+      <div className="w-full px-4 mt-auto flex justify-center">
         <button
           onClick={() => (isLastSlide ? onFinish() : setIndex(index + 1))}
           className="bg-secondary text-white py-3 px-6 rounded-full shadow-md w-full max-w-xs"

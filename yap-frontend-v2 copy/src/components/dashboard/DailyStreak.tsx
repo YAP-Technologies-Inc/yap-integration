@@ -9,7 +9,6 @@ import { useUserStats } from '@/hooks/useUserStats';
 const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 const STORAGE_KEY = 'login-days';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-// const API_URL = "https://api.dev.yapapp.io";
 
 const getStartOfWeek = () => {
   const d = new Date();
@@ -32,7 +31,6 @@ export default function DailyStreak() {
   const totalStreak = stats?.currentStreak ?? 0;
   const highestStreak = stats?.highestStreak ?? 0;
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   // weekly check‑in
   const [completedDays, setCompletedDays] = useState<boolean[]>(
     Array(7).fill(false)
@@ -110,20 +108,20 @@ export default function DailyStreak() {
       </div>
 
       {/* Days */}
-      <div className="w-full flex justify-around">
+      <div className="w-full flex justify-center space-x-2">
         {days.map((day, idx) => {
           const done = completedDays[idx];
           const isToday = idx === todayIndex;
           return (
             <div key={idx} className="flex flex-col items-center">
               <div
-                className={`
-                  w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold ring-white opacity-50 ring-2
-                  ${done ? 'bg-secondary text-white' : 'bg-secondary opacity-60'}
-                  ${isToday ? 'ring-2 ring-tertiary' : ''}
-                `}
+              className={`
+                w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold ring-white opacity-50 ring-2
+                ${done ? 'bg-secondary text-white' : 'bg-secondary opacity-60'}
+                ${isToday ? 'ring-2 ring-tertiary' : ''}
+              `}
               >
-                {done && <TablerCheck className="w-5 h-5 text-white" />}
+              {done && <TablerCheck className="w-5 h-5 text-white" />}
               </div>
               <span className="text-xs text-white mt-1">{day}</span>
             </div>
