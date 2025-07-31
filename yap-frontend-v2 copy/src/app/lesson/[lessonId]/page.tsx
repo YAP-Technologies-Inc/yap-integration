@@ -101,8 +101,9 @@ export default function LessonPage() {
       <div className="min-h-[100dvh] w-full bg-background-primary flex flex-col items-center px-4 relative pb-2">
         <button
           onClick={() => router.push('/home')}
-          className="absolute left-2 top-2 text-2xl font-semibold text-secondary"
-        >
+          className="absolute left-2 top-2 text-2xl font-semibold text-secondary
+           lg:left-6 lg:top-6 lg:text-4xl
+          ">
           <TablerChevronLeft />
         </button>
 
@@ -121,13 +122,14 @@ export default function LessonPage() {
         </div>
 
         <div className="flex-grow" />
-
-        <button
-          onClick={() => setStarted(true)}
-          className="w-full max-w-xs py-4 rounded-full bg-secondary text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
-        >
-          {lessonData.title}
-        </button>
+        <div className='flex flex-col items-center w-full lg:pb-20'>
+          <button
+            onClick={() => setStarted(true)}
+            className="hover:cursor-pointer w-full max-w-xs py-4 rounded-full bg-secondary text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
+          >
+            {lessonData.title}
+          </button>
+        </div>
       </div>
     );
   }

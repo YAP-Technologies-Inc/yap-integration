@@ -12,7 +12,7 @@ import {
   TablerHelp,
   TablerFileTextShield,
   TablerChevronLeft,
-  TablerBrandDiscordFilled
+  TablerBrandDiscordFilled,
 } from '@/icons';
 
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -77,20 +77,31 @@ export default function ProfilePage() {
   // If user navigated to info sub-page
   if (activePage !== 'menu') {
     return (
-      <div className="min-h-[100dvh] bg-background-primary px-4 pt-2flex flex-col">
+      <div className="min-h-[100dvh] bg-background-primary px-4 pt-2flex flex-col ">
         <button
           onClick={() => setActivePage('menu')}
           className="flex items-center font-bold text-gray-500 mb-6"
         >
-          <TablerChevronLeft className="mr-1 hover:cursor-pointer" />
+          <TablerChevronLeft className="mr-1 hover:cursor-pointer
+          lg:top-6 lg:left-6 lg:text-2xl lg:mt-4
+          " />
         </button>
-        <h1 className="text-xl font-bold text-secondary mb-4 capitalize">
+        <h1 className="text-xl font-bold text-secondary mb-4 capitalize lg:px-12">
           {activePage}
         </h1>
-        <div className="text-sm text-gray-500 leading-relaxed">
+        <div className="text-sm text-gray-500 leading-relaxed lg:px-12">
           {activePage === 'about' && (
             <p>
-              This app is designed to help users achieve fluency in their target language through immersive speaking practice. By engaging in conversations, users can improve their speed, fluency, accent, and overall language proficiency. The app leverages an advanced AI system to evaluate your speech on multiple dimensions, including pronunciation accuracy, intonation, and how closely your accent matches that of a native speaker. This detailed feedback ensures a comprehensive learning experience. Additionally, users can earn on-chain rewards for their progress, making the journey of mastering a new language both effective and highly rewarding.
+              This app is designed to help users achieve fluency in their target
+              language through immersive speaking practice. By engaging in
+              conversations, users can improve their speed, fluency, accent, and
+              overall language proficiency. The app leverages an advanced AI
+              system to evaluate your speech on multiple dimensions, including
+              pronunciation accuracy, intonation, and how closely your accent
+              matches that of a native speaker. This detailed feedback ensures a
+              comprehensive learning experience. Additionally, users can earn
+              on-chain rewards for their progress, making the journey of
+              mastering a new language both effective and highly rewarding.
               <br />
               <br />
               Built with love ❤️ by the YAP team.
@@ -99,32 +110,43 @@ export default function ProfilePage() {
           {activePage === 'help' && (
             <div className="flex flex-col items-start">
               <p>
-              Need assistance? We&apos;re here to help! For any questions or to report bugs, feel free to reach out to us.
+                Need assistance? We&apos;re here to help! For any questions or
+                to report bugs, feel free to reach out to us.
               </p>
               <a
-              href="https://discord.com/invite/6uZFtMhM2z"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 flex items-center text-blue-500 hover:underline"
+                href="https://discord.com/invite/6uZFtMhM2z"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 flex items-center text-blue-500 hover:underline"
               >
-              <TablerBrandDiscordFilled className="mr-2" />
-              Join our Discord for support
+                <TablerBrandDiscordFilled className="mr-2" />
+                Join our Discord for support
               </a>
             </div>
           )}
           {activePage === 'terms' && (
             <div>
               <p>
-              By using this app, you agree to the following terms and conditions:
+                By using this app, you agree to the following terms and
+                conditions:
               </p>
               <ul className="list-disc list-inside mt-2 text-gray-500">
-              <li>This app is provided "as is" without any warranties.</li>
-              <li>We are not responsible for any data loss or inaccuracies.</li>
-              <li>Users must not misuse the app or engage in any illegal activities.</li>
-              <li>All rewards and features are subject to change during the testing phase.</li>
+                <li>This app is provided "as is" without any warranties.</li>
+                <li>
+                  We are not responsible for any data loss or inaccuracies.
+                </li>
+                <li>
+                  Users must not misuse the app or engage in any illegal
+                  activities.
+                </li>
+                <li>
+                  All rewards and features are subject to change during the
+                  testing phase.
+                </li>
               </ul>
               <p className="mt-2">
-              Please note that this app is currently in testing, and your feedback is highly appreciated to improve the experience.
+                Please note that this app is currently in testing, and your
+                feedback is highly appreciated to improve the experience.
               </p>
             </div>
           )}
@@ -150,10 +172,9 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="mt-2 w-full flex justify-center hover:cursor-pointer">
-          <Button
-            label={`View Wallet (${walletShort})`}
-            className="w-full text-black bg-white px-6 py-3 border-black rounded-xl shadow-md transition-colors hover:pointer-cursor"
+        <div className="mt-2 w-full flex justify-center">
+          <button
+            className="w-full text-black bg-white px-6 py-3 border-gray-200 border-2 rounded-xl shadow-sm transition-colors hover:cursor-pointer"
             onClick={() =>
               evmAddress
                 ? window.open(
@@ -162,12 +183,17 @@ export default function ProfilePage() {
                   )
                 : pushToast('No wallet connected.', 'error')
             }
-          />
+          >
+            View Wallet ({walletShort})
+          </button>
         </div>
 
-        <div className="w-full mt-2 flex flex-col items-start">
-          <h2 className="text-md font-bold text-secondary mb-2">Statistics</h2>
-          <div className="flex gap-4 overflow-x-auto no-scrollbar">
+        <div className="w-full mt-2 flex flex-col items-center">
+          <h2 className="text-md font-bold text-secondary mb-2 self-start px-4 lg:px-0 lg:max-w-4xl w-full">
+            Statistics
+          </h2>
+
+          <div className="flex gap-4 overflow-x-auto no-scrollbar px-4 w-full justify-start lg:justify-between lg:max-w-4xl lg:px-0">
             <StatCard icon="🔥" label="Streak" value={totalStreak} />
             <StatCard icon="📚" label="Language" value={language} />
             <StatCard

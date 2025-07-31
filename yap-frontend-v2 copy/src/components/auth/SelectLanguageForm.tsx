@@ -21,8 +21,9 @@ export default function SelectLanguageForm({
     <div className="min-h-[100dvh] w-full bg-background-primary px-6 relative flex flex-col overflow-hidden">
       <button
         onClick={onBack}
-        className="absolute left-2 top-2 text-2xl font-semibold text-secondary"
-      >
+        className="absolute left-2 top-2 text-2xl font-semibold text-secondary hover:cursor-pointer 
+        lg:left-6 lg:top-6 lg:text-4xl
+        ">
         <div className="mt-2">
           <TablerChevronLeft />
         </div>
@@ -39,13 +40,14 @@ export default function SelectLanguageForm({
         </p>
       </div>
 
-      <div className="flex flex-col gap-3 max-w-sm w-full mx-auto">
+      <div className="flex flex-col gap-3 max-w-sm w-full mx-auto ">
         {languages.map(({ name, flag }) => (
           <button
             key={name}
             onClick={() => onSelect(name)}
-            className="w-full bg-white rounded-xl px-4 py-3 text-left text-[#2D1C1C] text-base font-medium shadow-sm border border-gray-200 flex items-center gap-3"
-          >
+            className="w-full bg-white rounded-xl px-4 py-3 text-left text-[#2D1C1C] text-base font-medium shadow-sm border border-gray-200 flex items-center gap-3
+            hover:cursor-pointer 
+            ">
             <img
               src={flag.src}
               alt={`${name} flag`}

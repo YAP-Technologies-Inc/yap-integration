@@ -78,7 +78,11 @@ export default function SignUpForm() {
         <AuthLogo />
 
         <div className="mt-6 mb-4 text-center">
-          <h2 className="text-2xl font-bold text-secondary">
+          <h2
+            className="text-2xl font-bold text-secondary
+        lg:w-max-lg
+        "
+          >
             Create an account
           </h2>
           <p className="text-base text-secondary mt-1">
@@ -105,11 +109,15 @@ export default function SignUpForm() {
         </form>
       </div>
 
-      <div className="w-full max-w-sm mt-auto pb-2 ">
+      <div
+        className="w-full mt-auto pb-2 flex justify-center
+      lg:pb-8
+      "
+      >
         <button
           type="submit"
           form="signup-form"
-          className="w-full bg-secondary text-white font-semibold py-4 rounded-full shadow-md"
+          className="w-full max-w-sm bg-secondary text-white font-semibold py-4 px-8 rounded-full shadow-md hover:cursor-pointer"
         >
           Next
         </button>

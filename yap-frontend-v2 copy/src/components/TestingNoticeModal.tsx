@@ -23,13 +23,12 @@ export default function TestingNoticeModal() {
     <div className="fixed inset-0 bg-opacity-10 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full mx-4 text-center">
         <h2 className="text-xl font-bold text-gray-800 mb-2">
-          👋 YAP is in Testing Mode
+          👋  YAP is in Testing Mode
         </h2>
         <p className="text-sm text-gray-600 mb-4">
           You’re using an early test version of our app. If you see any bugs,
-          broken features, or error messages, please let us know! AI Spanish
-          teacher is under development as there is no way to sponsor your gas
-          fee currently.
+          broken features, or error messages, please let us know! The AI Spanish
+          teacher is not available yet, but we’re working hard to bring it to you.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a
@@ -50,7 +49,7 @@ export default function TestingNoticeModal() {
 
         <button
           onClick={closeModal}
-          className="mt-4 text-sm text-gray-500 underline hover:text-gray-700"
+          className="mt-4 text-sm text-gray-500 underline hover:text-gray-700 hover:cursor-pointer"
         >
           Dismiss
         </button>
