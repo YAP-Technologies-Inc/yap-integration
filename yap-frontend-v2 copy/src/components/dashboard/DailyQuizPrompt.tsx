@@ -37,7 +37,7 @@ export default function DailyQuizCard({
 
   return (
     <div
-      className={`relative rounded-2xl px-6 py-4 shadow-md w-full ${bgClass}`}
+      className={`relative rounded-2xl px-6 py-4 shadow-md w-full ${bgClass} py-6`}
     >
       {(isLocked || isDone) && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -48,7 +48,7 @@ export default function DailyQuizCard({
       <div className={isActive ? '' : 'opacity-40 pointer-events-none'}>
         <h3 className="text-lg font-semibold mb-2">Daily Quiz</h3>
 
-        <div className="flex justify-between items-center">
+        {/* <div className="flex justify-between items-center">
           <div className={`flex items-center gap-2 ${iconOpacity}`}>
             <img src={coin.src} alt="Reward" className="w-5 h-5" />
             <span className="text-sm font-medium">+1 $YAP</span>
@@ -57,7 +57,7 @@ export default function DailyQuizCard({
             <div className="w-5 h-5 rounded-full border-4 border-red-500 border-t-transparent animate-spin-slow"></div>
             <span className="text-sm font-medium">2/3 attempts left</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
