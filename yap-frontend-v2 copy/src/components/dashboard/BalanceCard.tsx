@@ -26,9 +26,9 @@ export default function BalanceCard() {
     );
   }
   return (
-    <div className="bg-white w-full rounded-xl shadow px-6 py-4 flex items-center justify-between border-b-2 border-gray-200">
+    <div className="bg-white w-full rounded-xl shadow px-6 py-4 flex items-center justify-between border-b-3 border-gray-200">
       <div className="flex flex-col">
-        <span className="text-sm text-[#5C4B4B] font-medium mb-1">
+        <span className="text-sm text-secondary font-medium mb-1">
           Available Balance
         </span>
         <span className="text-2xl font-bold text-secondary">

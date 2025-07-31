@@ -37,7 +37,7 @@ export default function DailyQuizCard({
 
   return (
     <div
-      className={`relative rounded-2xl px-6 py-4 shadow-md w-full ${bgClass} py-6`}
+      className={`relative rounded-2xl px-6 py-10 shadow-md w-full ${bgClass} py-6`}
     >
       {(isLocked || isDone) && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -45,8 +45,8 @@ export default function DailyQuizCard({
         </div>
       )}
 
-      <div className={isActive ? '' : 'opacity-40 pointer-events-none'}>
-        <h3 className="text-lg font-semibold mb-2">Daily Quiz</h3>
+      <div className={isActive ? '' : 'opacity-40 pointer-events-none '}>
+        {/* <h3 className="text-lg font-semibold mb-2">Daily Quiz</h3> */}
 
         {/* <div className="flex justify-between items-center">
           <div className={`flex items-center gap-2 ${iconOpacity}`}>

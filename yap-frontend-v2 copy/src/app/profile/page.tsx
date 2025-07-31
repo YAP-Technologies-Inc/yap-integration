@@ -1,4 +1,3 @@
-// src/app/profile/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -13,10 +12,12 @@ import {
   TablerHelp,
   TablerFileTextShield,
   TablerChevronLeft,
+  TablerBrandDiscordFilled
 } from '@/icons';
 
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useOnChainBalance } from '@/hooks/useOnBlockChain';
+import { useUserStats } from '@/hooks/useUserStats';
 import { useToast } from '@/components/ui/ToastProvider';
 
 type InfoPage = 'menu' | 'about' | 'help' | 'terms';
@@ -27,18 +28,19 @@ export default function ProfilePage() {
   const { wallets } = useWallets();
   const { pushToast } = useToast();
   const userId = user?.id ?? null;
-  // find the Privy‐embedded wallet and grab its address
   const evmAddress =
     wallets.find((w) => w.walletClientType === 'privy')?.address ?? '';
-
-  // pull on‐chain balance (in YAP) for that address
   const {
     balance: onChainBalance,
     isLoading: isBalanceLoading,
     isError: balanceError,
   } = useOnChainBalance(evmAddress);
+  const {
+    stats,
+    isLoading: statsLoading,
+    isError: statsError,
+  } = useUserStats(userId);
 
-  // still fetch profile for name / language
   const {
     name,
     language,
@@ -46,15 +48,22 @@ export default function ProfilePage() {
     isError: profileError,
   } = useUserProfile(userId);
 
-  // global loading / error
-  if (profileLoading || isBalanceLoading) {
+  const isLoading = profileLoading || isBalanceLoading || !evmAddress;
+  const hasError = profileError || balanceError;
+
+  const walletShort = evmAddress
+    ? `${evmAddress.slice(0, 6)}…${evmAddress.slice(-4)}`
+    : null;
+
+  if (isLoading || !walletShort) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Loading profile…</p>
       </div>
     );
   }
-  if (profileError || balanceError) {
+
+  if (hasError) {
     return (
       <div className="flex items-center justify-center min-h-screen text-red-500">
         <p>Failed to load account data.</p>
@@ -62,19 +71,13 @@ export default function ProfilePage() {
     );
   }
 
-  // shorthand for display
-  const walletShort = evmAddress
-    ? `${evmAddress.slice(0, 6)}…${evmAddress.slice(-4)}`
-    : 'Unknown';
   const firstInitial = name.charAt(0).toUpperCase() || '?';
+  const totalStreak = stats?.currentStreak ?? 0;
 
-  // use the on‐chain balance instead of stats.tokenBalance
-  const tokenBalance = onChainBalance ?? 0;
-
-  // menu vs info pages
+  // If user navigated to info sub-page
   if (activePage !== 'menu') {
     return (
-      <div className="min-h-screen bg-background-primary p-6 flex flex-col ">
+      <div className="min-h-[100dvh] bg-background-primary px-4 pt-2flex flex-col">
         <button
           onClick={() => setActivePage('menu')}
           className="flex items-center font-bold text-gray-500 mb-6"
@@ -87,26 +90,50 @@ export default function ProfilePage() {
         <div className="text-sm text-gray-500 leading-relaxed">
           {activePage === 'about' && (
             <p>
-              This app helps you learn languages while earning rewards. Built
-              with love at YAP Tech.
+              This app is designed to help users achieve fluency in their target language through immersive speaking practice. By engaging in conversations, users can improve their speed, fluency, accent, and overall language proficiency. The app leverages an advanced AI system to evaluate your speech on multiple dimensions, including pronunciation accuracy, intonation, and how closely your accent matches that of a native speaker. This detailed feedback ensures a comprehensive learning experience. Additionally, users can earn on-chain rewards for their progress, making the journey of mastering a new language both effective and highly rewarding.
+              <br />
+              <br />
+              Built with love ❤️ by the YAP team.
             </p>
           )}
           {activePage === 'help' && (
-            <p>
-              Need help? Contact us at support@goyap.ai or check out the FAQ on
-              our site.
-            </p>
+            <div className="flex flex-col items-start">
+              <p>
+              Need assistance? We&apos;re here to help! For any questions or to report bugs, feel free to reach out to us.
+              </p>
+              <a
+              href="https://discord.com/invite/6uZFtMhM2z"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 flex items-center text-blue-500 hover:underline"
+              >
+              <TablerBrandDiscordFilled className="mr-2" />
+              Join our Discord for support
+              </a>
+            </div>
           )}
           {activePage === 'terms' && (
-            <p>By using this app, you agree to our terms and conditions.</p>
+            <div>
+              <p>
+              By using this app, you agree to the following terms and conditions:
+              </p>
+              <ul className="list-disc list-inside mt-2 text-gray-500">
+              <li>This app is provided "as is" without any warranties.</li>
+              <li>We are not responsible for any data loss or inaccuracies.</li>
+              <li>Users must not misuse the app or engage in any illegal activities.</li>
+              <li>All rewards and features are subject to change during the testing phase.</li>
+              </ul>
+              <p className="mt-2">
+              Please note that this app is currently in testing, and your feedback is highly appreciated to improve the experience.
+              </p>
+            </div>
           )}
         </div>
       </div>
     );
   }
-
   return (
-    <div className="bg-background-primary min-h-screen flex flex-col items-center">
+    <div className="bg-background-primary min-h-[100dvh] flex flex-col items-center pb-nav">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
         <div className="text-xl font-bold text-secondary text-center">
           Account
@@ -121,14 +148,9 @@ export default function ProfilePage() {
           <div className="mt-1 text-lg font-semibold text-secondary">
             {name}
           </div>
-          {language && (
-            <div className="text-sm text-secondary mt-1 font-light">
-              Learning: {language}
-            </div>
-          )}
         </div>
 
-        <div className="mt-4 px-8 w-full flex justify-center hover:cursor-pointer">
+        <div className="mt-2 w-full flex justify-center hover:cursor-pointer">
           <Button
             label={`View Wallet (${walletShort})`}
             className="w-full text-black bg-white px-6 py-3 border-black rounded-xl shadow-md transition-colors hover:pointer-cursor"
@@ -143,25 +165,22 @@ export default function ProfilePage() {
           />
         </div>
 
-        <div className="w-full mt-6 flex flex-col items-center">
-          <h2 className="text-md font-bold text-secondary mb-4 text-center">
-            Statistics
-          </h2>
-          <div className="flex items-center justify-center gap-24">
-            <StatCard icon="🔥" label="Streak" value={0} />
+        <div className="w-full mt-2 flex flex-col items-start">
+          <h2 className="text-md font-bold text-secondary mb-2">Statistics</h2>
+          <div className="flex gap-4 overflow-x-auto no-scrollbar">
+            <StatCard icon="🔥" label="Streak" value={totalStreak} />
+            <StatCard icon="📚" label="Language" value={language} />
             <StatCard
               icon={coin.src}
               label="Total $YAP"
-              value={tokenBalance}
+              value={onChainBalance ?? 0}
               isImage
             />
           </div>
         </div>
 
-        <div className="w-full mt-6 pb-20 flex flex-col items-center">
-          <h2 className="text-md font-bold text-secondary mb-3 text-center hover:cursor-pointer">
-            Others
-          </h2>
+        <div className="w-full mt-2 flex flex-col items-start">
+          <h2 className="text-md font-bold text-secondary mb-2">Others</h2>
           <InfoListCard
             items={[
               {

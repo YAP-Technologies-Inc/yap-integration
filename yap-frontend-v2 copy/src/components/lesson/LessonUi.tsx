@@ -204,7 +204,7 @@ export default function LessonUi({
   };
 
   return (
-    <div className="fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
+    <div className="min-h[100dvh] fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
       {/* Exit + Progress bar */}
       <div className="flex items-center">
         <button onClick={() => router.push('/home')} className="text-secondary">
