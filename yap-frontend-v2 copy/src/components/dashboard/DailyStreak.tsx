@@ -108,20 +108,25 @@ export default function DailyStreak() {
       </div>
 
       {/* Days */}
-      <div className="w-full flex justify-center space-x-2">
+      <div className="w-full flex justify-center space-x-2 ">
         {days.map((day, idx) => {
           const done = completedDays[idx];
           const isToday = idx === todayIndex;
           return (
-            <div key={idx} className="flex flex-col items-center">
+            <div
+              key={idx}
+              className="flex flex-col items-center 
+            lg:w-full
+            "
+            >
               <div
-              className={`
+                className={`
                 w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold ring-white opacity-50 ring-2
                 ${done ? 'bg-secondary text-white' : 'bg-secondary opacity-60'}
                 ${isToday ? 'ring-2 ring-tertiary' : ''}
               `}
               >
-              {done && <TablerCheck className="w-5 h-5 text-white" />}
+                {done && <TablerCheck className="w-5 h-5 text-white" />}
               </div>
               <span className="text-xs text-white mt-1">{day}</span>
             </div>

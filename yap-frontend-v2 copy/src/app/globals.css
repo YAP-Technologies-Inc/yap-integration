@@ -1,5 +1,36 @@
 @import "tailwindcss";
 
+/*
+@media (min-width: 1024px) {
+
+  .privy-modal-content,
+  .ContentWrapper-sc-b220elee-0 {
+    max-width: 600px !important;
+    width: 600px !important;
+    padding: 2rem !important;
+  }
+
+
+  #privy-dialog-title {
+    font-size: 1rem !important; 
+  }
+
+  .Subtitle-sc-ddbf22b4-4 {
+    font-size: 1rem !important; 
+  }
+
+
+  .AlignBottom-sc-ddbf22b4-1 {
+    margin-top: 1.5rem !important;
+  }
+
+
+  .TermsAndConditionsContainer-sc-bdb69ecc-0 {
+    font-size: 0.75rem;
+    padding: 0 0.75rem;
+  }
+} 
+*/
 @theme {
   --color-primary: #4372c4;
   --color-secondary: #2f1a1b;
@@ -46,26 +77,7 @@ html {
   --privy-color-background-2: #f0ebe1;
   --privy-color-background-3: #f0ebe1;
 
-  /* --privy-border-radius-sm: 'your-custom-value';
-  --privy-border-radius-md: 'your-custom-value';
-  --privy-border-radius-lg: 'your-custom-value';
-  --privy-border-radius-full: 'your-custom-value';
-  --privy-color-background: 'your-custom-value';
-  --privy-color-background-2: 'your-custom-value';
-  --privy-color-background-3: 'your-custom-value';
-  --privy-color-foreground: 'your-custom-value';
-  --privy-color-foreground-2: 'your-custom-value';
-  --privy-color-foreground-3: 'your-custom-value';
-  --privy-color-foreground-4: 'your-custom-value';
-  --privy-color-foreground-accent: 'your-custom-value';
-  --privy-color-accent: 'your-custom-value';
-  --privy-color-accent-light: 'your-custom-value';
-  --privy-color-accent-lightest: 'your-custom-value';
-  --privy-color-accent-dark: 'your-custom-value';
-  --privy-color-accent-darkest: 'your-custom-value';
-  --privy-color-success: 'your-custom-value';
-  --privy-color-error: 'your-custom-value';
-  --privy-color-error-light: 'your-custom-value'; */
+
 }
 
 /* Used to remove default browser eye icons from popping up beside our icon */

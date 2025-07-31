@@ -36,14 +36,20 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
         <YapIcon />
         <button
           onClick={onFinish}
-          className="absolute right-6 top-0 text-sm text-secondary"
+          className="absolute right-6 top-0 text-sm text-secondary hover:cursor-pointer
+          lg:right-8 lg:top-2 lg:text-xl
+          "
         >
           Skip
         </button>
       </div>
 
       {/* Content */}
-      <div className="flex flex-col items-center mt-12 px-4">
+      <div
+        className="flex flex-col items-center mt-12 px-4
+      lg:pt-36
+      "
+      >
         <div className="w-full max-w-sm mb-4 h-[360px] flex items-center justify-center">
           <Image
             src={splashSlides[index].image}
@@ -59,11 +65,14 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
         </p>
       </div>
 
-      <div className="w-full px-4 mt-auto flex justify-center">
+      <div
+        className="w-full px-4 mt-auto flex justify-center *:
+        lg:pb-20  
+      "
+      >
         <button
           onClick={() => (isLastSlide ? onFinish() : setIndex(index + 1))}
-          className="bg-secondary text-white py-3 px-6 rounded-full shadow-md w-full max-w-xs"
-        >
+          className="bg-secondary text-white py-3 px-6 rounded-full shadow-md w-full max-w-xs hover:cursor-pointer">
           {isLastSlide ? 'Start' : 'Next'}
         </button>
       </div>

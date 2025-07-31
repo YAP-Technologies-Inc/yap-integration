@@ -207,7 +207,7 @@ export default function LessonUi({
     <div className="min-h[100dvh] fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
       {/* Exit + Progress bar */}
       <div className="flex items-center">
-        <button onClick={() => router.push('/home')} className="text-secondary">
+        <button onClick={() => router.push('/home')} className="text-secondary hover:cursor-pointer">
           <TablerX className="w-6 h-6" />
         </button>
         <div className="flex-1 h-2 bg-gray-200 rounded-full ml-4 overflow-hidden">
@@ -264,7 +264,7 @@ export default function LessonUi({
             <button
               onClick={assessPronunciation}
               disabled={isLoading}
-              className="text-sm px-3 py-2 bg-green-500 text-white rounded-full shadow"
+              className="text-sm px-3 py-2 bg-green-500 text-white rounded-full shadow hover:cursor-pointer"
             >
               {isLoading ? 'Scoring…' : 'Submit'}
             </button>
@@ -274,7 +274,7 @@ export default function LessonUi({
             {audioURL && (
               <button
                 onClick={resetAudioState}
-                className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center"
+                className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer"
               >
                 <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
               </button>
@@ -282,7 +282,7 @@ export default function LessonUi({
 
             <button
               onClick={() => (isRecording ? stopRecording() : startRecording())}
-              className="w-16 h-16 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center"
+              className="w-16 h-16 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center hover:cursor-pointer"
             >
               {isRecording ? (
                 <TablerPlayerPauseFilled className="w-7 h-7 text-white" />
@@ -299,7 +299,7 @@ export default function LessonUi({
                     audioRef.current.play();
                   }
                 }}
-                className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center"
+                className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer"
               >
                 <TablerVolume className="w-6 h-6 text-[#EF4444]" />
               </button>
