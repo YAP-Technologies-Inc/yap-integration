@@ -29,27 +29,29 @@ function Snack({
   className = '',
   onDismiss,
 }: SnackProps) {
-  const defaultIcon =
+    const defaultIcon =
     variant === 'completion' ? (
       <div className="w-6 h-6 relative">
         <div className="absolute inset-0 animate-spin rounded-full border-2 border-yellow-500 border-t-transparent" />
       </div>
+    ) : variant === 'custom' ? (
+      <TablerCheck className="w-6 h-6 text-green-600" />
     ) : (
       <TablerCheck className="w-6 h-6" />
     );
+  
 
   return (
     <div
       className={clsx(
         'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border',
         {
-          'bg-green-100 text-green-800 border-green-200': variant === 'success',
-          'bg-red-100 text-red-800 border-red-200': variant === 'error',
-          'bg-blue-100 text-blue-800 border-blue-200': variant === 'info',
-          'bg-background-primary text-secondary border-background-primary':
-            variant === 'completion',
-          'bg-white text-gray-800 border-gray-300': variant === 'custom',
-        },
+            'bg-green-100 text-green-800 border-green-200': variant === 'success',
+            'bg-red-100 text-red-800 border-red-200': variant === 'error',
+            'bg-blue-100 text-blue-800 border-blue-200': variant === 'info',
+            'bg-background-primary text-secondary border-background-primary':
+              variant === 'completion' || variant === 'custom',
+          },
         className
       )}
     >
@@ -70,7 +72,7 @@ function Snack({
 
 export type SnackbarConfig = {
   message: string;
-  variant?: 'success' | 'error' | 'info' | 'completion';
+  variant?: 'success' | 'error' | 'info' | 'completion' | 'custom';
   duration?: number;
   id?: number;
   manual?: boolean; 

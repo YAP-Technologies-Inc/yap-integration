@@ -16,8 +16,8 @@ import {
 import Flashcard from '@/components/cards/FlashCard';
 import { GrammarCard } from '@/components/cards/GrammarCard';
 import { ComprehensionCard } from '@/components/cards/ComprehensionCard';
-
-import { getRandomFeedbackPhrase } from '@/utils/feedbackPhrase'; 
+import { useSnackbar } from '@/components/ui/SnackBar';
+import { getRandomFeedbackPhrase } from '@/utils/feedbackPhrase';
 
 interface StepVocab {
   variant: 'vocab';
@@ -80,7 +80,7 @@ export default function LessonUi({
   const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
+  const { showSnackbar, removeSnackbar } = useSnackbar();
   const needsSpeaking =
     current.variant === 'sentence' || current.variant === 'vocab';
 
@@ -154,6 +154,8 @@ export default function LessonUi({
     setIsRecording(false);
   };
 
+  const [isVerifying, setIsVerifying] = useState(false); // top-level state
+
   const assessPronunciation = async () => {
     if (!audioBlob || !referenceText) return;
     setIsLoading(true);
@@ -182,19 +184,51 @@ export default function LessonUi({
       const randomPhrase = getRandomFeedbackPhrase(scaled);
       setFeedback(randomPhrase);
 
-      setTimeout(async () => {
-        if (stepIndex + 1 >= total) {
-          await fetch(`${API_URL}/api/complete-lesson`, {
+      // Wait for score to display
+      await new Promise((res) => setTimeout(res, 1500));
+
+      if (stepIndex + 1 >= total) {
+        const snackId = Date.now();
+        setIsVerifying(true); // Show dark overlay
+
+        showSnackbar({
+          id: snackId,
+          message: 'Verifying lesson on-chain...',
+          variant: 'completion',
+          manual: true,
+        });
+
+        try {
+          const res = await fetch(`${API_URL}/api/complete-lesson`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, walletAddress, lessonId }),
           });
-          pushToast('Lesson complete! YAP token sent', 'success');
-          onComplete();
-        } else {
-          next();
+
+          if (!res.ok) throw new Error('Verification failed');
+
+          removeSnackbar(snackId);
+          showSnackbar({
+            message: 'Lesson complete! YAP token sent',
+            variant: 'custom',
+            duration: 3000,
+          });
+
+          setTimeout(() => {
+            setIsVerifying(false);
+            onComplete(); // Push to /home
+          }, 1200);
+        } catch (e) {
+          setIsVerifying(false);
+          removeSnackbar(snackId);
+          showSnackbar({
+            message: 'Lesson failed to verify. Please try again.',
+            variant: 'error',
+          });
         }
-      }, 1500);
+      } else {
+        next();
+      }
     } catch (err) {
       console.error(err);
       pushToast('Assessment failed', 'error');
@@ -207,7 +241,10 @@ export default function LessonUi({
     <div className="min-h[100dvh] fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
       {/* Exit + Progress bar */}
       <div className="flex items-center">
-        <button onClick={() => router.push('/home')} className="text-secondary hover:cursor-pointer">
+        <button
+          onClick={() => router.push('/home')}
+          className="text-secondary hover:cursor-pointer"
+        >
           <TablerX className="w-6 h-6" />
         </button>
         <div className="flex-1 h-2 bg-gray-200 rounded-full ml-4 overflow-hidden">
@@ -310,6 +347,9 @@ export default function LessonUi({
             <audio ref={audioRef} src={audioURL} className="hidden" />
           )}
         </div>
+      )}
+      {isVerifying && (
+        <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
       )}
     </div>
   );
