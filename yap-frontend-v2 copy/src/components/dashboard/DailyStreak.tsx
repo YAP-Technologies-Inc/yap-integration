@@ -94,7 +94,7 @@ export default function DailyStreak() {
     return <p className="text-red-500">Failed to load streak data.</p>;
 
   return (
-    <div className="bg-secondary w-full rounded-xl shadow px-6 py-4 flex flex-col border-b-2 border-gray-300 relative">
+    <div className="bg-secondary w-full rounded-xl px-6 py-4 flex flex-col border-b-2 border-gray-300 relative">
       {/* Header */}
       <div className="flex items-center gap-2 text-white mb-4">
         <img src={flame.src} alt="Flame icon" className="w-5 h-5" />
