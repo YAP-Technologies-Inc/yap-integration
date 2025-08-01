@@ -22,12 +22,15 @@ import { ethers } from 'ethers';
 import { tokenAbi } from '@/app/abis/YAPToken';
 import { useToast } from '@/components/ui/ToastProvider';
 import TestingNoticeModal from '@/components/TestingNoticeModal';
+
+import { useSnackbar } from '@/components/ui/SnackBar';
 export default function HomePage() {
   useInitializeUser();
   const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
   const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { pushToast } = useToast();
+  const { showSnackbar } = useSnackbar();
   const [lessons, setLessons] = useState<
     {
       id: string;
@@ -91,11 +94,10 @@ export default function HomePage() {
   useEffect(() => {
     if (!userId) return;
     fetch(`${API_URL}/api/daily-quiz-status/${userId}`)
-      .then(res => res.json())
-      .then(data => setDailyQuizCompleted(data.completed))
+      .then((res) => res.json())
+      .then((data) => setDailyQuizCompleted(data.completed))
       .catch(() => {});
   }, [userId]);
-
 
   // Unified loading state
   if (
@@ -110,7 +112,6 @@ export default function HomePage() {
       </div>
     );
   }
-
 
   const handleSpanishTeacherAccess = async () => {
     setCheckingAccess(true);
@@ -204,19 +205,18 @@ export default function HomePage() {
   };
 
   const dailyQuizUnlocked = completedLessons?.includes('SPA1_005');
-const handleDailyQuizUnlocked = () => {
-  if (!dailyQuizUnlocked) {
-    pushToast('Complete SPA1_005 to unlock the Daily Quiz!', 'info');
-    return;
-  }
-  if (dailyQuizCompleted) {
-    pushToast('You’ve already completed today’s Daily Quiz!', 'info');
-    return;
-  }
-  router.push('/daily-quiz');
-};
+  const handleDailyQuizUnlocked = () => {
+    if (!dailyQuizUnlocked) {
+      pushToast('Complete SPA1_005 to unlock the Daily Quiz!', 'info');
+      return;
+    }
+    if (dailyQuizCompleted) {
+      pushToast('You’ve already completed today’s Daily Quiz!', 'info');
+      return;
+    }
+    router.push('/daily-quiz');
+  };
 
-  
   return (
     <div className="bg-background-primary min-h-[100dvh] w-full flex flex-col overflow-y-auto pb-nav">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
