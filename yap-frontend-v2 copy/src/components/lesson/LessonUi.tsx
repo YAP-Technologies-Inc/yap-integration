@@ -81,6 +81,12 @@ export default function LessonUi({
   const [feedback, setFeedback] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { showSnackbar, removeSnackbar } = useSnackbar();
+  const [breakdown, setBreakdown] = useState<{
+    accuracy: number;
+    fluency: number;
+    completeness: number;
+  } | null>(null);
+  
   const needsSpeaking =
     current.variant === 'sentence' || current.variant === 'vocab';
 
@@ -175,14 +181,21 @@ export default function LessonUi({
         }
       );
       const result = await res.json();
-      const raw =
-        result.NBest?.[0]?.PronScore ||
-        result.NBest?.[0]?.PronunciationAssessment?.AccuracyScore ||
-        0;
+
+      const raw = result.overallScore || 0;
       const scaled = Math.round(raw * 0.8);
       setScore(scaled);
-      const randomPhrase = getRandomFeedbackPhrase(scaled);
-      setFeedback(randomPhrase);
+      
+      // Set additional breakdown scores
+      setFeedback(result.feedback || getRandomFeedbackPhrase(scaled));
+      
+      // Optional: You can also store individual scores in state
+      setBreakdown({
+        accuracy: result.accuracyScore || 0,
+        fluency: result.fluencyScore || 0,
+        completeness: result.completenessScore || 0,
+      });
+      
 
       // Wait for score to display
       await new Promise((res) => setTimeout(res, 1500));
@@ -259,8 +272,8 @@ export default function LessonUi({
       <div className="flex flex-1 items-start justify-center mt-8">
         {current.variant === 'vocab' && (
           <Flashcard
-            front={current.front}
-            back={current.back}
+            es={current.front}
+            en={current.back}
             example={current.example}
           />
         )}

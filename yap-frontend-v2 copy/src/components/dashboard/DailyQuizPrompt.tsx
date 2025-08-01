@@ -37,7 +37,7 @@ export default function DailyQuizCard({
 
   return (
     <div
-      className={`relative rounded-2xl px-6 py-10 w-full ${bgClass} lg:py-25`}
+      className={`relative rounded-2xl px-6 py-10 shadow-md w-full ${bgClass} lg:py-25`}
     >
       {(isLocked || isDone) && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
