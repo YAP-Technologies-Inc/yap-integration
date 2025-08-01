@@ -18,3 +18,8 @@
 - Feature: Enhanced UI for desktop
 - Conflicts: None
 - Notes: Mainly fixed some spacing issues as well as added hover effects for the mouse
+## August 1, 2025 – Merged `feat/lesson-completion` → `main`
+- Merged by: Landon Hadre
+- Feature: Enhanced lesson completion 
+- Conflicts: None
+- Notes: Added new custom toasts for when users submit the last index of the lesson, the screen grays out and users are greeted with new custom toasts.
