@@ -207,7 +207,7 @@ export default function HomePage() {
   const dailyQuizUnlocked = completedLessons?.includes('SPA1_005');
   const handleDailyQuizUnlocked = () => {
     if (!dailyQuizUnlocked) {
-      showSnackbar({ message: 'Lesson complete!', variant: 'success' });
+      showSnackbar({ message: 'Lesson complete!', variant: 'completion' });
       return;
     }
     if (dailyQuizCompleted) {
