@@ -55,10 +55,8 @@ export default function AuthCard({
             className="w-full  bg-background-primary text-secondary font-semibold py-4 rounded-full shadow-md flex items-center justify-center gap-2 text-lg
             hover: cursor-pointer
             lg:
-            "
-          >
+            ">
             Continue with Privy
-
           </button>
         </div>
       </div>

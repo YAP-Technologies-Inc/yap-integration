@@ -1,20 +1,19 @@
-// BalanceCard.tsx
-// This component displays the user's balance in the dashboard.
-// It shows the amount of $YAP tokens the user has.
-// The balance is fetched from the mock user profile and displayed with a coin icon for now
-
 import coin from '@/assets/coin.png';
-import { useWallets } from '@privy-io/react-auth';
-import { useOnChainBalance } from '@/hooks/useOnBlockChain';
+import { usePrivy } from '@privy-io/react-auth';
+import { useUserStats } from '@/hooks/useUserStats';
 import Image from 'next/image';
 
 export default function BalanceCard() {
-  const { wallets } = useWallets();
-  const evmAddress = wallets?.[0]?.address || null;
-  const { balance: onChainBalance, isLoading: isBalanceLoading } =
-    useOnChainBalance(evmAddress);
+  const { user } = usePrivy();
+  const userId = user?.id ?? null;
 
-  if (isBalanceLoading) {
+  const {
+    stats,
+    isLoading,
+    isError,
+  } = useUserStats(userId);
+
+  if (isLoading) {
     return (
       <div className="bg-white w-full rounded-xl shadow px-6 py-4 flex items-center justify-between border-b-2 border-gray-200">
         <div className="flex flex-col">
@@ -25,6 +24,15 @@ export default function BalanceCard() {
       </div>
     );
   }
+
+  if (isError || !stats) {
+    return (
+      <div className="bg-white w-full rounded-xl shadow px-6 py-4 flex items-center justify-between border-b-2 border-red-200 text-red-500">
+        <span>Error fetching balance</span>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white w-full rounded-xl shadow px-6 py-4 flex items-center justify-between border-b-3 border-gray-200">
       <div className="flex flex-col">
@@ -32,7 +40,7 @@ export default function BalanceCard() {
           Available Balance
         </span>
         <span className="text-2xl font-bold text-secondary">
-          {onChainBalance ?? 0}
+          {stats.tokenBalance}
           <span className="text-base font-semibold"> YAP</span>
         </span>
       </div>
