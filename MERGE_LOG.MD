@@ -23,3 +23,8 @@
 - Feature: Enhanced lesson completion 
 - Conflicts: None
 - Notes: Added new custom toasts for when users submit the last index of the lesson, the screen grays out and users are greeted with new custom toasts.
+## August 2, 2025 – Merged `feat/voice-feedback` → `main`
+- Merged by: Landon Hadre
+- Feature: Enhanced flashcard UX 
+- Conflicts: None
+- Notes: Added TTS, overall score on submission and disabled mic during card transition
