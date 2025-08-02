@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/components/ui/ToastProvider';
-import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/ToastProvider";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 
 import {
   TablerX,
@@ -11,32 +11,32 @@ import {
   TablerPlayerPauseFilled,
   TablerMicrophone,
   TablerVolume,
-} from '@/icons';
+} from "@/icons";
 
-import Flashcard from '@/components/cards/FlashCard';
-import { GrammarCard } from '@/components/cards/GrammarCard';
-import { ComprehensionCard } from '@/components/cards/ComprehensionCard';
-import { useSnackbar } from '@/components/ui/SnackBar';
-import { getRandomFeedbackPhrase } from '@/utils/feedbackPhrase';
+import Flashcard from "@/components/cards/FlashCard";
+import { GrammarCard } from "@/components/cards/GrammarCard";
+import { ComprehensionCard } from "@/components/cards/ComprehensionCard";
+import { useSnackbar } from "@/components/ui/SnackBar";
+import { getRandomFeedbackPhrase } from "@/utils/feedbackPhrase";
 
 interface StepVocab {
-  variant: 'vocab';
+  variant: "vocab";
   front: string;
   back: string;
   example?: string;
 }
 interface StepGrammar {
-  variant: 'grammar';
+  variant: "grammar";
   rule: string;
   examples: string[];
 }
 interface StepComp {
-  variant: 'comprehension';
+  variant: "comprehension";
   text: string;
   questions: { question: string; answer: string }[];
 }
 interface StepSentence {
-  variant: 'sentence';
+  variant: "sentence";
   question: string;
 }
 
@@ -81,21 +81,23 @@ export default function LessonUi({
   const [feedback, setFeedback] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { showSnackbar, removeSnackbar } = useSnackbar();
+  const [showBack, setShowBack] = useState(false);
+
   const [breakdown, setBreakdown] = useState<{
     accuracy: number;
     fluency: number;
     completeness: number;
   } | null>(null);
-  
+
   const needsSpeaking =
-    current.variant === 'sentence' || current.variant === 'vocab';
+    current.variant === "sentence" || current.variant === "vocab";
 
   const referenceText =
-    current.variant === 'sentence'
+    current.variant === "sentence"
       ? current.question
-      : current.variant === 'vocab'
+      : current.variant === "vocab"
       ? current.front
-      : '';
+      : "";
 
   const next = () => {
     if (stepIndex + 1 >= total) {
@@ -114,13 +116,13 @@ export default function LessonUi({
   };
   const getSupportedMimeType = (): string => {
     const possibleTypes = [
-      'audio/mp4',
-      'audio/webm;codecs=opus',
-      'audio/webm',
-      'audio/ogg',
+      "audio/mp4",
+      "audio/webm;codecs=opus",
+      "audio/webm",
+      "audio/ogg",
     ];
     return (
-      possibleTypes.find((type) => MediaRecorder.isTypeSupported(type)) || ''
+      possibleTypes.find((type) => MediaRecorder.isTypeSupported(type)) || ""
     );
   };
   const startRecording = async () => {
@@ -129,7 +131,7 @@ export default function LessonUi({
 
       const mimeType = getSupportedMimeType();
       if (!mimeType) {
-        pushToast('No supported recording format found', 'error');
+        pushToast("No supported recording format found", "error");
         return;
       }
       const recorder = new MediaRecorder(stream, { mimeType });
@@ -150,8 +152,8 @@ export default function LessonUi({
       setMediaRecorder(recorder);
       setIsRecording(true);
     } catch (e) {
-      pushToast('Microphone permission denied or not found', 'error');
-      router.push('/home');
+      pushToast("Microphone permission denied or not found", "error");
+      router.push("/home");
     }
   };
 
@@ -164,87 +166,91 @@ export default function LessonUi({
 
   const assessPronunciation = async () => {
     if (!audioBlob || !referenceText) return;
-    setIsLoading(true);
-    setScore(null);
-    setFeedback(null);
 
+    // SNAP MIC BACK TO READY STATE ──
+    const blobToUpload = audioBlob; // preserve for upload
+    setAudioURL(null); // hide playback & Submit button
+    setIsRecording(false); // ensure mic icon is in “ready” mode
+    setScore(null); // clear old score
+    setFeedback(null); // clear old feedback
+    setBreakdown(null); // clear old breakdown
+
+    // SHOW LOADING ──
+    setIsLoading(true);
+
+    // PREPARE FORM DATA ──
     const fd = new FormData();
-    fd.append('audio', audioBlob, 'recording.webm');
-    fd.append('referenceText', referenceText);
+    fd.append("audio", blobToUpload, "recording.webm");
+    fd.append("referenceText", referenceText);
 
     try {
+      //  UPLOAD & GET RAW AZURE RESULT ──
       const res = await fetch(
         `${API_URL}/api/pronunciation-assessment-upload`,
-        {
-          method: 'POST',
-          body: fd,
-        }
+        { method: "POST", body: fd }
       );
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const result = await res.json();
 
-      const raw = result.overallScore || 0;
-      const scaled = Math.round(raw * 0.8);
-      setScore(scaled);
-      
-      // Set additional breakdown scores
-      setFeedback(result.feedback || getRandomFeedbackPhrase(scaled));
-      
-      // Optional: You can also store individual scores in state
+      // EXTRACT & DISPLAY SCORES ──
+      const raw = result.overallScore ?? 0;
+      const display = Math.round(raw);
+      setScore(display);
+      setFeedback(getRandomFeedbackPhrase(display));
       setBreakdown({
         accuracy: result.accuracyScore || 0,
         fluency: result.fluencyScore || 0,
         completeness: result.completenessScore || 0,
       });
-      
 
-      // Wait for score to display
-      await new Promise((res) => setTimeout(res, 1500));
+      setShowBack(true);
+      await new Promise((r) => setTimeout(r, 300)); // let the flip animate
 
       if (stepIndex + 1 >= total) {
         const snackId = Date.now();
-        setIsVerifying(true); // Show dark overlay
-
+        setIsVerifying(true);
         showSnackbar({
           id: snackId,
-          message: 'Verifying lesson on-chain...',
-          variant: 'completion',
+          message: "Verifying lesson on-chain…",
+          variant: "completion",
           manual: true,
         });
 
         try {
-          const res = await fetch(`${API_URL}/api/complete-lesson`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          const verifyRes = await fetch(`${API_URL}/api/complete-lesson`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userId, walletAddress, lessonId }),
           });
-
-          if (!res.ok) throw new Error('Verification failed');
+          if (!verifyRes.ok) throw new Error("Verification failed");
 
           removeSnackbar(snackId);
           showSnackbar({
-            message: 'Lesson complete! YAP token sent',
-            variant: 'custom',
+            message: "Lesson complete! YAP token sent",
+            variant: "custom",
             duration: 3000,
           });
-
           setTimeout(() => {
             setIsVerifying(false);
-            onComplete(); // Push to /home
+            onComplete();
           }, 1200);
-        } catch (e) {
+        } catch {
           setIsVerifying(false);
           removeSnackbar(snackId);
           showSnackbar({
-            message: 'Lesson failed to verify. Please try again.',
-            variant: 'error',
+            message: "Lesson failed to verify. Please try again.",
+            variant: "error",
           });
         }
       } else {
+        // non-final: flip back, then advance
+        await new Promise((r) => setTimeout(r, 500));
+        setShowBack(false);
         next();
       }
     } catch (err) {
-      console.error(err);
-      pushToast('Assessment failed', 'error');
+      console.error("Assessment error:", err);
+      pushToast("Assessment failed", "error");
     } finally {
       setIsLoading(false);
     }
@@ -255,7 +261,7 @@ export default function LessonUi({
       {/* Exit + Progress bar */}
       <div className="flex items-center">
         <button
-          onClick={() => router.push('/home')}
+          onClick={() => router.push("/home")}
           className="text-secondary hover:cursor-pointer"
         >
           <TablerX className="w-6 h-6" />
@@ -270,11 +276,20 @@ export default function LessonUi({
 
       {/* Card area */}
       <div className="flex flex-1 items-start justify-center mt-8">
-        {current.variant === 'vocab' && (
+        {current.variant === "vocab" && (
           <Flashcard
             es={current.front}
             en={current.back}
             example={current.example}
+            scores={
+              breakdown && {
+                overallScore: score!,
+                accuracyScore: breakdown.accuracy,
+                fluencyScore: breakdown.fluency,
+                completenessScore: breakdown.completeness,
+              }
+            }
+            locked={isLoading || isVerifying}
           />
         )}
         {/* commented out for testing  */}
@@ -307,6 +322,14 @@ export default function LessonUi({
             <div className="text-center text-secondary">
               <p className="text-lg font-semibold">Score: {score}/100</p>
               {feedback && <p className="text-sm mt-1">{feedback}</p>}
+
+              {breakdown && (
+                <div className="mt-2 space-y-1 text-left text-sm">
+                  <p>Accuracy: {breakdown.accuracy}/100</p>
+                  <p>Fluency: {breakdown.fluency}/100</p>
+                  <p>Completeness: {breakdown.completeness}/100</p>
+                </div>
+              )}
             </div>
           )}
 
@@ -316,7 +339,7 @@ export default function LessonUi({
               disabled={isLoading}
               className="text-sm px-3 py-2 bg-green-500 text-white rounded-full shadow hover:cursor-pointer"
             >
-              {isLoading ? 'Scoring…' : 'Submit'}
+              {isLoading ? "Scoring…" : "Submit"}
             </button>
           )}
 
@@ -324,7 +347,12 @@ export default function LessonUi({
             {audioURL && (
               <button
                 onClick={resetAudioState}
-                className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer"
+                disabled={isLoading || isVerifying}
+                className={`w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer ${
+                  isLoading || isVerifying
+                    ? "opacity-50 cursor-not-allowed pointer-events-none"
+                    : ""
+                }`}
               >
                 <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
               </button>
@@ -332,7 +360,12 @@ export default function LessonUi({
 
             <button
               onClick={() => (isRecording ? stopRecording() : startRecording())}
-              className="w-16 h-16 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center hover:cursor-pointer"
+              disabled={isLoading || isVerifying}
+              className={`w-16 h-16 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center hover:cursor-pointer ${
+                isLoading || isVerifying
+                  ? "opacity-50 cursor-not-allowed pointer-events-none"
+                  : ""
+              }`}
             >
               {isRecording ? (
                 <TablerPlayerPauseFilled className="w-7 h-7 text-white" />
@@ -349,7 +382,12 @@ export default function LessonUi({
                     audioRef.current.play();
                   }
                 }}
-                className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer"
+                disabled={isLoading || isVerifying}
+                className={`w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer ${
+                  isLoading || isVerifying
+                    ? "opacity-50 cursor-not-allowed pointer-events-none"
+                    : ""
+                }`}
               >
                 <TablerVolume className="w-6 h-6 text-[#EF4444]" />
               </button>
