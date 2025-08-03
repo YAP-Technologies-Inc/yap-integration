@@ -101,8 +101,8 @@ export default function SpanishTeacherConversation() {
           {error && <div className="mb-2 text-red-500 text-center text-xs">{error}</div>}
           <div className="flex-1 overflow-y-auto space-y-2 p-2">
             {messages.length === 0 ? (
-              <div className="text-center text-gray-500 text-xs py-1">
-                No messages yet
+              <div className="text-center font-bold text-gray-500 text-xs py-1">
+                Message log is currently being developed. Please check back later.
               </div>
             ) : (
               messages.map((msg) => (

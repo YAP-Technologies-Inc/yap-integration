@@ -1,6 +1,3 @@
-// This compoent renders a stat card that displays an icon, label, and value.
-// For the profile page
-
 import Image from 'next/image';
 
 interface StatCardProps {
@@ -17,17 +14,18 @@ export default function StatCard({
   isImage = false,
 }: StatCardProps) {
   return (
-    <div className="bg-white rounded-2xl px-4 py-5 w-28 text-center shadow-md flex flex-col justify-between h-32">
-      <div className="flex justify-center items-center">
+    <div className="w-28 h-32 bg-white/90 rounded-2xl border border-gray-200 shadow-md px-3 py-4 flex flex-col items-center justify-between transition-all hover:shadow-lg active:scale-95">
+      <div className="flex justify-center items-center h-8 w-8">
         {isImage ? (
           <Image src={icon} alt={label} width={28} height={28} />
         ) : (
-          <span className="text-xl">{icon}</span>
+          <span className="text-2xl">{icon}</span>
         )}
       </div>
-      <div>
-        <p className="text-xs text-secondary leading-tight">{label}</p>
-        <p className="text-base font-bold text-secondary mt-1">{value}</p>
+
+      <div className="text-center">
+        <p className="text-xs text-gray-500 tracking-wide">{label}</p>
+        <p className="text-base font-semibold text-secondary mt-0.5">{value}</p>
       </div>
     </div>
   );
