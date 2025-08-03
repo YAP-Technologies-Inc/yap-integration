@@ -189,7 +189,7 @@ export default function ProfilePage() {
         </div>
 
         <div className="w-full mt-2 flex flex-col items-center">
-          <h2 className="text-md font-bold text-secondary mb-2 self-start px-4 lg:px-0 lg:max-w-4xl w-full">
+          <h2 className="text-md font-bold text-secondary mb-2 self-start lg:px-0 lg:max-w-4xl w-full">
             Statistics
           </h2>
 
