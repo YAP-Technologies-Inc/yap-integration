@@ -99,16 +99,10 @@ export default function DailyStreak() {
       <div className="flex items-center gap-2 text-white mb-4">
         <img src={flame.src} alt="Flame icon" className="w-5 h-5" />
         <h3 className="text-lg font-semibold">Daily Streak</h3>
-        <div className="ml-auto flex items-center gap-2">
-          <div className="bg-white text-black rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
-            {totalStreak}
-          </div>
-          <span className="text-sm">/ Best: {highestStreak}</span>
-        </div>
       </div>
 
       {/* Days */}
-      <div className="w-full flex justify-center space-x-2 ">
+      <div className="w-full flex justify-center space-x-4 ">
         {days.map((day, idx) => {
           const done = completedDays[idx];
           const isToday = idx === todayIndex;

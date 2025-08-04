@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import clsx from 'clsx';
-import { TablerCheck } from '@/icons';
+import { TablerCheck, TablerInfoCircle, TablerX } from "@/icons";
 
 export interface SnackProps {
   id: number;
@@ -29,16 +29,26 @@ function Snack({
   className = '',
   onDismiss,
 }: SnackProps) {
-    const defaultIcon =
-    variant === 'completion' ? (
-      <div className="w-6 h-6 relative">
-        <div className="absolute inset-0 animate-spin rounded-full border-2 border-yellow-500 border-t-transparent" />
-      </div>
-    ) : variant === 'custom' ? (
-      <TablerCheck className="w-6 h-6 text-green-600" />
-    ) : (
-      <TablerCheck className="w-6 h-6" />
-    );
+  const defaultIcon = (() => {
+    switch (variant) {
+      case "success":
+        return <TablerCheck className="w-6 h-6 text-green-600" />;
+      case "error":
+        return <TablerX className="w-6 h-6 text-red-600" />;
+      case "info":
+        return <TablerInfoCircle className="w-6 h-6 text-blue-600" />;
+      case "completion":
+        return (
+          <div className="w-6 h-6 relative">
+            <div className="absolute inset-0 animate-spin rounded-full border-2 border-yellow-500 border-t-transparent" />
+          </div>
+        );
+      case "custom":
+        return <TablerCheck className="w-6 h-6 text-green-600" />;
+      default:
+        return <TablerInfoCircle className="w-6 h-6 text-blue-600" />;
+    }
+  })();
   
 
   return (

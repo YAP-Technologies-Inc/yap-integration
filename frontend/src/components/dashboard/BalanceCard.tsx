@@ -1,17 +1,14 @@
-import coin from '@/assets/coin.png';
-import { usePrivy } from '@privy-io/react-auth';
-import { useUserStats } from '@/hooks/useUserStats';
+import { useWallets } from '@privy-io/react-auth';
+import { useOnChainBalance } from '@/hooks/useOnBlockChain';
 import Image from 'next/image';
+import coin from '@/assets/coin.png';
 
 export default function BalanceCard() {
-  const { user } = usePrivy();
-  const userId = user?.id ?? null;
+  const { wallets } = useWallets();
+  const wallet = wallets.find((w) => w.walletClientType === 'privy');
+  const evmAddress = wallet?.address ?? null;
 
-  const {
-    stats,
-    isLoading,
-    isError,
-  } = useUserStats(userId);
+  const { balance, isLoading, isError } = useOnChainBalance(evmAddress);
 
   if (isLoading) {
     return (
@@ -25,7 +22,7 @@ export default function BalanceCard() {
     );
   }
 
-  if (isError || !stats) {
+  if (isError || balance === undefined) {
     return (
       <div className="bg-white w-full rounded-xl shadow px-6 py-4 flex items-center justify-between border-b-2 border-red-200 text-red-500">
         <span>Error fetching balance</span>
@@ -40,7 +37,7 @@ export default function BalanceCard() {
           Available Balance
         </span>
         <span className="text-2xl font-bold text-secondary">
-          {stats.tokenBalance}
+          {balance.toFixed(2)}
           <span className="text-base font-semibold"> YAP</span>
         </span>
       </div>
