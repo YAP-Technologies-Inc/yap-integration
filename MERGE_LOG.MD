@@ -28,3 +28,8 @@
 - Feature: Enhanced flashcard UX 
 - Conflicts: None
 - Notes: Added TTS, overall score on submission and disabled mic during card transition
+## August 5, 2025 – Merged `feat/message-signing` → `main`
+- Merged by: Landon Hadre
+- Feature: Allowed gasless transactions
+- Conflicts: None
+- Notes: Users can pay for spanish teacher with no gas fee using ERC-712 contract, need to set up relayer
