@@ -102,7 +102,7 @@ export default function DailyStreak() {
       </div>
 
       {/* Days */}
-      <div className="w-full flex justify-center space-x-4 ">
+      <div className="w-full flex justify-center space-x-2 ">
         {days.map((day, idx) => {
           const done = completedDays[idx];
           const isToday = idx === todayIndex;

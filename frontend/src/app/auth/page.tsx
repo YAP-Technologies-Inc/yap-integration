@@ -91,7 +91,7 @@ export default function AuthPage() {
 
   //Not authenticated yet -> show login card
   return (
-    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-background-secondary pt-safe pb-safe px-4 overflow-hidden">
+    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-background-secondary  px-4 overflow-hidden">
       <AuthCard
         hideFooter={hideFooter}
         onEmailClick={() => {

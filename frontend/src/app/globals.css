@@ -102,3 +102,9 @@ input[type="password"]::-webkit-calendar-picker-indicator {
 .pb-nav{
   padding-bottom: calc(env(safe-area-inset-bottom) + 5rem);
 }
+
+/* globals.css or tailwind.css */
+.touch-pan-x {
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}

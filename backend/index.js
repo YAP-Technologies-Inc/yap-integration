@@ -449,10 +449,17 @@ app.post('/api/request-spanish-teacher', async (req, res) => {
     console.log('spendToken() success', spendTx.hash);
 
     // Step 3: Log access session
-    const expiresAt = new Date(Date.now() + 20 * 60 * 1000);
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 20 * 60 * 1000);
+    console.log('Now:', now.toISOString());
+    console.log('Expires at:', expiresAt.toISOString());
+
     await db.query(
-      `INSERT INTO teacher_sessions (user_id, tx_hash, expires_at) VALUES ($1, $2, $3) RETURNING id`,
-      [userId, spendTx.hash, expiresAt]
+      `INSERT INTO teacher_sessions (user_id, tx_hash, expires_at)
+   VALUES ($1, $2, $3)
+   ON CONFLICT (user_id)
+   DO UPDATE SET tx_hash = $2, expires_at = $3`,
+      [userId, spendTx.hash, expiresAt.toISOString()]
     );
 
     return res.json({ success: true, txHash: spendTx.hash }); // ✅ FIXED

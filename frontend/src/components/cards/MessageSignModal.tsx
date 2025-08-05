@@ -1,5 +1,6 @@
 'use client';
 import { createContext, useContext, useState } from 'react';
+import { TablerX } from '@/icons';
 
 interface MessageSignContextType {
   isOpen: boolean;
@@ -28,44 +29,76 @@ export function MessageSignProvider({
   };
 
   const close = () => {
+    // If the user dismisses the modal, resolve the promise as `false`
+    resolver?.(false);
+    setResolver(undefined);
     setIsOpen(false);
   };
-
   const handleConfirm = () => {
     resolver?.(true);
-    close();
-  };
-
-  const handleCancel = () => {
-    resolver?.(false);
-    close();
+    setResolver(undefined);
+    setIsOpen(false);
   };
 
   return (
     <MessageSignContext.Provider value={{ isOpen, message, open, close }}>
       {children}
-      {isOpen && (
-        <>
-          <div className="fixed inset-0 backdrop-blur-sm z-40"></div>
-          <div className="fixed rounded-xl bottom-0 left-0 w-full h-[30dvh] bg-background-primary bg-opacity-50 shadow-lg rounded-t-lg flex flex-col items-center justify-start transition-transform transform translate-y-0 pt-8 z-50">
-            <p className="text-lg text-black font-medium pt-6">{message}</p>
-            <div className="flex flex-col w-full space-y-4 px-4 mt-auto pb-2">
-              <button
-                onClick={handleConfirm}
-                className="py-3 bg-background-secondary text-white rounded-lg"
-              >
-                Confirm
-              </button>
-              <button
-                onClick={handleCancel}
-                className="py-3 bg-background-secondary text-white rounded-lg"
-              >
-                Cancel
-              </button>
+      <div
+        className={`fixed h-min[100dvh] inset-0 z-50 transition-opacity ${
+          isOpen
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0 backdrop-blur-sm bg-black/30"
+          onClick={close}
+        />
+
+        {/* Modal */}
+        <div
+          className={`absolute left-0 bottom-0 w-full bg-background-primary rounded-t-2xl shadow-xl transform transition-transform duration-400 ease-in-out ${
+            isOpen ? 'translate-y-0' : 'translate-y-full'
+          }`}
+        >
+          {/* Close Button */}
+          <div className="flex justify-between items-center px-4 pt-4">
+            <div className="text-sm text-secondary font-medium">
+              Authorization
             </div>
+            <button onClick={close} className="text-secondary p-1">
+              <TablerX className="h-6 w-6" />
+            </button>
           </div>
-        </>
-      )}
+
+          {/* Message */}
+          <div className="px-4 pt-6 text-center space-y-2">
+            <p className="text-base text-secondary">{message}</p>
+            <p className="text-sm text-muted-foreground text-secondary">
+              <em>
+                By confirming, you allow YAP to submit a gasless transaction on
+                your behalf. This signature does <strong>not</strong> cost any
+                SEI or gas. Your tokens will only move if you approve the
+                transaction in the next step.
+              </em>
+            </p>
+            <p className="text-xs text-muted-foreground text-secondary">
+              (Coming soon: You will see a less clutterd message once our
+              relayer is ready)
+            </p>
+          </div>
+          {/* Confirm Button */}
+          <div className="px-4 pb-6">
+            <button
+              onClick={handleConfirm}
+              className="w-full py-3 bg-secondary text-white font-semibold rounded-xl transition"
+            >
+              Next...
+            </button>
+          </div>
+        </div>
+      </div>
     </MessageSignContext.Provider>
   );
 }

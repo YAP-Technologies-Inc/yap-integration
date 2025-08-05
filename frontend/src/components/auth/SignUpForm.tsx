@@ -46,7 +46,6 @@ export default function SignUpForm() {
       });
 
       const data = await res.json();
-      console.log('User saved:', data);
 
       if (!res.ok || !data.success) {
         throw new Error(data.error || 'Failed to save user');

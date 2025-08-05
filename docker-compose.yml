@@ -1,0 +1,54 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    env_file:
+      - ./.env
+      - ./frontend/.env
+    depends_on:
+      - backend
+    networks:
+      - yapnet
+  backend:
+    build: ./backend
+    ports:
+      - "${BACKEND_PORT}:4000"
+    env_file:
+      - ./.env
+      - ./backend/.env
+    depends_on:
+      - db
+    networks:
+      - yapnet
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - yapnet
+  nginx:
+    image: nginx:latest
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - yapnet
+
+volumes:
+  pgdata:
+
+networks:
+  yapnet:

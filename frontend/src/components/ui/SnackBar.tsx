@@ -56,9 +56,9 @@ function Snack({
       className={clsx(
         'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border',
         {
-            'bg-green-100 text-green-800 border-green-200': variant === 'success',
-            'bg-red-100 text-red-800 border-red-200': variant === 'error',
-            'bg-blue-100 text-blue-800 border-blue-200': variant === 'info',
+            'bg-background-primary text-secondary border-green-200': variant === 'success',
+            'bg-background-primary text-secondary border-red-200': variant === 'error',
+            'bg-background-primary text-secondary border-blue-200': variant === 'info',
             'bg-background-primary text-secondary border-background-primary':
               variant === 'completion' || variant === 'custom',
           },
@@ -70,7 +70,7 @@ function Snack({
       {action && <div>{action}</div>}
       <button
         onClick={() => onDismiss(id)}
-        className="text-sm text-gray-400 hover:text-black"
+        className="text-sm text-secondary hover:text-black"
       >
         &#10005;
       </button>

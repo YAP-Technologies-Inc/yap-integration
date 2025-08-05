@@ -20,19 +20,17 @@ import { useOnChainBalance } from '@/hooks/useOnBlockChain';
 import isEqual from 'lodash.isequal';
 import { ethers } from 'ethers';
 import { tokenAbi } from '@/app/abis/YAPToken';
-import { useToast } from '@/components/ui/ToastProvider';
 import TestingNoticeModal from '@/components/TestingNoticeModal';
 import { useMessageSignModal } from '@/components/cards/MessageSignModal';
 import { useSnackbar } from '@/components/ui/SnackBar';
 export default function HomePage() {
   useInitializeUser();
-  const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
+  // const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
   const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const BACKEND_WALLET_ADDRESS =
     process.env.NEXT_PUBLIC_BACKEND_WALLET_ADDRESS!;
-  const { pushToast } = useToast();
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbar, removeSnackbar } = useSnackbar();
   const { open } = useMessageSignModal();
   const [lessons, setLessons] = useState<
     {
@@ -100,7 +98,7 @@ export default function HomePage() {
       .then((res) => res.json())
       .then((data) => setDailyQuizCompleted(data.completed))
       .catch(() => {});
-  }, [userId]);
+  }, [userId, API_URL]);
 
   // Unified loading state
   if (
@@ -115,48 +113,55 @@ export default function HomePage() {
       </div>
     );
   }
-  
 
   const handleSpanishTeacherAccess = async () => {
     setCheckingAccess(true);
 
     try {
       if (!TOKEN_ADDRESS || !userId) {
-        pushToast('Missing config or login.', 'error');
+        showSnackbar({
+          message: 'Missing config or user ID.',
+          variant: 'error',
+        });
         return;
       }
 
+      // STEP 1: Check existing session
+      const { hasAccess } = await (
+        await fetch(`${API_URL}/api/teacher-session/${userId}`)
+      ).json();
+      if (hasAccess) {
+        router.push('/spanish-teacher');
+        return;
+      }
+
+      // STEP 2: Wallet + signature
       const embedded = wallets.find((w) => w.walletClientType === 'privy');
       if (!embedded) {
-        pushToast('Please connect your wallet.', 'error');
+        showSnackbar({
+          message: 'Please connect your wallet.',
+          variant: 'error',
+        });
         return;
       }
-
       const ethProvider = await embedded.getEthereumProvider();
       const provider = new ethers.BrowserProvider(ethProvider);
       const signer = await provider.getSigner();
       const walletAddress = await signer.getAddress();
-
       const token = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
       const oneYap = ethers.parseUnits('1', 18);
 
+      const confirm = await open('Spend 1 YAP to access Spanish Teacher?');
+      if (!confirm) return;
 
-
-      const confirmed = await open("Spend 1 YAP to access Spanish Teacher?");
-      if (!confirmed) return;
-      
-
-      // Build permit data
       const nonce = await token.nonces(walletAddress);
       const deadline = Math.floor(Date.now() / 1000) + 3600;
-
       const domain = {
         name: 'YapTokenTestV2',
         version: '1',
         chainId: 1328,
         verifyingContract: TOKEN_ADDRESS,
       };
-
       const types = {
         Permit: [
           { name: 'owner', type: 'address' },
@@ -166,7 +171,6 @@ export default function HomePage() {
           { name: 'deadline', type: 'uint256' },
         ],
       };
-
       const values = {
         owner: walletAddress,
         spender: BACKEND_WALLET_ADDRESS,
@@ -174,9 +178,16 @@ export default function HomePage() {
         nonce,
         deadline,
       };
-
       const signature = await signer.signTypedData(domain, types, values);
-      const { v, r, s } = ethers.Signature.from(signature);
+
+      // STEP 3: Submit permit & show “verifying on-chain…” snackbar
+      const snackId = Date.now();
+      showSnackbar({
+        id: snackId,
+        message: 'Verifying transaction on-chain…',
+        variant: 'completion',
+        manual: true,
+      });
 
       const res = await fetch(`${API_URL}/api/request-spanish-teacher`, {
         method: 'POST',
@@ -195,24 +206,33 @@ export default function HomePage() {
         }),
       });
 
+      removeSnackbar(snackId);
+
       if (!res.ok) {
-        const err = await res.json();
-        pushToast(`Backend error: ${err.error}`, 'error');
+        showSnackbar({
+          message: 'On-chain verification failed. Please try again.',
+          variant: 'error',
+        });
         return;
       }
 
+      showSnackbar({
+        message: 'Access granted! Redirecting…',
+        variant: 'success',
+        duration: 3000,
+      });
       router.push('/spanish-teacher');
     } catch (err) {
       console.error('Permit error:', err);
-      pushToast('Failed to authorize payment.', 'error');
+      showSnackbar({
+        message: 'Failed to authorize payment.',
+        variant: 'error',
+      });
     } finally {
       setCheckingAccess(false);
     }
   };
 
-  // const handleSpanishTeacherAccess = () => {
-  //   router.push("/spanish-teacher");
-  // };
   const dailyQuizUnlocked = completedLessons?.includes('SPA1_005');
   const handleDailyQuizUnlocked = () => {
     if (!dailyQuizUnlocked) {
@@ -246,12 +266,11 @@ export default function HomePage() {
         </div>
         <TestingNoticeModal />
         <h3 className="text-secondary text-xl font-semibold mt-2">Lessons</h3>
-        <div className="mt-2">
-          <div className="flex gap-4 overflow-x-auto no-scrollbar">
+        <div className="mt-2 overflow-x-auto">
+          <div className="flex gap-4 px-4 -mx-4 w-max">
             {lessons.map((lesson) => (
               <LessonCard
                 key={lesson.id}
-                lessonId={lesson.id}
                 id={lesson.id}
                 title={lesson.title}
                 description={lesson.description}
@@ -263,7 +282,7 @@ export default function HomePage() {
         </div>
 
         {/* Talk to Spanish Teacher */}
-        {/* <div className="mt-4">
+        <div className="mt-4">
           <button
             onClick={handleSpanishTeacherAccess}
             className="w-full bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded hover:cursor-pointer transition-colors duration-200 shadow-md"
@@ -272,14 +291,6 @@ export default function HomePage() {
             {checkingAccess
               ? 'Checking access…'
               : 'Talk to Spanish Teacher (1 YAP)'}
-          </button>
-        </div> */}
-        <div className="mt-4">
-          <button
-            onClick={handleSpanishTeacherAccess}
-            className="w-full bg-secondary text-white font-bold py-3 rounded shadow-md hover:cursor-pointer transition-colors"
-          >
-            Talk to Spanish Teacher
           </button>
         </div>
         {/* Daily Quiz */}
