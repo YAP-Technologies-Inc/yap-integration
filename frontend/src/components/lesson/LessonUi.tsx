@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/ToastProvider";
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/ToastProvider';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 
 import {
   TablerX,
@@ -11,32 +11,34 @@ import {
   TablerPlayerPauseFilled,
   TablerMicrophone,
   TablerVolume,
-} from "@/icons";
+  TablerFlagFilled,
+} from '@/icons';
+import { ReportIssue } from '@/components/debug/ReportIssue';
 
-import Flashcard from "@/components/cards/FlashCard";
-import { GrammarCard } from "@/components/cards/GrammarCard";
-import { ComprehensionCard } from "@/components/cards/ComprehensionCard";
-import { useSnackbar } from "@/components/ui/SnackBar";
-import { getRandomFeedbackPhrase } from "@/utils/feedbackPhrase";
+import Flashcard from '@/components/cards/FlashCard';
+import { GrammarCard } from '@/components/cards/GrammarCard';
+import { ComprehensionCard } from '@/components/cards/ComprehensionCard';
+import { useSnackbar } from '@/components/ui/SnackBar';
+import { getRandomFeedbackPhrase } from '@/utils/feedbackPhrase';
 
 interface StepVocab {
-  variant: "vocab";
+  variant: 'vocab';
   front: string;
   back: string;
   example?: string;
 }
 interface StepGrammar {
-  variant: "grammar";
+  variant: 'grammar';
   rule: string;
   examples: string[];
 }
 interface StepComp {
-  variant: "comprehension";
+  variant: 'comprehension';
   text: string;
   questions: { question: string; answer: string }[];
 }
 interface StepSentence {
-  variant: "sentence";
+  variant: 'sentence';
   question: string;
 }
 
@@ -82,6 +84,7 @@ export default function LessonUi({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { showSnackbar, removeSnackbar } = useSnackbar();
   const [showBack, setShowBack] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const [breakdown, setBreakdown] = useState<{
     accuracy: number;
@@ -90,14 +93,14 @@ export default function LessonUi({
   } | null>(null);
 
   const needsSpeaking =
-    current.variant === "sentence" || current.variant === "vocab";
+    current.variant === 'sentence' || current.variant === 'vocab';
 
   const referenceText =
-    current.variant === "sentence"
+    current.variant === 'sentence'
       ? current.question
-      : current.variant === "vocab"
+      : current.variant === 'vocab'
       ? current.front
-      : "";
+      : '';
 
   const next = () => {
     if (stepIndex + 1 >= total) {
@@ -116,13 +119,13 @@ export default function LessonUi({
   };
   const getSupportedMimeType = (): string => {
     const possibleTypes = [
-      "audio/mp4",
-      "audio/webm;codecs=opus",
-      "audio/webm",
-      "audio/ogg",
+      'audio/mp4',
+      'audio/webm;codecs=opus',
+      'audio/webm',
+      'audio/ogg',
     ];
     return (
-      possibleTypes.find((type) => MediaRecorder.isTypeSupported(type)) || ""
+      possibleTypes.find((type) => MediaRecorder.isTypeSupported(type)) || ''
     );
   };
   const startRecording = async () => {
@@ -131,7 +134,7 @@ export default function LessonUi({
 
       const mimeType = getSupportedMimeType();
       if (!mimeType) {
-        pushToast("No supported recording format found", "error");
+        pushToast('No supported recording format found', 'error');
         return;
       }
       const recorder = new MediaRecorder(stream, { mimeType });
@@ -152,8 +155,8 @@ export default function LessonUi({
       setMediaRecorder(recorder);
       setIsRecording(true);
     } catch (e) {
-      pushToast("Microphone permission denied or not found", "error");
-      router.push("/home");
+      pushToast('Microphone permission denied or not found', 'error');
+      router.push('/home');
     }
   };
 
@@ -180,14 +183,14 @@ export default function LessonUi({
 
     // PREPARE FORM DATA ──
     const fd = new FormData();
-    fd.append("audio", blobToUpload, "recording.webm");
-    fd.append("referenceText", referenceText);
+    fd.append('audio', blobToUpload, 'recording.webm');
+    fd.append('referenceText', referenceText);
 
     try {
       //  UPLOAD & GET RAW AZURE RESULT ──
       const res = await fetch(
         `${API_URL}/api/pronunciation-assessment-upload`,
-        { method: "POST", body: fd }
+        { method: 'POST', body: fd }
       );
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const result = await res.json();
@@ -211,23 +214,23 @@ export default function LessonUi({
         setIsVerifying(true);
         showSnackbar({
           id: snackId,
-          message: "Verifying lesson on-chain…",
-          variant: "completion",
+          message: 'Verifying lesson on-chain…',
+          variant: 'completion',
           manual: true,
         });
 
         try {
           const verifyRes = await fetch(`${API_URL}/api/complete-lesson`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, walletAddress, lessonId }),
           });
-          if (!verifyRes.ok) throw new Error("Verification failed");
+          if (!verifyRes.ok) throw new Error('Verification failed');
 
           removeSnackbar(snackId);
           showSnackbar({
-            message: "Lesson complete! YAP token sent",
-            variant: "custom",
+            message: 'Lesson complete! YAP token sent',
+            variant: 'custom',
             duration: 3000,
           });
           setTimeout(() => {
@@ -238,8 +241,8 @@ export default function LessonUi({
           setIsVerifying(false);
           removeSnackbar(snackId);
           showSnackbar({
-            message: "Lesson failed to verify. Please try again.",
-            variant: "error",
+            message: 'Lesson failed to verify. Please try again.',
+            variant: 'error',
           });
         }
       } else {
@@ -249,8 +252,8 @@ export default function LessonUi({
         next();
       }
     } catch (err) {
-      console.error("Assessment error:", err);
-      pushToast("Assessment failed", "error");
+      console.error('Assessment error:', err);
+      pushToast('Assessment failed', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -259,24 +262,36 @@ export default function LessonUi({
   return (
     <div className="min-h[100dvh] fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
       {/* Exit + Progress bar */}
-      <div className="flex items-center">
+      <div className="flex items-center pt-2">
         <button
-          onClick={() => router.push("/home")}
+          onClick={() => router.push('/home')}
           className="text-secondary hover:cursor-pointer"
         >
           <TablerX className="w-6 h-6" />
         </button>
-        <div className="flex-1 h-2 bg-gray-200 rounded-full ml-4 overflow-hidden">
-          <div
-            className="h-full bg-yellow-400 transition-all"
-            style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
-          />
+        <h3 className="flex-1 text-center text-secondary font-bold text-xl">
+          Vocabulary
+        </h3>
+        <div>
+          <button
+            onClick={() => setShowReport(true)}
+            className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
+          >
+            <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+          </button>
+
+          {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
         </div>
       </div>
-
+      <div className="flex h-4 w-full border-2 border-gray-50 bg-white/90 rounded-full overflow-hidden mt-6">
+        <div
+          className="h-full bg-tertiary transition-all"
+          style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
+        />
+      </div>
       {/* Card area */}
       <div className="flex flex-1 items-start justify-center mt-8">
-        {current.variant === "vocab" && (
+        {current.variant === 'vocab' && (
           <Flashcard
             es={current.front}
             en={current.back}
@@ -339,7 +354,7 @@ export default function LessonUi({
               disabled={isLoading}
               className="text-sm px-3 py-2 bg-green-500 text-white rounded-full shadow hover:cursor-pointer"
             >
-              {isLoading ? "Scoring…" : "Submit"}
+              {isLoading ? 'Scoring…' : 'Submit'}
             </button>
           )}
 
@@ -350,8 +365,8 @@ export default function LessonUi({
                 disabled={isLoading || isVerifying}
                 className={`w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer ${
                   isLoading || isVerifying
-                    ? "opacity-50 cursor-not-allowed pointer-events-none"
-                    : ""
+                    ? 'opacity-50 cursor-not-allowed pointer-events-none'
+                    : ''
                 }`}
               >
                 <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
@@ -363,8 +378,8 @@ export default function LessonUi({
               disabled={isLoading || isVerifying}
               className={`w-16 h-16 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center hover:cursor-pointer ${
                 isLoading || isVerifying
-                  ? "opacity-50 cursor-not-allowed pointer-events-none"
-                  : ""
+                  ? 'opacity-50 cursor-not-allowed pointer-events-none'
+                  : ''
               }`}
             >
               {isRecording ? (
@@ -385,8 +400,8 @@ export default function LessonUi({
                 disabled={isLoading || isVerifying}
                 className={`w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer ${
                   isLoading || isVerifying
-                    ? "opacity-50 cursor-not-allowed pointer-events-none"
-                    : ""
+                    ? 'opacity-50 cursor-not-allowed pointer-events-none'
+                    : ''
                 }`}
               >
                 <TablerVolume className="w-6 h-6 text-[#EF4444]" />
@@ -399,6 +414,11 @@ export default function LessonUi({
           )}
         </div>
       )}
+      <div className="w-full pb-40 px-4 ">
+        <button className="w-full bg-secondary py-4 rounded-4xl text-white border-b-2 border-black">
+          Submit
+        </button>
+      </div>
       {isVerifying && (
         <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
       )}

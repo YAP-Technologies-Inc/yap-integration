@@ -39,30 +39,44 @@ const Flashcard: FC<FlashcardProps> = ({ es, en, example }) => {
 
   return (
     <div
-      onClick={() => setShowBack(prev => !prev)}
-      className="w-full max-w-sm h-[36vh] bg-white rounded-2xl shadow-xl px-6 py-4 flex flex-col items-center justify-center text-center relative cursor-pointer"
+      onClick={() => setShowBack((prev) => !prev)}
+      className="w-full max-w-sm h-[36dvh] bg-white/90 rounded-2xl shadow-xl px-6 py-4 flex flex-col items-center justify-center text-center relative cursor-pointer"
     >
+      <div className="absolute top-4 right-4 text-secondary text-sm font-semibold">
+        Words:
+      </div>
       {/* Audio button (front side only) */}
       {!showBack && (
         <button
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation();
             playElevenLabsAudio(es);
           }}
-          className="absolute top-4 right-4 p-2 bg-yellow-400 rounded-full shadow-lg hover:bg-yellow-500 transition-transform transform hover:scale-110"
+          className="absolute top-4 left-4 p-2 bg-tertiary rounded-full shadow-lg transition-transform transform hover:scale-110"
         >
-          <TablerVolume className={`w-6 h-6 text-secondary ${isPlaying ? 'animate-pulse' : ''}`} />
+          <TablerVolume
+            className={`w-6 h-6 text-secondary ${
+              isPlaying ? 'animate-pulse' : ''
+            }`}
+          />
         </button>
       )}
 
       {/* Content */}
       {showBack ? (
-        <p className="text-3xl font-extrabold text-secondary">{en}</p>
+        <div>
+          <p className="text-3xl font-extrabold text-secondary">{en}</p>
+          <p className="text-base text-gray-400 leading-relaxed mt-2 px-4">
+            {es}
+          </p>
+        </div>
       ) : (
         <>
           <h2 className="text-3xl font-extrabold text-secondary">{es}</h2>
           {example && (
-            <p className="text-base text-muted italic leading-relaxed mt-2 px-4">{example}</p>
+            <p className="text-base text-gray-400 leading-relaxed mt-2 px-4">
+              {example}
+            </p>
           )}
         </>
       )}

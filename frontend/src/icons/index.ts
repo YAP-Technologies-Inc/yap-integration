@@ -20,3 +20,4 @@ export { TablerHelp } from './Help';
 export { TablerFileTextShield } from './TextShield';
 export { TablerAlertCircle } from './AlertCircle';
 export { TablerBrandDiscordFilled } from './Discord';
+export { TablerFlagFilled } from './Flag';
