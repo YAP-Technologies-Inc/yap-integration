@@ -21,7 +21,7 @@ export default function SpanishTeacherConversation() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { showSnackbar } = useSnackbar();
   const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
-  const AGENT_ID = process.env.AGENT_ID;
+  const AGENT_ID = process.env.NEXT_PUBLIC_AGENT_ID;
 
   const [userId, setUserId] = useState<string | null>(null);
 
