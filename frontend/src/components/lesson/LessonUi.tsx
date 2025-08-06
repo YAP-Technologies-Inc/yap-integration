@@ -9,9 +9,12 @@ import {
   TablerX,
   TablerRefresh,
   TablerPlayerPauseFilled,
-  TablerMicrophone,
+  TablerMicrophoneFilled,
   TablerVolume,
+  TablerFlagFilled,
+  TablerCheck,
 } from "@/icons";
+import { ReportIssue } from "@/components/debug/ReportIssue";
 
 import Flashcard from "@/components/cards/FlashCard";
 import { GrammarCard } from "@/components/cards/GrammarCard";
@@ -41,7 +44,7 @@ interface StepSentence {
 }
 
 type Step = StepVocab | StepGrammar | StepComp | StepSentence;
-
+const passingScore = 80;
 interface LessonUiProps {
   lessonId: string;
   stepIndex: number;
@@ -82,6 +85,7 @@ export default function LessonUi({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { showSnackbar, removeSnackbar } = useSnackbar();
   const [showBack, setShowBack] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const [breakdown, setBreakdown] = useState<{
     accuracy: number;
@@ -184,7 +188,7 @@ export default function LessonUi({
     fd.append("referenceText", referenceText);
 
     try {
-      //  UPLOAD & GET RAW AZURE RESULT ──
+      // UPLOAD & GET RAW AZURE RESULT ──
       const res = await fetch(
         `${API_URL}/api/pronunciation-assessment-upload`,
         { method: "POST", body: fd }
@@ -206,48 +210,9 @@ export default function LessonUi({
       setShowBack(true);
       await new Promise((r) => setTimeout(r, 300)); // let the flip animate
 
-      if (stepIndex + 1 >= total) {
-        const snackId = Date.now();
-        setIsVerifying(true);
-        showSnackbar({
-          id: snackId,
-          message: "Verifying lesson on-chain…",
-          variant: "completion",
-          manual: true,
-        });
-
-        try {
-          const verifyRes = await fetch(`${API_URL}/api/complete-lesson`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, walletAddress, lessonId }),
-          });
-          if (!verifyRes.ok) throw new Error("Verification failed");
-
-          removeSnackbar(snackId);
-          showSnackbar({
-            message: "Lesson complete! YAP token sent",
-            variant: "custom",
-            duration: 3000,
-          });
-          setTimeout(() => {
-            setIsVerifying(false);
-            onComplete();
-          }, 1200);
-        } catch {
-          setIsVerifying(false);
-          removeSnackbar(snackId);
-          showSnackbar({
-            message: "Lesson failed to verify. Please try again.",
-            variant: "error",
-          });
-        }
-      } else {
-        // non-final: flip back, then advance
-        await new Promise((r) => setTimeout(r, 500));
-        setShowBack(false);
-        next();
-      }
+      // Wait for user to click "Next" manually (even on last word)
+      await new Promise((r) => setTimeout(r, 500));
+      setIsVerifying(false);
     } catch (err) {
       console.error("Assessment error:", err);
       pushToast("Assessment failed", "error");
@@ -259,21 +224,33 @@ export default function LessonUi({
   return (
     <div className="min-h[100dvh] fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
       {/* Exit + Progress bar */}
-      <div className="flex items-center">
+      <div className="flex items-center pt-2 ">
         <button
           onClick={() => router.push("/home")}
           className="text-secondary hover:cursor-pointer"
         >
           <TablerX className="w-6 h-6" />
         </button>
-        <div className="flex-1 h-2 bg-gray-200 rounded-full ml-4 overflow-hidden">
-          <div
-            className="h-full bg-yellow-400 transition-all"
-            style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
-          />
+        <h3 className="flex-1 text-center text-secondary font-bold text-xl">
+          Vocabulary
+        </h3>
+        <div>
+          <button
+            onClick={() => setShowReport(true)}
+            className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
+          >
+            <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+          </button>
+
+          {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
         </div>
       </div>
-
+      <div className="flex h-4 w-full border-2 border-gray-50 bg-white/90 rounded-full overflow-hidden mt-6">
+        <div
+          className="h-full bg-tertiary transition-all"
+          style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
+        />
+      </div>
       {/* Card area */}
       <div className="flex flex-1 items-start justify-center mt-8">
         {current.variant === "vocab" && (
@@ -290,6 +267,9 @@ export default function LessonUi({
               }
             }
             locked={isLoading || isVerifying}
+            stepIndex={stepIndex} // <-- passed in
+            total={total} // <-- passed in
+            score={score} // <-- passed in
           />
         )}
         {/* commented out for testing  */}
@@ -316,89 +296,168 @@ export default function LessonUi({
       </div>
 
       {/* Mic controls for speaking steps */}
-      {needsSpeaking && (
-        <div className="fixed bottom-6 left-0 right-0 flex flex-col items-center gap-3">
-          {score !== null && (
-            <div className="text-center text-secondary">
-              <p className="text-lg font-semibold">Score: {score}/100</p>
-              {feedback && <p className="text-sm mt-1">{feedback}</p>}
+      <div className="w-full space-y-6">
+        {needsSpeaking && score === null && (
+          <div className="flex flex-col items-center gap-6 mt-6">
+            {/* Mic Controls */}
+            <div className="flex items-center justify-center gap-10">
+              {audioURL && (
+                <button
+                  onClick={resetAudioState}
+                  disabled={isLoading || isVerifying}
+                  className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3] ${
+                    isLoading || isVerifying
+                      ? "opacity-50 pointer-events-none"
+                      : "hover:cursor-pointer"
+                  }`}
+                >
+                  <TablerRefresh className="w-8 h-8 text-secondary" />
+                </button>
+              )}
 
-              {breakdown && (
-                <div className="mt-2 space-y-1 text-left text-sm">
-                  <p>Accuracy: {breakdown.accuracy}/100</p>
-                  <p>Fluency: {breakdown.fluency}/100</p>
-                  <p>Completeness: {breakdown.completeness}/100</p>
-                </div>
+              <button
+                onClick={() =>
+                  isRecording ? stopRecording() : startRecording()
+                }
+                disabled={
+                  isLoading || isVerifying || !!audioURL // lock mic if there's a recording
+                }
+                className={`w-20 h-20 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center border-b-3  border-[#bf373a] ${
+                  isLoading || isVerifying || !!audioURL
+                    ? "opacity-50 pointer-events-none"
+                    : "hover:cursor-pointer"
+                }`}
+              >
+                {isRecording ? (
+                  <TablerPlayerPauseFilled className="w-10 h-10 text-white" />
+                ) : (
+                  <TablerMicrophoneFilled className="w-10 h-10 text-white" />
+                )}
+              </button>
+
+              {audioURL && (
+                <button
+                  onClick={() => {
+                    if (audioRef.current) {
+                      audioRef.current.currentTime = 0;
+                      audioRef.current.play();
+                    }
+                  }}
+                  disabled={isLoading || isVerifying}
+                  className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3]${
+                    isLoading || isVerifying
+                      ? "opacity-50 pointer-events-none"
+                      : "hover:cursor-pointer"
+                  }`}
+                >
+                  <TablerVolume className="w-8 h-8 text-secondary" />
+                </button>
               )}
             </div>
-          )}
 
-          {audioURL && (
+            {audioURL && (
+              <audio ref={audioRef} src={audioURL} className="hidden" />
+            )}
+          </div>
+        )}
+
+        {/* Submit Button */}
+        {score === null && (
+          <div className="pb-2">
             <button
               onClick={assessPronunciation}
-              disabled={isLoading}
-              className="text-sm px-3 py-2 bg-green-500 text-white rounded-full shadow hover:cursor-pointer"
+              disabled={!audioURL || isLoading}
+              className={`w-full py-4 rounded-4xl border-b-2 border-black ${
+                audioURL
+                  ? "bg-secondary text-white border-b-3 border-r-1 font-semibold border-black"
+                  : "bg-secondary/70 text-white cursor-not-allowed"
+              }`}
             >
               {isLoading ? "Scoring…" : "Submit"}
             </button>
-          )}
+          </div>
+        )}
 
-          <div className="flex items-center justify-center gap-6">
-            {audioURL && (
+        {/* Score + Feedback + Actions */}
+        {score !== null && (
+          <div className="w-full rounded-xl py-6 space-y-4">
+            <div
+              className={`w-full h-1 rounded-full mb-6 ${
+                score >= passingScore ? "bg-green-200" : "bg-red-200"
+              }`}
+            />
+            <div className="flex flex-col items-start mb-4">
+              <div className="flex items-left gap-2">
+                <div
+                  className={`w-8 h-8 rounded-sm border-b-2 flex items-center justify-center ${
+                    score >= passingScore
+                      ? "bg-green-500 border-green-700"
+                      : "bg-[#f04648] border-[#d12a2d]"
+                  }`}
+                >
+                  {score >= passingScore ? (
+                    <TablerCheck className="w-6 h-6 text-white" />
+                  ) : (
+                    <TablerX className="w-6 h-6 text-white" />
+                  )}
+                </div>
+                <p className="text-2xl font-semibold text-[#2D1C1C]">
+                  {score >= passingScore ? "Correct" : "Incorrect"}
+                </p>
+              </div>
+            </div>
+
+            <div className="w-full text-secondary flex items-center justify-center gap-6 mx-auto">
+              {[
+                {
+                  label: "Pronunciation",
+                  value: breakdown?.accuracy ?? 0,
+                },
+                {
+                  label: "Speed",
+                  value: breakdown?.fluency ?? 0,
+                },
+                {
+                  label: "Similarity",
+                  value: breakdown?.completeness ?? 0,
+                },
+              ].map(({ label, value }, idx) => {
+                let color = "bg-yellow-400";
+                if (value >= passingScore)
+                  color = "bg-[#4eed71] border-b-2 border-r-1 border-[#40c955]";
+                else if (value < 60)
+                  color = "bg-[#f04648] border-b-2 border-r-1 border-[#bf383a]";
+                return (
+                  <div className="flex items-center gap-2" key={label}>
+                    <div
+                      className={`font-medium w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-md mx-auto ${color}`}
+                    >
+                      {value}
+                    </div>
+                    <div className="text-md text-secondary">{label}</div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-between gap-4 pt-2">
               <button
                 onClick={resetAudioState}
-                disabled={isLoading || isVerifying}
-                className={`w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer ${
-                  isLoading || isVerifying
-                    ? "opacity-50 cursor-not-allowed pointer-events-none"
-                    : ""
-                }`}
+                className="flex-1 py-4 bg-white text-black rounded-full border-b-2 border-[#ebe6df] shadow"
               >
-                <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
+                Retry
               </button>
-            )}
-
-            <button
-              onClick={() => (isRecording ? stopRecording() : startRecording())}
-              disabled={isLoading || isVerifying}
-              className={`w-16 h-16 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center hover:cursor-pointer ${
-                isLoading || isVerifying
-                  ? "opacity-50 cursor-not-allowed pointer-events-none"
-                  : ""
-              }`}
-            >
-              {isRecording ? (
-                <TablerPlayerPauseFilled className="w-7 h-7 text-white" />
-              ) : (
-                <TablerMicrophone className="w-7 h-7 text-white" />
-              )}
-            </button>
-
-            {audioURL && (
               <button
-                onClick={() => {
-                  if (audioRef.current) {
-                    audioRef.current.currentTime = 0;
-                    audioRef.current.play();
-                  }
-                }}
-                disabled={isLoading || isVerifying}
-                className={`w-12 h-12 bg-white rounded-full shadow flex items-center justify-center hover:cursor-pointer ${
-                  isLoading || isVerifying
-                    ? "opacity-50 cursor-not-allowed pointer-events-none"
-                    : ""
-                }`}
+                onClick={next}
+                className="flex-1 py-4 bg-[#2D1C1C] text-white rounded-full border-b-3 border-black"
               >
-                <TablerVolume className="w-6 h-6 text-[#EF4444]" />
+                Next
               </button>
-            )}
+            </div>
           </div>
+        )}
+      </div>
 
-          {audioURL && (
-            <audio ref={audioRef} src={audioURL} className="hidden" />
-          )}
-        </div>
-      )}
       {isVerifying && (
         <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
       )}

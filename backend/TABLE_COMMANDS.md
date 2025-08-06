@@ -24,10 +24,11 @@ CREATE TABLE IF NOT EXISTS user_stats (
 
 CREATE TABLE teacher_sessions (
   id SERIAL PRIMARY KEY,
-  user_id TEXT NOT NULL,
+  user_id TEXT NOT NULL UNIQUE,
   tx_hash TEXT NOT NULL,
   expires_at TIMESTAMP NOT NULL
 );
+
 
 CREATE TABLE daily_quiz (
   id SERIAL PRIMARY KEY,
