@@ -161,32 +161,32 @@ export default function ProfilePage() {
   return (
     <div className="bg-background-primary min-h-[100dvh] flex flex-col items-center pb-nav">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
-        <div className="text-xl font-bold text-secondary text-center">
+        <div className="text-xl font-bold text-secondary text-center w-full">
           Account
         </div>
 
-        <div className="mt-1 flex flex-col items-center">
+        <div className="mt-1 flex flex-col items-center w-full">
           <div className="w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900">
             <span className="text-white text-3xl font-bold">
               {firstInitial}
             </span>
           </div>
 
-          <div className="mt-1 text-lg font-semibold text-secondary">
+          <div className="mt-1 text-lg font-semibold text-secondary text-center w-full">
             {name}
           </div>
         </div>
 
-        <div className="mt-4 w-full flex justify-center px-4">
+        <div className="mt-4 w-full flex justify-start px-4">
           <button
             className="w-full rounded-xl border border-border/40 bg-white/90 px-6 py-4 shadow-md hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-semibold text-secondary flex items-center justify-center gap-2 backdrop-blur-sm"
             onClick={() =>
               evmAddress
-                ? window.open(
-                    `https://seitrace.com/address/${evmAddress}?chain=atlantic-2`,
-                    "_blank"
-                  )
-                : pushToast("No wallet connected.", "error")
+          ? window.open(
+              `https://seitrace.com/address/${evmAddress}?chain=atlantic-2`,
+              "_blank"
+            )
+          : pushToast("No wallet connected.", "error")
             }
             style={{ borderColor: "rgba(0,0,0,0.15)" }}
           >
@@ -195,12 +195,12 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        <div className="w-full mt-4 flex flex-col items-center o">
-          <h2 className="text-md font-bold text-secondary mb-2 self-start lg:px-0 lg:max-w-4xl w-full">
+        <div className="w-full mt-4 flex flex-col items-start">
+          <h2 className="text-md font-bold text-secondary mb-2 self-start lg:px-0 lg:max-w-4xl w-full text-left">
             Statistics
           </h2>
 
-          <div className="flex gap-4 overflow-x-auto no-scrollbar px-4 w-full justify-start lg:justify-between lg:max-w-4xl lg:px-0">
+          <div className="flex gap-4 overflow-x-auto no-scrollbar px-4 w-full justify-start lg:justify-start lg:max-w-4xl lg:px-0">
             <StatCard icon="🔥" label="Streak" value={totalStreak} />
             <StatCard icon="📚" label="Language" value={language} />
             <StatCard
@@ -213,7 +213,7 @@ export default function ProfilePage() {
         </div>
 
         <div className="w-full mt-4 flex flex-col items-start">
-          <h2 className="text-md font-bold text-secondary mb-2">Others</h2>
+          <h2 className="text-md font-bold text-secondary mb-2 text-left">Others</h2>
           <div className="flex flex-col gap-2 w-full px-2">
             {[
               {
@@ -243,7 +243,7 @@ export default function ProfilePage() {
               >
                 <div className="flex items-center gap-3">
                   {icon}
-                  <span className="text-sm font-medium text-secondary">
+                  <span className="text-sm font-medium text-secondary text-left">
                     {label}
                   </span>
                 </div>
