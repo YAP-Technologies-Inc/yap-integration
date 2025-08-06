@@ -56,7 +56,7 @@ export default function AuthCard({
             hover: cursor-pointer
             lg:
             ">
-            Continue with Privy
+            Sign in 
           </button>
         </div>
       </div>
