@@ -10,10 +10,10 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
     // backdrop
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       {/* modal */}
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md relative">
+      <div className="bg-background-primary rounded-lg shadow-xl w-full max-w-md relative">
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 p-2 bg-background-primary rounded-full shadow transition-colors"
+          className="absolute top-4 left-4 p-2 text-secondary transition-colors"
         >
           <TablerX className="w-6 h-6 text-secondary" />
         </button>
