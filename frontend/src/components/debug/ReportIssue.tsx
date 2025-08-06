@@ -19,7 +19,11 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
         </button>
         <div className="p-6 text-center">
           <h1 className="text-xl font-semibold text-secondary">Report an Issue</h1>
-          {/* … your form or content here … */}
+          <form>
+            
+
+
+          </form>
         </div>
       </div>
     </div>
