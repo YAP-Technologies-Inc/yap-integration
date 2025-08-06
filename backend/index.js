@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const flowglad = require('@flowglad/server');
 const bip39 = require('bip39');
 const ethers = require('ethers');
+const nodeMailer = require('nodemailer');
 const {
   JsonRpcProvider,
   Wallet,
@@ -22,6 +24,17 @@ const db = new Pool({
 const artifact = require('./abi/YapToken.json');
 const tokenAbi = artifact.abi;
 
+
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASS = process.env.EMAIL_PASS;
+
+const transporter = nodeMailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: EMAIL_USER,
+    pass: EMAIL_PASS,
+  },
+});
 const bcrypt = require('bcryptjs'); // Add at the top if you want to hash passwords
 const { assessPronunciation } = require('./azurePronunciation');
 const multer = require('multer');
@@ -30,7 +43,7 @@ const fs = require('fs');
 const path = require('path');
 const upload = multer({ dest: 'uploads/' });
 
-require('dotenv').config();
+
 
 const SEI_RPC = 'https://evm-rpc-testnet.sei-apis.com';
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
@@ -604,7 +617,30 @@ app.post('/api/elevenlabs-tts', async (req, res) => {
     res.status(500).json({ error: 'Failed to generate audio' });
   }
 });
+
+app.post('/api/report-form', async (req, res) => {
+  const { reason, explain } = req.body;
+
+  if (!reason || !explain) {
+    return res.status(400).json({ error: 'Missing fields' });
+  }
+
+  try {
+    await transporter.sendMail({
+      from: `"YAP Reporter" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_TO,
+      subject: `Issue Reported: ${reason}`,
+      text: explain,
+    });
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Failed to send report:', err);
+    return res.status(500).json({ error: 'Email send failed' });
+  }
+});
 app.use('/uploads', express.static('uploads'));
+
+
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () =>
