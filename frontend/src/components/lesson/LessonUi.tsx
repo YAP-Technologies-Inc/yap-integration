@@ -105,10 +105,13 @@ export default function LessonUi({
 
   const next = () => {
     if (stepIndex + 1 >= total) {
-      onComplete();
+      // Final step — trigger verify
+      verifyLessonCompletion();
     } else {
+      // Normal step — advance
       setStepIndex(stepIndex + 1);
       resetAudioState();
+      setShowBack(false);
     }
   };
 
@@ -171,34 +174,32 @@ export default function LessonUi({
   const assessPronunciation = async () => {
     if (!audioBlob || !referenceText) return;
 
-    // SNAP MIC BACK TO READY STATE ──
-    const blobToUpload = audioBlob; // preserve for upload
-    setAudioURL(null); // hide playback & Submit button
-    setIsRecording(false); // ensure mic icon is in “ready” mode
-    setScore(null); // clear old score
-    setFeedback(null); // clear old feedback
-    setBreakdown(null); // clear old breakdown
-
-    // SHOW LOADING ──
+    const blobToUpload = audioBlob;
+    setAudioURL(null);
+    setIsRecording(false);
+    setScore(null);
+    setFeedback(null);
+    setBreakdown(null);
     setIsLoading(true);
 
-    // PREPARE FORM DATA ──
     const fd = new FormData();
     fd.append("audio", blobToUpload, "recording.webm");
     fd.append("referenceText", referenceText);
 
     try {
-      // UPLOAD & GET RAW AZURE RESULT ──
       const res = await fetch(
         `${API_URL}/api/pronunciation-assessment-upload`,
-        { method: "POST", body: fd }
+        {
+          method: "POST",
+          body: fd,
+        }
       );
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
-      const result = await res.json();
 
-      // EXTRACT & DISPLAY SCORES ──
+      const result = await res.json();
       const raw = result.overallScore ?? 0;
       const display = Math.round(raw);
+
       setScore(display);
       setFeedback(getRandomFeedbackPhrase(display));
       setBreakdown({
@@ -208,11 +209,7 @@ export default function LessonUi({
       });
 
       setShowBack(true);
-      await new Promise((r) => setTimeout(r, 300)); // let the flip animate
-
-      // Wait for user to click "Next" manually (even on last word)
-      await new Promise((r) => setTimeout(r, 500));
-      setIsVerifying(false);
+      await new Promise((r) => setTimeout(r, 300)); // animate flip
     } catch (err) {
       console.error("Assessment error:", err);
       pushToast("Assessment failed", "error");
@@ -220,60 +217,102 @@ export default function LessonUi({
       setIsLoading(false);
     }
   };
+  const verifyLessonCompletion = async () => {
+    const snackId = Date.now();
+    setIsVerifying(true);
+    showSnackbar({
+      id: snackId,
+      message: "Verifying lesson on-chain…",
+      variant: "completion",
+      manual: true,
+    });
+
+    try {
+      const res = await fetch(`${API_URL}/api/complete-lesson`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, walletAddress, lessonId }),
+      });
+
+      if (!res.ok) throw new Error("Verification failed");
+
+      removeSnackbar(snackId);
+      showSnackbar({
+        message: "Lesson complete! YAP token sent",
+        variant: "custom",
+        duration: 3000,
+      });
+
+      setTimeout(() => {
+        setIsVerifying(false);
+        router.push("/home");
+      }, 1200);
+    } catch (err) {
+      removeSnackbar(snackId);
+      showSnackbar({
+        message: "Lesson failed to verify. Please try again.",
+        variant: "error",
+      });
+      setIsVerifying(false);
+      console.error("Verification error:", err);
+    }
+  };
 
   return (
-    <div className="min-h[100dvh] fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
-      {/* Exit + Progress bar */}
-      <div className="flex items-center pt-2 ">
-        <button
-          onClick={() => router.push("/home")}
-          className="text-secondary hover:cursor-pointer"
-        >
-          <TablerX className="w-6 h-6" />
-        </button>
-        <h3 className="flex-1 text-center text-secondary font-bold text-xl">
-          Vocabulary
-        </h3>
-        <div>
+    <div className="fixed inset-0 bg-background-primary flex flex-col h-[100dvh] overflow-hidden">
+      <div className="min-h-[100dvh] fixed inset-0 bg-background-primary flex flex-col px-4 pt-safe">
+        <div className="flex items-center">
           <button
-            onClick={() => setShowReport(true)}
-            className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
+            onClick={() => router.push("/home")}
+            className="text-secondary hover:cursor-pointer"
           >
-            <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+            <TablerX className="w-6 h-6" />
           </button>
+          <h3 className="flex-1 text-center text-secondary font-bold text-xl">
+            Vocabulary
+          </h3>
+          <div>
+            <button
+              onClick={() => setShowReport(true)}
+              className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
+            >
+              <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+            </button>
 
-          {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
+            {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
+          </div>
         </div>
-      </div>
-      <div className="flex h-4 w-full border-2 border-gray-50 bg-white/90 rounded-full overflow-hidden mt-6">
-        <div
-          className="h-full bg-tertiary transition-all"
-          style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
-        />
-      </div>
-      {/* Card area */}
-      <div className="flex flex-1 items-start justify-center mt-8">
-        {current.variant === "vocab" && (
-          <Flashcard
-            es={current.front}
-            en={current.back}
-            example={current.example}
-            scores={
-              breakdown && {
-                overallScore: score!,
-                accuracyScore: breakdown.accuracy,
-                fluencyScore: breakdown.fluency,
-                completenessScore: breakdown.completeness,
+        <div className="w-full flex-shrink-0">
+          <div className="h-4 w-full border-2 border-gray-50 bg-white/90 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-tertiary transition-all"
+              style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
+            />
+          </div>
+        </div>
+        {/* Card area */}
+        <div className="flex flex-1 items-start justify-center mt-8 min-h-[56dvh] sm:min-h-[50dvh]">
+          {current.variant === "vocab" && (
+            <Flashcard
+              es={current.front}
+              en={current.back}
+              example={current.example}
+              scores={
+                breakdown && {
+                  overallScore: score!,
+                  accuracyScore: breakdown.accuracy,
+                  fluencyScore: breakdown.fluency,
+                  completenessScore: breakdown.completeness,
+                }
               }
-            }
-            locked={isLoading || isVerifying}
-            stepIndex={stepIndex} // <-- passed in
-            total={total} // <-- passed in
-            score={score} // <-- passed in
-          />
-        )}
-        {/* commented out for testing  */}
-        {/* {current.variant === 'grammar' && (
+              locked={isLoading || isVerifying}
+              stepIndex={stepIndex} // <-- passed in
+              total={total} // <-- passed in
+              score={score} // <-- passed in
+            />
+          )}
+          {/* commented out for testing  */}
+          {/* {current.variant === 'grammar' && (
           <GrammarCard rule={current.rule} examples={current.examples} />
         )}
         {current.variant === 'comprehension' && (
@@ -293,174 +332,177 @@ export default function LessonUi({
             </div>
           </div> 
         )} */}
-      </div>
+        </div>
 
-      {/* Mic controls for speaking steps */}
-      <div className="w-full space-y-6">
-        {needsSpeaking && score === null && (
-          <div className="flex flex-col items-center gap-6 mt-6">
-            {/* Mic Controls */}
-            <div className="flex items-center justify-center gap-10">
-              {audioURL && (
+        {/* Mic controls for speaking steps */}
+        <div className="w-full space-y-6">
+          {needsSpeaking && score === null && (
+            <div className="flex flex-col items-center gap-6 mt-6">
+              {/* Mic Controls */}
+              <div className="flex items-center justify-center gap-10">
+                {audioURL && (
+                  <button
+                    onClick={resetAudioState}
+                    disabled={isLoading || isVerifying}
+                    className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3] ${
+                      isLoading || isVerifying
+                        ? "opacity-50 pointer-events-none"
+                        : "hover:cursor-pointer"
+                    }`}
+                  >
+                    <TablerRefresh className="w-8 h-8 text-secondary" />
+                  </button>
+                )}
+
                 <button
-                  onClick={resetAudioState}
-                  disabled={isLoading || isVerifying}
-                  className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3] ${
-                    isLoading || isVerifying
+                  onClick={() =>
+                    isRecording ? stopRecording() : startRecording()
+                  }
+                  disabled={
+                    isLoading || isVerifying || !!audioURL // lock mic if there's a recording
+                  }
+                  className={`w-20 h-20 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center border-b-3  border-[#bf373a] ${
+                    isLoading || isVerifying || !!audioURL
                       ? "opacity-50 pointer-events-none"
                       : "hover:cursor-pointer"
                   }`}
                 >
-                  <TablerRefresh className="w-8 h-8 text-secondary" />
+                  {isRecording ? (
+                    <TablerPlayerPauseFilled className="w-10 h-10 text-white" />
+                  ) : (
+                    <TablerMicrophoneFilled className="w-10 h-10 text-white" />
+                  )}
                 </button>
-              )}
 
+                {audioURL && (
+                  <button
+                    onClick={() => {
+                      if (audioRef.current) {
+                        audioRef.current.currentTime = 0;
+                        audioRef.current.play();
+                      }
+                    }}
+                    disabled={isLoading || isVerifying}
+                    className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3]${
+                      isLoading || isVerifying
+                        ? "opacity-50 pointer-events-none"
+                        : "hover:cursor-pointer"
+                    }`}
+                  >
+                    <TablerVolume className="w-8 h-8 text-secondary" />
+                  </button>
+                )}
+              </div>
+
+              {audioURL && (
+                <audio ref={audioRef} src={audioURL} className="hidden" />
+              )}
+            </div>
+          )}
+
+          {/* Submit Button */}
+          {score === null && (
+            <div className="pb-2">
               <button
-                onClick={() =>
-                  isRecording ? stopRecording() : startRecording()
-                }
-                disabled={
-                  isLoading || isVerifying || !!audioURL // lock mic if there's a recording
-                }
-                className={`w-20 h-20 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center border-b-3  border-[#bf373a] ${
-                  isLoading || isVerifying || !!audioURL
-                    ? "opacity-50 pointer-events-none"
-                    : "hover:cursor-pointer"
+                onClick={assessPronunciation}
+                disabled={!audioURL || isLoading}
+                className={`w-full py-4 rounded-4xl border-b-2 border-black ${
+                  audioURL
+                    ? "bg-secondary text-white border-b-3 border-r-1 font-semibold border-black"
+                    : "bg-secondary/70 text-white cursor-not-allowed"
                 }`}
               >
-                {isRecording ? (
-                  <TablerPlayerPauseFilled className="w-10 h-10 text-white" />
-                ) : (
-                  <TablerMicrophoneFilled className="w-10 h-10 text-white" />
-                )}
+                {isLoading ? "Scoring…" : "Submit"}
               </button>
-
-              {audioURL && (
-                <button
-                  onClick={() => {
-                    if (audioRef.current) {
-                      audioRef.current.currentTime = 0;
-                      audioRef.current.play();
-                    }
-                  }}
-                  disabled={isLoading || isVerifying}
-                  className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3]${
-                    isLoading || isVerifying
-                      ? "opacity-50 pointer-events-none"
-                      : "hover:cursor-pointer"
-                  }`}
-                >
-                  <TablerVolume className="w-8 h-8 text-secondary" />
-                </button>
-              )}
             </div>
-
-            {audioURL && (
-              <audio ref={audioRef} src={audioURL} className="hidden" />
-            )}
-          </div>
-        )}
-
-        {/* Submit Button */}
-        {score === null && (
-          <div className="pb-2">
-            <button
-              onClick={assessPronunciation}
-              disabled={!audioURL || isLoading}
-              className={`w-full py-4 rounded-4xl border-b-2 border-black ${
-                audioURL
-                  ? "bg-secondary text-white border-b-3 border-r-1 font-semibold border-black"
-                  : "bg-secondary/70 text-white cursor-not-allowed"
-              }`}
-            >
-              {isLoading ? "Scoring…" : "Submit"}
-            </button>
-          </div>
-        )}
-
-        {/* Score + Feedback + Actions */}
-        {score !== null && (
-          <div className="w-full rounded-xl py-6 space-y-4">
-            <div
-              className={`w-full h-1 rounded-full mb-6 ${
-                score >= passingScore ? "bg-green-200" : "bg-red-200"
-              }`}
-            />
-            <div className="flex flex-col items-start mb-4">
-              <div className="flex items-left gap-2">
-                <div
-                  className={`w-8 h-8 rounded-sm border-b-2 flex items-center justify-center ${
-                    score >= passingScore
-                      ? "bg-green-500 border-green-700"
-                      : "bg-[#f04648] border-[#d12a2d]"
-                  }`}
-                >
-                  {score >= passingScore ? (
-                    <TablerCheck className="w-6 h-6 text-white" />
-                  ) : (
-                    <TablerX className="w-6 h-6 text-white" />
-                  )}
+          )}
+          {/* Score + Feedback + Actions */}
+          {score !== null && (
+            <div className="w-full rounded-xl pb-2 space-y-4">
+              <div
+                className={`w-full h-1 rounded-full mb-6 ${
+                  score >= passingScore ? "bg-green-200" : "bg-red-200"
+                }`}
+              />
+              <div className="flex flex-col items-start mb-4">
+                <div className="flex items-left gap-2">
+                  <div
+                    className={`w-8 h-8 rounded-sm border-b-2 flex items-center justify-center ${
+                      score >= passingScore
+                        ? "bg-green-500 border-green-700"
+                        : "bg-[#f04648] border-[#d12a2d]"
+                    }`}
+                  >
+                    {score >= passingScore ? (
+                      <TablerCheck className="w-6 h-6 text-white" />
+                    ) : (
+                      <TablerX className="w-6 h-6 text-white" />
+                    )}
+                  </div>
+                  <p className="text-2xl font-semibold text-[#2D1C1C]">
+                    {score >= passingScore ? "Correct" : "Incorrect"}
+                  </p>
                 </div>
-                <p className="text-2xl font-semibold text-[#2D1C1C]">
-                  {score >= passingScore ? "Correct" : "Incorrect"}
-                </p>
+              </div>
+
+              <div className="w-full flex justify-center gap-6 px-4 text-secondary">
+                {[
+                  {
+                    label: "Pronunciation",
+                    value: breakdown?.accuracy ?? 0,
+                  },
+                  {
+                    label: "Speed",
+                    value: breakdown?.fluency ?? 0,
+                  },
+                  {
+                    label: "Similarity",
+                    value: breakdown?.completeness ?? 0,
+                  },
+                ].map(({ label, value }) => {
+                  let color = "bg-yellow-400";
+                  if (value >= passingScore)
+                    color =
+                      "bg-[#4eed71] border-b-2 border-r-1 border-[#40c955]";
+                  else if (value < 60)
+                    color =
+                      "bg-[#f04648] border-b-2 border-r-1 border-[#bf383a]";
+
+                  return (
+                    <div className="flex items-center gap-2" key={label}>
+                      <div
+                        className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium ${color}`}
+                      >
+                        {value}
+                      </div>
+                      <span className="text-sm">{label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex justify-between gap-4 pt-2">
+                <button
+                  onClick={resetAudioState}
+                  className="flex-1 py-4 bg-white text-black rounded-full border-b-2 border-[#ebe6df] shadow"
+                >
+                  Retry
+                </button>
+                <button
+                  onClick={next}
+                  className="flex-1 py-4 bg-[#2D1C1C] text-white rounded-full border-b-3 border-black"
+                >
+                  Next
+                </button>
               </div>
             </div>
+          )}
+        </div>
 
-            <div className="w-full text-secondary flex items-center justify-center gap-6 mx-auto">
-              {[
-                {
-                  label: "Pronunciation",
-                  value: breakdown?.accuracy ?? 0,
-                },
-                {
-                  label: "Speed",
-                  value: breakdown?.fluency ?? 0,
-                },
-                {
-                  label: "Similarity",
-                  value: breakdown?.completeness ?? 0,
-                },
-              ].map(({ label, value }, idx) => {
-                let color = "bg-yellow-400";
-                if (value >= passingScore)
-                  color = "bg-[#4eed71] border-b-2 border-r-1 border-[#40c955]";
-                else if (value < 60)
-                  color = "bg-[#f04648] border-b-2 border-r-1 border-[#bf383a]";
-                return (
-                  <div className="flex items-center gap-2" key={label}>
-                    <div
-                      className={`font-medium w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-md mx-auto ${color}`}
-                    >
-                      {value}
-                    </div>
-                    <div className="text-md text-secondary">{label}</div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="flex justify-between gap-4 pt-2">
-              <button
-                onClick={resetAudioState}
-                className="flex-1 py-4 bg-white text-black rounded-full border-b-2 border-[#ebe6df] shadow"
-              >
-                Retry
-              </button>
-              <button
-                onClick={next}
-                className="flex-1 py-4 bg-[#2D1C1C] text-white rounded-full border-b-3 border-black"
-              >
-                Next
-              </button>
-            </div>
-          </div>
+        {isVerifying && (
+          <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
         )}
       </div>
-
-      {isVerifying && (
-        <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
-      )}
     </div>
   );
 }

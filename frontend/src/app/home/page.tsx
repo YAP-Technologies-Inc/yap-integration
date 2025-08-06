@@ -59,6 +59,7 @@ export default function HomePage() {
   const [hasAccess, setHasAccess] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(false);
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
+  const [isVerifyingPermit, setIsVerifyingPermit] = useState(false);
 
   const { signTypedData } = useSignTypedData();
   // Compute lesson availability based on completed lessons
@@ -197,12 +198,14 @@ export default function HomePage() {
         {
           address: walletAddress,
           uiOptions: {
-            showWalletUIs: false, // ✅ suppress modal
+            showWalletUIs: false,
           },
         }
       );
 
       // STEP 3: Submit signature to backend
+      setIsVerifyingPermit(true); // ✅ begin grey-out
+
       const snackId = Date.now();
       showSnackbar({
         id: snackId,
@@ -225,6 +228,7 @@ export default function HomePage() {
       });
 
       removeSnackbar(snackId);
+      setIsVerifyingPermit(false); // ✅ remove grey-out
 
       if (!res.ok) {
         showSnackbar({ message: "Verification failed.", variant: "error" });
@@ -246,6 +250,7 @@ export default function HomePage() {
       });
     } finally {
       setCheckingAccess(false);
+      setIsVerifyingPermit(false); // failsafe
     }
   };
 
@@ -322,6 +327,9 @@ export default function HomePage() {
       </div>
 
       <BottomNavBar />
+      {isVerifyingPermit && (
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center" />
+      )}
     </div>
   );
 }
