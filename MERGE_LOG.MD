@@ -43,3 +43,8 @@
 - Feature: Fixed UI for profile a bit, mainly spacing
 - Conflicts: None
 - Notes: Not complete, just better for testing
+## August 6, 2025 – Merged `feat/report-issue` → `main`
+- Merged by: Landon Hadre
+- Feature: Users can report issues during lessons
+- Conflicts: None
+- Notes: Lesson UI might break on some devices :(
