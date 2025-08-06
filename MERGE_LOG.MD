@@ -38,3 +38,8 @@
 - Feature: Fixed UI for lessons, addedd custom modal
 - Conflicts: None
 - Notes: Users have an easier and safer flow for lessons, and are only greeted by custom message modal
+## August 6, 2025 – Merged `style/profile-page` → `main`
+- Merged by: Landon Hadre
+- Feature: Fixed UI for profile a bit, mainly spacing
+- Conflicts: None
+- Notes: Not complete, just better for testing
