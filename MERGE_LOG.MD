@@ -33,3 +33,8 @@
 - Feature: Allowed gasless transactions
 - Conflicts: None
 - Notes: Users can pay for spanish teacher with no gas fee using ERC-712 contract, need to set up relayer
+## August 6, 2025 – Merged `style/lesson-card` → `main`
+- Merged by: Landon Hadre
+- Feature: Fixed UI for lessons, addedd custom modal
+- Conflicts: None
+- Notes: Users have an easier and safer flow for lessons, and are only greeted by custom message modal
