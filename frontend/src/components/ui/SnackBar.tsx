@@ -54,11 +54,11 @@ function Snack({
   return (
     <div
       className={clsx(
-        'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border',
+        'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border-b-3 border-[#e3ded3]',
         {
             'bg-background-primary text-secondary border-b-3 border-[#e3ded3]': variant === 'success',
-            'bg-background-primary text-secondary border-red-200': variant === 'error',
-            'bg-background-primary text-secondary border-blue-200': variant === 'info',
+            'bg-background-primary text-secondary ': variant === 'error',
+            'bg-background-primary text-secondary': variant === 'info',
             'bg-background-primary text-secondary border-background-primary':
               variant === 'completion' || variant === 'custom',
           },

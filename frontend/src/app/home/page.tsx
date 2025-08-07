@@ -58,10 +58,7 @@ export default function HomePage() {
   const { balance: onChainBalance, isLoading: isBalanceLoading } =
     useOnChainBalance(evmAddress);
 
-  const [hasAccess, setHasAccess] = useState(false);
-  const [checkingAccess, setCheckingAccess] = useState(false);
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
-  const [isVerifyingPermit, setIsVerifyingPermit] = useState(false);
 
   const { signTypedData } = useSignTypedData();
   // Compute lesson availability based on completed lessons
@@ -104,8 +101,6 @@ export default function HomePage() {
       .then((data) => setDailyQuizCompleted(data.completed))
       .catch(() => {});
   }, [userId, API_URL]);
-
-  
 
   const dailyQuizUnlocked = completedLessons?.includes("SPA1_005");
   const handleDailyQuizUnlocked = () => {
@@ -176,7 +171,7 @@ export default function HomePage() {
         </div>
 
         {/* Talk to Spanish Teacher */}
-        <div className="mt-2">
+        <div className="mt-3">
           <button
             onClick={() => router.push("/spanish-teacher")}
             className="w-full border-b-3 border-black bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded-2xl hover:cursor-pointer transition-colors duration-200 shadow-md"
@@ -197,9 +192,6 @@ export default function HomePage() {
       </div>
 
       <BottomNavBar />
-      {isVerifyingPermit && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center" />
-      )}
     </div>
   );
 }

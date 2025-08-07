@@ -4,12 +4,13 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useConversation } from "@11labs/react";
 import { useRouter } from "next/navigation";
 import { useSnackbar, removeSnackbar } from "@/components/ui/SnackBar";
-import { TablerChevronLeft } from "@/icons";
+import { TablerX } from "@/icons";
 import { handleSpanishTeacherAccessFromPage } from "@/utils/handleSpanishTeacherAccessFromPage";
 import { useMessageSignModal } from "@/components/cards/MessageSignModal";
 import { useWallets, useSignTypedData } from "@privy-io/react-auth";
 import { usePrivy } from "@privy-io/react-auth";
 import { ethers } from "ethers";
+import Tutor from "@/components/cards/Tutor";
 
 interface Message {
   id: string;
@@ -173,8 +174,7 @@ export default function SpanishTeacherConversation() {
   if (!hasAccess) {
     return (
       <div className="min-h-[100dvh] bg-background-primary pb-[env(safe-area-inset-bottom)] relative">
-        <div className="absolute inset-0 bg-opacity-70 flex items-center justify-center z-30">
-        </div>
+        <div className="absolute inset-0 bg-opacity-70 flex items-center justify-center z-30"></div>
       </div>
     );
   }
@@ -186,15 +186,10 @@ export default function SpanishTeacherConversation() {
           onClick={() => router.push("/home")}
           className="absolute left-4"
         >
-          <TablerChevronLeft className="w-6 h-6 text-gray-700" />
+          <TablerX className="w-6 h-6 text-gray-700" />
         </button>
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-[#2D1C1C]">
-            AI Spanish Teacher
-          </h1>
-          <p className="text-sm text-[#5C4B4B]">
-            Practice your Spanish conversation
-          </p>
+          <h1 className="text-xl font-semibold text-[#2D1C1C]">Tutor</h1>
         </div>
       </div>
 
@@ -241,8 +236,10 @@ export default function SpanishTeacherConversation() {
           </div>
         </div>
       </div>
-
-      <div className="fixed inset-x-0 bottom-[env(safe-area-inset-bottom)] pb-2 px-4 z-20">
+      <div className="fixed inset-x-0 bottom-0 pb-2 z-20 flex justify-center items-center">
+        <Tutor />
+      </div>
+      {/* <div className="fixed inset-x-0 bottom-[env(safe-area-inset-bottom)] pb-2 px-4 z-20">
         {!isConnected ? (
           <button
             onClick={startConversation}
@@ -263,7 +260,7 @@ export default function SpanishTeacherConversation() {
             End Conversation
           </button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
