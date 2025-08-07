@@ -1,6 +1,5 @@
 "use client";
 import { createContext, useContext, useState } from "react";
-import { TablerX } from "@/icons";
 
 interface MessageSignContextType {
   isOpen: boolean;
@@ -58,32 +57,33 @@ export function MessageSignProvider({
 
         {/* Modal */}
         <div
-          className={`absolute left-0 bottom-0 w-full bg-background-primary rounded-t-2xl shadow-xl transform transition-transform duration-400 ease-in-out ${
+          className={`absolute left-0 bottom-0 w-full bg-background-primary rounded-t-3xl shadow-xl transform transition-transform duration-400 ease-in-out ${
             isOpen ? "translate-y-0" : "translate-y-full"
           }`}
         >
-          {/* Close Button */}
-          <div className="flex justify-between items-center px-4 pt-4">
-            <div className="text-sm text-secondary font-medium">
-              Authorization
-            </div>
-            <button onClick={close} className="text-secondary p-1">
-              <TablerX className="h-6 w-6" />
-            </button>
+          <div className="flex items-center justify-center pt-4">
+            <h1 className="text-4xl font-extrabold text-secondary">
+              Tutor A.I
+            </h1>
+          </div>
+          {/* Message */}
+          <div className="px-4 mt-2 mb-2 text-center space-y-2">
+            <p className="text-base text-secondary">{message}</p>
           </div>
 
-          {/* Message */}
-          <div className="px-4 mt-20 mb-20 text-center space-y-2">
-            <p className="text-base text-secondary">{message}</p>
-           
-          </div>
-          {/* Confirm Button */}
           <div className="px-4 pb-2">
             <button
               onClick={handleConfirm}
-              className="w-full py-3 bg-secondary text-white font-semibold rounded-xl transition"
+              className="w-full py-3 bg-secondary text-white border-b-4 border-black font-semibold rounded-3xl transition flex items-center justify-center gap-2"
             >
-              Sign & Continue
+              <div className="flex items-center justify-center">
+                <img
+                  src="/assets/coin.png"
+                  alt="YAP"
+                  className="h-5 w-5 "
+                />
+              </div>
+              <span className="text-base">Spend 1 YAP</span>
             </button>
           </div>
         </div>

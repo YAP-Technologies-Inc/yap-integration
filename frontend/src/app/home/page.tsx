@@ -105,142 +105,7 @@ export default function HomePage() {
       .catch(() => {});
   }, [userId, API_URL]);
 
-  const handleSpanishTeacherAccess = async () => {
-    setCheckingAccess(true);
-
-    try {
-      if (!TOKEN_ADDRESS || !userId) {
-        showSnackbar({
-          message: "Missing config or user ID.",
-          variant: "error",
-        });
-        return;
-      }
-
-      // STEP 1: Check session
-      const { hasAccess } = await (
-        await fetch(`${API_URL}/api/teacher-session/${userId}`)
-      ).json();
-
-      if (hasAccess) {
-        router.push("/spanish-teacher");
-        return;
-      }
-
-      // STEP 2: Custom modal first
-      const confirm = await open("Spend 1 YAP to access Spanish Teacher?");
-      if (!confirm) return;
-
-      const embedded = wallets.find((w) => w.walletClientType === "privy");
-      if (!embedded) {
-        showSnackbar({
-          message: "Please connect your wallet.",
-          variant: "error",
-        });
-        return;
-      }
-
-      const ethProvider = await embedded.getEthereumProvider();
-      const provider = new ethers.BrowserProvider(ethProvider);
-      const signer = await provider.getSigner();
-      const walletAddress = await signer.getAddress();
-
-      const token = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
-      const oneYap = ethers.parseUnits("1", 18);
-      const nonce = await token.nonces(walletAddress);
-      const deadline = Math.floor(Date.now() / 1000) + 3600;
-
-      const domain = {
-        name: "YapTokenTestV2",
-        version: "1",
-        chainId: 1328,
-        verifyingContract: TOKEN_ADDRESS,
-      };
-
-      const types = {
-        Permit: [
-          { name: "owner", type: "address" },
-          { name: "spender", type: "address" },
-          { name: "value", type: "uint256" },
-          { name: "nonce", type: "uint256" },
-          { name: "deadline", type: "uint256" },
-        ],
-      };
-
-      const message = {
-        owner: walletAddress,
-        spender: BACKEND_WALLET_ADDRESS,
-        value: oneYap.toString(),
-        nonce: nonce.toString(),
-        deadline,
-      };
-
-      // ✅ Sign without showing Privy's modal
-      const { signature } = await signTypedData(
-        {
-          domain,
-          types,
-          message,
-          primaryType: "Permit",
-        },
-        {
-          address: walletAddress,
-          uiOptions: {
-            showWalletUIs: false,
-          },
-        }
-      );
-
-      // STEP 3: Submit signature to backend
-      setIsVerifyingPermit(true); // ✅ begin grey-out
-
-      const snackId = Date.now();
-      showSnackbar({
-        id: snackId,
-        message: "Verifying transaction on-chain…",
-        variant: "completion",
-        manual: true,
-      });
-
-      const res = await fetch(`${API_URL}/api/request-spanish-teacher`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          walletAddress,
-          permit: {
-            ...message,
-            signature,
-          },
-        }),
-      });
-
-      removeSnackbar(snackId);
-      setIsVerifyingPermit(false); // ✅ remove grey-out
-
-      if (!res.ok) {
-        showSnackbar({ message: "Verification failed.", variant: "error" });
-        return;
-      }
-
-      showSnackbar({
-        message: "Access granted! Redirecting…",
-        variant: "success",
-        duration: 3000,
-      });
-
-      router.push("/spanish-teacher");
-    } catch (err) {
-      console.error("Permit error:", err);
-      showSnackbar({
-        message: "Failed to authorize payment.",
-        variant: "error",
-      });
-    } finally {
-      setCheckingAccess(false);
-      setIsVerifyingPermit(false); // failsafe
-    }
-  };
+  
 
   const dailyQuizUnlocked = completedLessons?.includes("SPA1_005");
   const handleDailyQuizUnlocked = () => {
@@ -313,13 +178,10 @@ export default function HomePage() {
         {/* Talk to Spanish Teacher */}
         <div className="mt-2">
           <button
-            onClick={handleSpanishTeacherAccess}
+            onClick={() => router.push("/spanish-teacher")}
             className="w-full border-b-3 border-black bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded-2xl hover:cursor-pointer transition-colors duration-200 shadow-md"
-            disabled={checkingAccess}
           >
-            {checkingAccess
-              ? "Checking access…"
-              : "Talk to Spanish Teacher (1 YAP)"}
+            Talk to Spanish Teacher
           </button>
         </div>
         {/* Daily Quiz */}

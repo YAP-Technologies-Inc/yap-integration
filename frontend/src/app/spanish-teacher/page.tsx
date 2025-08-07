@@ -1,15 +1,20 @@
-'use client';
+"use client";
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useConversation } from '@11labs/react';
-import { useRouter } from 'next/navigation';
-import { useSnackbar } from '@/components/ui/SnackBar';
-import { TablerChevronLeft } from '@/icons';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useConversation } from "@11labs/react";
+import { useRouter } from "next/navigation";
+import { useSnackbar, removeSnackbar } from "@/components/ui/SnackBar";
+import { TablerChevronLeft } from "@/icons";
+import { handleSpanishTeacherAccessFromPage } from "@/utils/handleSpanishTeacherAccessFromPage";
+import { useMessageSignModal } from "@/components/cards/MessageSignModal";
+import { useWallets, useSignTypedData } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
+import { ethers } from "ethers";
 
 interface Message {
   id: string;
   text: string;
-  sender: 'user' | 'ai';
+  sender: "user" | "ai";
   timestamp: Date;
 }
 
@@ -19,18 +24,25 @@ export default function SpanishTeacherConversation() {
   const [error, setError] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbar, removeSnackbar } = useSnackbar();
   const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
   const AGENT_ID = process.env.NEXT_PUBLIC_AGENT_ID;
+  const [hasAccess, setHasAccess] = useState(false);
+  const [checkingAccess, setCheckingAccess] = useState(false);
+  const [isVerifyingPermit, setIsVerifyingPermit] = useState(false);
+
+  const { open } = useMessageSignModal(); // ← you missed this
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy");
 
   const [userId, setUserId] = useState<string | null>(null);
-
+  const { signTypedData } = usePrivy();
   const conversation = useConversation({
     apiKey: ELEVENLABS_API_KEY,
     agentId: AGENT_ID,
     onMessage: (msg) => {
-      if (typeof msg.message !== 'string') return;
-      const sender = msg.source === 'user' ? 'user' : 'ai';
+      if (typeof msg.message !== "string") return;
+      const sender = msg.source === "user" ? "user" : "ai";
       setMessages((prev) => [
         ...prev,
         {
@@ -42,15 +54,15 @@ export default function SpanishTeacherConversation() {
       ]);
     },
     onError: (err) => {
-      console.error('Conversation error:', err);
+      console.error("Conversation error:", err);
       setError(
-        `Connection error: ${typeof err === 'string' ? err : 'Unknown error'}`
+        `Connection error: ${typeof err === "string" ? err : "Unknown error"}`
       );
     },
   });
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const startConversation = useCallback(async () => {
@@ -63,7 +75,7 @@ export default function SpanishTeacherConversation() {
         agentId: AGENT_ID as string,
       });
     } catch (err: any) {
-      console.error('Start session failed:', err);
+      console.error("Start session failed:", err);
       setError(`Failed to start: ${err?.message ?? String(err)}`);
     } finally {
       setIsLoading(false);
@@ -71,67 +83,107 @@ export default function SpanishTeacherConversation() {
   }, [conversation]);
 
   useEffect(() => {
-    const loadAndCheckAccess = async () => {
-      const stored = localStorage.getItem('userId');
-      if (!stored) return;
+    checkAccessOrPrompt();
+  }, []);
 
-      setUserId(stored); // Optional, if you still need userId in other places
+  const checkAccessOrPrompt = async () => {
+    const stored = localStorage.getItem("userId");
+    console.log("Checking session for userId:", stored);
+
+    if (!stored) return;
+
+    setUserId(stored);
+
+    try {
+      // STEP 1: Check backend for active session
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/teacher-session/${stored}`
+      );
+      const data = await res.json();
+
+      if (data.hasAccess) {
+        setHasAccess(true);
+        return;
+      }
+
+      // STEP 2: Show modal with Yap offer
+      const confirmed = await open(
+        `Get 20 mins of personalized Spanish tutoring for just 1 Yap.\nYour AI tutor will assess your level, identify your strengths, and help you improve pronunciation in real-time.`
+      );
+
+      if (!confirmed) {
+        router.push("/home");
+        return;
+      }
+
+      setCheckingAccess(true); // optional loading state
 
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/teacher-session/${stored}`
-        );
-        const data = await res.json();
+        const ethProvider = await embeddedWallet.getEthereumProvider();
+        const provider = new ethers.BrowserProvider(ethProvider);
+        const signer = await provider.getSigner();
 
-        if (!data.hasAccess) {
-          showSnackbar({
-            message: 'You do not have access to the Spanish Teacher.',
-            variant: 'info',
-            duration: 3000,
-          });
-          router.push('/home');
-          return;
-        }
-
-        const msLeft = new Date(data.expiresAt).getTime() - Date.now();
-        if (msLeft > 5 * 60 * 1000) {
-          setTimeout(() => {
-            showSnackbar({
-              message: 'Your session will expire in 5 minutes.',
-              variant: 'info',
-              duration: 3000,
-            });
-          }, msLeft - 5 * 60 * 1000);
-        }
-      } catch (err) {
-        console.error('Session check failed:', err);
-        showSnackbar({
-          message: 'Failed to check session access.',
-          variant: 'info',
-          duration: 3000,
+        await handleSpanishTeacherAccessFromPage({
+          userId: stored,
+          open,
+          showSnackbar,
+          signer,
+          BACKEND_WALLET_ADDRESS:
+            process.env.NEXT_PUBLIC_BACKEND_WALLET_ADDRESS!,
+          TOKEN_ADDRESS: process.env.NEXT_PUBLIC_TOKEN_ADDRESS!,
+          API_URL: process.env.NEXT_PUBLIC_API_URL!,
+          router,
+          setCheckingAccess,
+          setIsVerifyingPermit,
+          removeSnackbar,
+          signTypedData,
         });
-        router.push('/home');
+      } catch (err) {
+        console.error("Payment/session failed:", err);
+        showSnackbar({
+          message: "Something went wrong while verifying access.",
+          variant: "error",
+        });
+        router.push("/home");
+      } finally {
+        setCheckingAccess(false);
       }
-    };
 
-    loadAndCheckAccess();
-  }, [userId, router, showSnackbar]);
+      // After token is paid and session stored in DB, access is granted
+      setHasAccess(true);
+    } catch (err) {
+      console.error("Session check failed:", err);
+      showSnackbar({
+        message: "Failed to check session access.",
+        variant: "error",
+      });
+      router.push("/home");
+    }
+  };
 
   const stopConversation = useCallback(async () => {
     try {
       await conversation.endSession();
     } catch (err) {
-      console.error('End session failed:', err);
+      console.error("End session failed:", err);
     }
   }, [conversation]);
 
-  const isConnected = conversation.status === 'connected';
+  const isConnected = conversation.status === "connected";
+  if (!hasAccess) {
+    return (
+      <div className="min-h-[100dvh] bg-background-primary pb-[env(safe-area-inset-bottom)] relative">
+        <div className="absolute inset-0 bg-opacity-70 flex items-center justify-center z-30">
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[100dvh] bg-background-primary pb-[env(safe-area-inset-bottom)]">
       <div className="fixed inset-x-0 top-0 h-16 bg-background-primary z-20 flex items-center justify-center px-4">
         <button
-          onClick={() => router.push('/home')}
+          onClick={() => router.push("/home")}
           className="absolute left-4"
         >
           <TablerChevronLeft className="w-6 h-6 text-gray-700" />
@@ -148,7 +200,7 @@ export default function SpanishTeacherConversation() {
 
       <div
         className="pt-16 px-4 pb-24 overflow-y-auto h-[100dvh]"
-        style={{ WebkitOverflowScrolling: 'touch' }}
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg p-4 flex flex-col h-[30dvh]">
           {error && (
@@ -164,21 +216,21 @@ export default function SpanishTeacherConversation() {
                 <div
                   key={msg.id}
                   className={`flex ${
-                    msg.sender === 'user' ? 'justify-end' : 'justify-start'
+                    msg.sender === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
                   <div
                     className={`rounded-lg px-3 py-1 max-w-[70%] text-sm shadow-sm ${
-                      msg.sender === 'user'
-                        ? 'bg-[#FFD166] text-[#2D1C1C]'
-                        : 'bg-[#f1f3f5] text-[#2D1C1C]'
+                      msg.sender === "user"
+                        ? "bg-[#FFD166] text-[#2D1C1C]"
+                        : "bg-[#f1f3f5] text-[#2D1C1C]"
                     }`}
                   >
                     <div>{msg.text}</div>
                     <div className="text-xs text-gray-400 text-right mt-1">
                       {msg.timestamp.toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
+                        hour: "2-digit",
+                        minute: "2-digit",
                       })}
                     </div>
                   </div>
@@ -190,7 +242,6 @@ export default function SpanishTeacherConversation() {
         </div>
       </div>
 
-
       <div className="fixed inset-x-0 bottom-[env(safe-area-inset-bottom)] pb-2 px-4 z-20">
         {!isConnected ? (
           <button
@@ -198,11 +249,11 @@ export default function SpanishTeacherConversation() {
             disabled={isLoading}
             className={`w-full bg-secondary text-white font-bold py-3 rounded-lg shadow-md transition-colors duration-200 ${
               isLoading
-                ? 'opacity-50 cursor-not-allowed'
-                : 'hover:bg-secondary-dark'
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-secondary-dark"
             }`}
           >
-            {isLoading ? 'Connecting…' : 'Start Conversation'}
+            {isLoading ? "Connecting…" : "Start Conversation"}
           </button>
         ) : (
           <button
