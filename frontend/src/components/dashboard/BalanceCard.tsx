@@ -1,28 +1,19 @@
-import { useWallets } from '@privy-io/react-auth';
-import { useOnChainBalance } from '@/hooks/useOnBlockChain';
-import Image from 'next/image';
-import coin from '@/assets/coin.png';
+import { useWallets } from "@privy-io/react-auth";
+import { useOnChainBalance } from "@/hooks/useOnBlockChain";
+import Image from "next/image";
+import coin from "@/assets/coin.png";
 
 export default function BalanceCard() {
   const { wallets } = useWallets();
-  const wallet = wallets.find((w) => w.walletClientType === 'privy');
+  const wallet = wallets.find((w) => w.walletClientType === "privy");
   const evmAddress = wallet?.address ?? null;
 
-  const { balance, isLoading, isError } = useOnChainBalance(evmAddress);
+  const { balance, isError } = useOnChainBalance(evmAddress);
 
-  if (isLoading) {
-    return (
-      <div className="bg-white w-full rounded-xl shadow px-6 py-4 flex items-center justify-between border-b-2 border-gray-200">
-        <div className="flex flex-col">
-          <span className="text-sm text-[#5C4B4B] font-medium mb-1">
-            Loading balance...
-          </span>
-        </div>
-      </div>
-    );
-  }
+  // ✅ Don't render if balance is undefined (still loading)
+  if (balance === undefined) return null;
 
-  if (isError || balance === undefined) {
+  if (isError) {
     return (
       <div className="bg-white w-full rounded-xl shadow px-6 py-4 flex items-center justify-between border-b-2 border-red-200 text-red-500">
         <span>Error fetching balance</span>

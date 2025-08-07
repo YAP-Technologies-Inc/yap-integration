@@ -56,7 +56,7 @@ function Snack({
       className={clsx(
         'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border',
         {
-            'bg-background-primary text-secondary border-green-200': variant === 'success',
+            'bg-background-primary text-secondary border-b-3 border-[#e3ded3]': variant === 'success',
             'bg-background-primary text-secondary border-red-200': variant === 'error',
             'bg-background-primary text-secondary border-blue-200': variant === 'info',
             'bg-background-primary text-secondary border-background-primary':

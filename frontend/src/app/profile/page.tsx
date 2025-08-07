@@ -160,6 +160,7 @@ export default function ProfilePage() {
   }
   return (
     <div className="bg-background-primary min-h-[100dvh] flex flex-col items-center pb-nav">
+      
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
         <div className="text-xl font-bold text-secondary text-center w-full">
           Account

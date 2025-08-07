@@ -7,25 +7,31 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SplashScreen from "../../components/layout/SplashScreen";
 import "./SecuringLoader.css";
+import { useSnackbar } from "../ui/SnackBar";
 
 export default function SecuringLoader() {
   const router = useRouter();
   const [showSplash, setShowSplash] = useState(false);
+  const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, []);
-  
 
   // Phase 1: "Securing your account..." loader
   // Then after 3 seconds, show the splash screen
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowSplash(true); 
-    }, 3000); //
+      showSnackbar({
+        message: "Account secured!",
+        variant: "success",
+        duration: 3000,
+      });
+      setShowSplash(true);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -40,9 +46,9 @@ export default function SecuringLoader() {
   if (showSplash) return <SplashScreen onFinish={handleFinishSplash} />;
 
   return (
-    <div className="min-h-[100dvh] overflow-hidden loader-screen bg-background-primary">
+    <div className="loader-screen bg-background-primary">
       <div className="loader-container"></div>
-      <p className="loader-message">Securing your account...</p>
+      <p className="loader-message mt-6">Securing your account...</p>
     </div>
   );
 }

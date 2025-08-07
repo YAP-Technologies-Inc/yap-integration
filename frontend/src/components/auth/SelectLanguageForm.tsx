@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import { TablerChevronLeft } from '@/icons';
-import AuthLogo from '@/components/auth/AuthLogo';
-import spanishFlag from '@/assets/flags/spanishFlag.png';
-
-const languages = [{ name: 'Spanish', flag: spanishFlag }];
+import { TablerChevronLeft } from "@/icons";
+import AuthLogo from "@/components/auth/AuthLogo";
+// Use a relative path string for images in the public directory
+const languages = [{ name: "Spanish", flag: "/assets/spain.png" }];
 
 interface Props {
   onNext: () => void;
@@ -18,23 +17,23 @@ export default function SelectLanguageForm({
   onSelect,
 }: Props) {
   return (
-    <div className="min-h-[100dvh] w-full bg-background-primary px-6 relative flex flex-col overflow-hidden">
-      <button
-        onClick={onBack}
-        className="absolute left-2 top-2 text-2xl font-semibold text-secondary hover:cursor-pointer 
-        lg:left-6 lg:top-6 lg:text-4xl
-        ">
-        <div className="mt-2">
+    <div className="min-h-[100dvh] w-full bg-background-primary px-4 pb-safe pt-safe flex flex-col relative">
+      <div className="relative flex items-center pt-4 mb-4">
+        <button
+          onClick={onBack}
+          className="text-2xl font-semibold text-secondary hover:cursor-pointer lg:text-4xl absolute left-0"
+          style={{ zIndex: 10 }}
+        >
           <TablerChevronLeft />
+        </button>
+        <div className="w-full flex justify-center">
+          <h2 className="text-sm font-semibold text-[#2D1C1C]">
+        Select a language
+          </h2>
         </div>
-      </button>
+      </div>
 
-      <AuthLogo />
-
-      <div className="mt-6 mb-4 text-center">
-        <h2 className="text-sm font-semibold text-[#2D1C1C]">
-          Select a language
-        </h2>
+      <div className="pt-4 mb-4 text-center">
         <p className="text-lg font-bold text-[#2D1C1C] mt-1">
           What language would you like to learn?
         </p>
@@ -45,11 +44,12 @@ export default function SelectLanguageForm({
           <button
             key={name}
             onClick={() => onSelect(name)}
-            className="w-full bg-white rounded-xl px-4 py-3 text-left text-[#2D1C1C] text-base font-medium shadow-sm border border-gray-200 flex items-center gap-3
+            className="w-full bg-white rounded-xl px-4 py-3 text-left text-[#2D1C1C] text-base font-medium border-b-3 border-[#e3ded3] flex items-center gap-3
             hover:cursor-pointer 
-            ">
+            "
+          >
             <img
-              src={flag.src}
+              src={flag}
               alt={`${name} flag`}
               className="w-6 h-4 rounded-sm object-cover"
             />

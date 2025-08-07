@@ -13,7 +13,7 @@ const fetchBalance = async (address: string) => {
   const provider = new JsonRpcProvider(SEI_RPC);
   const contract = new Contract(YAP_CONTRACT, CW20_ABI, provider);
   const [rawBalance, decimals] = await Promise.all([
-    contract.balanceOf(address), // ✅ should be the user address
+    contract.balanceOf(address), 
     contract.decimals(),
   ]);
   

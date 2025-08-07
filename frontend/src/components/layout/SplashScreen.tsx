@@ -3,8 +3,7 @@ import { useState } from 'react';
 import cardImage from '@/assets/card.png';
 import paperImage from '@/assets/paper.png';
 import animalImage from '@/assets/animal.png';
-import Image from 'next/image';
-import YapIcon from '../layout/YapIcon';
+import AuthLogo from '../auth/AuthLogo';
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -30,13 +29,13 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
   const isLastSlide = index === splashSlides.length - 1;
 
   return (
-    <div className="min-h-[100dvh] w-full bg-background-primary px-6 flex flex-col pb-2">
+    <div className="min-h-[100dvh] w-full bg-background-primary px-4 flex flex-col pb-2">
       {/* Logo and Skip */}
       <div className="relative flex items-center justify-center mt-2">
-        <YapIcon />
+        <AuthLogo variant='red' />
         <button
           onClick={onFinish}
-          className="absolute right-6 top-0 text-sm text-secondary hover:cursor-pointer
+          className="absolute right-0 top-0 text-sm text-secondary hover:cursor-pointer
           lg:right-8 lg:top-2 lg:text-xl
           "
         >
@@ -51,11 +50,9 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
       "
       >
         <div className="w-full max-w-sm mb-4 h-[360px] flex items-center justify-center">
-          <Image
-            src={splashSlides[index].image}
+          <img
+            src="/assets/coin.png"
             alt={`Splash ${index + 1}`}
-            width={1000}
-            height={900}
             className="max-h-full object-contain"
           />
         </div>

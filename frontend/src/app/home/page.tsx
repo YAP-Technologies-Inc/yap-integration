@@ -25,6 +25,7 @@ import { useMessageSignModal } from "@/components/cards/MessageSignModal";
 import { useSnackbar } from "@/components/ui/SnackBar";
 export default function HomePage() {
   useInitializeUser();
+
   // const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
   const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -56,6 +57,7 @@ export default function HomePage() {
   const { stats, isLoading: isStatsLoading } = useUserStats(userId);
   const { balance: onChainBalance, isLoading: isBalanceLoading } =
     useOnChainBalance(evmAddress);
+
   const [hasAccess, setHasAccess] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(false);
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
@@ -102,20 +104,6 @@ export default function HomePage() {
       .then((data) => setDailyQuizCompleted(data.completed))
       .catch(() => {});
   }, [userId, API_URL]);
-
-  // Unified loading state
-  if (
-    isLessonsLoading ||
-    isProfileLoading ||
-    isStatsLoading ||
-    isBalanceLoading
-  ) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <p>Loading dashboard…</p>
-      </div>
-    );
-  }
 
   const handleSpanishTeacherAccess = async () => {
     setCheckingAccess(true);
@@ -274,6 +262,21 @@ export default function HomePage() {
     }
     router.push("/daily-quiz");
   };
+
+  if (
+    isLessonsLoading ||
+    isProfileLoading ||
+    isStatsLoading ||
+    isBalanceLoading
+  ) {
+    return (
+      <div className="min-h-[100dvh] flex items-center justify-center bg-background-primary">
+        <p className="text-secondary text-lg font-semibold">
+          Loading dashboard…
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-background-primary min-h-[100dvh] w-full flex flex-col overflow-y-auto pb-nav">
