@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { TablerCheck } from '@/icons';
-import flame from '@/assets/flame.png';
-import { useUserContext } from '@/context/UserContext';
-import { useUserStats } from '@/hooks/useUserStats';
+import React, { useState, useEffect } from "react";
+import { TablerCheck } from "@/icons";
+import { useUserContext } from "@/context/UserContext";
+import { useUserStats } from "@/hooks/useUserStats";
 
-const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-const STORAGE_KEY = 'login-days';
+const days = ["M", "T", "W", "T", "F", "S", "S"];
+const STORAGE_KEY = "login-days";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const getStartOfWeek = () => {
@@ -79,13 +78,13 @@ export default function DailyStreak() {
     // sync your new total and highest streak up to the server
     if (userId) {
       fetch(`${API_URL}/api/user-stats/${userId}/streak`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           currentStreak: totalStreak,
           highestStreak,
         }),
-      }).catch((err) => console.error('Sync streak error', err));
+      }).catch((err) => console.error("Sync streak error", err));
     }
   }, [userId, totalStreak, highestStreak, todayIndex, weekStart]);
 
@@ -94,31 +93,31 @@ export default function DailyStreak() {
     return <p className="text-red-500">Failed to load streak data.</p>;
 
   return (
-    <div className="bg-secondary w-full rounded-xl px-6 py-4 flex flex-col border-b-2 border-gray-300 relative">
+    <div className="bg-secondary w-full rounded-3xl px-4 py-4 flex flex-col border-b-4 border-[#100909] relative">
       {/* Header */}
-      <div className="flex items-center gap-2 text-white mb-4">
-        <img src={flame.src} alt="Flame icon" className="w-5 h-5" />
+      <div className="flex items-center gap-1 text-white mb-4">
+        <img src="/assets/flame.png" alt="Flame" className="w-5 h-5" />
         <h3 className="text-lg font-semibold">Daily Streak</h3>
       </div>
 
       {/* Days */}
-      <div className="w-full flex justify-center space-x-2 ">
+      <div className="w-full flex justify-center space-x-2">
         {days.map((day, idx) => {
           const done = completedDays[idx];
           const isToday = idx === todayIndex;
+
           return (
-            <div
-              key={idx}
-              className="flex flex-col items-center 
-            lg:w-full
-            "
-            >
+            <div key={idx} className="flex flex-col items-center lg:w-full">
               <div
                 className={`
-                w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold ring-white opacity-50 ring-2
-                ${done ? 'bg-secondary text-white' : 'bg-secondary opacity-60'}
-                ${isToday ? 'ring-2 ring-tertiary' : ''}
-              `}
+              w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold
+              ${
+                done
+                  ? "bg-[#382324] text-[#382324]" 
+                  : "bg-secondary ring-2 ring-[#382324]"
+              } // not done = transparent background with dark ring
+              ${isToday && !done ? "opacity-100" : ""}
+            `}
               >
                 {done && <TablerCheck className="w-5 h-5 text-white" />}
               </div>

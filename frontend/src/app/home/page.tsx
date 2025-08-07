@@ -289,8 +289,13 @@ export default function HomePage() {
           <DailyStreak />
         </div>
         <TestingNoticeModal />
-        <h3 className="text-secondary text-xl font-semibold mt-2">Lessons</h3>
-        <div className="mt-2 overflow-x-auto">
+        <div className="flex items-center justify-between mt-2">
+          <h3 className="text-secondary text-xl font-semibold">Lessons</h3>
+          {/* TODO: Implement this */}
+          {/* <h6 className="text-secondary text-md font-extralight ">See all</h6> */}
+        </div>
+        <div className="overflow-x-auto pb-2">
+          {" "}
           <div className="flex gap-4 px-4 -mx-4 w-max">
             {lessons.map((lesson) => (
               <LessonCard
@@ -306,10 +311,10 @@ export default function HomePage() {
         </div>
 
         {/* Talk to Spanish Teacher */}
-        <div className="mt-4">
+        <div className="mt-2">
           <button
             onClick={handleSpanishTeacherAccess}
-            className="w-full bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded hover:cursor-pointer transition-colors duration-200 shadow-md"
+            className="w-full border-b-3 border-black bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded-2xl hover:cursor-pointer transition-colors duration-200 shadow-md"
             disabled={checkingAccess}
           >
             {checkingAccess

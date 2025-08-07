@@ -1,5 +1,4 @@
 'use client';
-import coin from '../../assets/coin.png';
 import { TablerLock } from '@/icons/Lock';
 import { TablerCheck } from '@/icons/Check'; 
 
@@ -37,7 +36,7 @@ export default function DailyQuizCard({
 
   return (
     <div
-      className={`relative rounded-2xl px-6 py-10 shadow-md w-full ${bgClass} lg:py-25`}
+      className={`relative rounded-2xl px-6 py-15 shadow-md w-full ${bgClass} lg:py-25`}
     >
       {(isLocked || isDone) && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
