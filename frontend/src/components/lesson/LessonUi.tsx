@@ -183,7 +183,12 @@ export default function LessonUi({
     setIsLoading(true);
 
     const fd = new FormData();
-    fd.append("audio", blobToUpload, "recording.webm");
+    fd.append(
+      "audio",
+      blobToUpload,
+      `recording.${blobToUpload.type.split("/")[1]}`
+    );
+
     fd.append("referenceText", referenceText);
 
     try {
@@ -260,7 +265,7 @@ export default function LessonUi({
 
   return (
     <div className="fixed inset-0 bg-background-primary flex flex-col h-[100dvh] overflow-hidden">
-      <div className="min-h-[100dvh] fixed inset-0 bg-background-primary flex flex-col px-4 pt-safe">
+      <div className="min-h-[100dvh] fixed inset-0 bg-background-primary flex flex-col px-4 ">
         <div className="flex items-center">
           <button
             onClick={() => router.push("/home")}
@@ -344,7 +349,7 @@ export default function LessonUi({
                   <button
                     onClick={resetAudioState}
                     disabled={isLoading || isVerifying}
-                    className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3] ${
+                    className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#ededed] ${
                       isLoading || isVerifying
                         ? "opacity-50 pointer-events-none"
                         : "hover:cursor-pointer"
@@ -361,7 +366,7 @@ export default function LessonUi({
                   disabled={
                     isLoading || isVerifying || !!audioURL // lock mic if there's a recording
                   }
-                  className={`w-20 h-20 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center border-b-3  border-[#bf373a] ${
+                  className={`w-20 h-20 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center border-b-3 border-[#bf373a] ${
                     isLoading || isVerifying || !!audioURL
                       ? "opacity-50 pointer-events-none"
                       : "hover:cursor-pointer"
@@ -406,10 +411,10 @@ export default function LessonUi({
               <button
                 onClick={assessPronunciation}
                 disabled={!audioURL || isLoading}
-                className={`w-full py-4 rounded-4xl border-b-2 border-black ${
+                className={`w-full py-4 rounded-4xl border-b-3 border-black ${
                   audioURL
                     ? "bg-secondary text-white border-b-3 border-r-1 font-semibold border-black"
-                    : "bg-secondary/70 text-white cursor-not-allowed"
+                    : "bg-secondary/70 border-b-3 border-r-1 border-black/70 text-white cursor-not-allowed"
                 }`}
               >
                 {isLoading ? "Scoring…" : "Submit"}
@@ -420,77 +425,77 @@ export default function LessonUi({
           {score !== null && (
             <div className="w-full rounded-xl pb-2 space-y-4">
               <div
-                className={`w-full h-1 rounded-full mb-6 ${
+                className={`w-screen left-1/2 right-1/2 -ml-[50vw] relative h-1 rounded-full mb-3 ${
                   score >= passingScore ? "bg-green-200" : "bg-red-200"
                 }`}
               />
-              <div className="flex flex-col items-start mb-4">
-                <div className="flex items-left gap-2">
+                <div className="flex flex-col items-start mb-4">
+                {/* Check/X and "Correct"/"Incorrect" */}
+                <div className="flex items-center gap-2 mb-2">
                   <div
-                    className={`w-8 h-8 rounded-sm border-b-2 flex items-center justify-center ${
-                      score >= passingScore
-                        ? "bg-green-500 border-green-700"
-                        : "bg-[#f04648] border-[#d12a2d]"
-                    }`}
+                  className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
+                    score >= passingScore
+                    ? "bg-[#4eed71] border-[#41ca55]"
+                    : "bg-[#f04648] border-[#d12a2d]"
+                  }`}
                   >
-                    {score >= passingScore ? (
-                      <TablerCheck className="w-6 h-6 text-white" />
-                    ) : (
-                      <TablerX className="w-6 h-6 text-white" />
-                    )}
+                  {score >= passingScore ? (
+                    <TablerCheck className="w-6 h-6 text-white" />
+                  ) : (
+                    <TablerX className="w-6 h-6 text-white" />
+                  )}
                   </div>
                   <p className="text-2xl font-semibold text-[#2D1C1C]">
-                    {score >= passingScore ? "Correct" : "Incorrect"}
+                  {score >= passingScore ? "Correct" : "Incorrect"}
                   </p>
                 </div>
-              </div>
 
-              <div className="w-full flex justify-center gap-6 px-4 text-secondary">
-                {[
-                  {
-                    label: "Pronunciation",
-                    value: breakdown?.accuracy ?? 0,
-                  },
-                  {
-                    label: "Speed",
-                    value: breakdown?.fluency ?? 0,
-                  },
-                  {
-                    label: "Similarity",
-                    value: breakdown?.completeness ?? 0,
-                  },
-                ].map(({ label, value }) => {
-                  let color = "bg-yellow-400";
-                  if (value >= passingScore)
-                    color =
-                      "bg-[#4eed71] border-b-2 border-r-1 border-[#40c955]";
-                  else if (value < 60)
-                    color =
-                      "bg-[#f04648] border-b-2 border-r-1 border-[#bf383a]";
+                {/* Score breakdown - left aligned with icon above */}
+                <div className="flex flex-row gap-6 text-secondary">
+                  {[
+                    {
+                      label: "Pronunciation",
+                      value: breakdown?.accuracy ?? 0,
+                    },
+                    {
+                      label: "Speed",
+                      value: breakdown?.fluency ?? 0,
+                    },
+                    {
+                      label: "Similarity",
+                      value: breakdown?.completeness ?? 0,
+                    },
+                  ].map(({ label, value }) => {
+                    let color = "bg-tertiary border-b-3 border-r-1 border-[#e4a92d]";
+                    if (value >= passingScore)
+                      color = "bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]";
+                    else if (value < 60)
+                      color = "bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]";
 
-                  return (
-                    <div className="flex items-center gap-2" key={label}>
-                      <div
-                        className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium ${color}`}
-                      >
-                        {value}
+                    return (
+                      <div className="flex items-center gap-2" key={label}>
+                        <div
+                          className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium ${color}`}
+                        >
+                          {value}
+                        </div>
+                        <span className="text-sm">{label}</span>
                       </div>
-                      <span className="text-sm">{label}</span>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+                </div>
 
               <div className="flex justify-between gap-4 pt-2">
                 <button
                   onClick={resetAudioState}
-                  className="flex-1 py-4 bg-white text-black rounded-full border-b-2 border-[#ebe6df] shadow"
+                  className="flex-1 py-4 bg-white text-black rounded-full border-b-3 border-r-1 border-[#ebe6df] shadow"
                 >
                   Retry
                 </button>
                 <button
                   onClick={next}
-                  className="flex-1 py-4 bg-[#2D1C1C] text-white rounded-full border-b-3 border-black"
+                  className="flex-1 py-4 bg-[#2D1C1C] text-white rounded-full border-b-3 border-r-1 border-black"
                 >
                   Next
                 </button>

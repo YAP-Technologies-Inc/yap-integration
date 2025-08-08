@@ -74,7 +74,7 @@ export function MessageSignProvider({
           <div className="px-4 pb-2">
             <button
               onClick={handleConfirm}
-              className="w-full py-3 bg-secondary text-white border-b-4 border-black font-semibold rounded-3xl transition flex items-center justify-center gap-2"
+              className="w-full py-3 bg-secondary text-white border-b-3 border-black font-semibold rounded-3xl transition flex items-center justify-center gap-2"
             >
               <div className="flex items-center justify-center">
                 <img

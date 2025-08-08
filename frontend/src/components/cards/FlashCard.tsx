@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState, useEffect } from "react";
-import { TablerVolume } from "@/icons";
+import { TablerVolume, TablerArrowBack } from "@/icons";
 
 interface FlashcardProps {
   es: string;
@@ -69,13 +69,13 @@ const Flashcard: FC<FlashcardProps> = ({
         {showBack ? (
           <>
             <h2 className="text-3xl font-extrabold text-secondary">{en}</h2>
-            <p className="text-base text-gray-400 leading-relaxed mt-2">{es}</p>
+            <p className="text-base text-gray-400 leading-relaxed mt-2">{example}</p>
           </>
         ) : (
           <>
             <div className="flex items-center justify-center">
               <h2
-                className={`text-3xl font-extrabold text-secondary border-b-4 ${
+                className={`text-3xl font-extrabold text-secondary border-b-3 ${
                   score === null
                     ? "border-transparent"
                     : score > 80
@@ -91,7 +91,7 @@ const Flashcard: FC<FlashcardProps> = ({
                   e.stopPropagation();
                   playElevenLabsAudio(es);
                 }}
-                className="p-1.5 rounded-full  flex-shrink-0 ml-3 mt-1"
+                className="p-1.5 rounded-full mt-1 mr-2"
               >
                 <TablerVolume
                   className={`w-4 h-4 text-[#bfb7b7] ${
@@ -102,11 +102,16 @@ const Flashcard: FC<FlashcardProps> = ({
             </div>
             {example && (
               <p className="text-base text-gray-400 leading-relaxed mt-2">
-                {example}
+                {en}
               </p>
             )}
           </>
         )}
+
+        {/* Inverted ArrowBack at bottom right */}
+        <div className="absolute bottom-4 right-4">
+          <TablerArrowBack className="w-7 h-7 text-[#bfb7b7] flip-horizontal" />
+        </div>
       </div>
     </div>
   );

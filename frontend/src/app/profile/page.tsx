@@ -14,6 +14,7 @@ import {
   TablerChevronLeft,
   TablerBrandDiscordFilled,
   TablerChevronRight,
+  TablerArrowUpRight,
 } from "@/icons";
 
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -169,9 +170,7 @@ export default function ProfilePage() {
         <div className="mt-6 flex flex-row items-center w-full">
           {/* Profile Picture - smaller circle */}
           <div className="w-14 h-14 rounded-full flex items-center justify-center shadow-md bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 flex-shrink-0">
-            <span className="text-white text-xl font-bold">
-              {firstInitial}
-            </span>
+            <span className="text-white text-xl font-bold">{firstInitial}</span>
           </div>
 
           {/* Name and Join Date - left aligned with avatar */}
@@ -185,21 +184,30 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="mt-4 w-full flex justify-start px-4">
+        <div className="mt-4 w-full flex justify-start">
           <button
-            className="w-full rounded-xl border border-border/40 bg-white/90 px-6 py-4 shadow-md hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-semibold text-secondary flex items-center justify-center gap-2 backdrop-blur-sm"
+            className="w-full rounded-3xl bg-white/90 px-6 py-4 shadow-md border-b-3 b-r-1 border-[#e2ddd3]  hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-semibold text-secondary flex items-center justify-between gap-2 backdrop-blur-sm"
             onClick={() =>
               evmAddress
-          ? window.open(
-              `https://seitrace.com/address/${evmAddress}?chain=atlantic-2`,
-              "_blank"
-            )
-          : pushToast("No wallet connected.", "error")
+                ? window.open(
+                    `https://seitrace.com/address/${evmAddress}?chain=atlantic-2`,
+                    "_blank"
+                  )
+                : pushToast("No wallet connected.", "error")
             }
             style={{ borderColor: "rgba(0,0,0,0.15)" }}
           >
-            <span>View Wallet</span>
-            <span className="text-muted-foreground">({walletShort})</span>
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-xs text-muted-foreground">
+                Available Balance
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">{onChainBalance ?? 0} YAP</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <TablerArrowUpRight className="w-4 h-4 text-muted-foreground" />
+            </div>
           </button>
         </div>
 
@@ -221,8 +229,10 @@ export default function ProfilePage() {
         </div>
 
         <div className="w-full mt-4 flex flex-col items-start">
-          <h2 className="text-md font-bold text-secondary mb-2 text-left">Others</h2>
-          <div className="flex flex-col gap-2 w-full px-2">
+          <h2 className="text-md font-bold text-secondary mb-2 text-left">
+            Others
+          </h2>
+          <div className="flex flex-col gap-2 w-full">
             {[
               {
                 icon: (

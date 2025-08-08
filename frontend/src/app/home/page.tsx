@@ -123,6 +123,11 @@ export default function HomePage() {
     router.push("/daily-quiz");
   };
 
+      if (userId === null){
+        router.push("/auth");
+        return null;
+    }
+
   if (
     isLessonsLoading ||
     isProfileLoading ||

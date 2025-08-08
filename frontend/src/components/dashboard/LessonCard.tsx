@@ -28,7 +28,7 @@ export default function LessonCard({
       ? "bg-red-500 border-b-3 border-[#d12a2c] text-white hover:cursor-not-allowed"
       : status === "locked"
       ? "bg-gray-200 border-b-3 border-[#e2ddd3] text-gray-500 hover:cursor-not-allowed "
-      : "bg-white border-b-2 border-gray-300 text-[#2D1C1C] hover:cursor-pointer";
+      : "bg-white border-b-3 border-gray-300 text-[#2D1C1C] hover:cursor-pointer";
 
   const handleClick = () => {
     if (status === "available") {
@@ -44,7 +44,7 @@ export default function LessonCard({
     >
       {status === "completed" && (
       <span className="absolute top-2 left-3 w-5 h-5 flex items-center justify-center rounded-2xl bg-tertiary">
-        <TablerCheck className="w-3 h-3 text-white" />
+        <TablerCheck className="w-2 h-2 text-white" />
       </span>
       )}
       <h3 className="text-xl font-bold mt-4 self-start">

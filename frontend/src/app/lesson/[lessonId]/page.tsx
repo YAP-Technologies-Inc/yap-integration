@@ -124,7 +124,7 @@ export default function LessonPage() {
         <div className='flex flex-col items-center w-full lg:pb-20'>
           <button
             onClick={() => setStarted(true)}
-            className="hover:cursor-pointer w-full max-w-xs py-4 rounded-full bg-secondary border-b-4 border-r-1 border-black text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
+            className="hover:cursor-pointer w-full max-w-xs py-4 rounded-full bg-secondary border-b-3 border-r-1 border-black text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
           >
             Get Started
           </button>
