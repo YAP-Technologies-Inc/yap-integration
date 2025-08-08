@@ -67,7 +67,7 @@ export default function SpanishTeacherConversation() {
         `Connection error: ${typeof err === "string" ? err : "Unknown error"}`
       );
     },
-    onStatusChange: (status) => {
+    onStatusChange: (status?: string) => {
       console.log("Connection status changed:", status);
     },
   });
@@ -94,7 +94,7 @@ export default function SpanishTeacherConversation() {
     } finally {
       setIsLoading(false);
     }
-  }, [conversation, AGENT_ID, messages.length]);
+  }, [conversation, AGENT_ID, hasAccess, sessionStarted, isLoading]);
 
   useEffect(() => {
     checkAccessOrPrompt();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "@/components/ui/SnackBar";
 import { usePrivy, useWallets } from "@privy-io/react-auth";

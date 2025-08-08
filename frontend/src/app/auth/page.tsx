@@ -8,12 +8,11 @@ import SignUpForm from "@/components/auth/SignUpForm";
 import { themeColors, setThemeColor } from "@/utils/themeColor";
 
 export default function AuthPage() {
-  const { ready, authenticated, login, user, showModal } = usePrivy();
+  const { ready, authenticated, login, user } = usePrivy();
   const router = useRouter();
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [hideFooter, setHideFooter] = useState(false);
   const [hasProfile, setHasProfile] = useState<boolean | null>(null);
-  const [modalClosed, setModalClosed] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
@@ -85,7 +84,7 @@ export default function AuthPage() {
           setHasProfile(false);
         });
     }
-  }, [authenticated, user]);
+  }, [authenticated, user, API_URL]);
 
   //Use if still checking auth status or profile
   if (!ready || (authenticated && hasProfile === null)) {
@@ -93,7 +92,7 @@ export default function AuthPage() {
       <div className="h-screen flex items-center justify-center">
         {/* spinner */}
         <div className="animate-spin h-12 w-12 border-4 border-secondary border-t-transparent rounded-full" />
-      </div>  
+      </div>
     );
   }
 
