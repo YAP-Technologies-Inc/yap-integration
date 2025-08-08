@@ -321,7 +321,7 @@ app.get('/api/profile/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
     const result = await db.query(
-      'SELECT name, language_to_learn FROM users WHERE user_id = $1',
+      'SELECT name, language_to_learn, created_at FROM users WHERE user_id = $1',
       [userId]
     );
     if (result.rows.length === 0) {

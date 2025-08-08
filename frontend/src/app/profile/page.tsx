@@ -45,6 +45,7 @@ export default function ProfilePage() {
   const {
     name,
     language,
+    accountCreated, // <-- new field from hook
     isLoading: profileLoading,
     isError: profileError,
   } = useUserProfile(userId);
@@ -160,21 +161,27 @@ export default function ProfilePage() {
   }
   return (
     <div className="bg-background-primary min-h-[100dvh] flex flex-col items-center pb-nav">
-      
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
-        <div className="text-xl font-bold text-secondary text-center w-full">
+        <div className="text-xl font-semibold text-secondary text-center w-full">
           Account
         </div>
 
-        <div className="mt-1 flex flex-col items-center w-full">
-          <div className="w-24 h-24 rounded-full flex items-center justify-center shadow-md bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900">
-            <span className="text-white text-3xl font-bold">
+        <div className="mt-6 flex flex-row items-center w-full">
+          {/* Profile Picture - smaller circle */}
+          <div className="w-14 h-14 rounded-full flex items-center justify-center shadow-md bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 flex-shrink-0">
+            <span className="text-white text-xl font-bold">
               {firstInitial}
             </span>
           </div>
 
-          <div className="mt-1 text-lg font-semibold text-secondary text-center w-full">
-            {name}
+          {/* Name and Join Date - left aligned with avatar */}
+          <div className="ml-4 flex flex-col items-start justify-center">
+            <span className="text-lg font-semibold text-secondary">{name}</span>
+            {accountCreated && (
+              <span className="text-xs text-gray-500 font-normal mt-1">
+                Joined {accountCreated}
+              </span>
+            )}
           </div>
         </div>
 
@@ -196,7 +203,7 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        <div className="w-full mt-4 flex flex-col items-start">
+        <div className="w-full mt-6 flex flex-col items-start">
           <h2 className="text-md font-bold text-secondary mb-2 self-start lg:px-0 lg:max-w-4xl w-full text-left">
             Statistics
           </h2>

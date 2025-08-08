@@ -12,6 +12,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { ethers } from "ethers";
 import Tutor from "@/components/cards/Tutor";
 import BottomNavBar from "@/components/layout/BottomNavBar";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 interface Message {
   id: string;
@@ -39,6 +40,10 @@ export default function SpanishTeacherConversation() {
   const embeddedWallet = wallets.find((w) => w.walletClientType === "privy");
 
   const [userId, setUserId] = useState<string | null>(null);
+
+  // Add the user profile hook
+  const { name: userName } = useUserProfile(userId);
+
   const { signTypedData } = usePrivy();
   const conversation = useConversation({
     apiKey: ELEVENLABS_API_KEY,
@@ -186,24 +191,6 @@ export default function SpanishTeacherConversation() {
 
   const isConnected = conversation.status === "connected";
 
-  // Add this to monitor connection status
-  useEffect(() => {
-    console.log("Connection status updated:", conversation.status);
-    console.log("Is connected:", isConnected);
-    
-    if (isConnected) {
-      console.log("Connection established! Waiting for AI to speak...");
-      // Give the AI time to speak
-      setTimeout(() => {
-        if (messages.length === 0) {
-          console.log("AI hasn't spoken yet after connection. Check ElevenLabs agent settings:");
-          console.log(" Make sure 'First Message' is enabled");
-          console.log("Set a greeting message");
-          console.log("Ensure conversation auto-starts");
-        }
-      }, 5000);
-    }
-  }, [conversation.status, isConnected, messages.length]);
 
   // Show connection status in UI
   if (!hasAccess) {
@@ -247,19 +234,38 @@ export default function SpanishTeacherConversation() {
               messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`flex ${
+                  className={`flex items-start gap-2 ${
                     msg.sender === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
+                  {/* AI Profile Picture - Left side */}
+                  {msg.sender === "ai" && (
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-semibold">
+                        AI
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Message Bubble */}
                   <div
-                    className={`rounded-lg px-3 py-2 max-w-[80vw] text-sm shadow-sm ${
+                    className={`rounded-lg px-3 py-2 max-w-[70vw] text-sm shadow-sm ${
                       msg.sender === "user"
-                        ? "bg-background-secondary text-[white]"
+                        ? "bg-background-secondary text-white"
                         : "bg-[#f1f3f5] text-[#2D1C1C]"
                     }`}
                   >
-                    <div>{msg.text}</div>
+                    {msg.text}
                   </div>
+
+                  {/* User Profile Picture - Right side */}
+                  {msg.sender === "user" && (
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-semibold">
+                        {userName?.charAt(0).toUpperCase() || "U"}
+                      </span>
+                    </div>
+                  )}
                 </div>
               ))
             )}
@@ -291,6 +297,7 @@ export default function SpanishTeacherConversation() {
               },
             ]);
           }}
+          userName={userName} // Pass the user name from the hook
         />
       </div>
       <BottomNavBar />
