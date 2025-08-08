@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/ToastProvider";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 
 import {
@@ -61,7 +60,7 @@ export default function LessonUi({
   onComplete,
 }: LessonUiProps) {
   const router = useRouter();
-  const { pushToast } = useToast();
+
   const { user } = usePrivy();
   const { wallets } = useWallets();
 
@@ -138,7 +137,11 @@ export default function LessonUi({
 
       const mimeType = getSupportedMimeType();
       if (!mimeType) {
-        pushToast("No supported recording format found", "error");
+        showSnackbar({
+          message: "No supported recording format found",
+          variant: "error",
+          duration: 3000,
+        });
         return;
       }
       const recorder = new MediaRecorder(stream, { mimeType });
@@ -159,7 +162,11 @@ export default function LessonUi({
       setMediaRecorder(recorder);
       setIsRecording(true);
     } catch (e) {
-      pushToast("Microphone permission denied or not found", "error");
+        showSnackbar({
+          message: "Microphone permission denied or not found",
+          variant: "error",
+          duration: 3000,
+        });
       router.push("/home");
     }
   };
@@ -217,7 +224,11 @@ export default function LessonUi({
       await new Promise((r) => setTimeout(r, 300)); // animate flip
     } catch (err) {
       console.error("Assessment error:", err);
-      pushToast("Assessment failed", "error");
+        showSnackbar({
+          message: "Failed to assess pronunciation",
+          variant: "error",
+          duration: 3000,
+        });
     } finally {
       setIsLoading(false);
     }

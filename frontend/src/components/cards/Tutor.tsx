@@ -159,8 +159,6 @@ export default function Tutor({
     }
   };
 
-  const firstInitial = userName.charAt(0).toUpperCase() || "?";
-
   return (
     <div className="mx-auto my-8 bg-white rounded-3xl shadow-lg p-4 w-[90vw]">
       <div className="flex items-end gap-3">

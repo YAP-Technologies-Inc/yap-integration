@@ -39,9 +39,9 @@ export default function AuthPage() {
   useEffect(() => {
     if (!ready) return;
     // User not logged in → use dark theme
-    // if (!authenticated) {
-    //   setThemeColor(themeColors.secondary);
-    // }
+    if (!authenticated) {
+      setThemeColor(themeColors.secondary);
+    }
     // User is logged in → use light background
     else if (authenticated && hasProfile !== null) {
       setThemeColor(themeColors.backgroundPrimary);
@@ -110,7 +110,7 @@ export default function AuthPage() {
 
   //Not authenticated yet -> show login card
   return (
-    <div className="min-h-[100dvh] w-full flex items-center justify-center px-4 overflow-hidden">
+    <div className="min-h-[100dvh] w-full flex items-center justify-center px-4 overflow-hidden bg-ba">
       <AuthCard
         hideFooter={hideFooter}
         onEmailClick={() => {

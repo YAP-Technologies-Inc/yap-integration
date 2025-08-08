@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/components/ui/ToastProvider';
-import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSnackbar } from "@/components/ui/SnackBar";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 
-import Flashcard from '@/components/cards/FlashCard';
+import Flashcard from "@/components/cards/FlashCard";
 import {
   TablerX,
   TablerRefresh,
   TablerPlayerPauseFilled,
   TablerMicrophone,
   TablerVolume,
-} from '@/icons';
+} from "@/icons";
 
-import mockDailyQuiz from '@/mock/mockDailyQuizShort';
+import mockDailyQuiz from "@/mock/mockDailyQuizShort";
 
 export default function DailyQuizPage() {
   const router = useRouter();
-  const { pushToast } = useToast();
+  const { showSnackbar } = useSnackbar();
   const { user } = usePrivy();
   const { wallets } = useWallets();
 
@@ -27,7 +27,7 @@ export default function DailyQuizPage() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const allSteps = mockDailyQuiz[0].questions.map((q) => ({
-    variant: 'vocab',
+    variant: "vocab",
     front: q.es,
     back: q.en,
     example: q.example,
@@ -49,15 +49,14 @@ export default function DailyQuizPage() {
   const total = allSteps.length;
   const referenceText = current.front;
 
-
   const getSupportedMimeType = (): string => {
     const types = [
-      'audio/mp4',
-      'audio/webm;codecs=opus',
-      'audio/webm',
-      'audio/ogg',
+      "audio/mp4",
+      "audio/webm;codecs=opus",
+      "audio/webm",
+      "audio/ogg",
     ];
-    return types.find((type) => MediaRecorder.isTypeSupported(type)) || '';
+    return types.find((type) => MediaRecorder.isTypeSupported(type)) || "";
   };
 
   const startRecording = async () => {
@@ -65,7 +64,11 @@ export default function DailyQuizPage() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mimeType = getSupportedMimeType();
       if (!mimeType) {
-        pushToast('No supported recording format found', 'error');
+        showSnackbar({
+          message: "Audio recording is not supported in your browser.",
+          variant: "error",
+          duration: 3000,
+        });
         return;
       }
       const recorder = new MediaRecorder(stream, { mimeType });
@@ -86,8 +89,12 @@ export default function DailyQuizPage() {
       setMediaRecorder(recorder);
       setIsRecording(true);
     } catch (e) {
-      pushToast('Microphone permission denied or not found', 'error');
-      router.push('/home');
+      showSnackbar({
+        message: "Microphone permission denied or not found",
+        variant: "error",
+        duration: 3000,
+      });
+      router.push("/home");
     }
   };
 
@@ -119,14 +126,14 @@ export default function DailyQuizPage() {
     setFeedback(null);
 
     const fd = new FormData();
-    fd.append('audio', audioBlob, 'recording.webm');
-    fd.append('referenceText', referenceText);
+    fd.append("audio", audioBlob, "recording.webm");
+    fd.append("referenceText", referenceText);
 
     try {
       const res = await fetch(
         `${API_URL}/api/pronunciation-assessment-upload`,
         {
-          method: 'POST',
+          method: "POST",
           body: fd,
         }
       );
@@ -138,30 +145,42 @@ export default function DailyQuizPage() {
         0;
       const scaled = Math.round(raw * 0.8);
       setScore(scaled);
-      setFeedback('Nice work!');
+      setFeedback("Nice work!");
 
       setTimeout(async () => {
         if (stepIndex + 1 >= total) {
           const res = await fetch(`${API_URL}/api/complete-daily-quiz`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userId, walletAddress }),
           });
 
           if (res.status === 409) {
             // already done today
-            pushToast('You’ve already completed today’s quiz!', 'info');
+            showSnackbar({
+              message: "You’ve already completed today’s quiz!",
+              variant: "info",
+              duration: 3000,
+            });
             onComplete();
             return;
           }
 
           if (!res.ok) {
             const { error } = await res.json().catch(() => ({}));
-            pushToast(error || 'Failed to record quiz completion', 'error');
+            showSnackbar({
+              message: error || "Failed to record quiz completion",
+              variant: "error",
+              duration: 3000,
+            });
             return;
           }
 
-          pushToast('Daily Quiz complete! YAP token sent', 'success');
+          showSnackbar({
+          message: "Daily Quiz complete! YAP token sent",
+          variant: "success",
+          duration: 3000,
+        });
           onComplete();
         } else {
           next();
@@ -169,21 +188,25 @@ export default function DailyQuizPage() {
       }, 1500);
     } catch (err) {
       console.error(err);
-      pushToast('Assessment failed', 'error');
+        showSnackbar({
+          message: "Assessment failed. Please try again.",
+          variant: "error",
+          duration: 3000,
+        });
     } finally {
       setIsLoading(false);
     }
   };
 
   const onComplete = () => {
-    router.push('/home');
+    router.push("/home");
   };
 
   return (
     <div className="fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
       {/* Exit + Progress bar */}
       <div className="flex items-center">
-        <button onClick={() => router.push('/home')} className="text-secondary">
+        <button onClick={() => router.push("/home")} className="text-secondary">
           <TablerX className="w-6 h-6" />
         </button>
         <div className="flex-1 h-2 bg-gray-200 rounded-full ml-4 overflow-hidden">
@@ -218,7 +241,7 @@ export default function DailyQuizPage() {
             disabled={isLoading}
             className="text-sm px-3 py-2 bg-green-500 text-white rounded-full shadow"
           >
-            {isLoading ? 'Scoring…' : 'Submit'}
+            {isLoading ? "Scoring…" : "Submit"}
           </button>
         )}
 

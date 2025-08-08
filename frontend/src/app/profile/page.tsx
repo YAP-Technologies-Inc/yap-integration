@@ -20,15 +20,14 @@ import {
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useOnChainBalance } from "@/hooks/useOnBlockChain";
 import { useUserStats } from "@/hooks/useUserStats";
-import { useToast } from "@/components/ui/ToastProvider";
-
+import { useSnackbar } from "@/components/ui/SnackBar";
 type InfoPage = "menu" | "about" | "help" | "terms";
 
 export default function ProfilePage() {
   const [activePage, setActivePage] = useState<InfoPage>("menu");
+  const { showSnackbar } = useSnackbar();
   const { user } = usePrivy();
   const { wallets } = useWallets();
-  const { pushToast } = useToast();
   const userId = user?.id ?? null;
   const evmAddress =
     wallets.find((w) => w.walletClientType === "privy")?.address ?? "";
@@ -187,14 +186,20 @@ export default function ProfilePage() {
         <div className="mt-4 w-full flex justify-start">
           <button
             className="w-full rounded-3xl bg-white/90 px-6 py-4 shadow-md border-b-3 b-r-1 border-[#e2ddd3]  hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-semibold text-secondary flex items-center justify-between gap-2 backdrop-blur-sm"
-            onClick={() =>
-              evmAddress
-                ? window.open(
-                    `https://seitrace.com/address/${evmAddress}?chain=atlantic-2`,
-                    "_blank"
-                  )
-                : pushToast("No wallet connected.", "error")
-            }
+            onClick={() => {
+              if (evmAddress) {
+                window.open(
+                  `https://seitrace.com/address/${evmAddress}?chain=atlantic-2`,
+                  "_blank"
+                );
+              } else {
+                showSnackbar({
+                  message: "No wallet connected.",
+                  variant: "error",
+                  duration: 3000,
+                });
+              }
+            }}
             style={{ borderColor: "rgba(0,0,0,0.15)" }}
           >
             <div className="flex flex-col items-start gap-1">

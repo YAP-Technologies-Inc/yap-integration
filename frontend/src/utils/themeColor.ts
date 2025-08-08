@@ -11,6 +11,6 @@ export function setThemeColor(color: string) {
 }
 
 export const themeColors = {
-  secondary: '#ba8728',
+  secondary: '#f9cc6b',
   backgroundPrimary: '#F0EBE1',
 };

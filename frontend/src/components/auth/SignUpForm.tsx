@@ -5,15 +5,15 @@ import { usePrivy } from "@privy-io/react-auth";
 import SelectLanguageForm from "@/components/auth/SelectLanguageForm";
 import SecuringLoader from "../loading/SecuringLoader";
 import AuthLogo from "@/components/auth/AuthLogo";
-import { useToast } from "../ui/ToastProvider";
-
+import { useSnackbar } from "../ui/SnackBar";
 export default function SignUpForm() {
-  const { pushToast } = useToast();
+
   const { user } = usePrivy();
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [step, setStep] = useState<"signup" | "language" | "loading">("signup");
   const [name, setName] = useState("");
+  const { showSnackbar } = useSnackbar();
 
   const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +54,11 @@ export default function SignUpForm() {
       localStorage.setItem("userId", data.user_id);
     } catch (err) {
       console.error("Failed to save user:", err);
-      pushToast("Something went wrong. Please try again.", "error");
+        showSnackbar({
+          message: "Something went wrong. Please try again.",
+          variant: "error",
+          duration: 3000,
+        });
       setStep("language");
     }
   };
