@@ -65,23 +65,6 @@ const Flashcard: FC<FlashcardProps> = ({
           Words: {stepIndex + 1}/{total}
         </div>
 
-        {/* Audio Button */}
-        {!showBack && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              playElevenLabsAudio(es);
-            }}
-            className="absolute top-4 left-4 p-2 bg-tertiary rounded-full shadow-lg"
-          >
-            <TablerVolume
-              className={`w-6 h-6 text-secondary ${
-                isPlaying ? "animate-pulse" : ""
-              }`}
-            />
-          </button>
-        )}
-
         {/* Front & Back Content */}
         {showBack ? (
           <>
@@ -90,17 +73,33 @@ const Flashcard: FC<FlashcardProps> = ({
           </>
         ) : (
           <>
-            <h2
-              className={`text-3xl font-extrabold text-secondary border-b-4 ${
-                score === null
-                  ? "border-transparent"
-                  : score > 80
-                  ? "border-green-400"
-                  : "border-red-400"
-              }`}
-            >
-              {es}
-            </h2>
+            <div className="flex items-center justify-center">
+              <h2
+                className={`text-3xl font-extrabold text-secondary border-b-4 ${
+                  score === null
+                    ? "border-transparent"
+                    : score > 80
+                    ? "border-green-400"
+                    : "border-red-400"
+                }`}
+              >
+                {es}
+              </h2>
+              {/* Audio Button positioned relative to text */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  playElevenLabsAudio(es);
+                }}
+                className="p-1.5 rounded-full  flex-shrink-0 ml-3 mt-1"
+              >
+                <TablerVolume
+                  className={`w-4 h-4 text-[#bfb7b7] ${
+                    isPlaying ? "animate-pulse" : ""
+                  }`}
+                />
+              </button>
+            </div>
             {example && (
               <p className="text-base text-gray-400 leading-relaxed mt-2">
                 {example}

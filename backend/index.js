@@ -640,6 +640,22 @@ app.post('/api/report-form', async (req, res) => {
 });
 app.use('/uploads', express.static('uploads'));
 
+app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
+  const audioFile = req.file;
+
+  if (!audioFile) {
+    return res.status(400).json({ error: 'No audio file uploaded' });
+  }
+
+  try {
+    const transcript = await transcribeWithWhisper(audioFile.path); 
+    res.json({ transcript });
+  } catch (err) {
+    console.error('Transcription error:', err);
+    res.status(500).json({ error: 'Transcription failed' });
+  }
+});
+
 
 
 const PORT = process.env.PORT || 4000;
