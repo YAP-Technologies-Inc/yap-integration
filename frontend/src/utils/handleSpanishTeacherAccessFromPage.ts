@@ -12,10 +12,29 @@ export async function handleSpanishTeacherAccessFromPage({
   setCheckingAccess,
   setIsVerifyingPermit,
   removeSnackbar,
+  // NEW (optional): pass a function that clears every snackbar
+  clearAllSnackbars,
   signTypedData,
+}: {
+  userId: string;
+  showSnackbar: (opts: any) => void;
+  signer: ethers.Signer;
+  BACKEND_WALLET_ADDRESS: string;
+  TOKEN_ADDRESS: string;
+  API_URL: string;
+  router: any;
+  setCheckingAccess: (v: boolean) => void;
+  setIsVerifyingPermit: (v: boolean) => void;
+  removeSnackbar: (id: number) => void;
+  clearAllSnackbars?: () => void; // <-- add this to your snackbar hook if you can
+  signTypedData: (
+    data: { domain: any; types: any; message: any; primaryType: string },
+    opts: { address: string; uiOptions?: { showWalletUIs?: boolean } }
+  ) => Promise<{ signature: string }>;
 }) {
   setCheckingAccess(true);
 
+  const snackId = Date.now();
   try {
     const walletAddress = await signer.getAddress();
 
@@ -50,20 +69,11 @@ export async function handleSpanishTeacherAccessFromPage({
     };
 
     const { signature } = await signTypedData(
-      {
-        domain,
-        types,
-        message,
-        primaryType: 'Permit',
-      },
-      {
-        address: walletAddress,
-        uiOptions: { showWalletUIs: false },
-      }
+      { domain, types, message, primaryType: 'Permit' },
+      { address: walletAddress, uiOptions: { showWalletUIs: false } }
     );
 
     setIsVerifyingPermit(true);
-    const snackId = Date.now();
     showSnackbar({
       id: snackId,
       message: 'Verifying transaction on-chain…',
@@ -81,13 +91,16 @@ export async function handleSpanishTeacherAccessFromPage({
       }),
     });
 
+    // Always remove the verifying snackbar
     removeSnackbar(snackId);
-    setIsVerifyingPermit(false);
 
     if (!res.ok) {
       showSnackbar({ message: 'Verification failed.', variant: 'error' });
       return;
     }
+
+    // 🔐 Clear EVERYTHING before showing success (so only one toast remains)
+    if (clearAllSnackbars) clearAllSnackbars();
 
     showSnackbar({
       message: 'Access granted!',
@@ -96,10 +109,8 @@ export async function handleSpanishTeacherAccessFromPage({
     });
   } catch (err) {
     console.error('Permit error:', err);
-    showSnackbar({
-      message: 'Failed to authorize payment.',
-      variant: 'error',
-    });
+    removeSnackbar(snackId);
+    showSnackbar({ message: 'Failed to authorize payment.', variant: 'error' });
   } finally {
     setCheckingAccess(false);
     setIsVerifyingPermit(false);

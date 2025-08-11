@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import clsx from 'clsx';
@@ -49,19 +50,17 @@ function Snack({
         return <TablerInfoCircle className="w-6 h-6 text-blue-600" />;
     }
   })();
-  
 
   return (
     <div
       className={clsx(
         'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border-b-3 border-[#e3ded3]',
         {
-            'bg-background-primary text-secondary border-b-3 border-[#e3ded3]': variant === 'success',
-            'bg-background-primary text-secondary ': variant === 'error',
-            'bg-background-primary text-secondary': variant === 'info',
-            'bg-background-primary text-secondary border-background-primary':
-              variant === 'completion' || variant === 'custom',
-          },
+          'bg-background-primary text-secondary border-b-3 border-[#e3ded3]': variant === 'success',
+          'bg-background-primary text-secondary': variant === 'error' || variant === 'info',
+          'bg-background-primary text-secondary border-background-primary':
+            variant === 'completion' || variant === 'custom',
+        },
         className
       )}
     >
@@ -89,25 +88,40 @@ export type SnackbarConfig = {
 };
 
 type SnackContextType = {
-    showSnackbar: (config: SnackbarConfig) => void;
-    removeSnackbar: (id: number) => void;
-  };
-  
+  showSnackbar: (config: SnackbarConfig) => void;
+  removeSnackbar: (id: number) => void;
+  clearAllSnackbars: () => void; // NEW
+};
 
 const SnackContext = createContext<SnackContextType | undefined>(undefined);
 
 export function useSnackbar(): SnackContextType {
-    const context = useContext(SnackContext);
-    if (!context) throw new Error('useSnackbar must be used within a SnackProvider');
-    return context;
-  }
-  
+  const context = useContext(SnackContext);
+  if (!context) throw new Error('useSnackbar must be used within a SnackProvider');
+  return context;
+}
+
 export function SnackProvider({ children }: { children: ReactNode }) {
   const [snacks, setSnacks] = useState<SnackProps[]>([]);
+  // track timers so we can cancel them on remove/clearAll
+  const timersRef = useRef<Map<number, number>>(new Map());
 
-  const removeSnack = (id: number) => {
+  const removeSnack = useCallback((id: number) => {
+    // clear any pending auto-dismiss timer
+    const t = timersRef.current.get(id);
+    if (t) {
+      clearTimeout(t);
+      timersRef.current.delete(id);
+    }
     setSnacks((prev) => prev.filter((s) => s.id !== id));
-  };
+  }, []);
+
+  const clearAllSnackbars = useCallback(() => {
+    // cancel all timers and wipe snacks
+    timersRef.current.forEach((t) => clearTimeout(t));
+    timersRef.current.clear();
+    setSnacks([]);
+  }, []);
 
   const showSnackbar = useCallback((config: SnackbarConfig) => {
     const {
@@ -117,24 +131,26 @@ export function SnackProvider({ children }: { children: ReactNode }) {
       manual = false,
       id = Date.now(),
     } = config;
-  
+
     const newSnack: SnackProps = {
       id,
       message,
       variant,
       onDismiss: removeSnack,
     };
-  
+
     setSnacks((prev) => [...prev, newSnack]);
-  
+
     if (!manual) {
-      setTimeout(() => removeSnack(id), duration);
+      const timerId = window.setTimeout(() => removeSnack(id), duration);
+      timersRef.current.set(id, timerId);
     }
-  }, []);
-  
+  }, [removeSnack]);
 
-  const value = useMemo(() => ({ showSnackbar, removeSnackbar: removeSnack }), [showSnackbar]);
-
+  const value = useMemo(
+    () => ({ showSnackbar, removeSnackbar: removeSnack, clearAllSnackbars }),
+    [showSnackbar, removeSnack, clearAllSnackbars]
+  );
 
   return (
     <SnackContext.Provider value={value}>

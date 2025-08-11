@@ -1,99 +1,115 @@
 "use client";
-import { createContext, useContext, useState } from "react";
+
+import { createContext, useContext, useState, useCallback, useRef, useEffect } from "react";
 
 interface MessageSignContextType {
   isOpen: boolean;
   message: string;
   open: (message: string) => Promise<boolean>;
-  close: () => void;
+  close: () => void; // programmatic close (or backdrop click) -> unmount immediately
 }
 
 const MessageSignContext = createContext<MessageSignContextType | null>(null);
 
-export function MessageSignProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
+export function MessageSignProvider({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false);  // controls DOM presence
+  const [entered, setEntered] = useState(false);  // drives ENTER (slide-up) animation
   const [message, setMessage] = useState("");
-  const [resolver, setResolver] = useState<(value: boolean) => void>();
 
-  const open = (msg: string) => {
+  const resolverRef = useRef<((v: boolean) => void) | null>(null);
+
+  const open = useCallback((msg: string) => {
     setMessage(msg);
-    setIsOpen(true);
+    setMounted(true);
+    setEntered(false);
+    // enter animation next frame
+    requestAnimationFrame(() => setEntered(true));
     return new Promise<boolean>((resolve) => {
-      setResolver(() => resolve);
+      resolverRef.current = resolve;
     });
+  }, []);
+
+  const resolveIfPending = (v: boolean) => {
+    if (resolverRef.current) {
+      const r = resolverRef.current;
+      resolverRef.current = null;
+      r(v);
+    }
   };
 
-  const close = () => {
-    // If the user dismisses the modal, resolve the promise as `false`
-    resolver?.(false);
-    setResolver(undefined);
-    setIsOpen(false);
-  };
+  // Close/unmount immediately (no exit anim). This prevents “stuck gray” overlay.
+  const close = useCallback(() => {
+    setEntered(false); // triggers slide-down
+    setTimeout(() => {
+      setMounted(false); // unmount after animation
+      resolveIfPending(false);
+    }, 25); // match duration-50
+  }, []);
+
+  // Confirm button: also unmount immediately, then resolve true
   const handleConfirm = () => {
-    resolver?.(true);
-    setResolver(undefined);
-    setIsOpen(false);
+    setEntered(false); // triggers slide-down
+    setTimeout(() => {
+      setMounted(false); // unmount after animation
+      resolveIfPending(true);
+    }, 25);
   };
+
+  // Safety: if provider unmounts mid-promise, resolve false
+  useEffect(() => {
+    return () => resolveIfPending(false);
+  }, []);
+
+  const isOpen = mounted;
 
   return (
     <MessageSignContext.Provider value={{ isOpen, message, open, close }}>
       {children}
-      <div
-        className={`fixed h-min[100dvh] inset-0 z-50 transition-opacity ${
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-      >
-        {/* Backdrop */}
-        <div
-          className="absolute inset-0 backdrop-blur-sm bg-black/30"
-          onClick={close}
-        />
 
-        {/* Modal */}
+      {mounted && (
         <div
-          className={`absolute left-0 bottom-0 w-full bg-background-primary rounded-t-3xl shadow-xl transform transition-transform duration-400 ease-in-out ${
-            isOpen ? "translate-y-0" : "translate-y-full"
+          className={`fixed inset-0 z-50 transition-opacity duration-300 ${
+            entered ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
         >
-          <div className="flex items-center justify-center pt-4">
-            <h1 className="text-4xl font-extrabold text-secondary">
-              Tutor A.I
-            </h1>
-          </div>
-          {/* Message */}
-          <div className="px-4 mt-2 mb-2 text-center space-y-2">
-            <p className="text-base text-secondary">{message}</p>
-          </div>
+          {/* Backdrop — just unmounts; no routing here */}
+          <div className="absolute inset-0 backdrop-blur-sm bg-black/30" onClick={close} />
 
-          <div className="px-4 pb-2">
-            <button
-              onClick={handleConfirm}
-              className="w-full py-3 bg-secondary text-white border-b-3 border-black font-semibold rounded-3xl transition flex items-center justify-center gap-2"
-            >
-              <div className="flex items-center justify-center">
-                <img
-                  src="/assets/coin.png"
-                  alt="YAP"
-                  className="h-5 w-5 "
-                />
-              </div>
-              <span className="text-base">Spend 1 YAP</span>
-            </button>
+          {/* Sheet — enter-only slide up */}
+          <div
+            className={`absolute left-0 bottom-0 w-full bg-background-primary rounded-t-3xl shadow-xl transform ${
+              entered
+                ? "translate-y-0 transition-transform duration-300 ease-out"
+                : "translate-y-full"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-center pt-4">
+              <h1 className="text-4xl font-extrabold text-secondary">Tutor A.I</h1>
+            </div>
+
+            <div className="px-4 mt-2 mb-2 text-center space-y-2">
+              <p className="text-base text-secondary">{message}</p>
+            </div>
+
+            <div className="px-4 pb-2">
+              <button
+                onClick={handleConfirm}
+                className="w-full py-3 bg-secondary text-white border-b-3 border-black font-semibold rounded-3xl transition flex items-center justify-center gap-2"
+              >
+                <img src="/assets/coin.png" alt="YAP" className="h-5 w-5" />
+                <span className="text-base">Spend 1 YAP</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </MessageSignContext.Provider>
   );
 }
 
 export function useMessageSignModal() {
-  const context = useContext(MessageSignContext);
-  if (!context) throw new Error("Wrap your app with <MessageSignProvider />");
-  return context;
+  const ctx = useContext(MessageSignContext);
+  if (!ctx) throw new Error("Wrap your app with <MessageSignProvider />");
+  return ctx;
 }

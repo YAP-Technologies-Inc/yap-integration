@@ -23,6 +23,7 @@ import { tokenAbi } from "@/app/abis/YAPToken";
 import TestingNoticeModal from "@/components/TestingNoticeModal";
 import { useMessageSignModal } from "@/components/cards/MessageSignModal";
 import { useSnackbar } from "@/components/ui/SnackBar";
+import { getQuizState } from "@/utils/dailyQuizStorage";
 export default function HomePage() {
   useInitializeUser();
 
@@ -97,16 +98,30 @@ export default function HomePage() {
   useEffect(() => {
     if (!userId) return;
     fetch(`${API_URL}/api/daily-quiz-status/${userId}`)
-      .then((res) => res.json())
+      .then((res) => res.json())  
       .then((data) => setDailyQuizCompleted(data.completed))
       .catch(() => {});
   }, [userId, API_URL]);
+  
+  const totalQuizItems = 5; // length of mockDailyQuiz[0].questions
+  const quizState =
+    typeof window !== "undefined"
+      ? getQuizState(totalQuizItems)
+      : { attemptsLeft: 3, avgScore: 0, completed: false };
 
-  const dailyQuizUnlocked = completedLessons?.includes("SPA1_005");
+  // If quiz is failed and no attempts left, lock the daily quiz again
+  const isQuizLocked =
+    quizState.attemptsLeft === 0 && !quizState.completed && quizState.avgScore === 0;
+
+  const dailyQuizUnlocked =
+    completedLessons?.includes("SPA1_005") && !isQuizLocked;
+
   const handleDailyQuizUnlocked = () => {
     if (!dailyQuizUnlocked) {
       showSnackbar({
-        message: "Please complete Lesson 5 to unlock the Daily Quiz.",
+        message: isQuizLocked
+          ? "No attempts left. Daily Quiz is locked until tomorrow."
+          : "Please complete Lesson 5 to unlock the Daily Quiz.",
         variant: "info",
         duration: 3000,
       });
@@ -123,10 +138,10 @@ export default function HomePage() {
     router.push("/daily-quiz");
   };
 
-      if (userId === null){
-        router.push("/auth");
-        return null;
-    }
+  if (userId === null) {
+    router.push("/auth");
+    return null;
+  }
 
   if (
     isLessonsLoading ||
@@ -191,7 +206,9 @@ export default function HomePage() {
         <div className="relative z-0 " onClick={handleDailyQuizUnlocked}>
           <DailyQuizCard
             isUnlocked={dailyQuizUnlocked}
-            isCompleted={dailyQuizCompleted}
+            isCompleted={dailyQuizCompleted || quizState.completed}
+            attemptsLeft={quizState.attemptsLeft}
+            avgScore={quizState.avgScore}
           />
         </div>
       </div>

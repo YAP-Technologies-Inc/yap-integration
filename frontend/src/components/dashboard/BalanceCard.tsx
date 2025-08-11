@@ -26,7 +26,7 @@ export default function BalanceCard() {
           Available Balance
         </span>
         <span className="text-2xl font-bold text-secondary">
-          {balance.toFixed(2)}
+          {balance}
           <span className="text-base font-semibold"> YAP</span>
         </span>
       </div>

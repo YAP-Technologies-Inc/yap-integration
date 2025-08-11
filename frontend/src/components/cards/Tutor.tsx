@@ -1,17 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TablerMicrophone, TablerSend2, TablerPlay, TablerPlayerPauseFilled, TablerX } from "@/icons";
 import { useSnackbar } from "@/components/ui/SnackBar";
 
 interface TutorProps {
-  // Sends text to the agent (ElevenLabs)
   sendMessage: (message: string) => Promise<void>;
-  // Appends a user text bubble to the chat (when typing)
   onUserMessage: (text: string) => void;
-  // Appends a user audio bubble to the chat (after Send)
   onUserAudio: (audioUrl: string) => void;
-
   userName?: string;
 }
 
@@ -27,7 +23,7 @@ const pickMime = () => {
     // @ts-ignore
     if (typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported?.(t)) return t;
   }
-  return ""; // let the browser choose
+  return "";
 };
 
 const formatTime = (sec: number) => {
@@ -53,13 +49,13 @@ export default function Tutor({
   const [pendingAudioBlob, setPendingAudioBlob] = useState<Blob | null>(null);
   const [pendingMime, setPendingMime] = useState<string | null>(null);
 
-  // simple custom player state for the pending audio chip
+  // player state for the pending audio chip
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currTime, setCurrTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // media capture
+  // media capture — ONLY created while recording
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const recordedChunks = useRef<Blob[]>([]);
@@ -79,13 +75,11 @@ export default function Tutor({
   useEffect(() => {
     return () => {
       hardKillMicrophone();
-      // cleanup pending object URL
       if (pendingAudioUrl) URL.revokeObjectURL(pendingAudioUrl);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-complete-deps
   }, []);
 
-  // wire up audio element events for the chip
   useEffect(() => {
     if (!audioRef.current) return;
     const el = audioRef.current;
@@ -106,7 +100,7 @@ export default function Tutor({
       el.removeEventListener("timeupdate", onTime);
       el.removeEventListener("ended", onEnded);
     };
-  }, [pendingAudioUrl]); // attach when chip exists
+  }, [pendingAudioUrl]);
 
   const togglePlay = async () => {
     const el = audioRef.current;
@@ -118,9 +112,7 @@ export default function Tutor({
       try {
         await el.play();
         setIsPlaying(true);
-      } catch {
-        // autoplay may fail etc.
-      }
+      } catch {}
     }
   };
 
@@ -193,15 +185,12 @@ export default function Tutor({
   };
 
   const handleSend = async () => {
-    // CASE 1: sending staged audio (preferred when present)
+    // CASE 1: sending staged audio -> transcribe -> send ONLY text to agent
     if (pendingAudioBlob && pendingAudioUrl) {
-      // visually add the audio bubble to chat
       onUserAudio(pendingAudioUrl);
 
-      // transcribe in background, send ONLY text to agent; do not show transcript
       try {
         const fd = new FormData();
-        // pick sensible extension based on mime
         const mime = pendingMime || pendingAudioBlob.type || "audio/webm";
         const ext =
           mime.includes("mp3") ? "mp3" :
@@ -216,7 +205,7 @@ export default function Tutor({
         const data = await res.json();
         const transcript = (data?.text || data?.transcript || "").trim();
         if (transcript) {
-          await sendMessage(transcript); // only the AI sees this
+          await sendMessage(transcript);
         } else {
           showSnackbar({ message: "No transcript detected.", variant: "error", duration: 2500 });
         }
@@ -224,10 +213,8 @@ export default function Tutor({
         console.error("Transcription error:", err);
         showSnackbar({ message: "Transcription failed.", variant: "error", duration: 3000 });
       } finally {
-        // clear the composer chip after sending
+        // clear composer chip after sending (chat bubble keeps its ObjectURL)
         setTimeout(() => {
-          // keep the ObjectURL alive for the chat bubble (we passed the same URL);
-          // we only clear our composer state here.
           setPendingAudioBlob(null);
           setPendingMime(null);
           setIsPlaying(false);
@@ -252,7 +239,7 @@ export default function Tutor({
     <div className="mx-auto my-8 bg-white rounded-3xl shadow-lg p-4 w-[90vw]">
       <div className="flex items-end gap-3">
         <div className="flex-1">
-          {/* Audio chip shows up above the textarea when a recording is staged */}
+          {/* Audio chip shows when a recording is staged */}
           {pendingAudioUrl && (
             <div className="mb-2 rounded-2xl bg-[#2D1C1C] text-white px-3 py-2 shadow-md flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -271,7 +258,7 @@ export default function Tutor({
               </div>
 
               <button
-                onClick={clearPendingAudio}
+                onClick={() => clearPendingAudio()}
                 className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center"
                 aria-label="Remove recording"
                 title="Remove recording"
@@ -279,7 +266,6 @@ export default function Tutor({
                 <TablerX className="w-4 h-4 text-white" />
               </button>
 
-              {/* hidden audio element driving playback */}
               <audio ref={audioRef} src={pendingAudioUrl} className="hidden" preload="metadata" />
             </div>
           )}
@@ -295,8 +281,6 @@ export default function Tutor({
             }}
             className="w-full min-h-[60px] rounded-md font-semibold focus:outline-none focus:border-transparent text-secondary resize-none"
             placeholder={isRecording ? "Recording..." : "Message to Tutor..."}
-            // optional: disable typing while a recording is staged
-            // disabled={!!pendingAudioUrl}
           />
 
           <div className="flex justify-between mt-2">
