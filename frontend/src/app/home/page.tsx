@@ -144,7 +144,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="bg-background-primary min-h-[100dvh] w-full flex flex-col overflow-y-auto pb-nav">
+    <div className="bg-background-primary min-h-[100dvh] w-full flex flex-col overflow-y-auto overflow-x-hidden pb-nav">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
         <HeaderGreeting />
         <div className="mt-2">

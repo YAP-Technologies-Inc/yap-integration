@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 
@@ -44,6 +44,7 @@ interface StepSentence {
 
 type Step = StepVocab | StepGrammar | StepComp | StepSentence;
 const passingScore = 80;
+
 interface LessonUiProps {
   lessonId: string;
   stepIndex: number;
@@ -162,11 +163,11 @@ export default function LessonUi({
       setMediaRecorder(recorder);
       setIsRecording(true);
     } catch (e) {
-        showSnackbar({
-          message: "Microphone permission denied or not found",
-          variant: "error",
-          duration: 3000,
-        });
+      showSnackbar({
+        message: "Microphone permission denied or not found",
+        variant: "error",
+        duration: 3000,
+      });
       router.push("/home");
     }
   };
@@ -224,11 +225,11 @@ export default function LessonUi({
       await new Promise((r) => setTimeout(r, 300)); // animate flip
     } catch (err) {
       console.error("Assessment error:", err);
-        showSnackbar({
-          message: "Failed to assess pronunciation",
-          variant: "error",
-          duration: 3000,
-        });
+      showSnackbar({
+        message: "Failed to assess pronunciation",
+        variant: "error",
+        duration: 3000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -273,6 +274,15 @@ export default function LessonUi({
       console.error("Verification error:", err);
     }
   };
+  const correctChime = "/audio/correct.mp3";
+  const incorrectChime = "/audio/incorrect.mp3";
+
+  useEffect(() => {
+    if (score === null) return;
+    const sound = score >= passingScore ? correctChime : incorrectChime;
+    const audio = new Audio(sound);
+    audio.play();
+  }, [score]);
 
   return (
     <div className="fixed inset-0 bg-background-primary flex flex-col h-[100dvh] overflow-hidden">
@@ -440,24 +450,24 @@ export default function LessonUi({
                   score >= passingScore ? "bg-green-200" : "bg-red-200"
                 }`}
               />
-                <div className="flex flex-col items-start mb-4">
+              <div className="flex flex-col items-start mb-4">
                 {/* Check/X and "Correct"/"Incorrect" */}
                 <div className="flex items-center gap-2 mb-2">
                   <div
-                  className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
-                    score >= passingScore
-                    ? "bg-[#4eed71] border-[#41ca55]"
-                    : "bg-[#f04648] border-[#d12a2d]"
-                  }`}
+                    className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
+                      score >= passingScore
+                        ? "bg-[#4eed71] border-[#41ca55]"
+                        : "bg-[#f04648] border-[#d12a2d]"
+                    }`}
                   >
-                  {score >= passingScore ? (
-                    <TablerCheck className="w-6 h-6 text-white" />
-                  ) : (
-                    <TablerX className="w-6 h-6 text-white" />
-                  )}
+                    {score >= passingScore ? (
+                      <TablerCheck className="w-6 h-6 text-white" />
+                    ) : (
+                      <TablerX className="w-6 h-6 text-white" />
+                    )}
                   </div>
                   <p className="text-2xl font-semibold text-[#2D1C1C]">
-                  {score >= passingScore ? "Correct" : "Incorrect"}
+                    {score >= passingScore ? "Correct" : "Incorrect"}
                   </p>
                 </div>
 
@@ -477,11 +487,14 @@ export default function LessonUi({
                       value: breakdown?.completeness ?? 0,
                     },
                   ].map(({ label, value }) => {
-                    let color = "bg-tertiary border-b-3 border-r-1 border-[#e4a92d]";
+                    let color =
+                      "bg-tertiary border-b-3 border-r-1 border-[#e4a92d]";
                     if (value >= passingScore)
-                      color = "bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]";
+                      color =
+                        "bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]";
                     else if (value < 60)
-                      color = "bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]";
+                      color =
+                        "bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]";
 
                     return (
                       <div className="flex items-center gap-2" key={label}>
@@ -495,7 +508,7 @@ export default function LessonUi({
                     );
                   })}
                 </div>
-                </div>
+              </div>
 
               <div className="flex justify-between gap-4 pt-2">
                 <button

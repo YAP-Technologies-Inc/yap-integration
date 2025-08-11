@@ -26,3 +26,4 @@ export { TablerSend2 } from "./Message";
 export { TablerArrowUpRight } from "./TablerArrowRight";
 export { TablerArrowBack } from "./ArrowBack";
 export { TablerSmartHome } from "./Smarthome";
+export { TablerPlay } from "./Play";

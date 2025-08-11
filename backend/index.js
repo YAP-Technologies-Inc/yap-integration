@@ -1,5 +1,7 @@
 require('dotenv').config();
+const OpenAI = require('openai');
 const express = require('express');
+const fsSync = require('fs');
 const cors = require('cors');
 const flowglad = require('@flowglad/server');
 const bip39 = require('bip39');
@@ -640,22 +642,61 @@ app.post('/api/report-form', async (req, res) => {
 });
 app.use('/uploads', express.static('uploads'));
 
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, 
+});
+
+const uploadsDir = path.join(process.cwd(), 'uploads');
+if (!fsSync.existsSync(uploadsDir)) {
+  fsSync.mkdirSync(uploadsDir, { recursive: true });
+}
+
+async function transcribeWithWhisper(filePath) {
+  const fileStream = fsSync.createReadStream(filePath);
+  const resp = await openai.audio.transcriptions.create({
+    file: fileStream,
+    model: 'whisper-1',
+    // language: 'es', // uncomment to force Spanish
+  });
+  return resp.text || '';
+}
+async function convertToMp3(inputPath) {
+  return new Promise((resolve, reject) => {
+    const outputPath = `${inputPath}.mp3`;
+    ffmpeg(inputPath)
+      .audioCodec('libmp3lame')
+      .format('mp3')
+      .on('end', () => resolve(outputPath))
+      .on('error', reject)
+      .save(outputPath);
+  });
+}
+
 app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
-  const audioFile = req.file;
-
-  if (!audioFile) {
-    return res.status(400).json({ error: 'No audio file uploaded' });
-  }
-
   try {
-    const transcript = await transcribeWithWhisper(audioFile.path); 
+    if (!req.file) {
+      return res.status(400).json({ error: 'No audio file uploaded' });
+    }
+
+    // 1. Convert whatever came in to mp3
+    const mp3Path = await convertToMp3(req.file.path);
+
+    // 2. Send mp3 to Whisper
+    const transcript = await transcribeWithWhisper(mp3Path);
+
+    // 3. Cleanup temp files
+    try { await fs.unlink(req.file.path); } catch {}
+    try { await fs.unlink(mp3Path); } catch {}
+
     res.json({ transcript });
   } catch (err) {
     console.error('Transcription error:', err);
-    res.status(500).json({ error: 'Transcription failed' });
+    res.status(500).json({
+      error: 'Transcription failed',
+      detail: err?.message ?? String(err),
+    });
   }
 });
-
 
 
 const PORT = process.env.PORT || 4000;
