@@ -101,19 +101,19 @@ export default function DailyQuizUi() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { showSnackbar, removeSnackbar } = useSnackbar();
+  const snackbarShownRef = useRef(false);
 
-  // If already completed today, bounce back (optional)
   useEffect(() => {
-    if (completed) {
+    if (completed && !snackbarShownRef.current) {
+      router.replace("/home");
+      snackbarShownRef.current = true;
       showSnackbar({
         message: "You've already completed today's Daily Quiz.",
         variant: "info",
         duration: 2500,
       });
-      router.push("/home");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [completed]);
 
   const referenceText = current?.front ?? "";
   const needsSpeaking = true;
@@ -245,7 +245,9 @@ export default function DailyQuizUi() {
       return;
     }
     // reached the end -> evaluate average
-    const finalScores = scores.map((s, i) => (i === stepIndex && score != null ? score : s));
+    const finalScores = scores.map((s, i) =>
+      i === stepIndex && score != null ? score : s
+    );
     const avg = computeAvg(finalScores);
     setAvgScore(avg);
 

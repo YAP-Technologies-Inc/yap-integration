@@ -39,7 +39,7 @@ export default function DailyQuizCard({
   const bgClass = isLocked
     ? 'bg-gray-300 text-gray-500'
     : isDone
-    ? 'bg-green-100 text-green-800'
+    ? 'bg-green-100 text-green-800 border-b-3 border-r-1 border-green-200'
     : 'bg-white text-[#2D1C1C]';
 
   const overlayIcon = isLocked ? (

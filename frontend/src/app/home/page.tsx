@@ -133,6 +133,7 @@ export default function HomePage() {
         variant: "info",
         duration: 3000,
       });
+      router.push("/home");
       return;
     }
     router.push("/daily-quiz");
