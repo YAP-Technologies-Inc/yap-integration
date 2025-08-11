@@ -8,26 +8,22 @@ export default function BalanceCard() {
 
   const { balance, isError } = useOnChainBalance(evmAddress);
 
-  // ✅ Don't render if balance is undefined (still loading)
-  if (balance === undefined) return null;
-
-  if (isError) {
-    return (
-      <div className="bg-white w-full rounded-3xl shadow px-4 py-4 flex items-center justify-between border-b-3 border-red-200 text-red-500">
-        <span>Error fetching balance</span>
-      </div>
-    );
-  }
+  // Always render the card, show 0 until balance loads
+  const displayBalance = typeof balance === "number" ? balance : "...";
 
   return (
-    <div className="bg-white w-full rounded-3xl shadow px-4 py-4 flex items-center justify-between border-b-3 border-[#e3ded3]">
+    <div
+      className={`bg-white w-full rounded-3xl shadow px-4 py-4 flex items-center justify-between border-b-3 ${
+        isError ? "border-red-200 text-red-500" : "border-[#e3ded3]"
+      }`}
+    >
       <div className="flex flex-col">
         <span className="text-sm text-secondary font-normal mb-1">
           Available Balance
         </span>
         <span className="text-2xl font-bold text-secondary">
-          {balance}
-          <span className="text-base font-semibold"> YAP</span>
+          {isError ? "Error" : displayBalance}
+          {!isError && <span className="text-base font-semibold"> YAP</span>}
         </span>
       </div>
       <img
