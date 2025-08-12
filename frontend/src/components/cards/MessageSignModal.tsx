@@ -85,7 +85,8 @@ export function MessageSignProvider({ children }: { children: React.ReactNode })
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-center pt-4">
-              <h1 className="text-4xl font-extrabold text-secondary">Tutor A.I</h1>
+              <img src="/assets/tutor.png" alt="Tutor Icon" className="h-12 w-auto" />
+              <h1 className="ml-2 text-4xl font-extrabold text-secondary">Tutor A.I</h1>
             </div>
 
             <div className="px-4 mt-2 mb-2 text-center space-y-2">

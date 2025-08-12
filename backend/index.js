@@ -76,7 +76,6 @@ app.post("/api/redeem-yap", async (req, res) => {
     const tx = await token.transfer(walletAddress, parseUnits("1", 18));
     await tx.wait();
 
-    console.log(`Sent 1 YAP to ${walletAddress}: ${tx.hash}`);
     res.json({ success: true, txHash: tx.hash });
   } catch (err) {
     console.error("YAP transfer failed:", err);
@@ -94,7 +93,6 @@ async function sendYAPToWallet(toAddress) {
   const token = new Contract(TOKEN_ADDRESS, tokenAbi, wallet);
   const tx = await token.transfer(toAddress, parseUnits("1", 18));
   await tx.wait();
-  console.log(`Sent 1 YAP to ${toAddress}, txHash=${tx.hash}`);
   return tx.hash;
 }
 // Endpoint to complete a lesson
@@ -374,8 +372,6 @@ app.post(
       const format = inputMime.split("/")[1];
       const wavPath = inputPath + ".wav";
 
-      console.log("Converting from format:", format, "MIME:", inputMime);
-
       // Convert to WAV with proper format detection
       await new Promise((resolve, reject) => {
         ffmpeg(inputPath)
@@ -391,7 +387,6 @@ app.post(
       });
 
       const wavStats = fs.statSync(wavPath);
-      console.log("WAV file size:", wavStats.size, "bytes");
       if (wavStats.size < 1000) {
         console.warn("WAV likely silent or failed conversion.");
       }
@@ -538,8 +533,6 @@ app.post("/api/complete-daily-quiz", async (req, res) => {
         RETURNING id`,
       [userId, tx.hash]
     );
-
-    console.log("Daily quiz reward logged, id:", insert.rows[0].id);
     return res.json({ success: true, txHash: tx.hash });
   } catch (err) {
     console.error("Error completing daily quiz:", err);
@@ -694,19 +687,15 @@ const wss = new WebSocketServer({ noServer: true });
 
 server.on("upgrade", (req, socket, head) => {
   // Helpful logs so you can see the upgrade actually fires
-  console.log("[upgrade] incoming", req.url);
   socket.on("error", (err) =>
     console.error("[upgrade] socket error:", err.message)
   );
 
   if (!req.url || !req.url.startsWith("/api/agent-ws")) {
-    console.log("[upgrade] not our path, destroying");
     return socket.destroy();
   }
 
-  console.log("[upgrade] handling /api/agent-ws");
   wss.handleUpgrade(req, socket, head, (ws) => {
-    console.log("[upgrade] upgraded to WebSocket");
     wss.emit("connection", ws, req);
   });
 });
@@ -772,7 +761,6 @@ function wrapPcmAsWav(
 
 wss.on("connection", async (client) => {
   const tag = `[agent-ws:${Date.now()}]`;
-  console.log(tag, "client connected");
 
   if (!ELEVENLABS_API_KEY || !ELEVENLABS_AGENT_ID) {
     client.send(
@@ -814,11 +802,9 @@ wss.on("connection", async (client) => {
     clearTimers();
     collecting = false;
     if (turnChunks.length === 0) {
-      console.log(tag, "finalizeTurn (", reason, "): no audio");
       return;
     }
     const wav = wrapPcmAsWav(turnChunks.splice(0, turnChunks.length));
-    console.log(tag, `finalizeTurn (${reason}) → SEND WAV ${wav.length} bytes`);
     if (client.readyState === WebSocket.OPEN) {
       client.send(wav, { binary: true });
       // optional: notify end of turn
@@ -833,7 +819,6 @@ wss.on("connection", async (client) => {
     elWs = ws;
 
     ws.on("open", () => {
-      console.log(tag, "EL WS open");
     });
 
     elWs.on("message", (raw) => {
@@ -841,7 +826,6 @@ wss.on("connection", async (client) => {
         const evt = JSON.parse(raw.toString());
 
         if (evt?.type === "conversation_initiation_metadata") {
-          console.log(tag, "EL → type:", evt.type);
           client.send(JSON.stringify({ type: "meta", meta: evt }));
           return;
         }
@@ -857,21 +841,14 @@ wss.on("connection", async (client) => {
             if (!collecting) startTurn();
             const buf = Buffer.from(b64, "base64");
             turnChunks.push(buf);
-            console.log(tag, "EL → audio chunk bytes:", buf.length);
             bumpSilence();
           } else {
             // helpful debug if shape ever changes again
-            console.log(
-              tag,
-              "EL → audio but no payload keys:",
-              Object.keys(evt)
-            );
           }
           return;
         }
 
         if (evt?.type === "interruption") {
-          console.log(tag, "EL → interruption");
           finalizeTurn("interruption");
           return;
         }
@@ -883,14 +860,12 @@ wss.on("connection", async (client) => {
     });
 
     ws.on("close", (code, reason) => {
-      console.log(tag, "EL WS close", code, reason?.toString?.() || "");
       // Don’t close the browser socket. Just finalize whatever we have and wait for next user_text.
       finalizeTurn("el-close");
       elWs = null;
     });
 
     ws.on("error", (err) => {
-      console.log(tag, "EL WS error", err?.message);
       finalizeTurn("el-error");
       // keep browser open
     });
@@ -899,7 +874,6 @@ wss.on("connection", async (client) => {
   try {
     await connectEL();
   } catch (e) {
-    console.log(tag, "Failed to connect to EL:", e?.message);
     client.send(
       JSON.stringify({ type: "error", error: "Failed to reach agent" })
     );
@@ -915,7 +889,6 @@ wss.on("connection", async (client) => {
         typeof msg.text === "string" &&
         msg.text.trim()
       ) {
-        console.log(tag, "BROWSER → user_text len:", msg.text.length);
 
         // If EL ws isn’t connected, attempt reconnect
         if (!elWs || elWs.readyState !== WebSocket.OPEN) {
@@ -927,7 +900,6 @@ wss.on("connection", async (client) => {
         if (elWs && elWs.readyState === WebSocket.OPEN) {
           startTurn(); // start collecting a blurb for THIS message
           elWs.send(JSON.stringify({ type: "user_message", text: msg.text }));
-          console.log(tag, "FORWARD → EL: user_message");
         } else {
           client.send(
             JSON.stringify({ type: "error", error: "Agent not ready" })
@@ -942,7 +914,6 @@ wss.on("connection", async (client) => {
   });
 
   client.on("close", () => {
-    console.log(tag, "browser WS closed");
     clearTimers();
     try {
       elWs?.close();
