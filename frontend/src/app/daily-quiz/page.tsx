@@ -33,7 +33,7 @@ import {
 } from "@/utils/dailyQuizStorage";
 import { statusNetworkSepolia } from "@wagmi/core/chains";
 
-const PASSING_CARD_SCORE = 90; // per-card pass threshold (visual only)
+const PASSING_CARD_SCORE = 70; // per-card pass threshold (visual only)
 const PASSING_AVG = 90; // quiz pass threshold (avg)
 const MAX_ATTEMPTS = 3;
 
@@ -101,19 +101,7 @@ export default function DailyQuizUi() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { showSnackbar, removeSnackbar } = useSnackbar();
-  const snackbarShownRef = useRef(false);
 
-  useEffect(() => {
-    if (completed && !snackbarShownRef.current) {
-      router.replace("/home");
-      snackbarShownRef.current = true;
-      showSnackbar({
-        message: "You've already completed today's Daily Quiz.",
-        variant: "info",
-        duration: 2500,
-      });
-    }
-  }, [completed]);
 
   const referenceText = current?.front ?? "";
   const needsSpeaking = true;

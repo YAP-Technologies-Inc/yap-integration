@@ -1,6 +1,24 @@
 // src/utils/dailyQuizStorage.ts
 const KEY_PREFIX = "dq";
-const todayStr = () => new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+// Use local day in America/Toronto so it resets at local midnight
+const todayStr = () => {
+  try {
+    // en-CA yields YYYY-MM-DD
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Toronto",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date());
+  } catch {
+    // Fallback: local offset correction
+    const d = new Date();
+    const off = d.getTimezoneOffset();
+    const local = new Date(d.getTime() - off * 60000);
+    return local.toISOString().slice(0, 10);
+  }
+};
 
 function key(name: string) {
   return `${KEY_PREFIX}:${todayStr()}:${name}`;
@@ -10,7 +28,7 @@ export type DailyQuizState = {
   attemptsLeft: number;
   scores: number[];
   completed: boolean;
-  avgScore: number;       // current (in-progress) avg for today
+  avgScore: number;        // current (in-progress) avg for today
   lastAttemptAvg?: number; // last completed attempt avg (what the card shows)
 };
 
@@ -31,6 +49,7 @@ export function getQuizState(totalSteps: number): DailyQuizState {
   }
   try {
     const parsed = JSON.parse(raw) as DailyQuizState;
+    // ensure shape
     if (!Array.isArray(parsed.scores) || parsed.scores.length !== totalSteps) {
       parsed.scores = Array(totalSteps).fill(-1);
     }
@@ -38,6 +57,7 @@ export function getQuizState(totalSteps: number): DailyQuizState {
     if (typeof parsed.completed !== "boolean") parsed.completed = false;
     if (typeof parsed.avgScore !== "number") parsed.avgScore = 0;
     if (typeof parsed.lastAttemptAvg !== "number") parsed.lastAttemptAvg = 0;
+    // persist normalized object
     setQuizState(parsed);
     return parsed;
   } catch {
@@ -112,7 +132,7 @@ export function setLastAttemptAvg(totalSteps: number, avg: number) {
   return s;
 }
 
-/** ---------- NEW: lightweight peek helpers for the card ---------- */
+/** ---------- Peek helpers for the Home card ---------- */
 function getRawTodayState(): Partial<DailyQuizState> | null {
   const raw = localStorage.getItem(key("state"));
   if (!raw) return null;
@@ -134,4 +154,49 @@ export function getTodayAttemptsLeft(): number {
 
 export function getTodayCompleted(): boolean {
   return !!getRawTodayState()?.completed;
+}
+
+export function isTodayLocked(totalSteps: number): boolean {
+  const s = getQuizState(totalSteps);
+  return s.attemptsLeft <= 0 && !s.completed;
+}
+
+// One read for Home (card + press)
+export function getTodayStatus(totalSteps: number) {
+  const s = getQuizState(totalSteps);
+  return {
+    attemptsLeft: s.attemptsLeft,
+    completed: s.completed,
+    lastAttemptAvg: s.lastAttemptAvg ?? 0,
+    locked: s.attemptsLeft <= 0 && !s.completed,
+  };
+}
+
+/**
+ * Finalize an attempt (call when user finishes all steps).
+ * Records last attempt avg. If success, marks completed.
+ * If fail, decrements attempts and resets scores for a retry.
+ */
+export function finalizeAttempt(
+  totalSteps: number,
+  avgOrScores: number | number[],
+  passThreshold: number = 90
+) {
+  const avg = Array.isArray(avgOrScores)
+    ? computeAvg(avgOrScores)
+    : Math.round(avgOrScores);
+
+  const s = getQuizState(totalSteps);
+  s.lastAttemptAvg = avg;
+
+  if (avg >= passThreshold) {
+    s.completed = true; // ✅ today done
+  } else {
+    s.attemptsLeft = Math.max(0, s.attemptsLeft - 1);
+    s.scores = Array(totalSteps).fill(-1);
+    s.avgScore = 0;
+  }
+
+  setQuizState(s);
+  return s;
 }

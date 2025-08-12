@@ -40,6 +40,10 @@ const bcrypt = require("bcryptjs"); // Add at the top if you want to hash passwo
 const { assessPronunciation } = require("./azurePronunciation");
 const multer = require("multer");
 const ffmpeg = require("fluent-ffmpeg");
+const http = require("http");
+const { WebSocketServer } = require("ws");
+const WebSocket = require("ws");
+
 const fs = require("fs");
 const path = require("path");
 const upload = multer({ dest: "uploads/" });
@@ -50,10 +54,12 @@ const TOKEN_ADDRESS = process.env.TOKEN_ADDRESS;
 const TREASURY_ADDRESS = process.env.TREASURY_ADDRESS;
 const provider = new JsonRpcProvider(SEI_RPC);
 const wallet = new Wallet(PRIVATE_KEY, provider);
-
+const ELEVENLABS_AGENT_ID = process.env.ELEVENLABS_AGENT_ID;
+const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const app = express();
 app.use(cors());
 app.use(express.json());
+const server = http.createServer(app);
 
 // Endpoint to redeem YAP token
 app.post("/api/redeem-yap", async (req, res) => {
@@ -675,7 +681,7 @@ app.post("/api/transcribe", upload.single("audio"), async (req, res) => {
       await fs.unlink(mp3Path);
     } catch {}
 
-    res.json({ transcript });
+    res.json({ text: transcript, transcript });
   } catch (err) {
     console.error("Transcription error:", err);
     res.status(500).json({
@@ -684,8 +690,278 @@ app.post("/api/transcribe", upload.single("audio"), async (req, res) => {
     });
   }
 });
+const wss = new WebSocketServer({ noServer: true });
 
+server.on("upgrade", (req, socket, head) => {
+  // Helpful logs so you can see the upgrade actually fires
+  console.log("[upgrade] incoming", req.url);
+  socket.on("error", (err) =>
+    console.error("[upgrade] socket error:", err.message)
+  );
+
+  if (!req.url || !req.url.startsWith("/api/agent-ws")) {
+    console.log("[upgrade] not our path, destroying");
+    return socket.destroy();
+  }
+
+  console.log("[upgrade] handling /api/agent-ws");
+  wss.handleUpgrade(req, socket, head, (ws) => {
+    console.log("[upgrade] upgraded to WebSocket");
+    wss.emit("connection", ws, req);
+  });
+});
+
+async function getSignedUrl(agentId) {
+  const url = `https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=${encodeURIComponent(
+    agentId
+  )}`;
+  const r = await fetch(url, { headers: { "xi-api-key": ELEVENLABS_API_KEY } });
+  if (!r.ok)
+    throw new Error(`Signed URL failed: ${r.status} ${await r.text()}`);
+  const data = await r.json();
+  if (!data?.signed_url) throw new Error("No signed_url in response");
+  return data.signed_url;
+}
+
+// Helper: wrap raw PCM16 (16k mono) into WAV
+function wrapPcmAsWav(
+  pcmBuffers,
+  sampleRate = 16000,
+  numChannels = 1,
+  bytesPerSample = 2
+) {
+  const pcmLength = pcmBuffers.reduce((a, b) => a + b.length, 0);
+  const blockAlign = numChannels * bytesPerSample;
+  const byteRate = sampleRate * blockAlign;
+  const dataSize = pcmLength;
+  const riffSize = 36 + dataSize;
+
+  const buf = Buffer.alloc(44 + dataSize);
+  buf.write("RIFF", 0);
+  buf.writeUInt32LE(riffSize, 4);
+  buf.write("WAVE", 8);
+  buf.write("fmt ", 12);
+  buf.writeUInt32LE(16, 16); // fmt chunk size
+  buf.writeUInt16LE(1, 20); // PCM
+  buf.writeUInt16LE(numChannels, 22);
+  buf.writeUInt32LE(sampleRate, 24);
+  buf.writeUInt32LE(byteRate, 28);
+  buf.writeUInt16LE(blockAlign, 32);
+  buf.writeUInt16LE(bytesPerSample * 8, 34);
+  buf.write("data", 36);
+  buf.writeUInt32LE(dataSize, 40);
+
+  let off = 44;
+  for (const c of pcmBuffers) {
+    c.copy(buf, off);
+    off += c.length;
+  }
+  return buf;
+}
+
+// IMPORTANT: ensure you have this in your file (once):
+// const app = express();
+// const server = http.createServer(app);
+// server.on('upgrade', (req, socket, head) => {
+//   if (req.url && req.url.startsWith('/api/agent-ws')) {
+//     wss.handleUpgrade(req, socket, head, (ws) => wss.emit('connection', ws, req));
+//   } else {
+//     socket.destroy();
+//   }
+// });
+
+wss.on("connection", async (client) => {
+  const tag = `[agent-ws:${Date.now()}]`;
+  console.log(tag, "client connected");
+
+  if (!ELEVENLABS_API_KEY || !ELEVENLABS_AGENT_ID) {
+    client.send(
+      JSON.stringify({ type: "error", error: "Missing ELEVENLABS env vars" })
+    );
+    client.close();
+    return;
+  }
+
+  let elWs = null;
+
+  // ---- "blurb" turn manager ----
+  const SILENCE_MS = 900; // finalize a reply if no audio arrives for 0.9s
+  const HARD_LIMIT_MS = 20000; // safety cutoff per turn
+  let collecting = false;
+  let turnChunks = [];
+  let silenceTimer = null;
+  let hardTimer = null;
+
+  function clearTimers() {
+    if (silenceTimer) clearTimeout(silenceTimer), (silenceTimer = null);
+    if (hardTimer) clearTimeout(hardTimer), (hardTimer = null);
+  }
+
+  function startTurn() {
+    clearTimers();
+    collecting = true;
+    turnChunks.length = 0;
+    hardTimer = setTimeout(() => finalizeTurn("hard-limit"), HARD_LIMIT_MS);
+  }
+
+  function bumpSilence() {
+    if (silenceTimer) clearTimeout(silenceTimer);
+    silenceTimer = setTimeout(() => finalizeTurn("silence"), SILENCE_MS);
+  }
+
+  function finalizeTurn(reason = "unknown") {
+    if (!collecting) return;
+    clearTimers();
+    collecting = false;
+    if (turnChunks.length === 0) {
+      console.log(tag, "finalizeTurn (", reason, "): no audio");
+      return;
+    }
+    const wav = wrapPcmAsWav(turnChunks.splice(0, turnChunks.length));
+    console.log(tag, `finalizeTurn (${reason}) → SEND WAV ${wav.length} bytes`);
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(wav, { binary: true });
+      // optional: notify end of turn
+      client.send(JSON.stringify({ type: "turn_end" }));
+    }
+  }
+
+  // ---- connect to ElevenLabs ConvAI ----
+  async function connectEL() {
+    const signedUrl = await getSignedUrl(ELEVENLABS_AGENT_ID);
+    const ws = new WebSocket(signedUrl);
+    elWs = ws;
+
+    ws.on("open", () => {
+      console.log(tag, "EL WS open");
+    });
+
+    elWs.on("message", (raw) => {
+      try {
+        const evt = JSON.parse(raw.toString());
+
+        if (evt?.type === "conversation_initiation_metadata") {
+          console.log(tag, "EL → type:", evt.type);
+          client.send(JSON.stringify({ type: "meta", meta: evt }));
+          return;
+        }
+
+        if (evt?.type === "audio") {
+          // ✅ NEW: handle nested audio_event shape too
+          const b64 =
+            evt.audio_event?.audio_base_64 || // most ConvAI payloads
+            evt.audio_base_64 || // some variants
+            evt.audio; // rare fallback
+
+          if (b64) {
+            if (!collecting) startTurn();
+            const buf = Buffer.from(b64, "base64");
+            turnChunks.push(buf);
+            console.log(tag, "EL → audio chunk bytes:", buf.length);
+            bumpSilence();
+          } else {
+            // helpful debug if shape ever changes again
+            console.log(
+              tag,
+              "EL → audio but no payload keys:",
+              Object.keys(evt)
+            );
+          }
+          return;
+        }
+
+        if (evt?.type === "interruption") {
+          console.log(tag, "EL → interruption");
+          finalizeTurn("interruption");
+          return;
+        }
+
+        // ignore pings and anything else
+      } catch (e) {
+        // non-JSON frames; ignore safely
+      }
+    });
+
+    ws.on("close", (code, reason) => {
+      console.log(tag, "EL WS close", code, reason?.toString?.() || "");
+      // Don’t close the browser socket. Just finalize whatever we have and wait for next user_text.
+      finalizeTurn("el-close");
+      elWs = null;
+    });
+
+    ws.on("error", (err) => {
+      console.log(tag, "EL WS error", err?.message);
+      finalizeTurn("el-error");
+      // keep browser open
+    });
+  }
+
+  try {
+    await connectEL();
+  } catch (e) {
+    console.log(tag, "Failed to connect to EL:", e?.message);
+    client.send(
+      JSON.stringify({ type: "error", error: "Failed to reach agent" })
+    );
+    // keep browser socket open; they can retry sending text which will try again
+  }
+
+  // ---- browser → agent ----
+  client.on("message", async (raw) => {
+    try {
+      const msg = JSON.parse(raw.toString());
+      if (
+        msg?.type === "user_text" &&
+        typeof msg.text === "string" &&
+        msg.text.trim()
+      ) {
+        console.log(tag, "BROWSER → user_text len:", msg.text.length);
+
+        // If EL ws isn’t connected, attempt reconnect
+        if (!elWs || elWs.readyState !== WebSocket.OPEN) {
+          try {
+            await connectEL();
+          } catch {}
+        }
+
+        if (elWs && elWs.readyState === WebSocket.OPEN) {
+          startTurn(); // start collecting a blurb for THIS message
+          elWs.send(JSON.stringify({ type: "user_message", text: msg.text }));
+          console.log(tag, "FORWARD → EL: user_message");
+        } else {
+          client.send(
+            JSON.stringify({ type: "error", error: "Agent not ready" })
+          );
+        }
+      } else if (msg?.type === "close") {
+        client.close();
+      }
+    } catch {
+      // ignore bad payloads
+    }
+  });
+
+  client.on("close", () => {
+    console.log(tag, "browser WS closed");
+    clearTimers();
+    try {
+      elWs?.close();
+    } catch {}
+  });
+
+  client.on("error", () => {
+    clearTimers();
+    try {
+      elWs?.close();
+    } catch {}
+  });
+});
+
+// (Your existing server.listen(...) is fine)
+
+// ---------- LISTEN ----------
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () =>
-  console.log(`Backend running on http://localhost:${PORT}`)
-);
+server.listen(PORT, () => {
+  console.log(`Backend running on http://localhost:${PORT}`);
+  console.log(`WS bridge at ws://localhost:${PORT}/api/agent-ws`);
+});

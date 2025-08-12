@@ -13,14 +13,14 @@ export function useUserProfile(userId: string | null) {
   if (data?.created_at) {
     const date = new Date(data.created_at);
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long' };
-    accountCreated = date.toLocaleDateString(undefined, options); // e.g. "August 2025"
+    accountCreated = date.toLocaleDateString(undefined, options); 
   }
 
   return {
     name: data?.name || '',
     language: data?.language_to_learn || '',
     wallet: data?.wallet || '',
-    accountCreated, // <- formatted string like "August 2025"
+    accountCreated, 
     isLoading,
     isError: error,
   };

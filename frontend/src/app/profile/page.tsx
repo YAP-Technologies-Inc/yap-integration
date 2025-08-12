@@ -168,8 +168,10 @@ export default function ProfilePage() {
 
         <div className="mt-6 flex flex-row items-center w-full">
           {/* Profile Picture - smaller circle */}
-          <div className="w-14 h-14 rounded-full flex items-center justify-center shadow-md bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 flex-shrink-0">
-            <span className="text-white text-xl font-bold">{firstInitial}</span>
+          <div className="w-14 h-14 rounded-full flex items-center justify-center bg-secondary flex-shrink-0">
+            <span className="text-white text-xl font-semibold">
+              {firstInitial}
+            </span>
           </div>
 
           {/* Name and Join Date - left aligned with avatar */}
@@ -183,9 +185,9 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="mt-4 w-full flex justify-start">
+        <div className="mt-4 w-full flex justify-start border-2 rounded-3xl">
           <button
-            className="w-full rounded-3xl bg-white/90 px-6 py-4 shadow-md border-b-3 b-r-1 border-[#e2ddd3]  hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-semibold text-secondary flex items-center justify-between gap-2 backdrop-blur-sm"
+            className="w-full rounded-3xl  bg-white/90 px-6 py-4 shadow-md border-b-3 b-r-1 border-[#e2ddd3]  hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-semibold text-secondary flex items-center justify-between gap-2 backdrop-blur-sm"
             onClick={() => {
               if (evmAddress) {
                 window.open(
@@ -206,73 +208,61 @@ export default function ProfilePage() {
               <span className="text-xs text-muted-foreground">
                 Available Balance
               </span>
-              <div className="flex items-center gap-2">
-                <span className="font-bold">{onChainBalance ?? 0} YAP</span>
-              </div>
+              <span className="font-bold text-2xl flex items-center gap-2">
+                <img
+                  src="/assets/coin.png"
+                  alt="Coin"
+                  className="inline-block w-8 h-8"
+                />
+                {onChainBalance ?? 0}
+              </span>
             </div>
             <div className="flex items-center gap-1">
               <TablerArrowUpRight className="w-4 h-4 text-muted-foreground" />
             </div>
           </button>
         </div>
-
-        <div className="w-full mt-6 flex flex-col items-start">
-          <h2 className="text-md font-bold text-secondary mb-2 self-start lg:px-0 lg:max-w-4xl w-full text-left">
-            Statistics
-          </h2>
-
-          <div className="flex gap-4 overflow-x-auto no-scrollbar px-4 w-full justify-start lg:justify-start lg:max-w-4xl lg:px-0">
-            <StatCard icon="🔥" label="Streak" value={totalStreak} />
-            <StatCard icon="📚" label="Language" value={language} />
-            <StatCard
-              icon={coin.src}
-              label="Total $YAP"
-              value={onChainBalance ?? 0}
-              isImage
-            />
-          </div>
-        </div>
-
-        <div className="w-full mt-4 flex flex-col items-start">
-          <h2 className="text-md font-bold text-secondary mb-2 text-left">
-            Others
-          </h2>
-          <div className="flex flex-col gap-2 w-full">
-            {[
-              {
-                icon: (
-                  <TablerInfoCircle className="w-5 h-5 text-muted-foreground" />
-                ),
-                label: "About app",
-                onClick: () => setActivePage("about"),
-              },
-              {
-                icon: <TablerHelp className="w-5 h-5 text-muted-foreground" />,
-                label: "Help & Support",
-                onClick: () => setActivePage("help"),
-              },
-              {
-                icon: (
-                  <TablerFileTextShield className="w-5 h-5 text-muted-foreground" />
-                ),
-                label: "Terms & Conditions",
-                onClick: () => setActivePage("terms"),
-              },
-            ].map(({ icon, label, onClick }) => (
-              <button
-                key={label}
-                onClick={onClick}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-white/90 border border-border backdrop-blur-sm shadow-sm hover:bg-muted transition-all group active:scale-[0.98]"
-              >
-                <div className="flex items-center gap-3">
-                  {icon}
-                  <span className="text-sm font-medium text-secondary text-left">
-                    {label}
-                  </span>
-                </div>
-                <TablerChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
-              </button>
-            ))}
+        <div className="absolute left-0 right-0 w-full h-full bg-white/90 rounded-3xl">
+          <div className="w-full mt-4 flex flex-col items-start">
+            <div className="flex flex-col gap-2 w-full">
+              {[
+                {
+                  icon: (
+                    <TablerInfoCircle className="w-5 h-5 text-muted-foreground" />
+                  ),
+                  label: "About app",
+                  onClick: () => setActivePage("about"),
+                },
+                {
+                  icon: (
+                    <TablerHelp className="w-5 h-5 text-muted-foreground" />
+                  ),
+                  label: "Help & Support",
+                  onClick: () => setActivePage("help"),
+                },
+                {
+                  icon: (
+                    <TablerFileTextShield className="w-5 h-5 text-muted-foreground" />
+                  ),
+                  label: "Terms & Conditions",
+                  onClick: () => setActivePage("terms"),
+                },
+              ].map(({ icon, label, onClick }) => (
+                <button
+                  key={label}
+                  onClick={onClick}
+                  className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-white/90 backdrop-blur-sm  hover:bg-muted transition-all group active:scale-[0.98]"
+                >
+                  <div className="flex items-center gap-3">
+                    {icon}
+                    <span className="text-sm font-medium text-secondary text-left">
+                      {label}
+                    </span>
+                  </div>
+                  <TablerChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -23,7 +23,9 @@ import { tokenAbi } from "@/app/abis/YAPToken";
 import TestingNoticeModal from "@/components/TestingNoticeModal";
 import { useMessageSignModal } from "@/components/cards/MessageSignModal";
 import { useSnackbar } from "@/components/ui/SnackBar";
-import { getQuizState } from "@/utils/dailyQuizStorage";
+import {
+  getTodayStatus,
+} from "@/utils/dailyQuizStorage";
 export default function HomePage() {
   useInitializeUser();
 
@@ -59,7 +61,7 @@ export default function HomePage() {
   const { balance: onChainBalance, isLoading: isBalanceLoading } =
     useOnChainBalance(evmAddress);
 
-  const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
+ const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
 
   const { signTypedData } = useSignTypedData();
   // Compute lesson availability based on completed lessons
@@ -98,44 +100,63 @@ export default function HomePage() {
   useEffect(() => {
     if (!userId) return;
     fetch(`${API_URL}/api/daily-quiz-status/${userId}`)
-      .then((res) => res.json())  
-      .then((data) => setDailyQuizCompleted(data.completed))
+      .then((res) => res.json())
+      .then((data) => setDailyQuizCompleted(!!data.completed))
       .catch(() => {});
   }, [userId, API_URL]);
-  
-  const totalQuizItems = 5; // length of mockDailyQuiz[0].questions
-  const quizState =
-    typeof window !== "undefined"
-      ? getQuizState(totalQuizItems)
-      : { attemptsLeft: 3, avgScore: 0, completed: false };
 
-  // If quiz is failed and no attempts left, lock the daily quiz again
-  const isQuizLocked =
-    quizState.attemptsLeft === 0 && !quizState.completed && quizState.avgScore === 0;
+  const TOTAL_STEPS = 5;
 
-  const dailyQuizUnlocked =
-    completedLessons?.includes("SPA1_005") && !isQuizLocked;
+  // Local (client) state for attempts, etc.
+  const {
+    attemptsLeft,
+    completed: localCompleted,
+    lastAttemptAvg,
+    locked: localLocked,
+  } = getTodayStatus(TOTAL_STEPS);
+
+  // Merge server + local ----------------------------------------------- NEW
+  // Server is the source of truth for "already done today"
+  const completedToday = dailyQuizCompleted || localCompleted;
+
+  // Treat server completion as "locked" for MVP (can’t start again today)
+  const lockedEffective = localLocked || completedToday;
+
+  // Gate by lesson unlock as before:
+  const lessonUnlocked = completedLessons?.includes("SPA1_005");
+  const dailyQuizUnlocked = !!lessonUnlocked && !lockedEffective; // -------- CHANGED
 
   const handleDailyQuizUnlocked = () => {
-    if (!dailyQuizUnlocked) {
+    // Not unlocked by lessons
+    if (!lessonUnlocked) {
       showSnackbar({
-        message: isQuizLocked
-          ? "No attempts left. Daily Quiz is locked until tomorrow."
-          : "Please complete Lesson 5 to unlock the Daily Quiz.",
+        message: "Please complete Lesson 5 to unlock the Daily Quiz.",
         variant: "info",
         duration: 3000,
       });
       return;
     }
-    if (dailyQuizCompleted) {
+
+    // Server says it's already done today ------------------------------- NEW
+    if (completedToday) {
       showSnackbar({
-        message: "You have already completed today's Daily Quiz.",
+        message: "You’ve already completed today’s Daily Quiz.",
         variant: "info",
         duration: 3000,
       });
-      router.push("/home");
       return;
     }
+
+    // Out of attempts
+    if (attemptsLeft <= 0) {
+      showSnackbar({
+        message: "No attempts left. Daily Quiz is locked until tomorrow.",
+        variant: "info",
+        duration: 3000,
+      });
+      return;
+    }
+
     router.push("/daily-quiz");
   };
 
@@ -207,9 +228,9 @@ export default function HomePage() {
         <div className="relative z-0 " onClick={handleDailyQuizUnlocked}>
           <DailyQuizCard
             isUnlocked={dailyQuizUnlocked}
-            isCompleted={dailyQuizCompleted || quizState.completed}
-            attemptsLeft={quizState.attemptsLeft}
-            avgScore={quizState.avgScore}
+            isCompleted={completedToday}
+            attemptsLeft={attemptsLeft}
+            avgScore={lastAttemptAvg} 
           />
         </div>
       </div>
