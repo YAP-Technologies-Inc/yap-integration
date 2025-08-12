@@ -56,6 +56,7 @@ const provider = new JsonRpcProvider(SEI_RPC);
 const wallet = new Wallet(PRIVATE_KEY, provider);
 const ELEVENLABS_AGENT_ID = process.env.ELEVENLABS_AGENT_ID;
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -683,7 +684,41 @@ app.post("/api/transcribe", upload.single("audio"), async (req, res) => {
     });
   }
 });
+
 const wss = new WebSocketServer({ noServer: true });
+
+async function transcribeWavToText_OpenAI(wavBuffer) {
+  if (!OPENAI_API_KEY) return null;
+  try {
+    const form = new FormData();
+    form.append(
+      "file",
+      new Blob([wavBuffer], { type: "audio/wav" }),
+      "turn.wav"
+    );
+    form.append("model", "whisper-1");
+
+    const r = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${OPENAI_API_KEY}` },
+      body: form,
+    });
+
+    if (!r.ok) {
+      console.warn(
+        "[transcribe] HTTP",
+        r.status,
+        await r.text().catch(() => "")
+      );
+      return null;
+    }
+    const j = await r.json();
+    return (j.text || "").trim();
+  } catch (e) {
+    console.warn("[transcribe] error:", e?.message || e);
+    return null;
+  }
+}
 
 server.on("upgrade", (req, socket, head) => {
   // Helpful logs so you can see the upgrade actually fires
@@ -748,17 +783,6 @@ function wrapPcmAsWav(
   return buf;
 }
 
-// IMPORTANT: ensure you have this in your file (once):
-// const app = express();
-// const server = http.createServer(app);
-// server.on('upgrade', (req, socket, head) => {
-//   if (req.url && req.url.startsWith('/api/agent-ws')) {
-//     wss.handleUpgrade(req, socket, head, (ws) => wss.emit('connection', ws, req));
-//   } else {
-//     socket.destroy();
-//   }
-// });
-
 wss.on("connection", async (client) => {
   const tag = `[agent-ws:${Date.now()}]`;
 
@@ -797,19 +821,29 @@ wss.on("connection", async (client) => {
     silenceTimer = setTimeout(() => finalizeTurn("silence"), SILENCE_MS);
   }
 
-  function finalizeTurn(reason = "unknown") {
+  async function finalizeTurn(reason = "unknown") {
     if (!collecting) return;
     clearTimers();
     collecting = false;
-    if (turnChunks.length === 0) {
-      return;
-    }
+
+    if (turnChunks.length === 0) return;
+
     const wav = wrapPcmAsWav(turnChunks.splice(0, turnChunks.length));
+
+    // 1) Send audio so the user hears it (existing behavior)
     if (client.readyState === WebSocket.OPEN) {
       client.send(wav, { binary: true });
-      // optional: notify end of turn
       client.send(JSON.stringify({ type: "turn_end" }));
     }
+
+    // 2) Also send a text transcript for chat history
+    (async () => {
+      let text = await transcribeWavToText_OpenAI(wav);
+      if (!text) text = "[voice reply]"; // fallback if no API key or transcription fails
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ type: "ai_text", text }));
+      }
+    })();
   }
 
   // ---- connect to ElevenLabs ConvAI ----
@@ -819,6 +853,7 @@ wss.on("connection", async (client) => {
     elWs = ws;
 
     ws.on("open", () => {
+      console.log(`${tag} EL ws connected`);
     });
 
     elWs.on("message", (raw) => {
@@ -860,7 +895,7 @@ wss.on("connection", async (client) => {
     });
 
     ws.on("close", (code, reason) => {
-      // Don’t close the browser socket. Just finalize whatever we have and wait for next user_text.
+      console.log(`${tag} EL ws closed: ${code} ${reason}`);
       finalizeTurn("el-close");
       elWs = null;
     });
@@ -889,7 +924,6 @@ wss.on("connection", async (client) => {
         typeof msg.text === "string" &&
         msg.text.trim()
       ) {
-
         // If EL ws isn’t connected, attempt reconnect
         if (!elWs || elWs.readyState !== WebSocket.OPEN) {
           try {
@@ -927,8 +961,6 @@ wss.on("connection", async (client) => {
     } catch {}
   });
 });
-
-// (Your existing server.listen(...) is fine)
 
 // ---------- LISTEN ----------
 const PORT = process.env.PORT || 4000;

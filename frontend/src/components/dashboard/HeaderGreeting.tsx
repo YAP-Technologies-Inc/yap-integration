@@ -33,7 +33,7 @@ export default function HeaderGreeting() {
 
   return (
     <div className="flex items-center justify-start w-full lg:py-4 py-2">
-      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full mr-3 flex items-center justify-center">
+      <div className="w-12 h-12 bg-background-secondary rounded-full mr-3 flex items-center justify-center">
         <span className="text-white text-lg font-semibold">
           {firstInitial}
         </span>

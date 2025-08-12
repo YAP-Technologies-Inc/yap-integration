@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "@/components/ui/SnackBar";
-import { TablerX, TablerPlay, TablerPlayerPauseFilled } from "@/icons";
+import { TablerX } from "@/icons";
 import { handleSpanishTeacherAccessFromPage } from "@/utils/handleSpanishTeacherAccessFromPage";
 import { useMessageSignModal } from "@/components/cards/MessageSignModal";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
@@ -18,13 +18,12 @@ import Tutor from "@/components/cards/Tutor";
 import BottomNavBar from "@/components/layout/BottomNavBar";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
-/* -------------------- Small helpers -------------------- */
+/* -------------------- Types & helpers -------------------- */
 
 interface Message {
   id: string;
-  kind: "text" | "audio";
-  text?: string;
-  audioUrl?: string;
+  kind: "text";
+  text: string;
   sender: "user" | "ai";
   timestamp: Date;
 }
@@ -37,82 +36,21 @@ const fmtMMSS = (ms: number) => {
   return `${m}:${s.toString().padStart(2, "0")}`;
 };
 
-/* -------------------- Audio bubble (for history replay) -------------------- */
+/* Delay so text paints before audio starts */
+const AUDIO_START_DELAY_MS = 180;
 
-function AudioBubble({ src }: { src: string }) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [playing, setPlaying] = useState(false);
-  const [t, setT] = useState(0);
-  const [dur, setDur] = useState(0);
-
-  useEffect(() => {
-    const el = audioRef.current;
-    if (!el) return;
-    const onLoaded = () => setDur(el.duration || 0);
-    const onTime = () => setT(el.currentTime || 0);
-    const onEnded = () => {
-      setPlaying(false);
-      setT(0);
-    };
-    el.addEventListener("loadedmetadata", onLoaded);
-    el.addEventListener("timeupdate", onTime);
-    el.addEventListener("ended", onEnded);
-    return () => {
-      el.removeEventListener("loadedmetadata", onLoaded);
-      el.removeEventListener("timeupdate", onTime);
-      el.removeEventListener("ended", onEnded);
-    };
-  }, [src]);
-
-  const toggle = async () => {
-    const el = audioRef.current;
-    if (!el) return;
-    if (playing) {
-      el.pause();
-      setPlaying(false);
-    } else {
-      try {
-        await el.play();
-        setPlaying(true);
-      } catch {
-        /* autoplay can be blocked */
-      }
-    }
-  };
-
-  return (
-    <div className="rounded-2xl bg-[#2D1C1C] text-white px-3 py-2 shadow-md flex items-center justify-between min-w-[220px]">
-      <div className="flex items-center gap-3">
-        <button
-          onClick={toggle}
-          aria-label={playing ? "Pause" : "Play"}
-          className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center"
-        >
-          {playing ? (
-            <TablerPlayerPauseFilled className="w-5 h-5 text-white" />
-          ) : (
-            <TablerPlay className="w-5 h-5 text-white" />
-          )}
-        </button>
-        <div className="text-xs opacity-90">
-          {fmtMMSS(t * 1000)} / {fmtMMSS(dur * 1000)}
-        </div>
-      </div>
-      <audio ref={audioRef} src={src} preload="metadata" className="hidden" />
-    </div>
-  );
-}
-
-/* -------------------- Stable agent socket hook -------------------- */
+/* -------------------- WebSocket hook (text + audio) -------------------- */
 
 function useAgentSocket({
   enabled,
-  onAudio,
+  onText, // (chunk, isFinal)
+  onAudio, // (pcm/wav ArrayBuffer)
   onAck,
   onError,
 }: {
   enabled: boolean;
-  onAudio?: (url: string) => void;
+  onText?: (text: string, isFinal: boolean) => void;
+  onAudio?: (ab: ArrayBuffer) => void;
   onAck?: () => void;
   onError?: (msg: string) => void;
 }) {
@@ -121,13 +59,12 @@ function useAgentSocket({
   const connectingRef = useRef(false);
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pingTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const backoffRef = useRef(1000); // 1s -> 2s -> 4s -> max 8s
+  const backoffRef = useRef(1000);
 
-  // Keep latest handlers without making connect() re-create
-  const handlersRef = useRef({ onAudio, onAck, onError });
+  const handlersRef = useRef({ onText, onAudio, onAck, onError });
   useEffect(() => {
-    handlersRef.current = { onAudio, onAck, onError };
-  }, [onAudio, onAck, onError]);
+    handlersRef.current = { onText, onAudio, onAck, onError };
+  }, [onText, onAudio, onAck, onError]);
 
   const connect = useCallback(() => {
     if (!enabled) return;
@@ -137,13 +74,13 @@ function useAgentSocket({
 
     connectingRef.current = true;
 
-    const base =
-      (process.env.NEXT_PUBLIC_API_URL ||
-        `${window.location.protocol}//${window.location.host}`)
-        .replace(/^https:/i, "wss:")
-        .replace(/^http:/i, "ws:");
+    const base = (
+      process.env.NEXT_PUBLIC_API_URL ||
+      `${window.location.protocol}//${window.location.host}`
+    )
+      .replace(/^https:/i, "wss:")
+      .replace(/^http:/i, "ws:");
     const url = `${base}/api/agent-ws`;
-    console.log("[agent-ws] connecting to:", url, "enabled=", enabled);
 
     const ws = new WebSocket(url);
     ws.binaryType = "arraybuffer";
@@ -162,7 +99,6 @@ function useAgentSocket({
       connectingRef.current = false;
       if (unmountedRef.current || !enabled) return;
       const wait = Math.min(backoffRef.current, 8000);
-      console.warn(`[agent-ws] reconnecting in ${wait}ms (reason: ${why})`);
       if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
       reconnectTimerRef.current = setTimeout(() => {
         backoffRef.current = Math.min(wait * 2, 8000);
@@ -171,7 +107,6 @@ function useAgentSocket({
     };
 
     ws.onopen = () => {
-      console.log("[agent-ws] OPEN");
       connectingRef.current = false;
       backoffRef.current = 1000;
       clearKeepalive();
@@ -183,36 +118,40 @@ function useAgentSocket({
     };
 
     ws.onmessage = (e) => {
-      if (typeof e.data !== "string") {
-        const url = URL.createObjectURL(
-          new Blob([e.data], { type: "audio/wav" })
-        );
-        handlersRef.current.onAudio?.(url);
-      } else {
+      if (typeof e.data === "string") {
         try {
           const msg = JSON.parse(e.data);
-          console.log("[agent-ws] message:", msg.type);
-          if (msg.type === "ack_user_text") handlersRef.current.onAck?.();
-          if (msg.type === "error")
-            handlersRef.current.onError?.(
-              String(msg.error ?? "Agent error")
-            );
-          // meta, etc.
+          if (msg.type === "ai_text_delta" && typeof msg.text === "string") {
+            handlersRef.current.onText?.(msg.text, false);
+          } else if (
+            msg.type === "ai_text_final" &&
+            typeof msg.text === "string"
+          ) {
+            handlersRef.current.onText?.(msg.text, true);
+          } else if (msg.type === "ai_text" && typeof msg.text === "string") {
+            handlersRef.current.onText?.(msg.text, true);
+          } else if (msg.type === "ack_user_text") {
+            handlersRef.current.onAck?.();
+          } else if (msg.type === "error") {
+            handlersRef.current.onError?.(String(msg.error ?? "Agent error"));
+          }
         } catch {
-          /* ignore non-JSON text */
+          /* ignore */
         }
+      } else {
+        // Binary = audio (WAV)
+        handlersRef.current.onAudio?.(e.data as ArrayBuffer);
       }
     };
 
-    ws.onerror = (ev) => {
-      console.error("[agent-ws] ERROR event", ev);
+    ws.onerror = () => {
+      scheduleReconnect("error");
     };
 
     ws.onclose = (ev) => {
-      console.warn("[agent-ws] CLOSE", ev);
       scheduleReconnect(`close ${ev.code || ""}`);
     };
-  }, [enabled]); // <-- only depends on `enabled`
+  }, [enabled]);
 
   useEffect(() => {
     unmountedRef.current = false;
@@ -233,13 +172,11 @@ function useAgentSocket({
       } catch {}
       wsRef.current = null;
       connectingRef.current = false;
-      console.log("[agent-ws] cleanup complete");
     };
   }, [enabled, connect]);
 
   const sendUserText = useCallback((text: string) => {
     const ws = wsRef.current;
-    console.log("[agent-ws] sendUserText readyState:", ws?.readyState);
     if (!ws || ws.readyState !== WebSocket.OPEN) return false;
     try {
       ws.send(JSON.stringify({ type: "user_text", text }));
@@ -273,55 +210,94 @@ export default function SpanishTeacherConversation() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
 
-  // last-5-min countdown
+  // countdown
   const FIVE_MIN_MS = 5 * 60 * 1000;
   const [showCountdown, setShowCountdown] = useState(false);
   const [remainingMs, setRemainingMs] = useState<number>(FIVE_MIN_MS);
   const expiryRef = useRef<number | null>(null);
   const rAFRef = useRef<number | null>(null);
-  const startCountdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const startCountdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   // auto-scroll chat
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // --- tiny auto-play queue so chunks play sequentially
-  const playQueueRef = useRef<string[]>([]);
-  const isPlayingRef = useRef(false);
+  // ---- AUDIO QUEUE with a "gate" so audio waits until text has painted
+  const queueRef = useRef<string[]>([]);
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+  const createdUrlsRef = useRef<Set<string>>(new Set());
 
-  const drainQueue = useCallback(() => {
-    const next = playQueueRef.current.shift();
-    if (!next) {
-      isPlayingRef.current = false;
-      return;
-    }
-    isPlayingRef.current = true;
+  const audioGateOpenRef = useRef(false);
+  const [awaitingFirstText, setAwaitingFirstText] = useState(false);
 
-    const a = new Audio(next);
+  const playNext = useCallback(() => {
+    if (!audioGateOpenRef.current) return;
+    if (currentAudioRef.current) return;
+
+    const nextUrl = queueRef.current.shift();
+    if (!nextUrl) return;
+
+    const a = new Audio(nextUrl);
+    currentAudioRef.current = a;
+
+    const cleanup = () => {
+      try {
+        a.pause();
+      } catch {}
+      if (createdUrlsRef.current.has(nextUrl)) {
+        try {
+          URL.revokeObjectURL(nextUrl);
+        } catch {}
+        createdUrlsRef.current.delete(nextUrl);
+      }
+      currentAudioRef.current = null;
+    };
+
     a.onended = () => {
-      URL.revokeObjectURL(next);
-      drainQueue();
+      cleanup();
+      playNext();
     };
     a.onerror = () => {
-      URL.revokeObjectURL(next);
-      drainQueue();
+      cleanup();
+      playNext();
     };
+
     a.play().catch(() => {
-      // autoplay blocked; user can tap bubbles
-      isPlayingRef.current = false;
+      cleanup();
+      playNext();
     });
   }, []);
 
-  const enqueueAndPlay = useCallback(
+  const enqueueAudio = useCallback(
     (url: string) => {
-      playQueueRef.current.push(url);
-      if (!isPlayingRef.current) drainQueue();
+      createdUrlsRef.current.add(url);
+      queueRef.current.push(url);
+      if (audioGateOpenRef.current && !currentAudioRef.current) playNext();
     },
-    [drainQueue]
+    [playNext]
   );
 
-  // --- server helpers
+  const stopAllAudio = useCallback(() => {
+    const a = currentAudioRef.current;
+    if (a) {
+      try {
+        a.pause();
+      } catch {}
+      currentAudioRef.current = null;
+    }
+    queueRef.current.length = 0;
+    createdUrlsRef.current.forEach((u) => {
+      try {
+        URL.revokeObjectURL(u);
+      } catch {}
+    });
+    createdUrlsRef.current.clear();
+  }, []);
+
+  // ---- server helpers
   const fetchSession = useCallback(
     async (uid: string) => {
       const res = await fetch(`${API_URL}/api/teacher-session/${uid}`);
@@ -369,7 +345,10 @@ export default function SpanishTeacherConversation() {
 
         if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
         const tick = () => {
-          const msLeft = Math.max(0, (expiryRef.current as number) - Date.now());
+          const msLeft = Math.max(
+            0,
+            (expiryRef.current as number) - Date.now()
+          );
           setRemainingMs(msLeft);
           if (msLeft <= 0) {
             handleSessionEnd("Session ended. Thanks for practicing!");
@@ -379,7 +358,6 @@ export default function SpanishTeacherConversation() {
         };
         rAFRef.current = requestAnimationFrame(tick);
       } catch {
-        // fallback local 5 min
         const exp = Date.now() + FIVE_MIN_MS;
         expiryRef.current = exp;
         setRemainingMs(FIVE_MIN_MS);
@@ -387,7 +365,10 @@ export default function SpanishTeacherConversation() {
 
         if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
         const tick = () => {
-          const msLeft = Math.max(0, (expiryRef.current as number) - Date.now());
+          const msLeft = Math.max(
+            0,
+            (expiryRef.current as number) - Date.now()
+          );
           setRemainingMs(msLeft);
           if (msLeft <= 0) {
             handleSessionEnd("Session ended. Thanks for practicing!");
@@ -418,34 +399,72 @@ export default function SpanishTeacherConversation() {
     [FIVE_MIN_MS, startCountdown]
   );
 
-  // Stable handlers for the socket (but hook also protects against re-creation)
-  const handleAudio = useCallback(
-    (url: string) => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          kind: "audio",
-          audioUrl: url,
-          sender: "ai",
-          timestamp: new Date(),
-        },
-      ]);
-      enqueueAndPlay(url);
+  /* ---------- AI text streaming handling ---------- */
+  const streamingIdRef = useRef<string | null>(null);
+
+  const upsertStreamingAi = useCallback(
+    (chunk: string, isFinal: boolean) => {
+      const firstTextForTurn = !audioGateOpenRef.current;
+
+      // 1) Update or create the streaming AI message
+      setMessages((prev) => {
+        if (!streamingIdRef.current) {
+          const id = crypto.randomUUID();
+          streamingIdRef.current = isFinal ? null : id;
+          return [
+            ...prev,
+            {
+              id,
+              kind: "text",
+              text: chunk,
+              sender: "ai",
+              timestamp: new Date(),
+            },
+          ];
+        } else {
+          const id = streamingIdRef.current;
+          const next = prev.map((m) =>
+            m.id === id ? { ...m, text: m.text + chunk } : m
+          );
+          if (isFinal) streamingIdRef.current = null;
+          return next;
+        }
+      });
+
+      // 2) Only when the FIRST text of the turn arrives, open the gate and start audio AFTER paint
+      if (firstTextForTurn) {
+        setAwaitingFirstText(false);
+        audioGateOpenRef.current = true;
+
+        // Give React a frame (or two) to paint the new text, then start audio after a tiny delay.
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              playNext();
+            }, AUDIO_START_DELAY_MS);
+          });
+        });
+      }
     },
-    [enqueueAndPlay]
+    [playNext]
   );
+
   const handleAck = useCallback(() => {
-    console.log("[agent-ws] ACK user_text");
+    // optional
   }, []);
+
   const handleErr = useCallback((m: string) => {
     console.warn("[agent-ws] error:", m);
   }, []);
 
-  // ---- open/maintain ONE websocket when we have access
+  // ---- Open/maintain ONE websocket when we have access
   const { sendUserText, isOpen } = useAgentSocket({
     enabled: Boolean(userId && hasAccess),
-    onAudio: handleAudio,
+    onText: upsertStreamingAi,
+    onAudio: (ab) => {
+      const url = URL.createObjectURL(new Blob([ab], { type: "audio/wav" }));
+      enqueueAudio(url); // will not play until the first text chunk opens the gate
+    },
     onAck: handleAck,
     onError: handleErr,
   });
@@ -464,7 +483,6 @@ export default function SpanishTeacherConversation() {
         const accessData = await fetchSession(stored);
 
         if (!accessData?.hasAccess) {
-          // Always show the modal if no access
           const confirmed = await open(
             `Get 20 mins of personalized Spanish tutoring for just 1 Yap.\nYour AI tutor will assess your level, identify your strengths, and help you improve pronunciation in real-time.`
           );
@@ -474,7 +492,6 @@ export default function SpanishTeacherConversation() {
             return;
           }
 
-          // verify (gray overlay)
           setIsVerifying(true);
           const ethProvider = await embeddedWallet?.getEthereumProvider();
           if (!ethProvider) throw new Error("No wallet provider found");
@@ -498,7 +515,6 @@ export default function SpanishTeacherConversation() {
             signTypedData,
           } as any);
 
-          // re-check access
           const data2 = await fetchSession(stored);
           if (!data2?.hasAccess) throw new Error("Access not granted");
           setIsVerifying(false);
@@ -507,7 +523,6 @@ export default function SpanishTeacherConversation() {
           return;
         }
 
-        // already has access on entry
         setHasAccess(true);
         scheduleCountdownFromServerRemaining(stored, accessData.remainingMs);
       } catch (err) {
@@ -517,20 +532,24 @@ export default function SpanishTeacherConversation() {
       }
     })();
 
-    // cleanup timers + any playing audio on unmount
+    // cleanup timers & audio on unmount
     return () => {
-      document.querySelectorAll("audio").forEach((a) => {
-        try {
-          (a as HTMLAudioElement).pause();
-        } catch {}
-      });
       if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
       if (startCountdownTimeoutRef.current)
         clearTimeout(startCountdownTimeoutRef.current);
       if ((handleSessionEnd as any)._t)
         clearTimeout((handleSessionEnd as any)._t);
+      streamingIdRef.current = null;
+
+      stopAllAudio();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* Begin a new turn: close the audio gate and show typing bubble */
+  const beginNewTurn = useCallback(() => {
+    audioGateOpenRef.current = false;
+    setAwaitingFirstText(true);
   }, []);
 
   const prettyTime = useMemo(() => fmtMMSS(remainingMs), [remainingMs]);
@@ -542,10 +561,16 @@ export default function SpanishTeacherConversation() {
         <button onClick={() => router.replace("/home")} className="absolute left-4">
           <TablerX className="w-6 h-6 text-gray-700" />
         </button>
-      <div className="text-center">
+        <div className="text-center">
           <h1 className="text-xl font-semibold text-[#2D1C1C]">Tutor</h1>
           <div className="text-xs text-gray-500">
-            {/* {hasAccess ? (showCountdown ? "Last 5 minutes" : (isOpen ? "Active" : "Connecting…")) : "Checking access…"} */}
+            {hasAccess
+              ? showCountdown
+                ? "Last 5 minutes"
+                : isOpen
+                ? "Active"
+                : "Connecting…"
+              : "Checking access…"}
             {showCountdown && (
               <span className="ml-2 text-green-600 font-semibold">{prettyTime}</span>
             )}
@@ -554,34 +579,59 @@ export default function SpanishTeacherConversation() {
       </div>
 
       {/* Chat list */}
-      <div className="fixed inset-0 overflow-y-auto z-10 pt-16 pb-28" style={{ WebkitOverflowScrolling: "touch" }}>
+      <div
+        className="fixed inset-0 overflow-y-auto z-10 pt-16 pb-28"
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
         <div className="w-full h-full flex flex-col items-center">
           <div className="flex-1 w-full max-w-none overflow-y-auto px-4 space-y-2">
             {!hasAccess ? (
               <div className="text-center text-gray-500 text-xs py-2">Checking access…</div>
-            ) : messages.length === 0 ? (
+            ) : messages.length === 0 && !awaitingFirstText ? (
               <div className="text-center text-gray-500 text-xs py-2">No messages yet</div>
             ) : (
-              messages.map((msg) => (
-                <div key={msg.id} className={`flex items-start gap-2 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-                  {msg.sender === "ai" && (
+              <>
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex items-start gap-2 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                  >
+                    {msg.sender === "ai" && (
+                      <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-sm font-semibold">AI</span>
+                      </div>
+                    )}
+                    <div
+                      className={`rounded-lg px-3 py-2 max-w-[70vw] text-sm ${
+                        msg.sender === "user"
+                          ? "bg-background-secondary text-white"
+                          : "bg-white text-[#2D1C1C]"
+                      }`}
+                    >
+                      <div>{msg.text}</div>
+                    </div>
+                    {msg.sender === "user" && (
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-sm font-semibold">
+                          {(userName || "U").charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                {/* typing bubble until the first text delta lands */}
+                {awaitingFirstText && (
+                  <div className="flex items-start gap-2 justify-start">
                     <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
                       <span className="text-white text-sm font-semibold">AI</span>
                     </div>
-                  )}
-                  <div className={`rounded-lg px-2 py-2 max-w-[70vw] text-sm ${msg.sender === "user" ? "bg-background-secondary text-white" : "text-[#2D1C1C]"}`}>
-                    {msg.kind === "text" && <div>{msg.text}</div>}
-                    {msg.kind === "audio" && msg.audioUrl && <AudioBubble src={msg.audioUrl} />}
-                  </div>
-                  {msg.sender === "user" && (
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-sm font-semibold">
-                        {(userName || "U").charAt(0).toUpperCase()}
-                      </span>
+                    <div className="rounded-lg px-3 py-2 max-w-[70vw] text-sm bg-white text-[#2D1C1C]">
+                      <span className="opacity-60">…</span>
                     </div>
-                  )}
-                </div>
-              ))
+                  </div>
+                )}
+              </>
             )}
             <div ref={messagesEndRef} />
           </div>
@@ -594,11 +644,13 @@ export default function SpanishTeacherConversation() {
           <Tutor
             userName={userName}
             sendMessage={async (message: string) => {
+              // Start a new turn: close gate, show typing bubble
+              beginNewTurn();
+
               const ok = sendUserText(message);
               if (!ok) {
                 showSnackbar({ message: "Reconnecting to tutor…", variant: "info" });
               } else {
-                // add user's text bubble immediately
                 setMessages((prev) => [
                   ...prev,
                   {
@@ -612,23 +664,11 @@ export default function SpanishTeacherConversation() {
               }
             }}
             onUserMessage={() => {}}
-            onUserAudio={(audioUrl: string) => {
-              setMessages((prev) => [
-                ...prev,
-                {
-                  id: crypto.randomUUID(),
-                  kind: "audio",
-                  audioUrl,
-                  sender: "user",
-                  timestamp: new Date(),
-                },
-              ]);
-            }}
+            onUserAudio={() => {}}
           />
         </div>
       </div>
 
-      {/* Gray verifying overlay */}
       {isVerifying && <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />}
 
       <BottomNavBar />
