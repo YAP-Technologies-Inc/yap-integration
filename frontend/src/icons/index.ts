@@ -27,3 +27,4 @@ export { TablerArrowUpRight } from "./TablerArrowRight";
 export { TablerArrowBack } from "./ArrowBack";
 export { TablerSmartHome } from "./Smarthome";
 export { TablerPlay } from "./Play";
+export { TablerCopy } from "./Copy";

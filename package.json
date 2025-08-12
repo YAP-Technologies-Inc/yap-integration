@@ -3,6 +3,7 @@
     "@headlessui/react": "^2.2.7",
     "@wagmi/core": "^2.18.0",
     "next-svgr": "^0.0.2",
-    "nodemailer": "^7.0.5"
+    "nodemailer": "^7.0.5",
+    "react-markdown": "^10.1.0"
   }
 }
