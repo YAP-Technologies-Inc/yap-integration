@@ -1,3 +1,5 @@
+import { PhWechatLogoLight } from "./Tutoricon";
+
 export { TablerMail } from "./Mail";
 export { TablerBrandGoogle } from "./Google";
 export { TablerBrandAppleFilled } from "./Apple";
@@ -28,3 +30,5 @@ export { TablerArrowBack } from "./ArrowBack";
 export { TablerSmartHome } from "./Smarthome";
 export { TablerPlay } from "./Play";
 export { TablerCopy } from "./Copy";
+export { TablerInfoTriangle } from "./ErrorTriangle";
+export { PhWechatLogoLight } from "./Tutoricon";

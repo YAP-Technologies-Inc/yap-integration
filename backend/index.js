@@ -26,6 +26,9 @@ const db = new Pool({
 const artifact = require("./abi/YapToken.json");
 const tokenAbi = artifact.abi;
 
+const { genAI, TRANSCRIBE_MODEL_ID } = require("./ai/google");
+const { getPronunciationFeedback } = require("./ai/feedback");
+
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
 
@@ -356,60 +359,60 @@ app.post("/api/pronunciation-assessment", async (req, res) => {
 });
 
 //TODO: Ensure we cover more audio formats, or allow ffpmeg to auto-detect
-app.post(
-  "/api/pronunciation-assessment-upload",
-  upload.single("audio"),
-  async (req, res) => {
-    try {
-      const { referenceText } = req.body;
-      if (!req.file || !referenceText) {
-        return res
-          .status(400)
-          .json({ error: "audio and referenceText are required." });
-      }
+// app.post(
+//   "/api/pronunciation-assessment-upload",
+//   upload.single("audio"),
+//   async (req, res) => {
+//     try {
+//       const { referenceText } = req.body;
+//       if (!req.file || !referenceText) {
+//         return res
+//           .status(400)
+//           .json({ error: "audio and referenceText are required." });
+//       }
 
-      const inputPath = req.file.path;
-      const inputMime = req.file.mimetype;
-      const format = inputMime.split("/")[1];
-      const wavPath = inputPath + ".wav";
+//       const inputPath = req.file.path;
+//       const inputMime = req.file.mimetype;
+//       const format = inputMime.split("/")[1];
+//       const wavPath = inputPath + ".wav";
 
-      // Convert to WAV with proper format detection
-      await new Promise((resolve, reject) => {
-        ffmpeg(inputPath)
-          .audioChannels(1)
-          .audioFrequency(16000)
-          .toFormat("wav")
-          .on("end", resolve)
-          .on("error", (err) => {
-            console.error("FFmpeg conversion error:", err.message);
-            reject(err);
-          })
-          .save(wavPath);
-      });
+//       // Convert to WAV with proper format detection
+//       await new Promise((resolve, reject) => {
+//         ffmpeg(inputPath)
+//           .audioChannels(1)
+//           .audioFrequency(16000)
+//           .toFormat("wav")
+//           .on("end", resolve)
+//           .on("error", (err) => {
+//             console.error("FFmpeg conversion error:", err.message);
+//             reject(err);
+//           })
+//           .save(wavPath);
+//       });
 
-      const wavStats = fs.statSync(wavPath);
-      if (wavStats.size < 1000) {
-        console.warn("WAV likely silent or failed conversion.");
-      }
+//       const wavStats = fs.statSync(wavPath);
+//       if (wavStats.size < 1000) {
+//         console.warn("WAV likely silent or failed conversion.");
+//       }
 
-      const result = await assessPronunciation(wavPath, referenceText);
-      const rawBest = result.NBest?.[0] || {};
-      // if you ever still get an object under .PronunciationAssessment, merge it here:
-      const best = rawBest.PronunciationAssessment || rawBest;
+//       const result = await assessPronunciation(wavPath, referenceText);
+//       const rawBest = result.NBest?.[0] || {};
+//       // if you ever still get an object under .PronunciationAssessment, merge it here:
+//       const best = rawBest.PronunciationAssessment || rawBest;
 
-      res.json({
-        overallScore: best.PronScore ?? best.AccuracyScore ?? 0,
-        accuracyScore: best.AccuracyScore ?? 0,
-        fluencyScore: best.FluencyScore ?? 0,
-        completenessScore: best.CompletenessScore ?? 0,
-        wavUrl: `/uploads/${path.basename(wavPath)}`,
-      });
-    } catch (err) {
-      console.error("Pronunciation assessment error:", err);
-      res.status(500).json({ error: err.message });
-    }
-  }
-);
+//       res.json({
+//         overallScore: best.PronScore ?? best.AccuracyScore ?? 0,
+//         accuracyScore: best.AccuracyScore ?? 0,
+//         fluencyScore: best.FluencyScore ?? 0,
+//         completenessScore: best.CompletenessScore ?? 0,
+//         wavUrl: `/uploads/${path.basename(wavPath)}`,
+//       });
+//     } catch (err) {
+//       console.error("Pronunciation assessment error:", err);
+//       res.status(500).json({ error: err.message });
+//     }
+//   }
+// );
 
 // routes or main server file
 app.post("/api/request-spanish-teacher", async (req, res) => {
@@ -685,6 +688,165 @@ app.post("/api/transcribe", upload.single("audio"), async (req, res) => {
   }
 });
 
+const GEM_MODELS = ["gemini-1.5-flash", "gemini-1.5-pro"]; // fallback order
+
+function cleanMime(m) {
+  return String(m || "audio/webm").split(";")[0]; // strip ";codecs=..."
+}
+
+async function transcribeWithGemini({ buffer, mime }) {
+  const b64 = buffer.toString("base64");
+  console.log("[transcribe] start", { mime, b64len: b64.length });
+
+  let lastErr;
+  for (const modelId of GEM_MODELS) {
+    try {
+      console.log("[transcribe] try model:", modelId, { mime });
+      const model = genAI.getGenerativeModel({
+        model: modelId,
+        generationConfig: {
+          // keep it simple — we want raw text back
+          temperature: 0,
+        },
+      });
+
+      const resp = await model.generateContent({
+        contents: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: "Transcribe the following Spanish audio. Return ONLY the transcript text (no quotes, no extra words).",
+              },
+              { inlineData: { data: b64, mimeType: mime } },
+            ],
+          },
+        ],
+      });
+
+      const text = (resp?.response?.text?.() || "").trim();
+      console.log("[transcribe] ok by", modelId, "->", text);
+      if (text) return text;
+    } catch (err) {
+      lastErr = err;
+      const status = err?.status;
+      console.warn("[transcribe] fail", { modelId, status, msg: err?.message });
+      // If overloaded, try the next model; otherwise break
+      if (status !== 503) break;
+    }
+  }
+  if (lastErr) throw lastErr;
+  return "";
+}
+
+app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
+  try {
+    const ctype = req.headers["content-type"];
+    console.log("[/api/pronunciation] content-type:", ctype);
+
+    // accept either JSON (spokenText) or multipart (audio + targetPhrase + spokenText?)
+    let {
+      targetPhrase = "",
+      transcript = "",
+      spokenText = "",
+    } = req.body || {};
+    targetPhrase = String(targetPhrase || "").trim();
+    spokenText = String(spokenText || transcript || "").trim();
+
+    console.log("[/api/pronunciation] body keys:", Object.keys(req.body || {}));
+    if (req.file) {
+      console.log("[/api/pronunciation] file meta:", {
+        size: req.file.size,
+        mimetype: req.file.mimetype,
+        originalname: req.file.originalname,
+      });
+      // Normalize mime for Gemini (no codecs suffix)
+      req.file.mimetype = cleanMime(req.file.mimetype);
+      // sanity peek
+      const first16 = req.file.buffer?.subarray(0, 16)?.toString("hex");
+      console.log("[/api/pronunciation] file first16 hex:", first16);
+    }
+
+    // If client already supplied a transcript, use it
+    let finalTranscript = spokenText;
+
+    // Otherwise, transcribe the audio if provided
+    if (!finalTranscript && req.file && req.file.buffer?.length > 0) {
+      try {
+        finalTranscript = await transcribeWithGemini({
+          buffer: req.file.buffer,
+          mime: req.file.mimetype || "audio/webm",
+        });
+      } catch (err) {
+        // Gemini overload / error — return a 503 so client can show a friendly “busy” toast
+        if (err?.status === 503) {
+          console.error(
+            "[/api/pronunciation] transcribe error 503:",
+            err.message
+          );
+          return res
+            .status(503)
+            .json({ error: "Speech engine busy. Try again." });
+        }
+        console.error("[/api/pronunciation] transcribe error:", err);
+      }
+    }
+
+    if (!finalTranscript) {
+      // Nothing usable; give the client a detailed 422 with debug info
+      return res.status(422).json({
+        error: "No spoken text found (empty/inaudible recording?)",
+        debug: {
+          hasFile: !!req.file,
+          fileSize: req.file?.size || 0,
+          fileMime: req.file?.mimetype || null,
+          targetPhrase,
+          bodyKeys: Object.keys(req.body || {}),
+        },
+      });
+    }
+
+    // Score it with your existing feedback helper (Gemini text model)
+    const feedback = await getPronunciationFeedback({
+      spokenText: finalTranscript,
+      targetPhrase,
+    });
+
+    // Return fields your UI consumes
+    const payload = {
+      overallScore: feedback.overallScore ?? 0,
+      accuracyScore: feedback.accuracyScore ?? 0,
+      fluencyScore: feedback.fluencyScore ?? 0,
+      intonationScore: feedback.intonationScore ?? 0,
+      confidence: feedback.confidence ?? 0,
+      transcript: finalTranscript, // helpful for debugging/UX
+    };
+
+    console.log("[/api/pronunciation] ok", {
+      overall: payload.overallScore,
+      acc: payload.accuracyScore,
+      flu: payload.fluencyScore,
+      int: payload.intonationScore,
+      conf: payload.confidence,
+      transcriptLen: finalTranscript.length,
+    });
+    console.log(`Spoken Text: ${spokenText} -> What it got graded as: ${finalTranscript}`);
+    console.log(`Target phrase: ${targetPhrase}`);
+
+    res.json(payload);
+  } catch (err) {
+    console.error("[/api/pronunciation] fatal:", err);
+    res.status(500).json({ error: err?.message || "Internal error" });
+  }
+});
+
+///////
+///////
+///////
+///////
+///////
+///////
+
 const wss = new WebSocketServer({ noServer: true });
 
 async function transcribeWavToText_OpenAI(wavBuffer) {
@@ -866,7 +1028,6 @@ wss.on("connection", async (client) => {
         }
 
         if (evt?.type === "audio") {
-          // ✅ NEW: handle nested audio_event shape too
           const b64 =
             evt.audio_event?.audio_base_64 || // most ConvAI payloads
             evt.audio_base_64 || // some variants

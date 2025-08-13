@@ -9,7 +9,7 @@ import React, {
   useState,
 } from 'react';
 import clsx from 'clsx';
-import { TablerCheck, TablerInfoCircle, TablerX } from "@/icons";
+import { TablerCheck, TablerInfoCircle, TablerInfoTriangle } from "@/icons";
 
 export interface SnackProps {
   id: number;
@@ -35,7 +35,7 @@ function Snack({
       case "success":
         return <TablerCheck className="w-6 h-6 text-green-600" />;
       case "error":
-        return <TablerX className="w-6 h-6 text-red-600" />;
+        return <TablerInfoTriangle className="w-6 h-6 text-red-600" />;
       case "info":
         return <TablerInfoCircle className="w-6 h-6 text-blue-600" />;
       case "completion":
@@ -54,12 +54,9 @@ function Snack({
   return (
     <div
       className={clsx(
-        'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border-b-3 border-[#e3ded3]',
+        'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border-b-3 border-r-1 border-[#e3ded3]', // <-- always applied
         {
-          'bg-background-primary text-secondary border-b-3 border-[#e3ded3]': variant === 'success',
-          'bg-background-primary text-secondary': variant === 'error' || variant === 'info',
-          'bg-background-primary text-secondary border-background-primary':
-            variant === 'completion' || variant === 'custom',
+          'bg-background-primary text-secondary font-light text-md': true, 
         },
         className
       )}

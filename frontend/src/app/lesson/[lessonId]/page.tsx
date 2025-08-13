@@ -95,7 +95,6 @@ export default function LessonPage() {
   // 5) Pre‑start screen
   if (!started) {
     if (profileLoading) return <p>Loading…</p>;
-    const firstInitial = name.charAt(0).toUpperCase() || '?';
 
     return (
       <div className="min-h-[100dvh] w-full bg-background-primary flex flex-col items-center px-4 relative pb-2">
@@ -106,16 +105,16 @@ export default function LessonPage() {
           ">
           <TablerChevronLeft />
         </button>
-        <div className="flex flex-col items-center justify-center mt-8 flex-grow">
+        <div className="flex flex-col items-center justify-center pt-20 flex-grow">
           <img src="/assets/yappy.png" alt="Yappy Logo" className="h-40 w-auto" />
-          <h2 className="text-lg font-light mt-4 text-secondary text-center">
+          <h2 className="text-lg font-light mt-1 text-secondary text-center">
             Lesson{" "}
             {(() => {
               const num = lessonData.lesson_id.split("_")[1];
               return num.startsWith("0") ? num.slice(1) : num;
             })()}
           </h2>
-          <p className="text-base text-secondary mt-1 font-bold text-xl text-center px-2">
+          <p className="text-secondary mt-1 font-bold text-xl text-center px-2">
             {lessonData.title}
           </p>
         </div>

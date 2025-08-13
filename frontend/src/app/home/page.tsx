@@ -130,7 +130,7 @@ export default function HomePage() {
     // Not unlocked by lessons
     if (!lessonUnlocked) {
       showSnackbar({
-        message: "Please complete Lesson 5 to unlock the Daily Quiz.",
+        message: "Complete Lesson 5 to unlock Daily Quiz.",
         variant: "info",
         duration: 3000,
       });
@@ -216,7 +216,7 @@ export default function HomePage() {
         <div className="mt-3">
           <button
             onClick={() => router.push("/spanish-teacher")}
-            className="w-full border-b-3 border-black bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded-2xl hover:cursor-pointer transition-colors duration-200 shadow-md"
+            className="w-full border-b-3 border-r-1 border-black bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded-2xl hover:cursor-pointer transition-colors duration-200 shadow-md"
           >
             Talk to Spanish Teacher
           </button>
@@ -228,7 +228,7 @@ export default function HomePage() {
         <div className="relative z-0 " onClick={handleDailyQuizUnlocked}>
           <DailyQuizCard
             isUnlocked={dailyQuizUnlocked}
-            isCompleted={completedToday}
+            isCompleted={completedToday} 
             attemptsLeft={attemptsLeft}
             avgScore={lastAttemptAvg} 
           />

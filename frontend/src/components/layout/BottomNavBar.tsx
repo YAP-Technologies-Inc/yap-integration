@@ -6,23 +6,25 @@
 import {
   TablerSmartHome,
   TablerUser,
-  TablerFileText,
+  PhWechatLogoLight,
   TablerChartLine,
 } from "@/icons";
+import tutor from "@icons/tutor.svg";
 
 export default function BottomNavBar() {
   return (
     <div className="fixed w-full h-16 bottom-0 left-0 right-0 text-black">
-      <nav className="fixed bottom-0 left-0 w-full h-16 bg-[#fdfbfa]/90 z-50 flex justify-around items-center">
+      <nav className="fixed bottom-0 left-0 w-full h-16 bg-[#fdfbfa] z-50 flex justify-around items-center">
         <a href="/home" className="flex flex-col items-center hover:cursor-pointer">
           <TablerSmartHome className="text-[#999595] w-6 h-6" />
           <span className="text-[#999595] text-sm">Home</span>
         </a>
 
-        {/* <a href="/learn" className="flex flex-col items-center hover:cursor-pointer">
-          <TablerFileText className="text-[#999595] w-6 h-6" />
-          <span className="text-[#999595] text-sm">Learn</span>
+        <a href="/spanish-teacher" className="flex flex-col items-center hover:cursor-pointer">
+          <PhWechatLogoLight className="text-[#999595] w-7 h-7 text-bold" />
+          <span className="text-[#999595] text-sm">Tutor</span>
         </a>
+        {/*
         <a href="/progress" className="flex flex-col items-center hover:cursor-pointer">
           <TablerChartLine className="text-[#999595] w-6 h-6" />
           <span className="text-[#999595] text-sm">Progress</span>

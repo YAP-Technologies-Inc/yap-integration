@@ -87,10 +87,36 @@ export default function LessonUi({
   const [showBack, setShowBack] = useState(false);
   const [showReport, setShowReport] = useState(false);
 
+  // === SPEECH TRANSCRIPT STATE (fresh per attempt) ===
+  const [spokenText, setSpokenText] = useState("");
+  const recognitionRef = useRef<any>(null);
+  const attemptIdRef = useRef<string>(""); // NEW: id per attempt
+  const [hasFreshTranscript, setHasFreshTranscript] = useState(false); // NEW
+
+  // Init Web Speech once
+  useEffect(() => {
+    const SR =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+    if (!SR) return;
+    const rec = new SR();
+    rec.continuous = false;
+    rec.lang = "es-ES";
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    rec.onresult = (e: any) => {
+      const t = e?.results?.[0]?.[0]?.transcript || "";
+      setSpokenText(t);
+      setHasFreshTranscript(true); // mark transcript as captured THIS attempt
+      console.log("[SR] transcript:", t);
+    };
+    recognitionRef.current = rec;
+  }, []);
+
   const [breakdown, setBreakdown] = useState<{
     accuracy: number;
     fluency: number;
-    completeness: number;
+    completeness: number; // used for Intonation in UI
   } | null>(null);
 
   const needsSpeaking =
@@ -102,6 +128,13 @@ export default function LessonUi({
       : current.variant === "vocab"
       ? current.front
       : "";
+
+  // Add near other useStates
+  const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Simple uid for correlating client/server logs
+  const newUploadId = () => Math.random().toString(36).slice(2);
 
   const next = () => {
     if (stepIndex + 1 >= total) {
@@ -120,48 +153,70 @@ export default function LessonUi({
     setAudioURL(null);
     setScore(null);
     setFeedback(null);
+    setBreakdown(null);
+    setSpokenText("");
+    setHasFreshTranscript(false);
   };
+
   const getSupportedMimeType = (): string => {
-    const possibleTypes = [
-      "audio/mp4",
+    // Prefer plain types first (no ";codecs=...")
+    const types = [
+      "audio/webm", // Chrome/Android
+      "audio/mp4", // Safari/iOS (records AAC in MP4/M4A container)
+      "audio/ogg", // Firefox
+      // fallbacks with explicit codecs if needed
       "audio/webm;codecs=opus",
-      "audio/webm",
-      "audio/ogg",
+      "audio/ogg;codecs=opus",
     ];
-    return (
-      possibleTypes.find((type) => MediaRecorder.isTypeSupported(type)) || ""
-    );
+    for (const t of types) {
+      try {
+        if ((MediaRecorder as any).isTypeSupported?.(t)) return t;
+      } catch {}
+    }
+    return ""; // let browser choose
   };
+
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // NEW: start a fresh attempt and clear stale state
+      attemptIdRef.current = crypto?.randomUUID?.() || newUploadId();
+      setSpokenText("");
+      setHasFreshTranscript(false);
+      setScore(null);
+      setBreakdown(null);
+      setShowBack(false);
 
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mimeType = getSupportedMimeType();
+
       if (!mimeType) {
         showSnackbar({
-          message: "No supported recording format found",
+          message: "No supported recording format",
           variant: "error",
           duration: 3000,
         });
         return;
       }
+
       const recorder = new MediaRecorder(stream, { mimeType });
-      const chunks: Blob[] = [];
-
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunks.push(e.data);
-      };
-
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        setAudioBlob(blob);
-        setAudioURL(url);
-      };
-
-      recorder.start();
+      setMediaStream(stream);
       setMediaRecorder(recorder);
       setIsRecording(true);
+      setAudioBlob(null);
+      if (audioURL) {
+        URL.revokeObjectURL(audioURL);
+        setAudioURL(null);
+      }
+
+      console.log("[REC] start", {
+        mimeType,
+        time: Date.now(),
+        attempt: attemptIdRef.current,
+      });
+      recorder.start();
+      try {
+        recognitionRef.current?.start();
+      } catch {}
     } catch (e) {
       showSnackbar({
         message: "Microphone permission denied or not found",
@@ -172,59 +227,158 @@ export default function LessonUi({
     }
   };
 
-  const stopRecording = () => {
-    mediaRecorder?.stop();
-    setIsRecording(false);
+  const stopRecording = async () => {
+    if (!mediaRecorder) return;
+    try {
+      const mimeType = (mediaRecorder as any).mimeType || "audio/unknown";
+      console.log("[REC] stop requested", {
+        mimeType,
+        time: Date.now(),
+        attempt: attemptIdRef.current,
+      });
+
+      const blob = await stopRecorderAndGetBlob(mediaRecorder, mimeType);
+      console.log("[REC] stop resolved", { size: blob.size, type: blob.type });
+
+      // Min guard: avoid zero-byte/few-byte blobs
+      if (!blob || blob.size < 200) {
+        console.warn("[REC] tiny/empty blob - ignoring", { size: blob?.size });
+        showSnackbar({
+          message: "Recording too short, try again",
+          variant: "error",
+          duration: 2000,
+        });
+        return;
+      }
+
+      // Create URL & store
+      const url = URL.createObjectURL(blob);
+      setAudioBlob(blob);
+      setAudioURL(url);
+    } catch (err) {
+      console.error("[REC] stop error", err);
+      showSnackbar({
+        message: "Recording error",
+        variant: "error",
+        duration: 2000,
+      });
+    } finally {
+      setIsRecording(false);
+      setMediaRecorder(null);
+      try {
+        recognitionRef.current?.stop();
+      } catch {}
+      // Release mic tracks so browsers don’t keep input “busy”
+      try {
+        mediaStream?.getTracks().forEach((t) => t.stop());
+      } catch {}
+      setMediaStream(null);
+    }
   };
+
+  const stopRecorderAndGetBlob = (rec: MediaRecorder, mimeType: string) =>
+    new Promise<Blob>((resolve, reject) => {
+      const chunks: Blob[] = [];
+      let resolved = false;
+
+      rec.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) chunks.push(e.data);
+      };
+
+      rec.onstop = () => {
+        try {
+          const blob = new Blob(chunks, { type: mimeType });
+          resolved = true;
+          resolve(blob);
+        } catch (err) {
+          reject(err);
+        }
+      };
+
+      rec.onerror = (e: any) => {
+        if (!resolved) reject(e?.error ?? new Error("Recorder error"));
+      };
+
+      // Call stop; some browsers need a tick for last dataavailable
+      try {
+        rec.stop();
+      } catch (err) {
+        reject(err);
+      }
+    });
 
   const [isVerifying, setIsVerifying] = useState(false); // top-level state
 
+  // === UPLOAD & SCORE ===
   const assessPronunciation = async () => {
-    if (!audioBlob || !referenceText) return;
+    if (!referenceText || !audioBlob) return;
 
-    const blobToUpload = audioBlob;
-    setAudioURL(null);
-    setIsRecording(false);
-    setScore(null);
-    setFeedback(null);
-    setBreakdown(null);
     setIsLoading(true);
-
-    const fd = new FormData();
-    fd.append(
-      "audio",
-      blobToUpload,
-      `recording.${blobToUpload.type.split("/")[1]}`
-    );
-
-    fd.append("referenceText", referenceText);
-
     try {
-      const res = await fetch(
-        `${API_URL}/api/pronunciation-assessment-upload`,
-        {
-          method: "POST",
-          body: fd,
-        }
-      );
-      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+      const cleanMime = (audioBlob.type || "audio/webm").split(";")[0];
+      const ext = cleanMime.includes("webm")
+        ? "webm"
+        : cleanMime.includes("ogg")
+        ? "ogg"
+        : cleanMime.includes("m4a")
+        ? "m4a"
+        : cleanMime.includes("mp4")
+        ? "m4a"
+        : cleanMime.includes("wav")
+        ? "wav"
+        : "dat";
+
+      const normalizedBlob = new Blob([audioBlob], { type: cleanMime });
+
+      console.log("[UPLOAD] building formdata", {
+        attempt: attemptIdRef.current,
+        blobType: audioBlob.type,
+        cleanMime,
+        size: audioBlob.size,
+        ext,
+        hasTranscriptThisAttempt: hasFreshTranscript,
+        referenceText,
+      });
+
+      const fd = new FormData();
+      fd.append("audio", normalizedBlob, `recording.${ext}`);
+      fd.append("targetPhrase", referenceText);
+      fd.append("attemptId", attemptIdRef.current);
+      // Only send transcript if captured during THIS attempt
+      if (hasFreshTranscript && spokenText?.trim()) {
+        fd.append("spokenText", spokenText.trim());
+      }
+
+      const res = await fetch(`${API_URL}/api/pronunciation`, {
+        method: "POST",
+        body: fd,
+      });
+
+      // Handle STT overload gracefully
+      if (res.status === 503) {
+        const err = await res.json().catch(() => ({}));
+        console.warn("[PRONUNCIATION] 503:", err);
+        showSnackbar({
+          message: "Speech engine is busy — please try again.",
+          variant: "error",
+          duration: 2500,
+        });
+        return;
+      }
 
       const result = await res.json();
-      const raw = result.overallScore ?? 0;
-      const display = Math.round(raw);
+      if (!res.ok) throw new Error(JSON.stringify(result, null, 2));
 
-      setScore(display);
-      setFeedback(getRandomFeedbackPhrase(display));
+      const overall = Math.round(result.overallScore ?? 0);
+      setScore(overall);
       setBreakdown({
         accuracy: result.accuracyScore || 0,
         fluency: result.fluencyScore || 0,
-        completeness: result.completenessScore || 0,
+        completeness: result.intonationScore || 0, // show "Intonation" in 3rd slot
       });
-
       setShowBack(true);
-      await new Promise((r) => setTimeout(r, 300)); // animate flip
-    } catch (err) {
-      console.error("Assessment error:", err);
+    } catch (e) {
+      console.error("[PRONUNCIATION] error", e);
       showSnackbar({
         message: "Failed to assess pronunciation",
         variant: "error",
@@ -234,6 +388,7 @@ export default function LessonUi({
       setIsLoading(false);
     }
   };
+
   const verifyLessonCompletion = async () => {
     const snackId = Date.now();
     setIsVerifying(true);
@@ -274,6 +429,7 @@ export default function LessonUi({
       console.error("Verification error:", err);
     }
   };
+
   const correctChime = "/audio/correct.mp3";
   const incorrectChime = "/audio/incorrect.mp3";
 
@@ -387,7 +543,7 @@ export default function LessonUi({
                   disabled={
                     isLoading || isVerifying || !!audioURL // lock mic if there's a recording
                   }
-                  className={`w-20 h-20 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center border-b-3 border-[#bf373a] ${
+                  className={`w-20 h-20 bg-[#EF4444] rounded-full flex items-center justify-center border-b-3 border-r-1 border-[#bf373a] ${
                     isLoading || isVerifying || !!audioURL
                       ? "opacity-50 pointer-events-none"
                       : "hover:cursor-pointer"
@@ -432,10 +588,10 @@ export default function LessonUi({
               <button
                 onClick={assessPronunciation}
                 disabled={!audioURL || isLoading}
-                className={`w-full py-4 rounded-4xl border-b-3 border-black ${
+                className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 ${
                   audioURL
                     ? "bg-secondary text-white border-b-3 border-r-1 font-semibold border-black"
-                    : "bg-secondary/70 border-b-3 border-r-1 border-black/70 text-white cursor-not-allowed"
+                    : "bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed"
                 }`}
               >
                 {isLoading ? "Scoring…" : "Submit"}
@@ -474,16 +630,10 @@ export default function LessonUi({
                 {/* Score breakdown - left aligned with icon above */}
                 <div className="flex flex-row gap-6 text-secondary">
                   {[
+                    { label: "Accuracy", value: breakdown?.accuracy ?? 0 },
+                    { label: "Fluency", value: breakdown?.fluency ?? 0 },
                     {
-                      label: "Pronunciation",
-                      value: breakdown?.accuracy ?? 0,
-                    },
-                    {
-                      label: "Speed",
-                      value: breakdown?.fluency ?? 0,
-                    },
-                    {
-                      label: "Similarity",
+                      label: "Intonation",
                       value: breakdown?.completeness ?? 0,
                     },
                   ].map(({ label, value }) => {

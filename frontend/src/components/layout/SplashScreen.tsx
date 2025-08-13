@@ -69,7 +69,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
       >
         <button
           onClick={() => (isLastSlide ? onFinish() : setIndex(index + 1))}
-          className="bg-secondary text-white py-3 px-6 rounded-full shadow-md w-full max-w-xs hover:cursor-pointer">
+          className="bg-secondary text-white py-3 px-6 rounded-full border-b-3 border-r-1 border-black w-full max-w-xs hover:cursor-pointer">
           {isLastSlide ? 'Start' : 'Next'}
         </button>
       </div>

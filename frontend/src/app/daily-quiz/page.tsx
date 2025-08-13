@@ -102,6 +102,12 @@ export default function DailyQuizUi() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { showSnackbar, removeSnackbar } = useSnackbar();
 
+  // Add near other useStates
+  const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Simple uid for correlating client/server logs
+  const newUploadId = () => Math.random().toString(36).slice(2);
 
   const referenceText = current?.front ?? "";
   const needsSpeaking = true;
@@ -116,44 +122,78 @@ export default function DailyQuizUi() {
 
   const getSupportedMimeType = (): string => {
     const types = [
-      "audio/mp4",
       "audio/webm;codecs=opus",
       "audio/webm",
+      "audio/mp4", // Safari/iOS fallback
+      "audio/ogg;codecs=opus",
       "audio/ogg",
     ];
-    return (
-      types.find((t) => (window as any).MediaRecorder?.isTypeSupported?.(t)) ||
-      ""
-    );
+    for (const t of types) {
+      try {
+        if ((MediaRecorder as any).isTypeSupported?.(t)) return t;
+      } catch {}
+    }
+    return ""; // let browser choose
   };
+
+  const stopRecorderAndGetBlob = (rec: MediaRecorder, mimeType: string) =>
+    new Promise<Blob>((resolve, reject) => {
+      const chunks: Blob[] = [];
+      let resolved = false;
+
+      rec.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) chunks.push(e.data);
+      };
+
+      rec.onstop = () => {
+        try {
+          const blob = new Blob(chunks, { type: mimeType });
+          resolved = true;
+          resolve(blob);
+        } catch (err) {
+          reject(err);
+        }
+      };
+
+      rec.onerror = (e: any) => {
+        if (!resolved) reject(e?.error ?? new Error("Recorder error"));
+      };
+
+      // Call stop; some browsers need a tick for last dataavailable
+      try {
+        rec.stop();
+      } catch (err) {
+        reject(err);
+      }
+    });
 
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mimeType = getSupportedMimeType();
+
       if (!mimeType) {
         showSnackbar({
-          message: "No supported recording format found",
+          message: "No supported recording format",
           variant: "error",
           duration: 3000,
         });
         return;
       }
-      const mr = new MediaRecorder(stream, { mimeType });
-      const chunks: Blob[] = [];
-      mr.ondataavailable = (e) => {
-        if (e.data?.size > 0) chunks.push(e.data);
-      };
-      mr.onstop = () => {
-        const blob = new Blob(chunks, { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        setAudioBlob(blob);
-        setAudioURL(url);
-      };
-      setMediaRecorder(mr);
+
+      const recorder = new MediaRecorder(stream, { mimeType });
+      setMediaStream(stream);
+      setMediaRecorder(recorder);
       setIsRecording(true);
-      mr.start();
-    } catch {
+      setAudioBlob(null);
+      if (audioURL) {
+        URL.revokeObjectURL(audioURL);
+        setAudioURL(null);
+      }
+
+      console.log("[REC] start", { mimeType, time: Date.now() });
+      recorder.start();
+    } catch (e) {
       showSnackbar({
         message: "Microphone permission denied or not found",
         variant: "error",
@@ -162,60 +202,125 @@ export default function DailyQuizUi() {
       router.push("/home");
     }
   };
-  const stopRecording = () => {
-    mediaRecorder?.stop();
-    setIsRecording(false);
+
+  const stopRecording = async () => {
+    if (!mediaRecorder) return;
+    try {
+      const mimeType = (mediaRecorder as any).mimeType || "audio/unknown";
+      console.log("[REC] stop requested", { mimeType, time: Date.now() });
+
+      const blob = await stopRecorderAndGetBlob(mediaRecorder, mimeType);
+      console.log("[REC] stop resolved", { size: blob.size, type: blob.type });
+
+      // Min guard: avoid zero-byte/few-byte blobs
+      if (!blob || blob.size < 200) {
+        console.warn("[REC] tiny/empty blob - ignoring", { size: blob?.size });
+        showSnackbar({
+          message: "Recording too short, try again",
+          variant: "error",
+          duration: 2000,
+        });
+        return;
+      }
+
+      // Create URL & store
+      const url = URL.createObjectURL(blob);
+      setAudioBlob(blob);
+      setAudioURL(url);
+    } catch (err) {
+      console.error("[REC] stop error", err);
+      showSnackbar({
+        message: "Recording error",
+        variant: "error",
+        duration: 2000,
+      });
+    } finally {
+      setIsRecording(false);
+      setMediaRecorder(null);
+
+      // Release mic tracks so browsers don’t keep input “busy”
+      try {
+        mediaStream?.getTracks().forEach((t) => t.stop());
+      } catch {}
+      setMediaStream(null);
+    }
   };
 
   const assessPronunciation = async () => {
-    if (!audioBlob || !referenceText) return;
+    if (!audioBlob || !referenceText || isSubmitting) return;
+
+    const uploadId = newUploadId();
+    const extFromBlob = (() => {
+      const t = audioBlob.type;
+      if (t.includes("webm")) return "webm";
+      if (t.includes("mp4")) return "mp4";
+      if (t.includes("ogg")) return "ogg";
+      if (t.includes("wav")) return "wav";
+      return "dat";
+    })();
+
+    const filename = `recording-${uploadId}.${extFromBlob}`;
+
+    // Reset / lock UI
+    setAudioURL(null);
+    setIsRecording(false);
+    setScore(null);
+    setFeedback(null);
+    setBreakdown(null);
     setIsLoading(true);
+    setIsSubmitting(true);
+
+    console.log("[UPLOAD] begin", {
+      uploadId,
+      filename,
+      size: audioBlob.size,
+      type: audioBlob.type,
+      referenceText,
+      stepIndex,
+    });
 
     const fd = new FormData();
-    fd.append("audio", audioBlob, `recording.${audioBlob.type.split("/")[1]}`);
+    fd.append("audio", audioBlob, filename);
     fd.append("referenceText", referenceText);
+    fd.append("uploadId", uploadId);
 
     try {
       const res = await fetch(
         `${API_URL}/api/pronunciation-assessment-upload`,
-        { method: "POST", body: fd }
+        {
+          method: "POST",
+          body: fd,
+        }
       );
-      if (!res.ok) throw new Error(`Server error: ${res.status}`);
-      const result = await res.json();
 
-      const overall =
-        result.overallScore ??
-        result?.NBest?.[0]?.PronScore ??
-        result?.NBest?.[0]?.PronunciationAssessment?.AccuracyScore ??
-        0;
+      console.log("[UPLOAD] response", {
+        uploadId,
+        status: res.status,
+        ok: res.ok,
+        headers: Object.fromEntries(res.headers.entries()),
+      });
 
-      const accuracy =
-        result.accuracyScore ??
-        result?.NBest?.[0]?.PronunciationAssessment?.AccuracyScore ??
-        0;
-      const fluency =
-        result.fluencyScore ??
-        result?.NBest?.[0]?.PronunciationAssessment?.FluencyScore ??
-        0;
-      const completeness =
-        result.completenessScore ??
-        result?.NBest?.[0]?.PronunciationAssessment?.CompletenessScore ??
-        0;
+      const result = await res.json().catch(() => ({} as any));
+      console.log("[UPLOAD] json", { uploadId, result });
 
-      const display = Math.round(Number(overall) || 0);
+      if (!res.ok)
+        throw new Error(result?.detail || `Server error: ${res.status}`);
+
+      const raw = result.overallScore ?? 0;
+      const display = Math.round(raw);
+
       setScore(display);
       setFeedback(getRandomFeedbackPhrase(display));
       setBreakdown({
-        accuracy: Math.round(Number(accuracy) || 0),
-        fluency: Math.round(Number(fluency) || 0),
-        completeness: Math.round(Number(completeness) || 0),
+        accuracy: result.accuracyScore || 0,
+        fluency: result.fluencyScore || 0,
+        completeness: result.completenessScore || 0,
       });
 
-      // Persist per-step score + avg
-      const updated = updateScoreForStep(stepIndex, display, total);
-      setScores([...updated.scores]);
-      setAvgScore(updated.avgScore);
-    } catch {
+      setShowBack(true);
+      await new Promise((r) => setTimeout(r, 300));
+    } catch (err) {
+      console.error("[UPLOAD] error", err);
       showSnackbar({
         message: "Failed to assess pronunciation",
         variant: "error",
@@ -223,6 +328,7 @@ export default function DailyQuizUi() {
       });
     } finally {
       setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 

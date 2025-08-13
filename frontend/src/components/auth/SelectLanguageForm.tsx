@@ -33,7 +33,7 @@ export default function SelectLanguageForm({
         </div>
       </div>
 
-      <div className="pt-4 mb-4 text-center">
+      <div className="pt-6 mb-4 text-center">
         <p className="text-lg font-bold text-[#2D1C1C] mt-1">
           What language would you like to learn?
         </p>

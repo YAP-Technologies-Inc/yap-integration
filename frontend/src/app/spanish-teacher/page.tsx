@@ -555,122 +555,150 @@ export default function SpanishTeacherConversation() {
   const prettyTime = useMemo(() => fmtMMSS(remainingMs), [remainingMs]);
 
   return (
-    <div className="min-h-[100dvh] bg-background-primary pb-[env(safe-area-inset-bottom)] relative">
-      {/* Top bar */}
+    <div className="min-h-[100dvh] bg-background-primary relative">
+      {/* Top bar (64px) */}
       <div className="fixed inset-x-0 top-0 h-16 bg-background-primary z-30 flex items-center justify-center px-4">
-        <button onClick={() => router.replace("/home")} className="absolute left-4">
+        <button
+          onClick={() => router.replace("/home")}
+          className="absolute left-4"
+        >
           <TablerX className="w-6 h-6 text-gray-700" />
         </button>
         <div className="text-center">
           <h1 className="text-xl font-semibold text-[#2D1C1C]">Tutor</h1>
-          <div className="text-xs text-gray-500">
-            {hasAccess
-              ? showCountdown
-                ? "Last 5 minutes"
-                : isOpen
-                ? "Active"
-                : "Connecting…"
-              : "Checking access…"}
-            {showCountdown && (
-              <span className="ml-2 text-green-600 font-semibold">{prettyTime}</span>
-            )}
-          </div>
         </div>
       </div>
 
-      {/* Chat list */}
-      <div
-        className="fixed inset-0 overflow-y-auto z-10 pt-16 pb-28"
-        style={{ WebkitOverflowScrolling: "touch" }}
+      {/* Countdown bar: slides down below the top bar */}
+      <span
+        className={`
+        fixed left-0 right-0 z-30 flex justify-center
+        transition-transform duration-300
+        ${showCountdown ? "translate-y-16" : "-translate-y-8"}
+        w-full
+      `}
       >
-        <div className="w-full h-full flex flex-col items-center">
-          <div className="flex-1 w-full max-w-none overflow-y-auto px-4 space-y-2">
-            {!hasAccess ? (
-              <div className="text-center text-gray-500 text-xs py-2">Checking access…</div>
-            ) : messages.length === 0 && !awaitingFirstText ? (
-              <div className="text-center text-gray-500 text-xs py-2">No messages yet</div>
-            ) : (
-              <>
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`flex items-start gap-2 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    {msg.sender === "ai" && (
-                      <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-sm font-semibold">AI</span>
-                      </div>
-                    )}
-                    <div
-                      className={`rounded-lg px-3 py-2 max-w-[70vw] text-sm ${
-                        msg.sender === "user"
-                          ? "bg-background-secondary text-white"
-                          : "bg-white text-[#2D1C1C]"
-                      }`}
-                    >
-                      <div>{msg.text}</div>
-                    </div>
-                    {msg.sender === "user" && (
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-sm font-semibold">
-                          {(userName || "U").charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                ))}
+        {showCountdown && (
+          <span className="block w-full max-w-screen-sm mx-auto bg-[#fdfbfa] text-secondary text-xs font-semibold py-1 rounded-b-xl shadow text-center">
+            {prettyTime}
+          </span>
+        )}
+      </span>
 
-                {/* typing bubble until the first text delta lands */}
-                {awaitingFirstText && (
-                  <div className="flex items-start gap-2 justify-start">
+      {/* CHAT AREA: fixed between header and composer+bottom nav */}
+      <div
+        className="fixed inset-x-0 z-10 overflow-y-auto"
+        style={{
+          top: showCountdown ? "5.5rem" : "4rem", // push chat down if countdown is visible
+          bottom: "calc(96px + 7rem + 5px + env(safe-area-inset-bottom))",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+        <div className="px-4 space-y-2 py-3">
+          {!hasAccess ? (
+            <div className="text-center text-gray-500 text-xs py-2">
+              Checking access…
+            </div>
+          ) : messages.length === 0 && !awaitingFirstText ? (
+            <div className="text-center text-gray-500 text-xs py-2">
+              No messages yet
+            </div>
+          ) : (
+            <>
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex items-start gap-2 ${
+                    msg.sender === "user" ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  {msg.sender === "ai" && (
                     <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-sm font-semibold">AI</span>
+                      <span className="text-white text-sm font-semibold">
+                        AI
+                      </span>
                     </div>
-                    <div className="rounded-lg px-3 py-2 max-w-[70vw] text-sm bg-white text-[#2D1C1C]">
-                      <span className="opacity-60">…</span>
-                    </div>
+                  )}
+                  <div
+                    className={`rounded-lg px-3 py-2 max-w-[70vw] text-sm ${
+                      msg.sender === "user"
+                        ? "bg-background-secondary text-white"
+                        : "bg-white text-[#2D1C1C]"
+                    }`}
+                  >
+                    <div>{msg.text}</div>
                   </div>
-                )}
-              </>
-            )}
-            <div ref={messagesEndRef} />
+                  {msg.sender === "user" && (
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-semibold">
+                        {(userName || "U").charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {awaitingFirstText && (
+                <div className="flex items-start gap-2 justify-start">
+                  <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-sm font-semibold">AI</span>
+                  </div>
+                  <div className="rounded-lg px-3 py-2 max-w-[70vw] text-sm bg-white text-[#2D1C1C]">
+                    <span className="opacity-60">…</span>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+          <div ref={messagesEndRef} className="h-2" />
+        </div>
+      </div>
+
+      {/* Composer (≈ 7rem tall) sits above the bottom nav (56px) */}
+      <div className="fixed inset-x-0 bottom-24 pb-[env(safe-area-inset-bottom)] z-20 flex justify-center items-center">
+        <div
+          className={
+            hasAccess
+              ? "w-full flex justify-center"
+              : "pointer-events-none opacity-50 w-full flex justify-center"
+          }
+        >
+          <div className="w-full max-w-screen-sm px-4">
+            <div className="h-28 flex items-center">
+              <Tutor
+                userName={userName}
+                sendMessage={async (message: string) => {
+                  beginNewTurn();
+                  const ok = sendUserText(message);
+                  if (!ok) {
+                    showSnackbar({
+                      message: "Reconnecting to tutor…",
+                      variant: "info",
+                    });
+                  } else {
+                    setMessages((prev) => [
+                      ...prev,
+                      {
+                        id: crypto.randomUUID(),
+                        kind: "text",
+                        text: message,
+                        sender: "user",
+                        timestamp: new Date(),
+                      },
+                    ]);
+                  }
+                }}
+                onUserMessage={() => {}}
+                onUserAudio={() => {}}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Composer */}
-      <div className="fixed inset-x-0 bottom-[56px] pb-2 z-20 flex justify-center items-center">
-        <div className={hasAccess ? "w-full flex justify-center" : "pointer-events-none opacity-50 w-full flex justify-center"}>
-          <Tutor
-            userName={userName}
-            sendMessage={async (message: string) => {
-              // Start a new turn: close gate, show typing bubble
-              beginNewTurn();
-
-              const ok = sendUserText(message);
-              if (!ok) {
-                showSnackbar({ message: "Reconnecting to tutor…", variant: "info" });
-              } else {
-                setMessages((prev) => [
-                  ...prev,
-                  {
-                    id: crypto.randomUUID(),
-                    kind: "text",
-                    text: message,
-                    sender: "user",
-                    timestamp: new Date(),
-                  },
-                ]);
-              }
-            }}
-            onUserMessage={() => {}}
-            onUserAudio={() => {}}
-          />
-        </div>
-      </div>
-
-      {isVerifying && <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />}
-
+      {isVerifying && (
+        <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
+      )}
       <BottomNavBar />
     </div>
   );

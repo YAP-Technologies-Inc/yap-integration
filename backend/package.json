@@ -7,6 +7,7 @@
     "@cosmjs/proto-signing": "^0.34.0",
     "@cosmjs/stargate": "^0.34.0",
     "@flowglad/server": "^0.10.17",
+    "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.2",
     "bip39": "^3.1.0",
     "cors": "^2.8.5",

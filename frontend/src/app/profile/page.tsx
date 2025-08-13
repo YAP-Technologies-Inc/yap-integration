@@ -22,7 +22,7 @@ const PAGE_TITLE: Record<Exclude<InfoPage, "menu">, string> = {
 const CARD_HEIGHT = 92; // px
 const CARD_X_INSET = 16; // px
 const CARD_ROUNDED = "rounded-3xl";
-const CARD_PULL_DOWN = 35; // px (pushes card farther down)
+const CARD_PULL_DOWN = 46; // px (pushes card farther down)
 
 export default function ProfilePage() {
   const [activePage, setActivePage] = useState<InfoPage>("menu");
@@ -102,22 +102,22 @@ export default function ProfilePage() {
   const halfCard = CARD_HEIGHT / 2;
 
   return (
-    <div className="bg-background-primary min-h-[100dvh] flex flex-col pb-nav">
+    <div className="bg-background-primary min-h-[100dvh] flex flex-col overflow-y-hidden h-[100dvh] overscroll-y-none">
       {/* HEADER WRAPPER (relative so the card can float) */}
       <div className="relative">
         {/* Soft header — keep your color */}
-        <div className="bg-[#F3EEE6] rounded-b-3xl pt-4 pb-10 px-4">
+        <div className="bg-background-primary rounded-b-3xl pb-4 px-4">
           <div className="text-xl font-semibold text-secondary text-center">
             Account
           </div>
 
           {/* Avatar + name + wallet */}
-          <div className="mt-8 flex items-center gap-3">
-            <div className="w-14 h-14 rounded-full bg-secondary text-white flex items-center justify-center text-xl font-semibold">
+          <div className="mt-4 flex items-center gap-3">
+            <div className="w-14 h-14 rounded-full bg-secondary text-white flex items-center justify-center text-3xl font-light">
               {firstInitial}
             </div>
             <div className="flex flex-col justify-center">
-              <span className="text-lg font-semibold text-secondary">
+              <span className="text-xl font-bold text-secondary">
                 {name}
               </span>
               <span
@@ -191,44 +191,44 @@ export default function ProfilePage() {
             }}
             className="p-1.5 rounded-full hover:bg-black/5 active:scale-95 transition"
           >
-            <TablerArrowUpRight className="w-5 h-5 text-gray-500" />
+            <TablerArrowUpRight className="w-5 h-5 text-secondary" />
           </button>
         </div>
       </div>
 
       {/* SHEET BACKGROUND — FULL WIDTH, STARTS FROM MIDDLE OF CARD DOWN */}
       <div className="flex-1 w-full" style={{ marginTop: halfCard }}>
-        <div className="w-full bg-white/90 backdrop-blur-sm pt-8 pb-6 flex flex-col min-h-[calc(100vh-120px)]">
-          <div className="rounded-2xl bg-white/90 overflow-hidden">
-            {[
-              { label: "About app", key: "about" as const },
-              { label: "Terms & Conditions", key: "terms" as const },
-              { label: "Privacy Policy", key: "privacy" as const },
-            ].map(({ label, key }, i, arr) => (
-              <button
-                key={key}
-                onClick={() => setActivePage(key)}
-                className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left"
-              >
-                <span className="text-[15px] font-medium text-secondary">
-                  {label}
-                </span>
-                <TablerChevronRight className="w-4 h-4 text-gray-400" />
-                {i < arr.length - 1 && (
-                  <span className="absolute left-4 right-4 bottom-0 h-px" />
-                )}
-              </button>
-            ))}
+        <div className="w-full bg-white pt-10 pb-6 flex flex-col min-h-[calc(100vh-120px)]">
+          <div className="rounded-2xl bg-white overflow-hidden">
+        {[
+          { label: "About app", key: "about" as const },
+          { label: "Terms & Conditions", key: "terms" as const },
+          { label: "Privacy Policy", key: "privacy" as const },
+        ].map(({ label, key }, i, arr) => (
+          <button
+            key={key}
+            onClick={() => setActivePage(key)}
+            className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left"
+          >
+            <span className="text-[15px] font-medium text-secondary">
+          {label}
+            </span>
+            <TablerChevronRight className="w-4 h-4 text-gray-400" />
+            {i < arr.length - 1 && (
+          <span className="absolute left-4 right-4 bottom-0 h-px" />
+            )}
+          </button>
+        ))}
           </div>
         </div>
       </div>
 
       {/* Legal modal (loads markdown) */}
       {activePage !== "menu" && (
-        <div className="fixed inset-0 z-[100]">
+        <div className="fixed inset-0 z-[100] backdrop-blur-sm">
           {/* backdrop */}
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0"
             onClick={() => setActivePage("menu")}
           />
           {/* panel */}

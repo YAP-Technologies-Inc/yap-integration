@@ -61,9 +61,9 @@ export default function DailyQuizCard({
 
       {/* Keep vertical padding consistent for all states */}
       <div className="py-7">
-        {/* Show progress + attempts only if not completed (not green) */}
-        {!isDone && (
-          <div className={isActive ? '' : 'opacity-40 pointer-events-none'}>
+        {/* Show progress + attempts only if active (not locked, not done) */}
+        {isActive && (
+          <div>
             <div className="flex items-center justify-center gap-4 mb-2">
               <svg width={38} height={38} viewBox="0 0 48 48">
                 <circle cx={24} cy={24} r={20} fill="none" stroke="#E5E7EB" strokeWidth={4} />

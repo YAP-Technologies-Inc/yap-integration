@@ -79,7 +79,7 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center min-h-[100dvh] bg-black bg-opacity-40">
       {submitting && (
-        <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
+        <div className="fixed inset-0 z-40 backdrop-blur-sm" />
       )}
 
       <div className="bg-background-primary w-full max-w-full min-h-[100dvh] flex flex-col justify-start pt-1.5 px-4 pb-2">
