@@ -1,4 +1,4 @@
-// ai/google.js
+// ai/google.js (unchanged)
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const apiKey = process.env.GOOGLE_API_KEY;

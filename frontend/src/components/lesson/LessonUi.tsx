@@ -86,6 +86,14 @@ export default function LessonUi({
   const { showSnackbar, removeSnackbar } = useSnackbar();
   const [showBack, setShowBack] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  const [textFeedback, setTextFeedback] = useState<null | {
+    transcript: string;
+    accuracyText: string;
+    fluencyText: string;
+    intonationText: string;
+    overallText: string;
+    specificIssues: string[];
+  }>(null);
 
   // === SPEECH TRANSCRIPT STATE (fresh per attempt) ===
   const [spokenText, setSpokenText] = useState("");
@@ -374,8 +382,31 @@ export default function LessonUi({
       setBreakdown({
         accuracy: result.accuracyScore || 0,
         fluency: result.fluencyScore || 0,
-        completeness: result.intonationScore || 0, // show "Intonation" in 3rd slot
+        completeness: result.intonationScore || 0, // "Intonation" slot
       });
+
+      // NEW: console.log and stash text feedback
+      console.log("[FEEDBACK]", {
+        target: referenceText,
+        heard: result.transcript,
+        accuracyText: result.accuracyText,
+        fluencyText: result.fluencyText,
+        intonationText: result.intonationText,
+        overallText: result.overallText,
+        specificIssues: result.specificIssues,
+      });
+      setTextFeedback({
+        transcript: result.transcript || "",
+        accuracyText: result.accuracyText || "",
+        fluencyText: result.fluencyText || "",
+        intonationText: result.intonationText || "",
+        overallText: result.overallText || "",
+        specificIssues: Array.isArray(result.specificIssues)
+          ? result.specificIssues
+          : [],
+      });
+      setFeedback(result.overallText || "");
+
       setShowBack(true);
     } catch (e) {
       console.error("[PRONUNCIATION] error", e);

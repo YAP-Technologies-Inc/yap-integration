@@ -26,9 +26,6 @@ const db = new Pool({
 const artifact = require("./abi/YapToken.json");
 const tokenAbi = artifact.abi;
 
-const { genAI, TRANSCRIBE_MODEL_ID } = require("./ai/google");
-const { getPronunciationFeedback } = require("./ai/feedback");
-
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
 
@@ -688,12 +685,23 @@ app.post("/api/transcribe", upload.single("audio"), async (req, res) => {
   }
 });
 
-const GEM_MODELS = ["gemini-1.5-flash", "gemini-1.5-pro"]; // fallback order
+// --- /api/pronunciation route (drop-in) -------------------------------------
 
+const { genAI } = require("./ai/google"); // used by transcribeWithGemini
+const {
+  getPronunciationFeedback,
+  getPronunciationFeedbackFromAudio,
+} = require("./ai/feedback");
+
+// models to try for STT fallback
+const GEM_MODELS = ["gemini-1.5-flash", "gemini-1.5-pro"];
+
+// strip ";codecs=..." etc. (Gemini prefers clean mime)
 function cleanMime(m) {
-  return String(m || "audio/webm").split(";")[0]; // strip ";codecs=..."
+  return String(m || "audio/webm").split(";")[0];
 }
 
+// basic STT using Gemini (fallback when we need a transcript)
 async function transcribeWithGemini({ buffer, mime }) {
   const b64 = buffer.toString("base64");
   console.log("[transcribe] start", { mime, b64len: b64.length });
@@ -704,10 +712,7 @@ async function transcribeWithGemini({ buffer, mime }) {
       console.log("[transcribe] try model:", modelId, { mime });
       const model = genAI.getGenerativeModel({
         model: modelId,
-        generationConfig: {
-          // keep it simple — we want raw text back
-          temperature: 0,
-        },
+        generationConfig: { temperature: 0 },
       });
 
       const resp = await model.generateContent({
@@ -731,7 +736,7 @@ async function transcribeWithGemini({ buffer, mime }) {
       lastErr = err;
       const status = err?.status;
       console.warn("[transcribe] fail", { modelId, status, msg: err?.message });
-      // If overloaded, try the next model; otherwise break
+      // If overloaded, try next model; otherwise stop trying
       if (status !== 503) break;
     }
   }
@@ -744,7 +749,8 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
     const ctype = req.headers["content-type"];
     console.log("[/api/pronunciation] content-type:", ctype);
 
-    // accept either JSON (spokenText) or multipart (audio + targetPhrase + spokenText?)
+    // Accept either multipart (audio + targetPhrase + optional spokenText)
+    // or JSON (spokenText + targetPhrase).
     let {
       targetPhrase = "",
       transcript = "",
@@ -754,31 +760,31 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
     spokenText = String(spokenText || transcript || "").trim();
 
     console.log("[/api/pronunciation] body keys:", Object.keys(req.body || {}));
+
     if (req.file) {
       console.log("[/api/pronunciation] file meta:", {
         size: req.file.size,
         mimetype: req.file.mimetype,
         originalname: req.file.originalname,
       });
-      // Normalize mime for Gemini (no codecs suffix)
+      // normalize for Gemini (drops codecs suffix)
       req.file.mimetype = cleanMime(req.file.mimetype);
-      // sanity peek
+      // quick peek for debugging
       const first16 = req.file.buffer?.subarray(0, 16)?.toString("hex");
       console.log("[/api/pronunciation] file first16 hex:", first16);
     }
 
-    // If client already supplied a transcript, use it
+    // Prefer client transcript (Web Speech API) if provided
     let finalTranscript = spokenText;
 
-    // Otherwise, transcribe the audio if provided
-    if (!finalTranscript && req.file && req.file.buffer?.length > 0) {
+    // Otherwise try STT on uploaded audio (fallback only)
+    if (!finalTranscript && req.file?.buffer?.length > 0) {
       try {
         finalTranscript = await transcribeWithGemini({
           buffer: req.file.buffer,
           mime: req.file.mimetype || "audio/webm",
         });
       } catch (err) {
-        // Gemini overload / error — return a 503 so client can show a friendly “busy” toast
         if (err?.status === 503) {
           console.error(
             "[/api/pronunciation] transcribe error 503:",
@@ -792,34 +798,56 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
       }
     }
 
-    if (!finalTranscript) {
-      // Nothing usable; give the client a detailed 422 with debug info
-      return res.status(422).json({
-        error: "No spoken text found (empty/inaudible recording?)",
-        debug: {
-          hasFile: !!req.file,
-          fileSize: req.file?.size || 0,
-          fileMime: req.file?.mimetype || null,
+    // === Audio-first scoring ===============================================
+    let feedback = null;
+
+    if (req.file?.buffer?.length) {
+      try {
+        feedback = await getPronunciationFeedbackFromAudio({
+          audio: req.file.buffer, // raw mic buffer
           targetPhrase,
-          bodyKeys: Object.keys(req.body || {}),
-        },
+          mime: req.file.mimetype || "audio/webm", // normalized above
+        });
+      } catch (e) {
+        console.warn(
+          "[/api/pronunciation] audio flow failed, falling back to text:",
+          e?.message
+        );
+      }
+    }
+
+    // === Text-only fallback scoring =========================================
+    if (!feedback) {
+      if (!finalTranscript) {
+        // still nothing usable → send 422 with debug
+        return res.status(422).json({
+          error: "No spoken text found (empty/inaudible recording?)",
+          debug: {
+            hasFile: !!req.file,
+            fileSize: req.file?.size || 0,
+            fileMime: req.file?.mimetype || null,
+            targetPhrase,
+            bodyKeys: Object.keys(req.body || {}),
+          },
+        });
+      }
+
+      feedback = await getPronunciationFeedback({
+        spokenText: finalTranscript,
+        targetPhrase,
       });
     }
 
-    // Score it with your existing feedback helper (Gemini text model)
-    const feedback = await getPronunciationFeedback({
-      spokenText: finalTranscript,
-      targetPhrase,
-    });
-
-    // Return fields your UI consumes
+    // === Build response (same shape your UI already uses) ===================
     const payload = {
       overallScore: feedback.overallScore ?? 0,
       accuracyScore: feedback.accuracyScore ?? 0,
       fluencyScore: feedback.fluencyScore ?? 0,
       intonationScore: feedback.intonationScore ?? 0,
       confidence: feedback.confidence ?? 0,
-      transcript: finalTranscript, // helpful for debugging/UX
+      transcript: feedback.transcribedText || finalTranscript || "",
+      // If you decide to surface these later in a modal:
+      // specificIssues: feedback.specificIssues || [],
     };
 
     console.log("[/api/pronunciation] ok", {
@@ -828,15 +856,153 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
       flu: payload.fluencyScore,
       int: payload.intonationScore,
       conf: payload.confidence,
-      transcriptLen: finalTranscript.length,
+      transcriptLen: (payload.transcript || "").length,
     });
-    console.log(`Spoken Text: ${spokenText} -> What it got graded as: ${finalTranscript}`);
+    console.log(
+      `Spoken Text: ${spokenText} -> What it got graded as: ${payload.transcript}`
+    );
     console.log(`Target phrase: ${targetPhrase}`);
 
-    res.json(payload);
+    return res.json(payload);
   } catch (err) {
     console.error("[/api/pronunciation] fatal:", err);
-    res.status(500).json({ error: err?.message || "Internal error" });
+    return res.status(500).json({ error: err?.message || "Internal error" });
+  }
+});
+
+app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
+  try {
+    const ctype = req.headers["content-type"];
+    console.log("[/api/pronunciation] content-type:", ctype);
+
+    // Accept either multipart (audio + targetPhrase + optional spokenText)
+    // or JSON (spokenText + targetPhrase).
+    let {
+      targetPhrase = "",
+      transcript = "",
+      spokenText = "",
+    } = req.body || {};
+    targetPhrase = String(targetPhrase || "").trim();
+    spokenText = String(spokenText || transcript || "").trim();
+
+    console.log("[/api/pronunciation] body keys:", Object.keys(req.body || {}));
+
+    if (req.file) {
+      console.log("[/api/pronunciation] file meta:", {
+        size: req.file.size,
+        mimetype: req.file.mimetype,
+        originalname: req.file.originalname,
+      });
+      // normalize for Gemini (drops codecs suffix)
+      req.file.mimetype = cleanMime(req.file.mimetype);
+      // quick peek for debugging
+      const first16 = req.file.buffer?.subarray(0, 16)?.toString("hex");
+      console.log("[/api/pronunciation] file first16 hex:", first16);
+    }
+
+    // Prefer client transcript (Web Speech API) if provided
+    let finalTranscript = spokenText;
+
+    // Otherwise try STT on uploaded audio (fallback only)
+    if (!finalTranscript && req.file?.buffer?.length > 0) {
+      try {
+        finalTranscript = await transcribeWithGemini({
+          buffer: req.file.buffer,
+          mime: req.file.mimetype || "audio/webm",
+        });
+      } catch (err) {
+        if (err?.status === 503) {
+          console.error(
+            "[/api/pronunciation] transcribe error 503:",
+            err.message
+          );
+          return res
+            .status(503)
+            .json({ error: "Speech engine busy. Try again." });
+        }
+        console.error("[/api/pronunciation] transcribe error:", err);
+      }
+    }
+
+    // === Audio-first scoring ===============================================
+    let feedback = null;
+
+    if (req.file?.buffer?.length) {
+      try {
+        feedback = await getPronunciationFeedbackFromAudio({
+          audio: req.file.buffer, // raw mic buffer
+          targetPhrase,
+          mime: req.file.mimetype || "audio/webm", // normalized above
+        });
+      } catch (e) {
+        console.warn(
+          "[/api/pronunciation] audio flow failed, falling back to text:",
+          e?.message
+        );
+      }
+    }
+
+    // === Text-only fallback scoring =========================================
+    if (!feedback) {
+      if (!finalTranscript) {
+        // still nothing usable → send 422 with debug
+        return res.status(422).json({
+          error: "No spoken text found (empty/inaudible recording?)",
+          debug: {
+            hasFile: !!req.file,
+            fileSize: req.file?.size || 0,
+            fileMime: req.file?.mimetype || null,
+            targetPhrase,
+            bodyKeys: Object.keys(req.body || {}),
+          },
+        });
+      }
+
+      feedback = await getPronunciationFeedback({
+        spokenText: finalTranscript,
+        targetPhrase,
+      });
+    }
+
+    // === Build response (same shape your UI already uses) ===================
+    // ...unchanged above...
+
+    // === Build response (same shape your UI already uses) ===================
+    const payload = {
+      overallScore: feedback.overallScore ?? 0,
+      accuracyScore: feedback.accuracyScore ?? 0,
+      fluencyScore: feedback.fluencyScore ?? 0,
+      intonationScore: feedback.intonationScore ?? 0,
+      confidence: feedback.confidence ?? 0,
+      transcript: feedback.transcribedText || finalTranscript || "",
+
+      // NEW: send text feedback too
+      accuracyText: feedback.accuracy || "",
+      fluencyText: feedback.fluency || "",
+      intonationText: feedback.intonation || "",
+      overallText: feedback.overall || "",
+      specificIssues: feedback.specificIssues || [],
+    };
+
+    // ...unchanged below...
+
+    console.log("[/api/pronunciation] ok", {
+      overall: payload.overallScore,
+      acc: payload.accuracyScore,
+      flu: payload.fluencyScore,
+      int: payload.intonationScore,
+      conf: payload.confidence,
+      transcriptLen: (payload.transcript || "").length,
+    });
+    console.log(
+      `Spoken Text: ${spokenText} -> What it got graded as: ${payload.transcript}`
+    );
+    console.log(`Target phrase: ${targetPhrase}`);
+
+    return res.json(payload);
+  } catch (err) {
+    console.error("[/api/pronunciation] fatal:", err);
+    return res.status(500).json({ error: err?.message || "Internal error" });
   }
 });
 

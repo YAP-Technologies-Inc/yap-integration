@@ -1,12 +1,13 @@
 // ai/feedback.js
+const path = require("path");
 const { genAI, MODEL_ID } = require("./google");
 
+// ---------------- existing text-based scoring (unchanged) ----------------
 function stripCodeFences(s = "") {
   return s.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
 }
 
 async function getPronunciationFeedback({ spokenText, targetPhrase }) {
-  // === Mirror the repo's prompt ===
   const prompt = `
 You are an expert Spanish pronunciation coach. A user is trying to pronounce the phrase "${targetPhrase}" and they said "${spokenText}".
 
@@ -50,13 +51,9 @@ overall (string).
 
   const model = genAI.getGenerativeModel({
     model: MODEL_ID,
-    // Use systemInstruction if you want to force role separation;
-    // the repo's text is already in the prompt, so it's optional here.
     generationConfig: { responseMimeType: "application/json" },
   });
 
-  // IMPORTANT: pass an object with contents (NOT an array),
-  // otherwise you'll get the "Unknown name 'role' at parts[0]" 400.
   const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
   });
@@ -80,4 +77,58 @@ overall (string).
   }
 }
 
-module.exports = { getPronunciationFeedback };
+// ---------------- new: audio-first scoring via your Genkit flow ----------------
+function pickFormatFromMime(mime = "") {
+  mime = String(mime).toLowerCase();
+  if (mime.includes("webm")) return "webm";
+  if (mime.includes("ogg")) return "ogg";
+  if (mime.includes("mp4") || mime.includes("m4a")) return "m4a";
+  if (mime.includes("wav")) return "wav";
+  if (mime.includes("mpeg") || mime.includes("mp3")) return "mp3";
+  return "wav";
+}
+
+// We dynamically import your flow to avoid ESM/CJS headaches.
+async function loadGenkitFlow() {
+  const tryPaths = [
+    path.join(process.cwd(), "ai/flows/audio-pronunciation-feedback.js"),
+    path.join(process.cwd(), "ai/flows/audio-pronunciation-feedback.ts"),
+  ];
+  let lastErr;
+  for (const p of tryPaths) {
+    try {
+      return await import(p);
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr || new Error("Could not load audio-pronunciation Genkit flow");
+}
+
+/**
+ * Audio-first feedback using your Genkit flow.
+ * @param {Object} params
+ * @param {Buffer|string} params.audio - raw Buffer or base64
+ * @param {string} params.targetPhrase
+ * @param {string} [params.mime]
+ */
+async function getPronunciationFeedbackFromAudio({ audio, targetPhrase, mime }) {
+  const { getAudioPronunciationFeedback } = await loadGenkitFlow();
+
+  const audioData = Buffer.isBuffer(audio) ? audio.toString("base64") : String(audio);
+  const audioFormat = pickFormatFromMime(mime);
+
+  // This returns the rich object your flow defines (with transcribedText, specificIssues, etc.)
+  const out = await getAudioPronunciationFeedback({
+    audioData,
+    targetPhrase,
+    audioFormat,
+  });
+
+  return out;
+}
+
+module.exports = {
+  getPronunciationFeedback,
+  getPronunciationFeedbackFromAudio, // <-- new export
+};
