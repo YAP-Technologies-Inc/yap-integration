@@ -45,10 +45,18 @@ export default function ProfilePage() {
   useUserStats(userId); // kept if you need it later
   const {
     name,
-    accountCreated,
+    created_at,
     isLoading: profileLoading,
     isError: profileError,
   } = useUserProfile(userId);
+
+  // Format created_at to just the month name (e.g., "August")
+  const createdMonth =
+    created_at &&
+    (() => {
+      const date = new Date(created_at);
+      return date.toLocaleString("en-US", { month: "long" });
+    })();
 
   const isLoading = profileLoading || isBalanceLoading || !evmAddress;
   const hasError = profileError || balanceError;
@@ -83,21 +91,21 @@ export default function ProfilePage() {
       .finally(() => setMdLoading(false));
   }, [activePage]);
 
-  if (isLoading || !walletShort) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p>Loading profile…</p>
-      </div>
-    );
-  }
+  // if (isLoading || !walletShort) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen">
+  //       <p>Loading profile…</p>
+  //     </div>
+  //   );
+  // }
 
-  if (hasError) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-red-500">
-        <p>Failed to load account data.</p>
-      </div>
-    );
-  }
+  // if (hasError) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen text-red-500">
+  //       <p>Failed to load account data.</p>
+  //     </div>
+  //   );
+  // }
 
   const halfCard = CARD_HEIGHT / 2;
 
@@ -137,9 +145,9 @@ export default function ProfilePage() {
                 {walletShort}
                 <TablerCopy className="inline w-4 h-4 ml-1 align-middle text-gray-500" />
               </span>
-              {accountCreated && (
+              {created_at && (
                 <span className="text-[11px] text-gray-400 mt-0.5">
-                  Joined {accountCreated}
+                  Joined {createdMonth}
                 </span>
               )}
             </div>

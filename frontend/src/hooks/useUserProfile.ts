@@ -1,7 +1,7 @@
+// src/hooks/useUserProfile.ts
 import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export function useUserProfile(userId: string | null) {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { data, error, isLoading } = useSWR(
@@ -9,18 +9,11 @@ export function useUserProfile(userId: string | null) {
     fetcher
   );
 
-  let accountCreated = '';
-  if (data?.created_at) {
-    const date = new Date(data.created_at);
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long' };
-    accountCreated = date.toLocaleDateString(undefined, options); 
-  }
-
   return {
     name: data?.name || '',
+    created_at: data?.created_at || '',
     language: data?.language_to_learn || '',
     wallet: data?.wallet || '',
-    accountCreated, 
     isLoading,
     isError: error,
   };
