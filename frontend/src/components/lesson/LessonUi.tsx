@@ -20,6 +20,7 @@ import { GrammarCard } from "@/components/cards/GrammarCard";
 import { ComprehensionCard } from "@/components/cards/ComprehensionCard";
 import { useSnackbar } from "@/components/ui/SnackBar";
 import { getRandomFeedbackPhrase } from "@/utils/feedbackPhrase";
+import { ScoreModal } from "@/components/lesson/ScoreModal";
 
 interface StepVocab {
   variant: "vocab";
@@ -41,8 +42,8 @@ interface StepSentence {
   variant: "sentence";
   question: string;
 }
-
 type Step = StepVocab | StepGrammar | StepComp | StepSentence;
+
 const passingScore = 80;
 
 interface LessonUiProps {
@@ -93,13 +94,53 @@ export default function LessonUi({
     intonationText: string;
     overallText: string;
     specificIssues: string[];
+    accuracyIssue?: string;
+    fluencyIssue?: string;
+    intonationIssue?: string;
   }>(null);
+
+  // === TEST MODE TOGGLE ===
+  // Use either env var (build-time) or localStorage flag (runtime) to switch.
+  // === TEST MODE TOGGLE ===
+  // Works with env, localStorage('pron_test_mode' or 'testing'), or ?test=1
+  const TEST_MODE =
+    process.env.NEXT_PUBLIC_PRON_TEST === "1" ||
+    (typeof window !== "undefined" &&
+      (localStorage.getItem("pron_test_mode") === "1" ||
+        localStorage.getItem("testing") === "1" ||
+        new URLSearchParams(window.location.search).get("test") === "1"));
+
+  function applyFakePronunciationResult() {
+    const fakeOverall = 75;
+    setScore(fakeOverall);
+    setBreakdown({
+      accuracy: 80,
+      fluency: 70,
+      completeness: 75,
+    });
+    setTextFeedback({
+      transcript: "soy de",
+      accuracyText: "Pretty close—watch the 's' onset.",
+      fluencyText: "Smooth enough, minor hesitation.",
+      intonationText: "Natural, but ends a bit flat.",
+      overallText: "Good work! Keep practicing that initial consonant.",
+      specificIssues: ["S onset slightly softened", "Falling pitch too early"],
+      accuracyIssue: "This is working for what you spoke wrong (accuracy).",
+      fluencyIssue: "This is working for what you spoke wrong (fluency).",
+      intonationIssue: "This is working for what you spoke wrong (intonation).",
+    });
+    setFeedback("Good work! Keep practicing that initial consonant.");
+    setShowBack(true);
+  }
 
   // === SPEECH TRANSCRIPT STATE (fresh per attempt) ===
   const [spokenText, setSpokenText] = useState("");
   const recognitionRef = useRef<any>(null);
-  const attemptIdRef = useRef<string>(""); // NEW: id per attempt
-  const [hasFreshTranscript, setHasFreshTranscript] = useState(false); // NEW
+  const attemptIdRef = useRef<string>("");
+  const [hasFreshTranscript, setHasFreshTranscript] = useState(false);
+  const [showScore, setShowScore] = useState<
+    "Accuracy" | "Fluency" | "Intonation" | null
+  >(null);
 
   // Init Web Speech once
   useEffect(() => {
@@ -115,7 +156,7 @@ export default function LessonUi({
     rec.onresult = (e: any) => {
       const t = e?.results?.[0]?.[0]?.transcript || "";
       setSpokenText(t);
-      setHasFreshTranscript(true); // mark transcript as captured THIS attempt
+      setHasFreshTranscript(true);
       console.log("[SR] transcript:", t);
     };
     recognitionRef.current = rec;
@@ -124,7 +165,7 @@ export default function LessonUi({
   const [breakdown, setBreakdown] = useState<{
     accuracy: number;
     fluency: number;
-    completeness: number; // used for Intonation in UI
+    completeness: number; // Intonation in UI
   } | null>(null);
 
   const needsSpeaking =
@@ -146,10 +187,8 @@ export default function LessonUi({
 
   const next = () => {
     if (stepIndex + 1 >= total) {
-      // Final step — trigger verify
       verifyLessonCompletion();
     } else {
-      // Normal step — advance
       setStepIndex(stepIndex + 1);
       resetAudioState();
       setShowBack(false);
@@ -164,15 +203,15 @@ export default function LessonUi({
     setBreakdown(null);
     setSpokenText("");
     setHasFreshTranscript(false);
+    setShowScore(null);
+    setTextFeedback(null);
   };
 
   const getSupportedMimeType = (): string => {
-    // Prefer plain types first (no ";codecs=...")
     const types = [
-      "audio/webm", // Chrome/Android
-      "audio/mp4", // Safari/iOS (records AAC in MP4/M4A container)
-      "audio/ogg", // Firefox
-      // fallbacks with explicit codecs if needed
+      "audio/webm",
+      "audio/mp4",
+      "audio/ogg",
       "audio/webm;codecs=opus",
       "audio/ogg;codecs=opus",
     ];
@@ -181,12 +220,11 @@ export default function LessonUi({
         if ((MediaRecorder as any).isTypeSupported?.(t)) return t;
       } catch {}
     }
-    return ""; // let browser choose
+    return "";
   };
 
   const startRecording = async () => {
     try {
-      // NEW: start a fresh attempt and clear stale state
       attemptIdRef.current = crypto?.randomUUID?.() || newUploadId();
       setSpokenText("");
       setHasFreshTranscript(false);
@@ -248,7 +286,6 @@ export default function LessonUi({
       const blob = await stopRecorderAndGetBlob(mediaRecorder, mimeType);
       console.log("[REC] stop resolved", { size: blob.size, type: blob.type });
 
-      // Min guard: avoid zero-byte/few-byte blobs
       if (!blob || blob.size < 200) {
         console.warn("[REC] tiny/empty blob - ignoring", { size: blob?.size });
         showSnackbar({
@@ -259,10 +296,14 @@ export default function LessonUi({
         return;
       }
 
-      // Create URL & store
       const url = URL.createObjectURL(blob);
       setAudioBlob(blob);
       setAudioURL(url);
+
+      // In TEST_MODE, show fake scores immediately on stop.
+      if (TEST_MODE) {
+        applyFakePronunciationResult();
+      }
     } catch (err) {
       console.error("[REC] stop error", err);
       showSnackbar({
@@ -276,7 +317,6 @@ export default function LessonUi({
       try {
         recognitionRef.current?.stop();
       } catch {}
-      // Release mic tracks so browsers don’t keep input “busy”
       try {
         mediaStream?.getTracks().forEach((t) => t.stop());
       } catch {}
@@ -307,7 +347,6 @@ export default function LessonUi({
         if (!resolved) reject(e?.error ?? new Error("Recorder error"));
       };
 
-      // Call stop; some browsers need a tick for last dataavailable
       try {
         rec.stop();
       } catch (err) {
@@ -315,10 +354,17 @@ export default function LessonUi({
       }
     });
 
-  const [isVerifying, setIsVerifying] = useState(false); // top-level state
+  const [isVerifying, setIsVerifying] = useState(false);
 
-  // === UPLOAD & SCORE ===
+  // === UPLOAD & SCORE (Prod) ===
   const assessPronunciation = async () => {
+    // === TEST MODE: Never hit backend, just show fake result ===
+    if (TEST_MODE) {
+      applyFakePronunciationResult();
+      setIsLoading(false);
+      return;
+    }
+
     if (!referenceText || !audioBlob) return;
 
     setIsLoading(true);
@@ -352,7 +398,6 @@ export default function LessonUi({
       fd.append("audio", normalizedBlob, `recording.${ext}`);
       fd.append("targetPhrase", referenceText);
       fd.append("attemptId", attemptIdRef.current);
-      // Only send transcript if captured during THIS attempt
       if (hasFreshTranscript && spokenText?.trim()) {
         fd.append("spokenText", spokenText.trim());
       }
@@ -362,7 +407,6 @@ export default function LessonUi({
         body: fd,
       });
 
-      // Handle STT overload gracefully
       if (res.status === 503) {
         const err = await res.json().catch(() => ({}));
         console.warn("[PRONUNCIATION] 503:", err);
@@ -382,10 +426,9 @@ export default function LessonUi({
       setBreakdown({
         accuracy: result.accuracyScore || 0,
         fluency: result.fluencyScore || 0,
-        completeness: result.intonationScore || 0, // "Intonation" slot
+        completeness: result.intonationScore || 0,
       });
 
-      // NEW: console.log and stash text feedback
       console.log("[FEEDBACK]", {
         target: referenceText,
         heard: result.transcript,
@@ -395,6 +438,7 @@ export default function LessonUi({
         overallText: result.overallText,
         specificIssues: result.specificIssues,
       });
+
       setTextFeedback({
         transcript: result.transcript || "",
         accuracyText: result.accuracyText || "",
@@ -406,8 +450,14 @@ export default function LessonUi({
           : [],
       });
       setFeedback(result.overallText || "");
-
       setShowBack(true);
+
+      const willBeIncorrect =
+        (result.accuracyScore || 0) < 60 ||
+        (result.fluencyScore || 0) < 60 ||
+        (result.intonationScore || 0) < 60;
+      const sound = willBeIncorrect ? incorrectChime : correctChime;
+      new Audio(sound).play();
     } catch (e) {
       console.error("[PRONUNCIATION] error", e);
       showSnackbar({
@@ -465,11 +515,13 @@ export default function LessonUi({
   const incorrectChime = "/audio/incorrect.mp3";
 
   useEffect(() => {
-    if (score === null) return;
-    const sound = score >= passingScore ? correctChime : incorrectChime;
+    if (score === null || !breakdown) return;
+    const sound = isAnyRed(breakdown) ? incorrectChime : correctChime;
     const audio = new Audio(sound);
     audio.play();
-  }, [score]);
+  }, [score, breakdown]);
+
+  const handleModalClose = () => setShowScore(null);
 
   return (
     <div className="fixed inset-0 bg-background-primary flex flex-col h-[100dvh] overflow-hidden">
@@ -495,6 +547,7 @@ export default function LessonUi({
             {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
           </div>
         </div>
+
         <div className="w-full flex-shrink-0">
           <div className="h-4 w-full border-2 border-gray-50 bg-white/90 rounded-full overflow-hidden">
             <div
@@ -503,6 +556,7 @@ export default function LessonUi({
             />
           </div>
         </div>
+
         {/* Card area */}
         <div className="flex flex-1 items-start justify-center mt-8 min-h-[56dvh] sm:min-h-[50dvh]">
           {current.variant === "vocab" && (
@@ -519,32 +573,15 @@ export default function LessonUi({
                 }
               }
               locked={isLoading || isVerifying}
-              stepIndex={stepIndex} // <-- passed in
-              total={total} // <-- passed in
-              score={score} // <-- passed in
+              stepIndex={stepIndex}
+              total={total}
+              score={score}
             />
           )}
-          {/* commented out for testing  */}
-          {/* {current.variant === 'grammar' && (
-          <GrammarCard rule={current.rule} examples={current.examples} />
-        )}
-        {current.variant === 'comprehension' && (
-          <ComprehensionCard
-            text={current.text}
-            questions={current.questions}
-          />
-        )} 
-        {current.variant === 'sentence' && (
-          <div className="relative w-full max-w-sm">
-            <div className="absolute inset-0 rounded-2xl bg-white shadow-md opacity-30" />
-            <div className="absolute inset-0 rounded-2xl bg-white shadow-md opacity-20" />
-            <div className="relative z-10 w-full h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center justify-center text-center">
-              <h2 className="text-2xl font-bold text-secondary mb-4">
-                {current.question}
-              </h2>
-            </div>
-          </div> 
-        )} */}
+          {/* Keep other card types as you had them if needed */}
+          {/* {current.variant === 'grammar' && <GrammarCard rule={current.rule} examples={current.examples} />} */}
+          {/* {current.variant === 'comprehension' && <ComprehensionCard text={current.text} questions={current.questions} />} */}
+          {/* {current.variant === 'sentence' && (...) } */}
         </div>
 
         {/* Mic controls for speaking steps */}
@@ -568,9 +605,15 @@ export default function LessonUi({
                 )}
 
                 <button
-                  onClick={() =>
-                    isRecording ? stopRecording() : startRecording()
-                  }
+                  onClick={() => {
+                    if (isRecording) {
+                      stopRecording();
+                      // In TEST_MODE, fake scores are applied in stopRecording().
+                      // In PROD, user will press "Submit" to score.
+                    } else {
+                      startRecording();
+                    }
+                  }}
                   disabled={
                     isLoading || isVerifying || !!audioURL // lock mic if there's a recording
                   }
@@ -617,7 +660,13 @@ export default function LessonUi({
           {score === null && (
             <div className="pb-2">
               <button
-                onClick={assessPronunciation}
+                onClick={() => {
+                  if (TEST_MODE) {
+                    applyFakePronunciationResult();
+                  } else {
+                    assessPronunciation();
+                  }
+                }}
                 disabled={!audioURL || isLoading}
                 className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 ${
                   audioURL
@@ -629,36 +678,40 @@ export default function LessonUi({
               </button>
             </div>
           )}
+
           {/* Score + Feedback + Actions */}
           {score !== null && (
             <div className="w-full rounded-xl pb-2 space-y-4">
               <div
                 className={`w-screen left-1/2 right-1/2 -ml-[50vw] relative h-1 rounded-full mb-3 ${
-                  score >= passingScore ? "bg-green-200" : "bg-red-200"
+                  isAnyRed(breakdown)
+                    ? "bg-red-200"
+                    : score !== null
+                    ? "bg-green-200"
+                    : "bg-yellow-200"
                 }`}
               />
               <div className="flex flex-col items-start mb-4">
-                {/* Check/X and "Correct"/"Incorrect" */}
                 <div className="flex items-center gap-2 mb-2">
                   <div
                     className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
-                      score >= passingScore
-                        ? "bg-[#4eed71] border-[#41ca55]"
-                        : "bg-[#f04648] border-[#d12a2d]"
+                      isAnyRed(breakdown)
+                        ? "bg-[#f04648] border-[#d12a2d]"
+                        : "bg-[#4eed71] border-[#41ca55]"
                     }`}
                   >
-                    {score >= passingScore ? (
-                      <TablerCheck className="w-6 h-6 text-white" />
-                    ) : (
+                    {isAnyRed(breakdown) ? (
                       <TablerX className="w-6 h-6 text-white" />
+                    ) : (
+                      <TablerCheck className="w-6 h-6 text-white" />
                     )}
                   </div>
                   <p className="text-2xl font-semibold text-[#2D1C1C]">
-                    {score >= passingScore ? "Correct" : "Incorrect"}
+                    {isAnyRed(breakdown) ? "Incorrect" : "Correct"}
                   </p>
                 </div>
 
-                {/* Score breakdown - left aligned with icon above */}
+                {/* Score breakdown */}
                 <div className="flex flex-row gap-6 text-secondary">
                   {[
                     { label: "Accuracy", value: breakdown?.accuracy ?? 0 },
@@ -679,12 +732,39 @@ export default function LessonUi({
 
                     return (
                       <div className="flex items-center gap-2" key={label}>
-                        <div
-                          className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium ${color}`}
+                        <button
+                          type="button"
+                          onClick={() => setShowScore(label)}
+                          className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
+                          aria-label={`Show ${label} score details`}
                         >
-                          {value}
-                        </div>
+                          {Math.round(value)}
+                        </button>
                         <span className="text-sm">{label}</span>
+                        {showScore === label && textFeedback && (
+                          <ScoreModal
+                            onClose={handleModalClose}
+                            scoreType={
+                              label as "Accuracy" | "Fluency" | "Intonation"
+                            }
+                            value={
+                              label === "Accuracy"
+                                ? breakdown?.accuracy ?? 0
+                                : label === "Fluency"
+                                ? breakdown?.fluency ?? 0
+                                : breakdown?.completeness ?? 0
+                            }
+                            text={
+                              label === "Accuracy"
+                                ? textFeedback.accuracyText
+                                : label === "Fluency"
+                                ? textFeedback.fluencyText
+                                : textFeedback.intonationText
+                            }
+                            transcript={textFeedback.transcript}
+                            specificIssues={textFeedback.specificIssues}
+                          />
+                        )}
                       </div>
                     );
                   })}
@@ -714,5 +794,13 @@ export default function LessonUi({
         )}
       </div>
     </div>
+  );
+}
+
+function isAnyRed(breakdown: { accuracy: number; fluency: number; completeness: number }) {
+  return (
+    breakdown.accuracy < 60 ||
+    breakdown.fluency < 60 ||
+    breakdown.completeness < 60
   );
 }

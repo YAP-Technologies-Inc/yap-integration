@@ -9,6 +9,7 @@ import { useOnChainBalance } from "@/hooks/useOnBlockChain";
 import { useUserStats } from "@/hooks/useUserStats";
 import { useSnackbar } from "@/components/ui/SnackBar";
 import ReactMarkdown from "react-markdown";
+import { ReportIssue } from "@/components/debug/ReportIssue";
 
 type InfoPage = "menu" | "about" | "terms" | "privacy";
 
@@ -29,6 +30,7 @@ export default function ProfilePage() {
   const [mdText, setMdText] = useState<string>("");
   const [mdLoading, setMdLoading] = useState(false);
   const [mdError, setMdError] = useState<string | null>(null);
+  const [showReport, setShowReport] = useState(false);
 
   const { showSnackbar } = useSnackbar();
   const { user } = usePrivy();
@@ -208,25 +210,35 @@ export default function ProfilePage() {
       <div className="flex-1 w-full" style={{ marginTop: halfCard }}>
         <div className="w-full bg-white pt-10 pb-6 flex flex-col min-h-[calc(100vh-120px)]">
           <div className="rounded-2xl bg-white overflow-hidden">
-        {[
-          { label: "About app", key: "about" as const },
-          { label: "Terms & Conditions", key: "terms" as const },
-          { label: "Privacy Policy", key: "privacy" as const },
-        ].map(({ label, key }, i, arr) => (
-          <button
-            key={key}
-            onClick={() => setActivePage(key)}
-            className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left"
-          >
-            <span className="text-[15px] font-medium text-secondary">
-          {label}
-            </span>
-            <TablerChevronRight className="w-4 h-4 text-gray-400" />
-            {i < arr.length - 1 && (
-          <span className="absolute left-4 right-4 bottom-0 h-px" />
-            )}
-          </button>
-        ))}
+            {[
+              { label: "About app", key: "about" as const },
+              { label: "Terms & Conditions", key: "terms" as const },
+              { label: "Privacy Policy", key: "privacy" as const },
+            ].map(({ label, key }, i, arr) => (
+              <button
+                key={key}
+                onClick={() => setActivePage(key)}
+                className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left"
+              >
+                <span className="text-[15px] font-medium text-secondary">
+                  {label}
+                </span>
+                <TablerChevronRight className="w-4 h-4 text-gray-400" />
+                {i < arr.length - 1 && (
+                  <span className="absolute left-4 right-4 bottom-0 h-px" />
+                )}
+              </button>
+            ))}
+            {/* --- Add Report Issue item --- */}
+            <button
+              onClick={() => setShowReport(true)}
+              className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left"
+            >
+              <span className="text-[15px] font-medium text-secondary">
+                Report an Issue
+              </span>
+              <TablerChevronRight className="w-4 h-4 text-gray-400" />
+            </button>
           </div>
         </div>
       </div>
@@ -285,6 +297,9 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
+
+      {/* Report Issue Modal */}
+      {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
 
       <BottomNavBar />
     </div>

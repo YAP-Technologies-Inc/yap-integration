@@ -23,9 +23,9 @@ import { tokenAbi } from "@/app/abis/YAPToken";
 import TestingNoticeModal from "@/components/TestingNoticeModal";
 import { useMessageSignModal } from "@/components/cards/MessageSignModal";
 import { useSnackbar } from "@/components/ui/SnackBar";
-import {
-  getTodayStatus,
-} from "@/utils/dailyQuizStorage";
+import { getTodayStatus } from "@/utils/dailyQuizStorage";
+
+
 export default function HomePage() {
   useInitializeUser();
 
@@ -45,6 +45,7 @@ export default function HomePage() {
     }[]
   >([]);
 
+
   const { wallets } = useWallets();
   const router = useRouter();
 
@@ -61,7 +62,7 @@ export default function HomePage() {
   const { balance: onChainBalance, isLoading: isBalanceLoading } =
     useOnChainBalance(evmAddress);
 
- const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
+  const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
 
   const { signTypedData } = useSignTypedData();
   // Compute lesson availability based on completed lessons
@@ -211,7 +212,6 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-
         {/* Talk to Spanish Teacher */}
         <div className="mt-3">
           <button
@@ -228,9 +228,9 @@ export default function HomePage() {
         <div className="relative z-0 " onClick={handleDailyQuizUnlocked}>
           <DailyQuizCard
             isUnlocked={dailyQuizUnlocked}
-            isCompleted={completedToday} 
+            isCompleted={completedToday}
             attemptsLeft={attemptsLeft}
-            avgScore={lastAttemptAvg} 
+            avgScore={lastAttemptAvg}
           />
         </div>
       </div>
