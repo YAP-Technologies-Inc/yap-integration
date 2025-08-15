@@ -12,11 +12,11 @@ interface FlashcardProps {
   score: number | null;
 }
 
-function isPassing(score: number | null) {
-  // null = no score yet, so no underline
+function getUnderlineColor(score: number | null) {
   if (score === null) return "border-transparent";
-  if (score >= 60) return "border-green-400"; // green for passing (yellow or green)
-  return "border-red-400"; // red for failing
+  if (score >= 80) return "border-[#4eed71]"; // green
+  if (score >= 60) return "border-[#e4a92d]"; // yellow
+  return "border-[#f04648]"; // red
 }
 
 const Flashcard: FC<FlashcardProps> = ({
@@ -82,7 +82,7 @@ const Flashcard: FC<FlashcardProps> = ({
           <>
             <div className="flex items-center justify-center">
               <h2
-                className={`text-3xl font-extrabold text-secondary border-b-3 ${isPassing(score)}`}
+                className={`text-3xl font-extrabold text-secondary border-b-3 ${getUnderlineColor(score)}`}
               >
                 {es}
               </h2>

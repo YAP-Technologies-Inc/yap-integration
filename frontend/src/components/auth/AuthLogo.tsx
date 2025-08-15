@@ -2,9 +2,9 @@
 export default function AuthLogo({ variant = "default" }: { variant?: "default" | "red" }) {
   return (
     <img
-      src={variant === "red" ? "/assets/yapred.png" : "/assets/yapwhite.png"}
+      src={variant === "red" ? "/assets/yapred.svg" : "/assets/yapwhite.svg"}
       alt="YAP Logo"
-      className="h-[48px] w-auto"
+      className="h-[56px] w-auto"
     />
   );
 }

@@ -1,100 +1,88 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { TablerLock } from '@/icons/Lock';
-import { TablerCheck } from '@/icons/Check';
-import {
-  getTodayAttemptsLeft,
-  getTodayLastAttemptAvg,
-  getTodayCompleted,
-} from '@/utils/dailyQuizStorage';
+"use client";
+import { TablerLock } from "@/icons/Lock";
+import { TablerCheck } from "@/icons/Check";
 
 interface DailyQuizCardProps {
   isUnlocked: boolean;
-  // You can still pass these as fallbacks; the card will override from storage on mount.
-  isCompleted?: boolean;
-  attemptsLeft?: number;
-  lastAttemptAvg?: number;
+  isCompleted: boolean;
+  attemptsLeft: number; // 0..3
+  lastAttemptAvg: number; // 0..100 (last finished attempt for today)
 }
 
 export default function DailyQuizCard({
   isUnlocked,
-  isCompleted: propCompleted = false,
-  attemptsLeft: propAttemptsLeft = 3,
-  lastAttemptAvg: propLastAttemptAvg = 0,
+  isCompleted,
+  attemptsLeft,
+  lastAttemptAvg,
 }: DailyQuizCardProps) {
-  const [attemptsLeft, setAttemptsLeft] = useState(propAttemptsLeft);
-  const [lastAttemptAvg, setLastAttemptAvg] = useState(propLastAttemptAvg);
-  const [isDone, setIsDone] = useState(propCompleted);
-
-  useEffect(() => {
-    // Read today's data from the same date-scoped key used by the quiz
-    setAttemptsLeft(getTodayAttemptsLeft());
-    setLastAttemptAvg(getTodayLastAttemptAvg());
-    setIsDone(getTodayCompleted());
-  }, []);
-
+  // Priorities: completed > locked > active
   const isLocked = !isUnlocked || attemptsLeft <= 0;
-  const isActive = !isLocked && !isDone;
+  const percent = Math.min(Math.max(Math.round(lastAttemptAvg || 0), 0), 100);
 
-  const bgClass = isLocked
-    ? 'bg-gray-300 text-gray-500'
-    : isDone
-    ? 'bg-green-100 text-green-800 border-b-3 border-r-1 border-green-200'
-    : 'bg-white text-[#2D1C1C]';
+  const bgClass = isCompleted
+    ? "bg-green-100 text-green-800 border-b-3 border-r-1 border-green-200"
+    : isLocked
+    ? "bg-gray-300 text-gray-600"
+    : "bg-white text-[#2D1C1C]";
 
-  const overlayIcon = isLocked ? (
-    <TablerLock className="w-10 h-10 text-gray-600" />
-  ) : isDone ? (
+  const overlayIcon = isCompleted ? (
     <TablerCheck className="w-10 h-10 text-green-500" />
+  ) : isLocked ? (
+    <TablerLock className="w-10 h-10 text-gray-600" />
   ) : null;
 
-  // Only show the "previous attempt" (lastAttemptAvg)
-  const percent = Math.min(Math.round(lastAttemptAvg || 0), 100);
+  const showProgress = !isCompleted && !isLocked;
 
   return (
-    <div className={`relative rounded-xl py-7 border-b-3 border-r-1 border-[#e3ded3] w-full max-w-sm mx-auto ${bgClass} transition-all duration-300`}>
-      {(isLocked || isDone) && (
+    <div
+      className={`relative rounded-xl py-7 border-b-3 border-r-1 border-[#e3ded3] w-full max-w-sm mx-auto ${bgClass} transition-all duration-300`}
+    >
+      {(isCompleted || isLocked) && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
           {overlayIcon}
         </div>
       )}
 
-      {/* Keep vertical padding consistent for all states */}
+      {/* keep height stable */}
       <div className="py-7">
-        {/* Show progress + attempts only if active (not locked, not done) */}
-        {isActive && (
-          <div>
-            <div className="flex items-center justify-center gap-4 mb-2">
-              <svg width={38} height={38} viewBox="0 0 48 48">
-                <circle cx={24} cy={24} r={20} fill="none" stroke="#E5E7EB" strokeWidth={4} />
-                <circle
-                  cx={24}
-                  cy={24}
-                  r={20}
-                  fill="none"
-                  stroke="#FACC15"
-                  strokeWidth={4}
-                  strokeDasharray={2 * Math.PI * 20}
-                  strokeDashoffset={2 * Math.PI * 20 * (1 - percent / 100)}
-                  strokeLinecap="round"
-                  style={{ transition: 'stroke-dashoffset 0.5s' }}
-                />
-                <text
-                  x="50%"
-                  y="50%"
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fontSize={13}
-                  fill="#2D1C1C"
-                  fontWeight="bold"
-                >
-                  {percent}%
-                </text>
-              </svg>
-              <span className="text-sm font-semibold text-secondary">
-                {attemptsLeft}/3 attempts left
-              </span>
-            </div>
+        {showProgress && (
+          <div className="flex items-center justify-center gap-4 mb-2">
+            <svg width={38} height={38} viewBox="0 0 48 48" aria-hidden="true">
+              <circle
+                cx={24}
+                cy={24}
+                r={20}
+                fill="none"
+                stroke="#E5E7EB"
+                strokeWidth={4}
+              />
+              <circle
+                cx={24}
+                cy={24}
+                r={20}
+                fill="none"
+                stroke="#FACC15"
+                strokeWidth={4}
+                strokeDasharray={2 * Math.PI * 20}
+                strokeDashoffset={2 * Math.PI * 20 * (1 - percent / 100)}
+                strokeLinecap="round"
+                style={{ transition: "stroke-dashoffset 0.5s" }}
+              />
+              <text
+                x="50%"
+                y="50%"
+                textAnchor="middle"
+                dominantBaseline="central"
+                fontSize={13}
+                fill="#2D1C1C"
+                fontWeight="bold"
+              >
+                {percent}%
+              </text>
+            </svg>
+            <span className="text-sm font-semibold text-secondary">
+              {attemptsLeft}/3 attempts left
+            </span>
           </div>
         )}
       </div>

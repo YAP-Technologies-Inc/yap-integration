@@ -12,6 +12,7 @@ import {
   TablerVolume,
   TablerFlagFilled,
   TablerCheck,
+  TablerX as TablerXIcon,
 } from "@/icons";
 import { ReportIssue } from "@/components/debug/ReportIssue";
 
@@ -21,6 +22,9 @@ import { ComprehensionCard } from "@/components/cards/ComprehensionCard";
 import { useSnackbar } from "@/components/ui/SnackBar";
 import { getRandomFeedbackPhrase } from "@/utils/feedbackPhrase";
 import { ScoreModal } from "@/components/lesson/ScoreModal";
+
+// NEW: chime singleton helpers
+import { prepareChimes, playChimeOnce } from "@/utils/chimeOnce";
 
 interface StepVocab {
   variant: "vocab";
@@ -74,9 +78,7 @@ export default function LessonUi({
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
-    null
-  );
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -100,9 +102,6 @@ export default function LessonUi({
   }>(null);
 
   // === TEST MODE TOGGLE ===
-  // Use either env var (build-time) or localStorage flag (runtime) to switch.
-  // === TEST MODE TOGGLE ===
-  // Works with env, localStorage('pron_test_mode' or 'testing'), or ?test=1
   const TEST_MODE =
     process.env.NEXT_PUBLIC_PRON_TEST === "1" ||
     (typeof window !== "undefined" &&
@@ -111,11 +110,11 @@ export default function LessonUi({
         new URLSearchParams(window.location.search).get("test") === "1"));
 
   function applyFakePronunciationResult() {
-    const fakeOverall = 75;
+    const fakeOverall = 40;
     setScore(fakeOverall);
     setBreakdown({
-      accuracy: 80,
-      fluency: 70,
+      accuracy: 20,
+      fluency: 40,
       completeness: 75,
     });
     setTextFeedback({
@@ -205,7 +204,15 @@ export default function LessonUi({
     setHasFreshTranscript(false);
     setShowScore(null);
     setTextFeedback(null);
+    // No manual chime reset needed; play is guarded per attempt key.
   };
+
+  // Prepare chimes once (singleton)
+  const correctChime = "/audio/correct.mp3";
+  const incorrectChime = "/audio/incorrect.mp3";
+  useEffect(() => {
+    prepareChimes({ correct: correctChime, incorrect: incorrectChime });
+  }, []);
 
   const getSupportedMimeType = (): string => {
     const types = [
@@ -274,10 +281,17 @@ export default function LessonUi({
   };
 
   const stopRecording = async () => {
+    if (TEST_MODE) {
+      setIsRecording(false);
+      setMediaRecorder(null);
+      setMediaStream(null);
+      applyFakePronunciationResult();
+      return;
+    }
     if (!mediaRecorder) return;
     try {
       const mimeType = (mediaRecorder as any).mimeType || "audio/unknown";
-      console.log("[REC] stop requested", {
+      console.log("[REC] stop requested]", {
         mimeType,
         time: Date.now(),
         attempt: attemptIdRef.current,
@@ -300,7 +314,6 @@ export default function LessonUi({
       setAudioBlob(blob);
       setAudioURL(url);
 
-      // In TEST_MODE, show fake scores immediately on stop.
       if (TEST_MODE) {
         applyFakePronunciationResult();
       }
@@ -358,13 +371,11 @@ export default function LessonUi({
 
   // === UPLOAD & SCORE (Prod) ===
   const assessPronunciation = async () => {
-    // === TEST MODE: Never hit backend, just show fake result ===
     if (TEST_MODE) {
       applyFakePronunciationResult();
       setIsLoading(false);
       return;
     }
-
     if (!referenceText || !audioBlob) return;
 
     setIsLoading(true);
@@ -451,13 +462,6 @@ export default function LessonUi({
       });
       setFeedback(result.overallText || "");
       setShowBack(true);
-
-      const willBeIncorrect =
-        (result.accuracyScore || 0) < 60 ||
-        (result.fluencyScore || 0) < 60 ||
-        (result.intonationScore || 0) < 60;
-      const sound = willBeIncorrect ? incorrectChime : correctChime;
-      new Audio(sound).play();
     } catch (e) {
       console.error("[PRONUNCIATION] error", e);
       showSnackbar({
@@ -511,15 +515,18 @@ export default function LessonUi({
     }
   };
 
-  const correctChime = "/audio/correct.mp3";
-  const incorrectChime = "/audio/incorrect.mp3";
-
+  // --- NEW: play once per attempt key ---
   useEffect(() => {
-    if (score === null || !breakdown) return;
-    const sound = isAnyRed(breakdown) ? incorrectChime : correctChime;
-    const audio = new Audio(sound);
-    audio.play();
-  }, [score, breakdown]);
+    if (score === null) return;
+
+    // Prefer the attempt id; fallback to lesson/step to avoid accidental replays.
+    const key =
+      (attemptIdRef.current && attemptIdRef.current.length > 0)
+        ? attemptIdRef.current
+        : `${lessonId}:${stepIndex}`;
+
+    playChimeOnce(key, score >= passingScore);
+  }, [score, lessonId, stepIndex]);
 
   const handleModalClose = () => setShowScore(null);
 
@@ -579,9 +586,6 @@ export default function LessonUi({
             />
           )}
           {/* Keep other card types as you had them if needed */}
-          {/* {current.variant === 'grammar' && <GrammarCard rule={current.rule} examples={current.examples} />} */}
-          {/* {current.variant === 'comprehension' && <ComprehensionCard text={current.text} questions={current.questions} />} */}
-          {/* {current.variant === 'sentence' && (...) } */}
         </div>
 
         {/* Mic controls for speaking steps */}
@@ -608,15 +612,11 @@ export default function LessonUi({
                   onClick={() => {
                     if (isRecording) {
                       stopRecording();
-                      // In TEST_MODE, fake scores are applied in stopRecording().
-                      // In PROD, user will press "Submit" to score.
                     } else {
                       startRecording();
                     }
                   }}
-                  disabled={
-                    isLoading || isVerifying || !!audioURL // lock mic if there's a recording
-                  }
+                  disabled={isLoading || isVerifying || !!audioURL}
                   className={`w-20 h-20 bg-[#EF4444] rounded-full flex items-center justify-center border-b-3 border-r-1 border-[#bf373a] ${
                     isLoading || isVerifying || !!audioURL
                       ? "opacity-50 pointer-events-none"
@@ -684,30 +684,27 @@ export default function LessonUi({
             <div className="w-full rounded-xl pb-2 space-y-4">
               <div
                 className={`w-screen left-1/2 right-1/2 -ml-[50vw] relative h-1 rounded-full mb-3 ${
-                  isAnyRed(breakdown)
-                    ? "bg-red-200"
-                    : score !== null
-                    ? "bg-green-200"
-                    : "bg-yellow-200"
+                  score >= passingScore ? "bg-green-200" : "bg-red-200"
                 }`}
               />
               <div className="flex flex-col items-start mb-4">
+                {/* Pass/fail icon and label */}
                 <div className="flex items-center gap-2 mb-2">
                   <div
                     className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
-                      isAnyRed(breakdown)
-                        ? "bg-[#f04648] border-[#d12a2d]"
-                        : "bg-[#4eed71] border-[#41ca55]"
+                      score >= passingScore
+                        ? "bg-[#4eed71] border-[#41ca55]"
+                        : "bg-[#f04648] border-[#d12a2d]"
                     }`}
                   >
-                    {isAnyRed(breakdown) ? (
-                      <TablerX className="w-6 h-6 text-white" />
-                    ) : (
+                    {score >= passingScore ? (
                       <TablerCheck className="w-6 h-6 text-white" />
+                    ) : (
+                      <TablerXIcon className="w-6 h-6 text-white" />
                     )}
                   </div>
                   <p className="text-2xl font-semibold text-[#2D1C1C]">
-                    {isAnyRed(breakdown) ? "Incorrect" : "Correct"}
+                    {score >= passingScore ? "Correct" : "Incorrect"}
                   </p>
                 </div>
 
@@ -716,10 +713,7 @@ export default function LessonUi({
                   {[
                     { label: "Accuracy", value: breakdown?.accuracy ?? 0 },
                     { label: "Fluency", value: breakdown?.fluency ?? 0 },
-                    {
-                      label: "Intonation",
-                      value: breakdown?.completeness ?? 0,
-                    },
+                    { label: "Intonation", value: breakdown?.completeness ?? 0 },
                   ].map(({ label, value }) => {
                     let color =
                       "bg-tertiary border-b-3 border-r-1 border-[#e4a92d]";
@@ -794,13 +788,5 @@ export default function LessonUi({
         )}
       </div>
     </div>
-  );
-}
-
-function isAnyRed(breakdown: { accuracy: number; fluency: number; completeness: number }) {
-  return (
-    breakdown.accuracy < 60 ||
-    breakdown.fluency < 60 ||
-    breakdown.completeness < 60
   );
 }

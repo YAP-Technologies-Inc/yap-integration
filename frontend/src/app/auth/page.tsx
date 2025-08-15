@@ -35,8 +35,9 @@ export default function AuthPage() {
   }, []);
 
   // Dynamically update browser theme color
+  // Set theme color only after auth/profile checks are done to avoid flicker
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || (authenticated && hasProfile === null)) return;
     // User not logged in → use dark theme
     if (!authenticated) {
       setThemeColor(themeColors.secondary);

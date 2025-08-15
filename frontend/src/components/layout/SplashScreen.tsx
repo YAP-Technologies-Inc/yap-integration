@@ -35,7 +35,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
         <AuthLogo variant='red' />
         <button
           onClick={onFinish}
-          className="absolute right-0 top-0 text-sm text-secondary hover:cursor-pointer
+          className="absolute right-0 top-6 text-sm text-secondary hover:cursor-pointer
           lg:right-8 lg:top-2 lg:text-xl
           "
         >
@@ -57,7 +57,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
           />
         </div>
 
-        <p className="text-2xl font-semibold text-secondary text-center max-w-xs mb-6">
+        <p className="text-2xl font-normal text-secondary text-center max-w-xs mb-6">
           {splashSlides[index].text.toUpperCase()}
         </p>
       </div>

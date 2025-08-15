@@ -44,15 +44,15 @@ export default function LessonCard({
     >
       {status === "completed" && (
       <span className="absolute top-2 left-3 w-5 h-5 flex items-center justify-center rounded-2xl bg-tertiary">
-        <TablerCheck className="w-2 h-2 text-white" />
+        <TablerCheck className="w-3 h-3 text-bold text-white" />
       </span>
       )}
       <h3 className="text-xl font-bold mt-4 self-start">
-      Lesson{" "}
-      {(() => {
-        const num = id.split("_")[1];
-        return num.startsWith("0") ? num.slice(1) : num;
-      })()}
+        Lesson{" "}
+        {(() => {
+          const num = id.split("_")[1];
+          return String(Number(num));
+        })()}
       </h3>
       <p
       className="text-sm self-start text-left break-words whitespace-pre-line w-full"

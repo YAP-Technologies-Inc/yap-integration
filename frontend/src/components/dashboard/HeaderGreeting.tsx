@@ -29,7 +29,7 @@ export default function HeaderGreeting() {
     );
   }
 
-  const firstInitial = name.charAt(0).toUpperCase() || '?';
+  // const firstInitial = name.charAt(0).toUpperCase() || '?';
 
   return (
     <div className="flex items-center justify-start w-full lg:py-4 py-2">

@@ -572,15 +572,15 @@ export default function SpanishTeacherConversation() {
       {/* Countdown bar: slides down below the top bar */}
       <span
         className={`
-        fixed left-0 right-0 z-30 flex justify-center
-        transition-transform duration-300
-        ${showCountdown ? "translate-y-16" : "-translate-y-8"}
-        w-full
-      `}
+          fixed left-0 right-0 z-30 flex justify-center
+          w-full top-16
+          transition-opacity duration-200
+          ${showCountdown ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+        `}
       >
         {showCountdown && (
-          <span className="block w-full max-w-screen-sm mx-auto bg-[#fdfbfa] text-secondary text-xs font-semibold py-1 rounded-b-xl shadow text-center">
-            {prettyTime}
+          <span className="block w-full max-w-screen-sm mx-auto bg-[#fdfbfa] text-secondary text-xs font-semibold py-1 shadow text-left pl-4">
+        You have {prettyTime} left in your tutor session
           </span>
         )}
       </span>

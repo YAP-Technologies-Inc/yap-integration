@@ -44,7 +44,7 @@ export function ScoreModal({
       // keep the tint in CSS so fade anim is visible
     >
       {/* Backdrop via pseudo-elem */}
-      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0" />
 
       {/* Panel */}
       <div

@@ -119,10 +119,10 @@ export default function DailyQuizUi() {
 
   // Fake result, same shape as LessonUi
   function applyFakePronunciationResult() {
-    const fakeOverall = 75;
+    const fakeOverall = 90;
     setScore(fakeOverall);
     setBreakdown({
-      accuracy: 80,
+      accuracy: 40,
       fluency: 70,
       completeness: 75,
     });
@@ -290,6 +290,13 @@ export default function DailyQuizUi() {
     });
 
   const stopRecording = async () => {
+    if (TEST_MODE) {
+      setIsRecording(false);
+      setMediaRecorder(null);
+      setMediaStream(null);
+      applyFakePronunciationResult();
+      return;
+    }
     if (!mediaRecorder) return;
     try {
       const mimeType = (mediaRecorder as any).mimeType || "audio/unknown";
@@ -704,32 +711,34 @@ export default function DailyQuizUi() {
           {/* Post-score actions */}
           {score !== null && (
             <div className="w-full rounded-xl pb-2 space-y-4">
+              {/* Pass/fail underline */}
               <div
                 className={`w-screen left-1/2 right-1/2 -ml-[50vw] relative h-1 rounded-full mb-3 ${
                   score >= PASSING_CARD_SCORE ? "bg-green-200" : "bg-red-200"
                 }`}
               />
               <div className="flex flex-col items-start mb-4">
+                {/* Pass/fail icon and label */}
                 <div className="flex items-center gap-2 mb-2">
                   <div
                     className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
-                      breakdown && isAnyRed(breakdown)
-                        ? "bg-[#f04648] border-[#d12a2d]"
-                        : "bg-[#4eed71] border-[#41ca55]"
+                      score >= PASSING_CARD_SCORE
+                        ? "bg-[#4eed71] border-[#41ca55]"
+                        : "bg-[#f04648] border-[#d12a2d]"
                     }`}
                   >
-                    {breakdown && isAnyRed(breakdown) ? (
-                      <TablerX className="w-6 h-6 text-white" />
-                    ) : (
+                    {score >= PASSING_CARD_SCORE ? (
                       <TablerCheck className="w-6 h-6 text-white" />
+                    ) : (
+                      <TablerX className="w-6 h-6 text-white" />
                     )}
                   </div>
                   <p className="text-2xl font-semibold text-[#2D1C1C]">
-                    {breakdown && isAnyRed(breakdown) ? "Incorrect" : "Correct"}
+                    {score >= PASSING_CARD_SCORE ? "Correct" : "Incorrect"}
                   </p>
                 </div>
 
-                {/* Same modal behavior as LessonUi */}
+                {/* Score breakdown (colors per part still use their thresholds) */}
                 <div className="flex flex-row gap-6 text-secondary">
                   {[
                     {
@@ -814,12 +823,5 @@ export default function DailyQuizUi() {
         )}
       </div>
     </div>
-  );
-}
-function isAnyRed(breakdown: { accuracy: number; fluency: number; completeness: number }) {
-  return (
-    breakdown.accuracy < 60 ||
-    breakdown.fluency < 60 ||
-    breakdown.completeness < 60
   );
 }

@@ -17,7 +17,7 @@ export default function BalanceCard() {
 
   return (
     <div
-      className={`bg-white w-full rounded-3xl shadow px-4 py-4 flex items-center justify-between border-b-3 ${
+      className={`bg-white w-full rounded-3xl shadow px-4 py-4 flex items-center justify-between border-b-3 border-r-1${
         balanceError ? "border-red-200 text-red-500" : "border-[#e3ded3]"
       }`}
     >
@@ -27,7 +27,7 @@ export default function BalanceCard() {
         </span>
         <span className="text-2xl font-bold text-secondary">
           {balanceError ? "Error" : displayBalance}
-          {!balanceError && <span className="text-base font-semibold"> YAP</span>}
+          {!balanceError && <span className="text-xs font-normal"> YAP</span>}
         </span>
       </div>
       <img

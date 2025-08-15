@@ -83,19 +83,19 @@ export default function SignUpForm() {
       <div className="flex flex-col items-center">
         <div className=" mb-4 text-center">
           <h2
-            className="text-2xl font-bold text-secondary
+            className="text-2xl pt-8 font-semibold text-secondary
         lg:w-max-lg
         "
           >
             Create an account
           </h2>
-          <p className="text-base text-secondary mt-1">
-            Let's get started! Enter your name below.
+          <p className="text-base text-[#696262] mt-1">
+            Let&#39;s get started! Enter your name below.
           </p>
         </div>
       </div>
 
-      <div className="flex-grow flex flex-col items-center">
+      <div className="flex-grow flex flex-col pt-2 items-center">
         <form
           onSubmit={handleNameSubmit}
           className="w-full max-w-sm flex flex-col gap-4"
@@ -107,7 +107,7 @@ export default function SignUpForm() {
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-white border-b-3 border-[#e2ddd3] placeholder-[#A59C9C] text-secondary outline-none"
+            className="w-full px-4 py-3 rounded-xl bg-white border-b-3 border-r-1 border-[#e2ddd3] placeholder-[#A59C9C] text-secondary outline-none"
             required
           />
         </form>
@@ -121,7 +121,7 @@ export default function SignUpForm() {
         <button
           type="submit"
           form="signup-form"
-          className="w-full max-w-sm bg-secondary text-white font-semibold py-4 px-8 rounded-full border-b-3 border-black hover:cursor-pointer"
+          className="w-full max-w-sm bg-secondary text-white font-semibold py-4 px-8 rounded-full border-b-3 border-r-1 border-black hover:cursor-pointer"
         >
           Next
         </button>

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, {
   createContext,
   ReactNode,
@@ -7,14 +7,19 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import clsx from 'clsx';
-import { TablerCheck, TablerInfoCircle, TablerInfoTriangle } from "@/icons";
+} from "react";
+import clsx from "clsx";
+import {
+  TablerCheck,
+  TablerInfoCircle,
+  TablerInfoTriangle,
+  TablerDiscountCheckFilled,
+} from "@/icons";
 
 export interface SnackProps {
   id: number;
   message: string;
-  variant?: 'success' | 'error' | 'info' | 'completion' | 'custom';
+  variant?: "success" | "error" | "info" | "completion" | "custom";
   onDismiss: (id: number) => void;
   icon?: ReactNode;
   action?: ReactNode;
@@ -24,10 +29,10 @@ export interface SnackProps {
 function Snack({
   id,
   message,
-  variant = 'info',
+  variant = "info",
   icon,
   action,
-  className = '',
+  className = "",
   onDismiss,
 }: SnackProps) {
   const defaultIcon = (() => {
@@ -45,7 +50,11 @@ function Snack({
           </div>
         );
       case "custom":
-        return <TablerCheck className="w-6 h-6 text-green-600" />;
+        return (
+          <span className="inline-flex items-center justify-center w-6 h-6">
+            <TablerDiscountCheckFilled className="w-5 h-5 text-tertiary" />
+          </span>
+        );
       default:
         return <TablerInfoCircle className="w-6 h-6 text-blue-600" />;
     }
@@ -54,9 +63,9 @@ function Snack({
   return (
     <div
       className={clsx(
-        'flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border-b-3 border-r-1 border-[#e3ded3]', // <-- always applied
+        "flex items-center gap-3 px-5 py-3 rounded-2xl shadow-lg min-w-[240px] max-w-md transition-all backdrop-blur-md border-b-3 border-r-1 border-[#e3ded3]", // <-- always applied
         {
-          'bg-background-primary text-secondary font-light text-md': true, 
+          "bg-background-primary text-secondary font-light text-md": true,
         },
         className
       )}
@@ -78,10 +87,10 @@ function Snack({
 
 export type SnackbarConfig = {
   message: string;
-  variant?: 'success' | 'error' | 'info' | 'completion' | 'custom';
+  variant?: "success" | "error" | "info" | "completion" | "custom";
   duration?: number;
   id?: number;
-  manual?: boolean; 
+  manual?: boolean;
 };
 
 type SnackContextType = {
@@ -94,7 +103,8 @@ const SnackContext = createContext<SnackContextType | undefined>(undefined);
 
 export function useSnackbar(): SnackContextType {
   const context = useContext(SnackContext);
-  if (!context) throw new Error('useSnackbar must be used within a SnackProvider');
+  if (!context)
+    throw new Error("useSnackbar must be used within a SnackProvider");
   return context;
 }
 
@@ -120,29 +130,32 @@ export function SnackProvider({ children }: { children: ReactNode }) {
     setSnacks([]);
   }, []);
 
-  const showSnackbar = useCallback((config: SnackbarConfig) => {
-    const {
-      message,
-      variant = 'info',
-      duration = 3000,
-      manual = false,
-      id = Date.now(),
-    } = config;
+  const showSnackbar = useCallback(
+    (config: SnackbarConfig) => {
+      const {
+        message,
+        variant = "info",
+        duration = 3000,
+        manual = false,
+        id = Date.now(),
+      } = config;
 
-    const newSnack: SnackProps = {
-      id,
-      message,
-      variant,
-      onDismiss: removeSnack,
-    };
+      const newSnack: SnackProps = {
+        id,
+        message,
+        variant,
+        onDismiss: removeSnack,
+      };
 
-    setSnacks((prev) => [...prev, newSnack]);
+      setSnacks((prev) => [...prev, newSnack]);
 
-    if (!manual) {
-      const timerId = window.setTimeout(() => removeSnack(id), duration);
-      timersRef.current.set(id, timerId);
-    }
-  }, [removeSnack]);
+      if (!manual) {
+        const timerId = window.setTimeout(() => removeSnack(id), duration);
+        timersRef.current.set(id, timerId);
+      }
+    },
+    [removeSnack]
+  );
 
   const value = useMemo(
     () => ({ showSnackbar, removeSnackbar: removeSnack, clearAllSnackbars }),

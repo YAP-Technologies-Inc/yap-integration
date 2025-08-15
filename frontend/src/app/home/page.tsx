@@ -24,7 +24,7 @@ import TestingNoticeModal from "@/components/TestingNoticeModal";
 import { useMessageSignModal } from "@/components/cards/MessageSignModal";
 import { useSnackbar } from "@/components/ui/SnackBar";
 import { getTodayStatus } from "@/utils/dailyQuizStorage";
-
+import { TablerCheck } from "@/icons/Check"; // Make sure this import exists
 
 export default function HomePage() {
   useInitializeUser();
@@ -44,7 +44,6 @@ export default function HomePage() {
       status: "locked" | "available" | "completed";
     }[]
   >([]);
-
 
   const { wallets } = useWallets();
   const router = useRouter();
@@ -222,7 +221,7 @@ export default function HomePage() {
           </button>
         </div>
         {/* Daily Quiz */}
-        <h3 className="text-secondary text-xl font-semibold mt-2 mb-2">
+        <h3 className="text-secondary text-xl font-semibold mt-2 mb-2 flex items-center gap-2">
           Daily Quiz
         </h3>
         <div className="relative z-0 " onClick={handleDailyQuizUnlocked}>
@@ -230,7 +229,7 @@ export default function HomePage() {
             isUnlocked={dailyQuizUnlocked}
             isCompleted={completedToday}
             attemptsLeft={attemptsLeft}
-            avgScore={lastAttemptAvg}
+            lastAttemptAvg={lastAttemptAvg} // <-- was avgScore
           />
         </div>
       </div>

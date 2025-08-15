@@ -3,7 +3,7 @@
 import { TablerChevronLeft } from "@/icons";
 import AuthLogo from "@/components/auth/AuthLogo";
 // Use a relative path string for images in the public directory
-const languages = [{ name: "Spanish", flag: "/assets/spain.png" }];
+const languages = [{ name: "Spanish", flag: "/assets/spain.svg" }];
 
 interface Props {
   onNext: () => void;
@@ -44,7 +44,7 @@ export default function SelectLanguageForm({
           <button
             key={name}
             onClick={() => onSelect(name)}
-            className="w-full bg-white rounded-xl px-4 py-3 text-left text-[#2D1C1C] text-base font-medium border-b-3 border-[#e3ded3] flex items-center gap-3
+            className="w-full bg-white rounded-xl px-4 py-3 text-left text-[#2D1C1C] text-base font-normal border-b-3 border-r-1 border-[#e3ded3] flex items-center gap-3
             hover:cursor-pointer 
             "
           >
