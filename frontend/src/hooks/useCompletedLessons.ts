@@ -11,7 +11,7 @@ export function useCompletedLessons(userId: string | null) {
     fetcher,
     {
       revalidateOnFocus: true,
-      refreshInterval: 30_000, // Re-fetch every 30 seconds
+      refreshInterval: 60_000, // Re-fetch every 60 seconds
     }
   );
 

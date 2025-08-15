@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { usePrivy } from '@privy-io/react-auth';
-import SelectLanguageForm from '@/components/auth/SelectLanguageForm';
-import SecuringLoader from '../loading/SecuringLoader';
-import AuthLogo from '@/components/auth/AuthLogo';
-import { useToast } from '../ui/ToastProvider';
-
+import { useState } from "react";
+import { usePrivy } from "@privy-io/react-auth";
+import SelectLanguageForm from "@/components/auth/SelectLanguageForm";
+import SecuringLoader from "../loading/SecuringLoader";
+import AuthLogo from "@/components/auth/AuthLogo";
+import { useSnackbar } from "../ui/SnackBar";
 export default function SignUpForm() {
-  const { pushToast } = useToast();
+
   const { user } = usePrivy();
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const [step, setStep] = useState<'signup' | 'language' | 'loading'>('signup');
-  const [name, setName] = useState('');
+  const [step, setStep] = useState<"signup" | "language" | "loading">("signup");
+  const [name, setName] = useState("");
+  const { showSnackbar } = useSnackbar();
 
   const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim().length > 0) {
-      setStep('language');
+      setStep("language");
     }
   };
 
@@ -30,7 +30,7 @@ export default function SignUpForm() {
   // TODO: if user already exists, we should redirect them to the home page instead of asking for name again
 
   const handleFinalSubmit = async (language: string) => {
-    setStep('loading');
+    setStep("loading");
 
     const payload = {
       user_id: user?.id,
@@ -40,57 +40,62 @@ export default function SignUpForm() {
 
     try {
       const res = await fetch(`${API_URL}/api/auth/secure-signup`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to save user');
+        throw new Error(data.error || "Failed to save user");
       }
 
-      localStorage.setItem('userId', data.user_id);
+      localStorage.setItem("userId", data.user_id);
     } catch (err) {
-      console.error('Failed to save user:', err);
-      pushToast('Something went wrong. Please try again.', 'error');
-      setStep('language');
+      console.error("Failed to save user:", err);
+        showSnackbar({
+          message: "Something went wrong. Please try again.",
+          variant: "error",
+          duration: 3000,
+        });
+      setStep("language");
     }
   };
 
-  if (step === 'loading') return <SecuringLoader />;
+  if (step === "loading") return <SecuringLoader />;
 
-  if (step === 'language') {
+  if (step === "language") {
     return (
       <SelectLanguageForm
         onNext={() => {}}
-        onBack={() => setStep('signup')}
+        onBack={() => setStep("signup")}
         onSelect={handleFinalSubmit}
       />
     );
   }
 
   return (
-    <div className="min-h-[100dvh] w-full bg-background-primary px-4 pb-safe pt-safe flex flex-col">
+    <div className="min-h-[100dvh] w-full bg-background-primary px-4 flex flex-col">
       <div className="flex flex-col items-center">
-        <AuthLogo />
-
-        <div className="mt-6 mb-4 text-center">
+        <AuthLogo variant="red" />
+      </div>
+      <div className="flex flex-col items-center">
+        <div className=" mb-4 text-center">
           <h2
-            className="text-2xl font-bold text-secondary
+            className="text-2xl pt-8 font-semibold text-secondary
         lg:w-max-lg
         "
           >
             Create an account
           </h2>
-          <p className="text-base text-secondary mt-1">
-            What should we call you?
+          <p className="text-base text-[#696262] mt-1">
+            Let&#39;s get started! Enter your name below.
           </p>
         </div>
       </div>
 
-      <div className="flex-grow flex flex-col items-center">
+      <div className="flex-grow flex flex-col pt-2 items-center">
         <form
           onSubmit={handleNameSubmit}
           className="w-full max-w-sm flex flex-col gap-4"
@@ -102,7 +107,7 @@ export default function SignUpForm() {
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-white shadow-sm border border-gray-200 placeholder-[#A59C9C] text-secondary outline-none"
+            className="w-full px-4 py-3 rounded-xl bg-white border-b-3 border-r-1 border-[#e2ddd3] placeholder-[#A59C9C] text-secondary outline-none"
             required
           />
         </form>
@@ -116,7 +121,7 @@ export default function SignUpForm() {
         <button
           type="submit"
           form="signup-form"
-          className="w-full max-w-sm bg-secondary text-white font-semibold py-4 px-8 rounded-full shadow-md hover:cursor-pointer"
+          className="w-full max-w-sm bg-secondary text-white font-semibold py-4 px-8 rounded-full border-b-3 border-r-1 border-black hover:cursor-pointer"
         >
           Next
         </button>

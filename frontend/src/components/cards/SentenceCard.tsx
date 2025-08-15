@@ -8,7 +8,7 @@ import {
   TablerMicrophone,
   TablerVolume,
 } from '@/icons';
-import { useToast } from '@/components/ui/ToastProvider';
+import { useSnackbar } from '../ui/SnackBar';
 
 interface SentenceCardProps {
   sentence: string;
@@ -23,14 +23,14 @@ export const SentenceCard: FC<SentenceCardProps> = ({
   score,
   feedback,
 }) => {
-  const { pushToast } = useToast();
+
   const mediaRef = useRef<{ recorder: MediaRecorder; chunks: Blob[] } | null>(
     null
   );
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const { showSnackbar } = useSnackbar();
   const start = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -47,7 +47,11 @@ export const SentenceCard: FC<SentenceCardProps> = ({
       recorder.start();
       setIsRecording(true);
     } catch {
-      pushToast('Microphone error', 'error');
+        showSnackbar({
+          message: "Failed to start recording",
+          variant: "error",
+          duration: 3000,
+        });
     }
   };
 
@@ -63,7 +67,11 @@ export const SentenceCard: FC<SentenceCardProps> = ({
       const blob = new Blob(mediaRef.current.chunks, { type: 'audio/webm' });
       await onSubmit(blob);
     } catch {
-      pushToast('Submit failed', 'error');
+        showSnackbar({
+          message: "Failed to submit audio",
+          variant: "error",
+          duration: 3000,
+        });
     } finally {
       setIsLoading(false);
     }

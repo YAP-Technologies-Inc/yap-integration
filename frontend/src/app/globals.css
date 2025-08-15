@@ -108,3 +108,8 @@ input[type="password"]::-webkit-calendar-picker-indicator {
   touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
 }
+
+
+.flip-horizontal {
+  transform: scaleX(-1);
+}

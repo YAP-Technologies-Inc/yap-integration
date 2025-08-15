@@ -29,15 +29,15 @@ export default function HeaderGreeting() {
     );
   }
 
-  const firstInitial = name.charAt(0).toUpperCase() || '?';
+  // const firstInitial = name.charAt(0).toUpperCase() || '?';
 
   return (
     <div className="flex items-center justify-start w-full lg:py-4 py-2">
-      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full mr-3 flex items-center justify-center">
+      {/* <div className="w-12 h-12 bg-background-secondary rounded-full mr-3 flex items-center justify-center">
         <span className="text-white text-lg font-semibold">
           {firstInitial}
         </span>
-      </div>
+      </div> */}
       <div className="flex flex-col">
         <h1 className="text-lg font-bold text-secondary leading-tight">
           Welcome {name}

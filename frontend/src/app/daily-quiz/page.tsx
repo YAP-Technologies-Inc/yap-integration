@@ -1,24 +1,52 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/components/ui/ToastProvider';
-import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 
-import Flashcard from '@/components/cards/FlashCard';
 import {
-  TablerX,
+  TablerX as TablerXIcon,
   TablerRefresh,
   TablerPlayerPauseFilled,
-  TablerMicrophone,
+  TablerMicrophoneFilled,
   TablerVolume,
-} from '@/icons';
+  TablerFlagFilled,
+  TablerCheck,
+  TablerX,
+} from "@/icons";
+import { ReportIssue } from "@/components/debug/ReportIssue";
+import Flashcard from "@/components/cards/FlashCard";
+import { useSnackbar } from "@/components/ui/SnackBar";
+import mockDailyQuiz from "@/mock/mockDailyQuizShort";
 
-import mockDailyQuiz from '@/mock/mockDailyQuizShort';
+import {
+  getQuizState,
+  setQuizState,
+  updateScoreForStep,
+  decrementAttempt,
+  resetForRetry,
+  markCompleted,
+  computeAvg,
+  setAttemptAvg,
+  setLastAttemptAvg,
+  type DailyQuizState,
+} from "@/utils/dailyQuizStorage";
 
-export default function DailyQuizPage() {
+import { ScoreModal } from "@/components/lesson/ScoreModal";
+
+const PASSING_CARD_SCORE = 70; // per-card pass threshold (visual only)
+const PASSING_AVG = 90; // quiz pass threshold (avg)
+const MAX_ATTEMPTS = 3;
+
+type Step = {
+  variant: "vocab";
+  front: string;
+  back: string;
+  example?: string;
+};
+
+export default function DailyQuizUi() {
   const router = useRouter();
-  const { pushToast } = useToast();
   const { user } = usePrivy();
   const { wallets } = useWallets();
 
@@ -26,239 +54,773 @@ export default function DailyQuizPage() {
   const walletAddress = wallets?.[0]?.address;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const allSteps = mockDailyQuiz[0].questions.map((q) => ({
-    variant: 'vocab',
+  // ==== Build steps from mock (same visual as LessonUi) ====
+  const allSteps: Step[] = (mockDailyQuiz?.[0]?.questions ?? []).map((q) => ({
+    variant: "vocab",
     front: q.es,
     back: q.en,
     example: q.example,
   }));
+  const total = allSteps.length;
+
+  // ==== Daily quiz persisted state (unchanged core logic) ====
+  const initial: DailyQuizState =
+    typeof window !== "undefined"
+      ? getQuizState(total)
+      : {
+          attemptsLeft: MAX_ATTEMPTS,
+          scores: Array(total).fill(-1),
+          completed: false,
+          avgScore: 0,
+          lastAttemptAvg: 0,
+        };
+
+  const [attemptsLeft, setAttemptsLeft] = useState<number>(
+    initial.attemptsLeft
+  );
+  const [scores, setScores] = useState<number[]>(initial.scores);
+  const [avgScore, setAvgScore] = useState<number>(initial.avgScore);
+  const [completed, setCompleted] = useState<boolean>(initial.completed);
 
   const [stepIndex, setStepIndex] = useState(0);
+  const current = allSteps[stepIndex];
+
+  // ==== Media / scoring state (match LessonUi behavior) ====
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
+  const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+
   const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [breakdown, setBreakdown] = useState<{
+    accuracy: number;
+    fluency: number;
+    completeness: number; // Intonation slot in UI
+  } | null>(null);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { showSnackbar, removeSnackbar } = useSnackbar();
+  const [showReport, setShowReport] = useState(false);
 
-  const current = allSteps[stepIndex];
-  const total = allSteps.length;
-  const referenceText = current.front;
+  // ==== TEST MODE (identical toggles as LessonUi) ====
+  const TEST_MODE =
+    process.env.NEXT_PUBLIC_PRON_TEST === "1" ||
+    (typeof window !== "undefined" &&
+      (localStorage.getItem("pron_test_mode") === "1" ||
+        localStorage.getItem("testing") === "1" ||
+        new URLSearchParams(window.location.search).get("test") === "1"));
 
+  // Fake result, same shape as LessonUi
+  function applyFakePronunciationResult() {
+    const fakeOverall = 90;
+    setScore(fakeOverall);
+    setBreakdown({
+      accuracy: 40,
+      fluency: 70,
+      completeness: 75,
+    });
+    setTextFeedback({
+      transcript: "hola",
+      accuracyText: "Pretty close—watch the opening consonant.",
+      fluencyText: "Generally smooth; a tiny hesitation mid-word.",
+      intonationText: "Natural melody, slightly falling too early.",
+      overallText: "Nice try! Keep practicing the first syllable.",
+      specificIssues: ["Initial consonant a bit soft", "Pitch drops too soon"],
+    });
+  }
 
-  const getSupportedMimeType = (): string => {
-    const types = [
-      'audio/mp4',
-      'audio/webm;codecs=opus',
-      'audio/webm',
-      'audio/ogg',
-    ];
-    return types.find((type) => MediaRecorder.isTypeSupported(type)) || '';
-  };
+  // ==== Web Speech transcript capture (fresh per attempt) ====
+  const [spokenText, setSpokenText] = useState("");
+  const recognitionRef = useRef<any>(null);
+  const attemptIdRef = useRef<string>("");
+  const [hasFreshTranscript, setHasFreshTranscript] = useState(false);
 
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mimeType = getSupportedMimeType();
-      if (!mimeType) {
-        pushToast('No supported recording format found', 'error');
-        return;
-      }
-      const recorder = new MediaRecorder(stream, { mimeType });
-      const chunks: Blob[] = [];
+  useEffect(() => {
+    const SR =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+    if (!SR) return;
+    const rec = new SR();
+    rec.continuous = false;
+    rec.lang = "es-ES";
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    rec.onresult = (e: any) => {
+      const t = e?.results?.[0]?.[0]?.transcript || "";
+      setSpokenText(t);
+      setHasFreshTranscript(true);
+      console.log("[SR] transcript:", t);
+    };
+    recognitionRef.current = rec;
+  }, []);
 
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunks.push(e.data);
-      };
+  // ==== Text feedback payload (same keys as LessonUi) ====
+  const [textFeedback, setTextFeedback] = useState<null | {
+    transcript: string;
+    accuracyText: string;
+    fluencyText: string;
+    intonationText: string;
+    overallText: string;
+    specificIssues: string[];
+  }>(null);
 
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        setAudioBlob(blob);
-        setAudioURL(url);
-      };
+  // ScoreModal visibility (reuses the same modal)
+  const [showScore, setShowScore] = useState<
+    "Accuracy" | "Fluency" | "Intonation" | null
+  >(null);
+  const handleModalClose = () => setShowScore(null);
 
-      recorder.start();
-      setMediaRecorder(recorder);
-      setIsRecording(true);
-    } catch (e) {
-      pushToast('Microphone permission denied or not found', 'error');
-      router.push('/home');
-    }
-  };
+  // ==== Helpers ====
+  const referenceText = current?.front ?? "";
+  const needsSpeaking = true;
 
-  const stopRecording = () => {
-    mediaRecorder?.stop();
-    setIsRecording(false);
-  };
+  const newUploadId = () => Math.random().toString(36).slice(2);
 
   const resetAudioState = () => {
     setAudioBlob(null);
     setAudioURL(null);
     setScore(null);
     setFeedback(null);
+    setBreakdown(null);
+    setSpokenText("");
+    setHasFreshTranscript(false);
+    setShowScore(null);
+    setTextFeedback(null);
   };
 
-  const next = () => {
-    if (stepIndex + 1 >= total) {
-      onComplete();
-    } else {
-      setStepIndex(stepIndex + 1);
-      resetAudioState();
+  const getSupportedMimeType = (): string => {
+    const types = [
+      "audio/webm", // Chrome/Edge/Android
+      "audio/mp4", // Safari/iOS
+      "audio/ogg", // Firefox
+      "audio/webm;codecs=opus",
+      "audio/ogg;codecs=opus",
+    ];
+    for (const t of types) {
+      try {
+        if ((MediaRecorder as any).isTypeSupported?.(t)) return t;
+      } catch {}
+    }
+    return "";
+  };
+
+  // ==== Recording controls (parity with LessonUi) ====
+  const startRecording = async () => {
+    try {
+      attemptIdRef.current = crypto?.randomUUID?.() || newUploadId();
+      setSpokenText("");
+      setHasFreshTranscript(false);
+      setScore(null);
+      setBreakdown(null);
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mimeType = getSupportedMimeType();
+
+      if (!mimeType) {
+        showSnackbar({
+          message: "No supported recording format",
+          variant: "error",
+          duration: 3000,
+        });
+        return;
+      }
+
+      const recorder = new MediaRecorder(stream, { mimeType });
+      setMediaStream(stream);
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+      setAudioBlob(null);
+      if (audioURL) {
+        URL.revokeObjectURL(audioURL);
+        setAudioURL(null);
+      }
+
+      console.log("[REC] start", {
+        mimeType,
+        time: Date.now(),
+        attempt: attemptIdRef.current,
+      });
+      recorder.start();
+      try {
+        recognitionRef.current?.start();
+      } catch {}
+    } catch (e) {
+      showSnackbar({
+        message: "Microphone permission denied or not found",
+        variant: "error",
+        duration: 3000,
+      });
+      router.push("/home");
     }
   };
 
+  const stopRecorderAndGetBlob = (rec: MediaRecorder, mimeType: string) =>
+    new Promise<Blob>((resolve, reject) => {
+      const chunks: Blob[] = [];
+      let resolved = false;
+
+      rec.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) chunks.push(e.data);
+      };
+      rec.onstop = () => {
+        try {
+          const blob = new Blob(chunks, { type: mimeType });
+          resolved = true;
+          resolve(blob);
+        } catch (err) {
+          reject(err);
+        }
+      };
+      rec.onerror = (e: any) => {
+        if (!resolved) reject(e?.error ?? new Error("Recorder error"));
+      };
+
+      try {
+        rec.stop();
+      } catch (err) {
+        reject(err);
+      }
+    });
+
+  const stopRecording = async () => {
+    if (TEST_MODE) {
+      setIsRecording(false);
+      setMediaRecorder(null);
+      setMediaStream(null);
+      applyFakePronunciationResult();
+      return;
+    }
+    if (!mediaRecorder) return;
+    try {
+      const mimeType = (mediaRecorder as any).mimeType || "audio/unknown";
+      console.log("[REC] stop requested", {
+        mimeType,
+        time: Date.now(),
+        attempt: attemptIdRef.current,
+      });
+
+      const blob = await stopRecorderAndGetBlob(mediaRecorder, mimeType);
+      console.log("[REC] stop resolved", { size: blob.size, type: blob.type });
+
+      if (!blob || blob.size < 200) {
+        console.warn("[REC] tiny/empty blob - ignoring", { size: blob?.size });
+        showSnackbar({
+          message: "Recording too short, try again",
+          variant: "error",
+          duration: 2000,
+        });
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
+      setAudioBlob(blob);
+      setAudioURL(url);
+
+      // In TEST mode, show fake scores instantly (like LessonUi).
+      if (TEST_MODE) {
+        applyFakePronunciationResult();
+      }
+    } catch (err) {
+      console.error("[REC] stop error", err);
+      showSnackbar({
+        message: "Recording error",
+        variant: "error",
+        duration: 2000,
+      });
+    } finally {
+      setIsRecording(false);
+      setMediaRecorder(null);
+      try {
+        recognitionRef.current?.stop();
+      } catch {}
+      try {
+        mediaStream?.getTracks().forEach((t) => t.stop());
+      } catch {}
+      setMediaStream(null);
+    }
+  };
+
+  // ==== Assess (Prod) OR Fake (Test) ====
   const assessPronunciation = async () => {
-    if (!audioBlob || !referenceText) return;
-    setIsLoading(true);
+    // Test mode: never hit backend
+    if (TEST_MODE) {
+      applyFakePronunciationResult();
+      setIsLoading(false);
+      return;
+    }
+
+    if (!audioBlob || !referenceText || isSubmitting) return;
+
+    const uploadId = newUploadId();
+    const extFromBlob = (() => {
+      const t = audioBlob.type || "";
+      if (t.includes("webm")) return "webm";
+      if (t.includes("mp4")) return "mp4";
+      if (t.includes("m4a")) return "m4a";
+      if (t.includes("ogg")) return "ogg";
+      if (t.includes("wav")) return "wav";
+      return "dat";
+    })();
+    const filename = `dq-${uploadId}.${extFromBlob}`;
+
+    // Reset/lock UI
+    setAudioURL(null);
+    setIsRecording(false);
     setScore(null);
     setFeedback(null);
+    setBreakdown(null);
+    setIsLoading(true);
+    setIsSubmitting(true);
+
+    console.log("[UPLOAD] begin", {
+      uploadId,
+      filename,
+      size: audioBlob.size,
+      type: audioBlob.type,
+      referenceText,
+      stepIndex,
+    });
 
     const fd = new FormData();
-    fd.append('audio', audioBlob, 'recording.webm');
-    fd.append('referenceText', referenceText);
+    fd.append("audio", audioBlob, filename);
+    // Keep the daily-quiz API contract: "referenceText"
+    fd.append("referenceText", referenceText);
+    fd.append("uploadId", uploadId);
+    // (Optional) pass transcript when we have it fresh
+    if (hasFreshTranscript && spokenText?.trim()) {
+      fd.append("spokenText", spokenText.trim());
+    }
 
     try {
       const res = await fetch(
         `${API_URL}/api/pronunciation-assessment-upload`,
         {
-          method: 'POST',
+          method: "POST",
           body: fd,
         }
       );
-      const result = await res.json();
 
-      const raw =
-        result.NBest?.[0]?.PronScore ||
-        result.NBest?.[0]?.PronunciationAssessment?.AccuracyScore ||
-        0;
-      const scaled = Math.round(raw * 0.8);
-      setScore(scaled);
-      setFeedback('Nice work!');
+      const result = await res.json().catch(() => ({} as any));
+      console.log("[UPLOAD] response", {
+        uploadId,
+        status: res.status,
+        ok: res.ok,
+        result,
+      });
 
-      setTimeout(async () => {
-        if (stepIndex + 1 >= total) {
-          const res = await fetch(`${API_URL}/api/complete-daily-quiz`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, walletAddress }),
-          });
+      if (!res.ok)
+        throw new Error(result?.detail || `Server error: ${res.status}`);
 
-          if (res.status === 409) {
-            // already done today
-            pushToast('You’ve already completed today’s quiz!', 'info');
-            onComplete();
-            return;
-          }
+      const overall = Math.round(result.overallScore ?? 0);
+      setScore(overall);
+      setBreakdown({
+        accuracy: result.accuracyScore || 0,
+        fluency: result.fluencyScore || 0,
+        completeness: result.completenessScore || 0,
+      });
 
-          if (!res.ok) {
-            const { error } = await res.json().catch(() => ({}));
-            pushToast(error || 'Failed to record quiz completion', 'error');
-            return;
-          }
+      setTextFeedback({
+        transcript: result.transcript || "",
+        accuracyText:
+          result.accuracyText || "Pronunciation feedback unavailable.",
+        fluencyText: result.fluencyText || "Fluency feedback unavailable.",
+        intonationText:
+          result.intonationText || "Intonation feedback unavailable.",
+        overallText: result.overallText || "",
+        specificIssues: Array.isArray(result.specificIssues)
+          ? result.specificIssues
+          : [],
+      });
 
-          pushToast('Daily Quiz complete! YAP token sent', 'success');
-          onComplete();
-        } else {
-          next();
-        }
-      }, 1500);
+      // Persist per-step score now so avg reflects latest when finishing
+      const updated = updateScoreForStep(total, stepIndex, overall);
+      setScores(updated.scores);
+
+      await new Promise((r) => setTimeout(r, 200)); // slight pause for UI smoothness
     } catch (err) {
-      console.error(err);
-      pushToast('Assessment failed', 'error');
+      console.error("[UPLOAD] error", err);
+      showSnackbar({
+        message: "Failed to assess pronunciation",
+        variant: "error",
+        duration: 3000,
+      });
     } finally {
       setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  const onComplete = () => {
-    router.push('/home');
+  // ==== Next Step / Finish (keeps your daily quiz rules) ====
+  const toNextStepOrFinish = () => {
+    if (stepIndex + 1 < total) {
+      setStepIndex(stepIndex + 1);
+      resetAudioState();
+      return;
+    }
+
+    const finalScores = scores.map((s, i) =>
+      i === stepIndex && score != null ? score : s
+    );
+    const avg = computeAvg(finalScores);
+    setAvgScore(avg);
+
+    if (avg >= PASSING_AVG) {
+      markCompleted(total);
+      setCompleted(true);
+      verifyQuizCompletion();
+    } else {
+      setLastAttemptAvg(total, avg);
+      setAttemptAvg(total, avg);
+      window.dispatchEvent(new Event("daily-quiz-progress"));
+
+      if (attemptsLeft > 1) {
+        const afterDec = decrementAttempt(total);
+        setAttemptsLeft(afterDec.attemptsLeft);
+
+        const fresh = resetForRetry(total);
+        setScores(fresh.scores);
+        setStepIndex(0);
+        resetAudioState();
+
+        showSnackbar({
+          message: `Average ${avg}%. Try again! Attempts left: ${afterDec.attemptsLeft}`,
+          variant: "error",
+          duration: 3000,
+        });
+      } else {
+        const decFinal = decrementAttempt(total);
+        setAttemptsLeft(decFinal.attemptsLeft);
+        showSnackbar({
+          message: "Quiz failed. No attempts left for today.",
+          variant: "error",
+          duration: 3500,
+        });
+        router.push("/home");
+      }
+    }
   };
 
+  const verifyQuizCompletion = async () => {
+    const snackId = Date.now();
+    setIsVerifying(true);
+    showSnackbar({
+      id: snackId,
+      message: "Verifying quiz on-chain…",
+      variant: "completion",
+      manual: true,
+    });
+
+    try {
+      const res = await fetch(`${API_URL}/api/complete-daily-quiz`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, walletAddress }),
+      });
+      if (!res.ok) throw new Error("Verification failed");
+
+      removeSnackbar(snackId);
+      showSnackbar({
+        message: "Daily Quiz complete! YAP token sent",
+        variant: "custom",
+        duration: 3000,
+      });
+
+      markCompleted(total);
+
+      setTimeout(() => {
+        setIsVerifying(false);
+        router.push("/home");
+      }, 1000);
+    } catch (err) {
+      removeSnackbar(snackId);
+      showSnackbar({
+        message: "Quiz failed to verify. Please try again.",
+        variant: "error",
+      });
+      setIsVerifying(false);
+      console.error("Verification error:", err);
+    }
+  };
+
+  // ==== Chime like LessonUi ====
+  useEffect(() => {
+    if (score == null) return;
+    const sound =
+      score >= PASSING_CARD_SCORE
+        ? "/audio/correct.mp3"
+        : "/audio/incorrect.mp3";
+    new Audio(sound).play().catch(() => {});
+  }, [score]);
+
+  if (!current) {
+    return (
+      <div className="min-h-[100dvh] flex items-center justify-center bg-background-primary">
+        <p className="text-secondary">No quiz available.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed inset-0 bg-background-primary flex flex-col pt-2 px-4">
-      {/* Exit + Progress bar */}
-      <div className="flex items-center">
-        <button onClick={() => router.push('/home')} className="text-secondary">
-          <TablerX className="w-6 h-6" />
-        </button>
-        <div className="flex-1 h-2 bg-gray-200 rounded-full ml-4 overflow-hidden">
-          <div
-            className="h-full bg-yellow-400 transition-all"
-            style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
+    <div className="fixed inset-0 bg-background-primary flex flex-col h-[100dvh] overflow-hidden">
+      <div className="min-h-[100dvh] fixed inset-0 bg-background-primary flex flex-col px-4 ">
+        {/* Top bar */}
+        <div className="flex items-center">
+          <button
+            onClick={() => router.push("/home")}
+            className="text-secondary hover:cursor-pointer"
+          >
+            <TablerXIcon className="w-6 h-6" />
+          </button>
+          <h3 className="flex-1 text-center text-secondary font-bold text-xl">
+            Daily Quiz
+          </h3>
+          <div>
+            <button
+              onClick={() => setShowReport(true)}
+              className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
+            >
+              <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+            </button>
+            {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="w-full flex-shrink-0">
+          <div className="h-4 w-full border-2 border-gray-50 bg-white/90 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-tertiary transition-all"
+              style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Card */}
+        <div className="flex flex-1 items-start justify-center mt-8 min-h-[56dvh] sm:min-h-[50dvh]">
+          <Flashcard
+            es={current.front}
+            en={current.back}
+            example={current.example}
+            scores={
+              score !== null && breakdown
+                ? {
+                    overallScore: score,
+                    accuracyScore: breakdown.accuracy,
+                    fluencyScore: breakdown.fluency,
+                    completenessScore: breakdown.completeness,
+                  }
+                : undefined
+            }
+            locked={isLoading || isVerifying}
+            stepIndex={stepIndex}
+            total={total}
+            score={score}
           />
         </div>
-      </div>
 
-      {/* Card area */}
-      <div className="flex flex-1 items-start justify-center mt-8">
-        <Flashcard
-          front={current.front}
-          back={current.back}
-          example={current.example}
-        />
-      </div>
+        {/* Mic controls */}
+        <div className="w-full space-y-6">
+          {score === null && (
+            <>
+              <div className="flex flex-col items-center gap-6 mt-6">
+                <div className="flex items-center justify-center gap-10">
+                  {audioURL && (
+                    <button
+                      onClick={resetAudioState}
+                      disabled={isLoading || isVerifying}
+                      className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#ededed] ${
+                        isLoading || isVerifying
+                          ? "opacity-50 pointer-events-none"
+                          : "hover:cursor-pointer"
+                      }`}
+                    >
+                      <TablerRefresh className="w-8 h-8 text-secondary" />
+                    </button>
+                  )}
 
-      {/* Mic controls */}
-      <div className="fixed bottom-6 left-0 right-0 flex flex-col items-center gap-3">
-        {score !== null && (
-          <div className="text-center text-secondary">
-            <p className="text-lg font-semibold">Score: {score}/100</p>
-            {feedback && <p className="text-sm mt-1">{feedback}</p>}
-          </div>
-        )}
+                  <button
+                    onClick={() =>
+                      isRecording ? stopRecording() : startRecording()
+                    }
+                    disabled={isLoading || isVerifying || !!audioURL}
+                    className={`w-20 h-20 bg-[#EF4444] rounded-full flex items-center justify-center border-b-3 border-r-1 border-[#bf373a] ${
+                      isLoading || isVerifying || !!audioURL
+                        ? "opacity-50 pointer-events-none"
+                        : "hover:cursor-pointer"
+                    }`}
+                  >
+                    {isRecording ? (
+                      <TablerPlayerPauseFilled className="w-10 h-10 text-white" />
+                    ) : (
+                      <TablerMicrophoneFilled className="w-10 h-10 text-white" />
+                    )}
+                  </button>
 
-        {audioURL && (
-          <button
-            onClick={assessPronunciation}
-            disabled={isLoading}
-            className="text-sm px-3 py-2 bg-green-500 text-white rounded-full shadow"
-          >
-            {isLoading ? 'Scoring…' : 'Submit'}
-          </button>
-        )}
+                  {audioURL && (
+                    <button
+                      onClick={() => {
+                        if (audioRef.current) {
+                          audioRef.current.currentTime = 0;
+                          audioRef.current.play();
+                        }
+                      }}
+                      disabled={isLoading || isVerifying}
+                      className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3] ${
+                        isLoading || isVerifying
+                          ? "opacity-50 pointer-events-none"
+                          : "hover:cursor-pointer"
+                      }`}
+                    >
+                      <TablerVolume className="w-8 h-8 text-secondary" />
+                    </button>
+                  )}
+                </div>
+                {audioURL && (
+                  <audio ref={audioRef} src={audioURL} className="hidden" />
+                )}
+              </div>
 
-        <div className="flex items-center justify-center gap-6">
-          {audioURL && (
-            <button
-              onClick={resetAudioState}
-              className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center"
-            >
-              <TablerRefresh className="w-6 h-6 text-[#EF4444]" />
-            </button>
+              {/* Submit */}
+              <div className="pb-2">
+                <button
+                  onClick={assessPronunciation}
+                  disabled={!audioURL || isLoading}
+                  className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 ${
+                    audioURL
+                      ? "bg-secondary text-white border-b-3 border-r-1 font-semibold border-black"
+                      : "bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed"
+                  }`}
+                >
+                  {isLoading
+                    ? "Scoring…"
+                    : TEST_MODE
+                    ? "Submit (Test)"
+                    : "Submit"}
+                </button>
+              </div>
+            </>
           )}
 
-          <button
-            onClick={() => (isRecording ? stopRecording() : startRecording())}
-            className="w-16 h-16 bg-[#EF4444] rounded-full shadow-md flex items-center justify-center"
-          >
-            {isRecording ? (
-              <TablerPlayerPauseFilled className="w-7 h-7 text-white" />
-            ) : (
-              <TablerMicrophone className="w-7 h-7 text-white" />
-            )}
-          </button>
+          {/* Post-score actions */}
+          {score !== null && (
+            <div className="w-full rounded-xl pb-2 space-y-4">
+              {/* Pass/fail underline */}
+              <div
+                className={`w-screen left-1/2 right-1/2 -ml-[50vw] relative h-1 rounded-full mb-3 ${
+                  score >= PASSING_CARD_SCORE ? "bg-green-200" : "bg-red-200"
+                }`}
+              />
+              <div className="flex flex-col items-start mb-4">
+                {/* Pass/fail icon and label */}
+                <div className="flex items-center gap-2 mb-2">
+                  <div
+                    className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
+                      score >= PASSING_CARD_SCORE
+                        ? "bg-[#4eed71] border-[#41ca55]"
+                        : "bg-[#f04648] border-[#d12a2d]"
+                    }`}
+                  >
+                    {score >= PASSING_CARD_SCORE ? (
+                      <TablerCheck className="w-6 h-6 text-white" />
+                    ) : (
+                      <TablerX className="w-6 h-6 text-white" />
+                    )}
+                  </div>
+                  <p className="text-2xl font-semibold text-[#2D1C1C]">
+                    {score >= PASSING_CARD_SCORE ? "Correct" : "Incorrect"}
+                  </p>
+                </div>
 
-          {audioURL && (
-            <button
-              onClick={() => {
-                if (audioRef.current) {
-                  audioRef.current.currentTime = 0;
-                  audioRef.current.play();
-                }
-              }}
-              className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center"
-            >
-              <TablerVolume className="w-6 h-6 text-[#EF4444]" />
-            </button>
+                {/* Score breakdown (colors per part still use their thresholds) */}
+                <div className="flex flex-row gap-6 text-secondary">
+                  {[
+                    {
+                      label: "Accuracy",
+                      value: breakdown?.accuracy ?? 0,
+                      text: textFeedback?.accuracyText || "",
+                    },
+                    {
+                      label: "Fluency",
+                      value: breakdown?.fluency ?? 0,
+                      text: textFeedback?.fluencyText || "",
+                    },
+                    {
+                      label: "Intonation",
+                      value: breakdown?.completeness ?? 0,
+                      text: textFeedback?.intonationText || "",
+                    },
+                  ].map(({ label, value, text }) => {
+                    let color =
+                      "bg-tertiary border-b-3 border-r-1 border-[#e4a92d]";
+                    if (value >= PASSING_CARD_SCORE)
+                      color =
+                        "bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]";
+                    else if (value < 60)
+                      color =
+                        "bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]";
+
+                    return (
+                      <div className="flex items-center gap-2" key={label}>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setShowScore(
+                              label as "Accuracy" | "Fluency" | "Intonation"
+                            )
+                          }
+                          className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
+                          aria-label={`Show ${label} score details`}
+                        >
+                          {Math.round(value)}
+                        </button>
+                        <span className="text-sm">{label}</span>
+
+                        {showScore === (label as any) && textFeedback && (
+                          <ScoreModal
+                            onClose={handleModalClose}
+                            scoreType={
+                              label as "Accuracy" | "Fluency" | "Intonation"
+                            }
+                            value={value}
+                            text={text || "No details available."}
+                            transcript={textFeedback.transcript}
+                            specificIssues={textFeedback.specificIssues}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="flex justify-between gap-4 pt-2">
+                <button
+                  onClick={resetAudioState}
+                  className="flex-1 py-4 bg-white text-black rounded-full border-b-3 border-r-1 border-[#ebe6df] shadow"
+                >
+                  Retry
+                </button>
+                <button
+                  onClick={toNextStepOrFinish}
+                  className="flex-1 py-4 bg-[#2D1C1C] text-white rounded-full border-b-3 border-r-1 border-black"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           )}
         </div>
 
-        {audioURL && <audio ref={audioRef} src={audioURL} className="hidden" />}
+        {isVerifying && (
+          <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
+        )}
       </div>
     </div>
   );

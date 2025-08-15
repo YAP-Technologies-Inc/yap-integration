@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState, useEffect } from "react";
-import { TablerVolume } from "@/icons";
+import { TablerVolume, TablerArrowBack } from "@/icons";
 
 interface FlashcardProps {
   es: string;
@@ -10,6 +10,13 @@ interface FlashcardProps {
   stepIndex: number;
   total: number;
   score: number | null;
+}
+
+function getUnderlineColor(score: number | null) {
+  if (score === null) return "border-transparent";
+  if (score >= 80) return "border-[#4eed71]"; // green
+  if (score >= 60) return "border-[#e4a92d]"; // yellow
+  return "border-[#f04648]"; // red
 }
 
 const Flashcard: FC<FlashcardProps> = ({
@@ -65,49 +72,47 @@ const Flashcard: FC<FlashcardProps> = ({
           Words: {stepIndex + 1}/{total}
         </div>
 
-        {/* Audio Button */}
-        {!showBack && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              playElevenLabsAudio(es);
-            }}
-            className="absolute top-4 left-4 p-2 bg-tertiary rounded-full shadow-lg"
-          >
-            <TablerVolume
-              className={`w-6 h-6 text-secondary ${
-                isPlaying ? "animate-pulse" : ""
-              }`}
-            />
-          </button>
-        )}
-
         {/* Front & Back Content */}
         {showBack ? (
           <>
             <h2 className="text-3xl font-extrabold text-secondary">{en}</h2>
-            <p className="text-base text-gray-400 leading-relaxed mt-2">{es}</p>
+            <p className="text-base text-gray-400 leading-relaxed mt-2">{example}</p>
           </>
         ) : (
           <>
-            <h2
-              className={`text-3xl font-extrabold text-secondary border-b-4 ${
-                score === null
-                  ? "border-transparent"
-                  : score > 80
-                  ? "border-green-400"
-                  : "border-red-400"
-              }`}
-            >
-              {es}
-            </h2>
+            <div className="flex items-center justify-center">
+              <h2
+                className={`text-3xl font-extrabold text-secondary border-b-3 ${getUnderlineColor(score)}`}
+              >
+                {es}
+              </h2>
+              {/* Audio Button positioned relative to text */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  playElevenLabsAudio(es);
+                }}
+                className="p-1.5 rounded-full mt-1 mr-2"
+              >
+                <TablerVolume
+                  className={`w-4 h-4 text-[#bfb7b7] ${
+                    isPlaying ? "animate-pulse" : ""
+                  }`}
+                />
+              </button>
+            </div>
             {example && (
               <p className="text-base text-gray-400 leading-relaxed mt-2">
-                {example}
+                {en}
               </p>
             )}
           </>
         )}
+
+        {/* Inverted ArrowBack at bottom right */}
+        <div className="absolute bottom-4 right-4">
+          <TablerArrowBack className="w-7 h-7 text-[#bfb7b7] flip-horizontal" />
+        </div>
       </div>
     </div>
   );

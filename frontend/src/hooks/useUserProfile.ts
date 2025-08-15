@@ -11,6 +11,7 @@ export function useUserProfile(userId: string | null) {
 
   return {
     name: data?.name || '',
+    created_at: data?.created_at || '',
     language: data?.language_to_learn || '',
     wallet: data?.wallet || '',
     isLoading,

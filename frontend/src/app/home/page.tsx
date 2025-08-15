@@ -23,8 +23,12 @@ import { tokenAbi } from "@/app/abis/YAPToken";
 import TestingNoticeModal from "@/components/TestingNoticeModal";
 import { useMessageSignModal } from "@/components/cards/MessageSignModal";
 import { useSnackbar } from "@/components/ui/SnackBar";
+import { getTodayStatus } from "@/utils/dailyQuizStorage";
+import { TablerCheck } from "@/icons/Check"; // Make sure this import exists
+
 export default function HomePage() {
   useInitializeUser();
+
   // const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
   const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -56,10 +60,8 @@ export default function HomePage() {
   const { stats, isLoading: isStatsLoading } = useUserStats(userId);
   const { balance: onChainBalance, isLoading: isBalanceLoading } =
     useOnChainBalance(evmAddress);
-  const [hasAccess, setHasAccess] = useState(false);
-  const [checkingAccess, setCheckingAccess] = useState(false);
+
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
-  const [isVerifyingPermit, setIsVerifyingPermit] = useState(false);
 
   const { signTypedData } = useSignTypedData();
   // Compute lesson availability based on completed lessons
@@ -99,11 +101,70 @@ export default function HomePage() {
     if (!userId) return;
     fetch(`${API_URL}/api/daily-quiz-status/${userId}`)
       .then((res) => res.json())
-      .then((data) => setDailyQuizCompleted(data.completed))
+      .then((data) => setDailyQuizCompleted(!!data.completed))
       .catch(() => {});
   }, [userId, API_URL]);
 
-  // Unified loading state
+  const TOTAL_STEPS = 5;
+
+  // Local (client) state for attempts, etc.
+  const {
+    attemptsLeft,
+    completed: localCompleted,
+    lastAttemptAvg,
+    locked: localLocked,
+  } = getTodayStatus(TOTAL_STEPS);
+
+  // Merge server + local ----------------------------------------------- NEW
+  // Server is the source of truth for "already done today"
+  const completedToday = dailyQuizCompleted || localCompleted;
+
+  // Treat server completion as "locked" for MVP (can’t start again today)
+  const lockedEffective = localLocked || completedToday;
+
+  // Gate by lesson unlock as before:
+  const lessonUnlocked = completedLessons?.includes("SPA1_005");
+  const dailyQuizUnlocked = !!lessonUnlocked && !lockedEffective; // -------- CHANGED
+
+  const handleDailyQuizUnlocked = () => {
+    // Not unlocked by lessons
+    if (!lessonUnlocked) {
+      showSnackbar({
+        message: "Complete Lesson 5 to unlock Daily Quiz.",
+        variant: "info",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Server says it's already done today ------------------------------- NEW
+    if (completedToday) {
+      showSnackbar({
+        message: "You’ve already completed today’s Daily Quiz.",
+        variant: "info",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Out of attempts
+    if (attemptsLeft <= 0) {
+      showSnackbar({
+        message: "No attempts left. Daily Quiz is locked until tomorrow.",
+        variant: "info",
+        duration: 3000,
+      });
+      return;
+    }
+
+    router.push("/daily-quiz");
+  };
+
+  if (userId === null) {
+    router.push("/auth");
+    return null;
+  }
+
   if (
     isLessonsLoading ||
     isProfileLoading ||
@@ -111,172 +172,16 @@ export default function HomePage() {
     isBalanceLoading
   ) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <p>Loading dashboard…</p>
+      <div className="min-h-[100dvh] flex items-center justify-center bg-background-primary">
+        <p className="text-secondary text-lg font-semibold">
+          Loading dashboard…
+        </p>
       </div>
     );
   }
 
-  const handleSpanishTeacherAccess = async () => {
-    setCheckingAccess(true);
-
-    try {
-      if (!TOKEN_ADDRESS || !userId) {
-        showSnackbar({
-          message: "Missing config or user ID.",
-          variant: "error",
-        });
-        return;
-      }
-
-      // STEP 1: Check session
-      const { hasAccess } = await (
-        await fetch(`${API_URL}/api/teacher-session/${userId}`)
-      ).json();
-
-      if (hasAccess) {
-        router.push("/spanish-teacher");
-        return;
-      }
-
-      // STEP 2: Custom modal first
-      const confirm = await open("Spend 1 YAP to access Spanish Teacher?");
-      if (!confirm) return;
-
-      const embedded = wallets.find((w) => w.walletClientType === "privy");
-      if (!embedded) {
-        showSnackbar({
-          message: "Please connect your wallet.",
-          variant: "error",
-        });
-        return;
-      }
-
-      const ethProvider = await embedded.getEthereumProvider();
-      const provider = new ethers.BrowserProvider(ethProvider);
-      const signer = await provider.getSigner();
-      const walletAddress = await signer.getAddress();
-
-      const token = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
-      const oneYap = ethers.parseUnits("1", 18);
-      const nonce = await token.nonces(walletAddress);
-      const deadline = Math.floor(Date.now() / 1000) + 3600;
-
-      const domain = {
-        name: "YapTokenTestV2",
-        version: "1",
-        chainId: 1328,
-        verifyingContract: TOKEN_ADDRESS,
-      };
-
-      const types = {
-        Permit: [
-          { name: "owner", type: "address" },
-          { name: "spender", type: "address" },
-          { name: "value", type: "uint256" },
-          { name: "nonce", type: "uint256" },
-          { name: "deadline", type: "uint256" },
-        ],
-      };
-
-      const message = {
-        owner: walletAddress,
-        spender: BACKEND_WALLET_ADDRESS,
-        value: oneYap.toString(),
-        nonce: nonce.toString(),
-        deadline,
-      };
-
-      // ✅ Sign without showing Privy's modal
-      const { signature } = await signTypedData(
-        {
-          domain,
-          types,
-          message,
-          primaryType: "Permit",
-        },
-        {
-          address: walletAddress,
-          uiOptions: {
-            showWalletUIs: false,
-          },
-        }
-      );
-
-      // STEP 3: Submit signature to backend
-      setIsVerifyingPermit(true); // ✅ begin grey-out
-
-      const snackId = Date.now();
-      showSnackbar({
-        id: snackId,
-        message: "Verifying transaction on-chain…",
-        variant: "completion",
-        manual: true,
-      });
-
-      const res = await fetch(`${API_URL}/api/request-spanish-teacher`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          walletAddress,
-          permit: {
-            ...message,
-            signature,
-          },
-        }),
-      });
-
-      removeSnackbar(snackId);
-      setIsVerifyingPermit(false); // ✅ remove grey-out
-
-      if (!res.ok) {
-        showSnackbar({ message: "Verification failed.", variant: "error" });
-        return;
-      }
-
-      showSnackbar({
-        message: "Access granted! Redirecting…",
-        variant: "success",
-        duration: 3000,
-      });
-
-      router.push("/spanish-teacher");
-    } catch (err) {
-      console.error("Permit error:", err);
-      showSnackbar({
-        message: "Failed to authorize payment.",
-        variant: "error",
-      });
-    } finally {
-      setCheckingAccess(false);
-      setIsVerifyingPermit(false); // failsafe
-    }
-  };
-
-  const dailyQuizUnlocked = completedLessons?.includes("SPA1_005");
-  const handleDailyQuizUnlocked = () => {
-    if (!dailyQuizUnlocked) {
-      showSnackbar({
-        message: "Please complete Lesson 5 to unlock the Daily Quiz.",
-        variant: "info",
-        duration: 3000,
-      });
-      return;
-    }
-    if (dailyQuizCompleted) {
-      showSnackbar({
-        message: "You have already completed today's Daily Quiz.",
-        variant: "info",
-        duration: 3000,
-      });
-      return;
-    }
-    router.push("/daily-quiz");
-  };
-
   return (
-    <div className="bg-background-primary min-h-[100dvh] w-full flex flex-col overflow-y-auto pb-nav">
+    <div className="bg-background-primary min-h-[100dvh] w-full flex flex-col overflow-y-auto overflow-x-hidden pb-nav">
       <div className="flex-1 w-full max-w-4xl mx-auto px-4">
         <HeaderGreeting />
         <div className="mt-2">
@@ -286,8 +191,13 @@ export default function HomePage() {
           <DailyStreak />
         </div>
         <TestingNoticeModal />
-        <h3 className="text-secondary text-xl font-semibold mt-2">Lessons</h3>
-        <div className="mt-2 overflow-x-auto">
+        <div className="flex items-center justify-between mt-2">
+          <h3 className="text-secondary text-xl font-semibold">Lessons</h3>
+          {/* TODO: Implement this */}
+          {/* <h6 className="text-secondary text-md font-extralight ">See all</h6> */}
+        </div>
+        <div className="overflow-x-auto pb-2">
+          {" "}
           <div className="flex gap-4 px-4 -mx-4 w-max">
             {lessons.map((lesson) => (
               <LessonCard
@@ -301,35 +211,30 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-
         {/* Talk to Spanish Teacher */}
-        <div className="mt-4">
+        <div className="mt-3">
           <button
-            onClick={handleSpanishTeacherAccess}
-            className="w-full bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded hover:cursor-pointer transition-colors duration-200 shadow-md"
-            disabled={checkingAccess}
+            onClick={() => router.push("/spanish-teacher")}
+            className="w-full border-b-3 border-r-1 border-black bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded-2xl hover:cursor-pointer transition-colors duration-200 shadow-md"
           >
-            {checkingAccess
-              ? "Checking access…"
-              : "Talk to Spanish Teacher (1 YAP)"}
+            Talk to Spanish Teacher
           </button>
         </div>
         {/* Daily Quiz */}
-        <h3 className="text-secondary text-xl font-semibold mt-2 mb-2">
+        <h3 className="text-secondary text-xl font-semibold mt-2 mb-2 flex items-center gap-2">
           Daily Quiz
         </h3>
         <div className="relative z-0 " onClick={handleDailyQuizUnlocked}>
           <DailyQuizCard
             isUnlocked={dailyQuizUnlocked}
-            isCompleted={dailyQuizCompleted}
+            isCompleted={completedToday}
+            attemptsLeft={attemptsLeft}
+            lastAttemptAvg={lastAttemptAvg} // <-- was avgScore
           />
         </div>
       </div>
 
       <BottomNavBar />
-      {isVerifyingPermit && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center" />
-      )}
     </div>
   );
 }

@@ -95,7 +95,6 @@ export default function LessonPage() {
   // 5) Pre‑start screen
   if (!started) {
     if (profileLoading) return <p>Loading…</p>;
-    const firstInitial = name.charAt(0).toUpperCase() || '?';
 
     return (
       <div className="min-h-[100dvh] w-full bg-background-primary flex flex-col items-center px-4 relative pb-2">
@@ -106,18 +105,17 @@ export default function LessonPage() {
           ">
           <TablerChevronLeft />
         </button>
-
-        <div className="flex flex-col items-center text-center pt-2 space-y-4">
-          <div className="w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center">
-            <span className="text-4xl font-extrabold text-white">
-              {firstInitial}
-            </span>
-          </div>
-          <h1 className="text-2xl font-extrabold text-secondary">
-            Welcome {name}
-          </h1>
-          <p className="text-sm text-secondary">
-            ¡Buena suerte con esta lección!
+        <div className="flex flex-col items-center justify-center pt-20 flex-grow">
+          <img src="/assets/yappy.png" alt="Yappy Logo" className="h-40 w-auto" />
+          <h2 className="text-lg font-light mt-1 text-secondary text-center">
+            Lesson{" "}
+            {(() => {
+              const num = lessonData.lesson_id.split("_")[1];
+              return num.startsWith("0") ? num.slice(1) : num;
+            })()}
+          </h2>
+          <p className="text-secondary mt-1 font-bold text-xl text-center px-2">
+            {lessonData.title}
           </p>
         </div>
 
@@ -125,7 +123,7 @@ export default function LessonPage() {
         <div className='flex flex-col items-center w-full lg:pb-20'>
           <button
             onClick={() => setStarted(true)}
-            className="hover:cursor-pointer w-full max-w-xs py-4 rounded-full bg-secondary border-b-2 border-r-1 border-black text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
+            className="hover:cursor-pointer w-full max-w-xs py-4 rounded-full bg-secondary border-b-3 border-r-1 border-black text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
           >
             Get Started
           </button>

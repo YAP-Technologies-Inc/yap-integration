@@ -1,38 +1,36 @@
-
-/* Full screen centered layout */
 .loader-screen {
+  position: fixed; /* Add this */
+  top: 0;          /* Add this */
+  left: 0;         /* Add this */
   height: 100vh;
   width: 100vw;
-  background: bg-background-primary; 
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
+  align-items: center;      /* Center horizontally */
+  justify-content: flex-start; /* Align to top */
+  overflow: hidden;
+  z-index: 50; /* Optional: ensure it's above other content */
+  padding-top: 14rem;        /* Add space from the top */
 }
 
-/* Optional loader text */
+.loader-container {
+  width: 56px;              /* Smaller circle */
+  height: 56px;
+  border-radius: 50%;
+  border: 5px solid #d9d9d9;
+  border-top: 5px solid var(--color-tertiary);
+  animation: spin 1.2s linear infinite;
+}
+
 .loader-message {
   color: #333;
   font-family: sans-serif;
   font-size: 1.2rem;
-}
-
-/* Spinner container */
-.loader-container {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 10px solid #f3f3f3;
-  border-top: 10px solid var(--color-tertiary); 
-  animation: spin 1.2s linear infinite;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

@@ -27,8 +27,7 @@ export default function TestingNoticeModal() {
         </h2>
         <p className="text-sm text-gray-600 mb-4">
           You’re using an early test version of our app. If you see any bugs,
-          broken features, or error messages, please let us know! The AI Spanish
-          teacher is not available yet, but we’re working hard to bring it to you.
+          broken features, or error messages, please let us know! Don’t worry, we are working hard to improve the experience.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a

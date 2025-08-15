@@ -35,7 +35,7 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
 
     setSubmitting(true);
 
-    const snackId = Date.now(); 
+    const snackId = Date.now();
     showSnackbar({
       id: snackId,
       message: "Submitting report…",
@@ -79,20 +79,23 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center min-h-[100dvh] bg-black bg-opacity-40">
       {submitting && (
-        <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
+        <div className="fixed inset-0 z-40 backdrop-blur-sm" />
       )}
 
-      <div className="bg-background-primary rounded-lg shadow-xl w-full max-w-md relative min-h-[100dvh] flex flex-col justify-start px-4 pb-2">
-        <button
-          onClick={onClose}
-          className="absolute top-4 left-4 p-2 transition-colors hover:bg-gray-100 rounded-full"
-        >
-          <TablerX className="w-6 h-6 text-secondary" />
-        </button>
-
-        <h2 className="text-xl font-semibold text-center text-secondary mb-6 mt-6">
-          Report an Issue
-        </h2>
+      <div className="bg-background-primary w-full max-w-full min-h-[100dvh] flex flex-col justify-start pt-1.5 px-4 pb-2">
+        {/* Modal Header */}
+        <div className="flex items-center pb-2">
+          <button
+            onClick={onClose}
+            className="text-secondary hover:cursor-pointer rounded-full hover:bg-gray-100 "
+          >
+            <TablerX className="w-6 h-6" />
+          </button>
+          <h2 className="flex-1 text-center text-secondary font-bold text-xl ml-4">
+            Report an Issue
+          </h2>
+          <div className="w-10" />
+        </div>
 
         <form
           id="report-issue-form"
@@ -106,28 +109,28 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
             <input
               name="reason"
               type="text"
-              className="focus:outline-none focus:border-transparent w-full border border-b-4 border-[#e2ddd3] rounded-lg px-3 py-2 bg-white text-black"
+              className="focus:outline-none focus:border-transparent w-full border border-b-3 border-r-1 border-[#e2ddd3] rounded-lg px-3 py-2 bg-white text-black"
               placeholder="What's the reason?"
             />
           </div>
 
-          <div>
+            <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Explain
             </label>
             <textarea
               name="explain"
               rows={9}
-              className="focus:outline-none focus:border-transparent w-full border-b-4 border-[#e2ddd3] rounded-lg px-3 py-2 bg-white text-black"
+              className="focus:outline-none focus:border-transparent w-full border-b-3 border-r-1 border-[#e2ddd3] rounded-lg px-3 py-2 bg-white text-black resize-none"
               placeholder="Tell us more..."
             />
-          </div>
+            </div>
         </form>
 
         <button
           type="submit"
           form="report-issue-form"
-          className="bg-secondary text-white py-3 px-4 rounded-full border-b-3 border-r-1 border-black mt-auto"
+          className="bg-secondary text-white py-4 px-4 rounded-full border-b-3 border-r-1 border-black mt-auto"
           disabled={submitting}
         >
           Submit

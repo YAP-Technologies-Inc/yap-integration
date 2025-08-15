@@ -3,46 +3,55 @@
 // TODO: This is onyl a placeholder for now, we will need to implement the actual logic later.
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import SplashScreen from "../../components/layout/SplashScreen";
 import "./SecuringLoader.css";
+import { useSnackbar } from "../ui/SnackBar";
 
 export default function SecuringLoader() {
   const router = useRouter();
   const [showSplash, setShowSplash] = useState(false);
+  const { showSnackbar } = useSnackbar();
+  const snackbarShownRef = useRef(false);
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, []);
-  
 
-  // Phase 1: "Securing your account..." loader
-  // Then after 3 seconds, show the splash screen
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowSplash(true); 
-    }, 3000); //
+      setShowSplash(true);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Phase 2: After 3-slide splash is done, push to home
+  // Show snackbar only when splash screen appears, and only once
+  useEffect(() => {
+    if (showSplash && !snackbarShownRef.current) {
+      showSnackbar({
+        message: "Your wallet is ready!",
+        variant: "custom", 
+        duration: 3000,
+      });
+      snackbarShownRef.current = true;
+    }
+  }, [showSplash, showSnackbar]);
+
   const handleFinishSplash = () => {
     router.push("/home");
   };
 
-  // If splash is active, render it
-  // Otherwise, render the loader
   if (showSplash) return <SplashScreen onFinish={handleFinishSplash} />;
 
   return (
-    <div className="min-h-[100dvh] overflow-hidden loader-screen bg-background-primary">
+    <div className="loader-screen bg-background-primary">
       <div className="loader-container"></div>
-      <p className="loader-message">Securing your account...</p>
+      <p className="loader-message mt-4 font-normal pb-8">Securing your account...</p>
     </div>
   );
 }
