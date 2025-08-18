@@ -4,8 +4,8 @@ This repository contains both the frontend (Next.js) and backend (Node.js) for t
 
 ## Project Structure
 
-- `yap-frontend-v2 copy/` — Next.js 15 frontend (React 19, TailwindCSS 4)
-- `YAPBackend copy/` — Node.js backend (Express, ethers, etc.)
+- `frontend` — Next.js 15 frontend (React 19, TailwindCSS 4)
+- `backend` — Node.js backend (Express, ethers, etc.)
 
 ---
 
@@ -23,14 +23,14 @@ cd yap-integration
 #### Backend
 
 ```sh
-cd "YAPBackend copy"
+cd "backend"
 npm install
 ```
 
 #### Frontend
 
 ```sh
-cd "yap-frontend-v2 copy"
+cd "frontend"
 npm install
 ```
 
@@ -41,8 +41,8 @@ npm install
 - **Do NOT commit your `.env` files.**
 - `.env` files are already in `.gitignore` and will not be uploaded to GitHub.
 - Place your `.env` files in the appropriate folders:
-  - `YAPBackend copy/.env`
-  - `yap-frontend-v2 copy/.env`
+  - `frontend/.env`
+  - `backend/.env`
 
 ---
 
@@ -51,14 +51,14 @@ npm install
 #### Backend
 
 ```sh
-cd "YAPBackend copy"
+cd "backend"
 node index.js
 ```
 
 #### Frontend
 
 ```sh
-cd "yap-frontend-v2 copy"
+cd "frontend"
 npm run dev
 ```
 
@@ -91,7 +91,7 @@ git push -u origin main --force
 
 - If you see `Module not found: Can't resolve '@11labs/react'`, install it in the frontend:
   ```sh
-  cd "yap-frontend-v2 copy"
+  cd "frontend"
   npm install @11labs/react
   ```
 - For any issues, check the documentation or open an issue in this repo.
@@ -99,5 +99,5 @@ git push -u origin main --force
 ---
 
 ## License
+[MIT](LICENSE) 
 
-[MIT](LICENSE)
