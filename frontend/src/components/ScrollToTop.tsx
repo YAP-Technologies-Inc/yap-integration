@@ -1,5 +1,5 @@
 // This component scrolls the page to the top whenever the pathname changes.
-// However it isnt working now 
+// However it isnt working now
 'use client';
 
 import { usePathname } from 'next/navigation';

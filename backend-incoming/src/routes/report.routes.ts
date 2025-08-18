@@ -7,14 +7,15 @@ const router = Router();
 // POST /api/report-form
 router.post("/report-form", async (req, res) => {
   const { reason, explain } = req.body || {};
-  if (!reason || !explain) return res.status(400).json({ error: "Missing fields" });
+  if (!reason || !explain)
+    return res.status(400).json({ error: "Missing fields" });
 
   try {
     await transporter.sendMail({
       from: `"YAP Reporter" <${EMAIL_USER}>`,
       to: EMAIL_TO,
       subject: `Issue Reported: ${reason}`,
-      text: explain
+      text: explain,
     });
     res.json({ success: true });
   } catch (err: any) {

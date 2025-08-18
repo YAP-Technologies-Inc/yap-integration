@@ -8,7 +8,9 @@ router.post("/redeem-yap", async (req, res) => {
   try {
     const { walletAddress } = req.body;
     if (!walletAddress || !isAddress(walletAddress)) {
-      return res.status(400).json({ success: false, error: "Invalid wallet address" });
+      return res
+        .status(400)
+        .json({ success: false, error: "Invalid wallet address" });
     }
     const token = getToken();
     const tx = await token.transfer(walletAddress, parseUnits("1", 18));

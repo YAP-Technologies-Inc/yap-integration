@@ -3,23 +3,23 @@ let correctEl: HTMLAudioElement | null = null;
 let incorrectEl: HTMLAudioElement | null = null;
 let prepared = false;
 
-const playedKeys = new Set<string>();   // succeeded plays this session
-const pendingKeys = new Set<string>();  // in-flight plays (per key)
+const playedKeys = new Set<string>(); // succeeded plays this session
+const pendingKeys = new Set<string>(); // in-flight plays (per key)
 
 type Srcs = { correct: string; incorrect: string };
 
 export function prepareChimes(srcs?: Srcs) {
-  if (prepared || typeof window === "undefined") return;
+  if (prepared || typeof window === 'undefined') return;
 
-  const correctSrc = srcs?.correct ?? "/audio/correct.mp3";
-  const incorrectSrc = srcs?.incorrect ?? "/audio/incorrect.mp3";
+  const correctSrc = srcs?.correct ?? '/audio/correct.mp3';
+  const incorrectSrc = srcs?.incorrect ?? '/audio/incorrect.mp3';
 
   correctEl = new Audio(correctSrc);
   incorrectEl = new Audio(incorrectSrc);
 
   // ensure sound
-  correctEl.preload = "auto";
-  incorrectEl.preload = "auto";
+  correctEl.preload = 'auto';
+  incorrectEl.preload = 'auto';
   correctEl.muted = false;
   incorrectEl.muted = false;
   correctEl.volume = 1;
@@ -34,21 +34,25 @@ function ensureReady(el: HTMLAudioElement): Promise<void> {
 
   return new Promise<void>((resolve) => {
     const onReady = () => {
-      el.removeEventListener("canplaythrough", onReady);
-      el.removeEventListener("loadeddata", onReady);
+      el.removeEventListener('canplaythrough', onReady);
+      el.removeEventListener('loadeddata', onReady);
       resolve();
     };
-    el.addEventListener("canplaythrough", onReady, { once: true });
-    el.addEventListener("loadeddata", onReady, { once: true });
+    el.addEventListener('canplaythrough', onReady, { once: true });
+    el.addEventListener('loadeddata', onReady, { once: true });
     // Kick the loader in case it hasn't started
-    try { el.load(); } catch {}
+    try {
+      el.load();
+    } catch {}
   });
 }
 
 // Optional: allow replay for a given key
 export function clearPlayedKey(key: string) {
   playedKeys.delete(key);
-  try { sessionStorage.removeItem(`playedChime:${key}`); } catch {}
+  try {
+    sessionStorage.removeItem(`playedChime:${key}`);
+  } catch {}
 }
 
 /**
@@ -56,12 +60,14 @@ export function clearPlayedKey(key: string) {
  * Returns true if playback started, false otherwise.
  */
 export async function playChimeOnce(key: string, success: boolean): Promise<boolean> {
-  if (typeof window === "undefined") return false;
+  if (typeof window === 'undefined') return false;
 
   const sessionKey = `playedChime:${key}`;
 
   // Already played (this session or this tab)
-  try { if (sessionStorage.getItem(sessionKey) === "1") return false; } catch {}
+  try {
+    if (sessionStorage.getItem(sessionKey) === '1') return false;
+  } catch {}
   if (playedKeys.has(key) || pendingKeys.has(key)) return false;
 
   prepareChimes();
@@ -79,12 +85,14 @@ export async function playChimeOnce(key: string, success: boolean): Promise<bool
 
     // Mark as played only AFTER success
     playedKeys.add(key);
-    try { sessionStorage.setItem(sessionKey, "1"); } catch {}
+    try {
+      sessionStorage.setItem(sessionKey, '1');
+    } catch {}
 
     return true;
   } catch (err) {
     // Helpful during dev; remove if too chatty
-    console.warn("[chimeOnce] playback failed", err);
+    console.warn('[chimeOnce] playback failed', err);
     return false;
   } finally {
     pendingKeys.delete(key);

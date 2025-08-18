@@ -1,6 +1,6 @@
-"use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SplashPage() {
   const router = useRouter();
@@ -8,7 +8,7 @@ export default function SplashPage() {
   useEffect(() => {
     // fast navigation to auth page
     requestAnimationFrame(() => {
-      router.push("/auth");
+      router.push('/auth');
     });
   }, [router]);
 

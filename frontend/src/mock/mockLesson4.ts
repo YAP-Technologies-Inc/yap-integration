@@ -49,19 +49,11 @@ const mockLesson4 = {
       type: 'vocabulary_activation',
       method: 'picture_description',
       topic: 'family tree',
-      prompts: [
-        'Point and name family members',
-        'Describe relationships',
-        'Use possessives',
-      ],
+      prompts: ['Point and name family members', 'Describe relationships', 'Use possessives'],
     },
     {
       type: 'sentence_building',
-      patterns: [
-        'Mi ___ se llama ___',
-        'Tengo ___ hermanos/as',
-        'Mi ___ tiene ___ años',
-      ],
+      patterns: ['Mi ___ se llama ___', 'Tengo ___ hermanos/as', 'Mi ___ tiene ___ años'],
       personalization: true,
     },
     {
@@ -97,23 +89,12 @@ const mockLesson4 = {
     {
       type: 'family_tree_completion',
       instructions: 'Complete the family tree with correct terms',
-      relationships: [
-        'padre',
-        'madre',
-        'hermano',
-        'hermana',
-        'abuelo',
-        'abuela',
-      ],
+      relationships: ['padre', 'madre', 'hermano', 'hermana', 'abuelo', 'abuela'],
     },
     {
       type: 'possessive_practice',
       instructions: "Change from 'mi' to 'tu' and 'su'",
-      sentences: [
-        'Mi padre es alto.',
-        'Mi familia vive aquí.',
-        'Mis hermanos estudian.',
-      ],
+      sentences: ['Mi padre es alto.', 'Mi familia vive aquí.', 'Mis hermanos estudian.'],
     },
   ],
   assessment: {

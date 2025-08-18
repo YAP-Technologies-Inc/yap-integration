@@ -9,11 +9,7 @@ interface ComprehensionCardProps {
   questions: { question: string; answer: string }[];
 }
 
-export const ComprehensionCard: FC<ComprehensionCardProps> = ({
-  text,
-  audioUrl,
-  questions,
-}) => (
+export const ComprehensionCard: FC<ComprehensionCardProps> = ({ text, audioUrl, questions }) => (
   <div className="relative w-full h-[45vh] max-w-sm mx-auto overflow-auto">
     <div className="absolute inset-0 rounded-2xl bg-white shadow-md opacity-30" />
     <div className="absolute inset-0 rounded-2xl bg-white shadow-md opacity-20" />

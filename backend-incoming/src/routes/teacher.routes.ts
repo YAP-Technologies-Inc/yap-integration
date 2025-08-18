@@ -6,7 +6,11 @@ import artifact from "../abi/YapToken.json" with { type: "json" };
 
 const provider = new JsonRpcProvider(SEI_RPC);
 const signer = new Wallet(String(PRIVATE_KEY), provider);
-const token = new Contract(String(TOKEN_ADDRESS), (artifact as any).abi, signer);
+const token = new Contract(
+  String(TOKEN_ADDRESS),
+  (artifact as any).abi,
+  signer,
+);
 
 const router = Router();
 
@@ -21,7 +25,15 @@ router.post("/request-spanish-teacher", async (req, res) => {
   try {
     const { v, r, s } = ethers.Signature.from(signature);
 
-    const permitTx = await token.permit(owner, spender, value, deadline, v, r, s);
+    const permitTx = await token.permit(
+      owner,
+      spender,
+      value,
+      deadline,
+      v,
+      r,
+      s,
+    );
     await permitTx.wait();
 
     const spendAmount = BigInt(value);
@@ -34,7 +46,7 @@ router.post("/request-spanish-teacher", async (req, res) => {
        ON CONFLICT (user_id) DO UPDATE
          SET tx_hash = EXCLUDED.tx_hash,
              expires_at = NOW() + interval '20 minutes'`,
-      [userId, spendTx.hash]
+      [userId, spendTx.hash],
     );
 
     return res.json({ success: true, txHash: spendTx.hash });
@@ -54,7 +66,8 @@ router.get("/teacher-session/:userId", async (req, res) => {
        FROM teacher_sessions
        WHERE user_id=$1
        ORDER BY expires_at DESC
-       LIMIT 1`, [userId]
+       LIMIT 1`,
+      [userId],
     );
 
     if (!rows.length) return res.json({ hasAccess: false, remainingMs: 0 });
@@ -65,7 +78,7 @@ router.get("/teacher-session/:userId", async (req, res) => {
     return res.json({
       hasAccess: remainingMs > 0,
       remainingMs,
-      expiresAt: new Date(expiresAt).toISOString()
+      expiresAt: new Date(expiresAt).toISOString(),
     });
   } catch (err: any) {
     console.error("Session check failed:", err);

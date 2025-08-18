@@ -6,5 +6,5 @@ export const db = new Pool({
   host: PGHOST,
   database: PGDATABASE,
   password: PGPASSWORD,
-  port: PGPORT ? Number(PGPORT) : 5432, 
+  port: PGPORT ? Number(PGPORT) : 5432,
 });

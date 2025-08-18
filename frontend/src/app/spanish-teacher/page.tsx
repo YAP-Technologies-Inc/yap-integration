@@ -1,30 +1,24 @@
-"use client";
+'use client';
 
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { useRouter } from "next/navigation";
-import { useSnackbar } from "@/components/ui/SnackBar";
-import { TablerX } from "@/icons";
-import { handleSpanishTeacherAccessFromPage } from "@/utils/handleSpanishTeacherAccessFromPage";
-import { useMessageSignModal } from "@/components/cards/MessageSignModal";
-import { useWallets, usePrivy } from "@privy-io/react-auth";
-import { ethers } from "ethers";
-import Tutor from "@/components/cards/Tutor";
-import BottomNavBar from "@/components/layout/BottomNavBar";
-import { useUserProfile } from "@/hooks/useUserProfile";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSnackbar } from '@/components/ui/SnackBar';
+import { TablerX } from '@/icons';
+import { handleSpanishTeacherAccessFromPage } from '@/utils/handleSpanishTeacherAccessFromPage';
+import { useMessageSignModal } from '@/components/cards/MessageSignModal';
+import { useWallets, usePrivy } from '@privy-io/react-auth';
+import { ethers } from 'ethers';
+import Tutor from '@/components/cards/Tutor';
+import BottomNavBar from '@/components/layout/BottomNavBar';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 /* -------------------- Types & helpers -------------------- */
 
 interface Message {
   id: string;
-  kind: "text";
+  kind: 'text';
   text: string;
-  sender: "user" | "ai";
+  sender: 'user' | 'ai';
   timestamp: Date;
 }
 
@@ -33,7 +27,7 @@ const fmtMMSS = (ms: number) => {
   const total = Math.floor(ms / 1000);
   const m = Math.floor(total / 60);
   const s = total % 60;
-  return `${m}:${s.toString().padStart(2, "0")}`;
+  return `${m}:${s.toString().padStart(2, '0')}`;
 };
 
 /* Delay so text paints before audio starts */
@@ -75,15 +69,14 @@ function useAgentSocket({
     connectingRef.current = true;
 
     const base = (
-      process.env.NEXT_PUBLIC_API_URL ||
-      `${window.location.protocol}//${window.location.host}`
+      process.env.NEXT_PUBLIC_API_URL || `${window.location.protocol}//${window.location.host}`
     )
-      .replace(/^https:/i, "wss:")
-      .replace(/^http:/i, "ws:");
+      .replace(/^https:/i, 'wss:')
+      .replace(/^http:/i, 'ws:');
     const url = `${base}/api/agent-ws`;
 
     const ws = new WebSocket(url);
-    ws.binaryType = "arraybuffer";
+    ws.binaryType = 'arraybuffer';
     wsRef.current = ws;
 
     const clearKeepalive = () => {
@@ -118,22 +111,19 @@ function useAgentSocket({
     };
 
     ws.onmessage = (e) => {
-      if (typeof e.data === "string") {
+      if (typeof e.data === 'string') {
         try {
           const msg = JSON.parse(e.data);
-          if (msg.type === "ai_text_delta" && typeof msg.text === "string") {
+          if (msg.type === 'ai_text_delta' && typeof msg.text === 'string') {
             handlersRef.current.onText?.(msg.text, false);
-          } else if (
-            msg.type === "ai_text_final" &&
-            typeof msg.text === "string"
-          ) {
+          } else if (msg.type === 'ai_text_final' && typeof msg.text === 'string') {
             handlersRef.current.onText?.(msg.text, true);
-          } else if (msg.type === "ai_text" && typeof msg.text === "string") {
+          } else if (msg.type === 'ai_text' && typeof msg.text === 'string') {
             handlersRef.current.onText?.(msg.text, true);
-          } else if (msg.type === "ack_user_text") {
+          } else if (msg.type === 'ack_user_text') {
             handlersRef.current.onAck?.();
-          } else if (msg.type === "error") {
-            handlersRef.current.onError?.(String(msg.error ?? "Agent error"));
+          } else if (msg.type === 'error') {
+            handlersRef.current.onError?.(String(msg.error ?? 'Agent error'));
           }
         } catch {
           /* ignore */
@@ -145,11 +135,11 @@ function useAgentSocket({
     };
 
     ws.onerror = () => {
-      scheduleReconnect("error");
+      scheduleReconnect('error');
     };
 
     ws.onclose = (ev) => {
-      scheduleReconnect(`close ${ev.code || ""}`);
+      scheduleReconnect(`close ${ev.code || ''}`);
     };
   }, [enabled]);
 
@@ -179,7 +169,7 @@ function useAgentSocket({
     const ws = wsRef.current;
     if (!ws || ws.readyState !== WebSocket.OPEN) return false;
     try {
-      ws.send(JSON.stringify({ type: "user_text", text }));
+      ws.send(JSON.stringify({ type: 'user_text', text }));
       return true;
     } catch {
       return false;
@@ -193,11 +183,10 @@ function useAgentSocket({
 
 export default function SpanishTeacherConversation() {
   const router = useRouter();
-  const { showSnackbar, removeSnackbar, clearAllSnackbars } =
-    useSnackbar() as any;
+  const { showSnackbar, removeSnackbar, clearAllSnackbars } = useSnackbar() as any;
   const { open, close } = useMessageSignModal();
   const { wallets } = useWallets();
-  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy");
+  const embeddedWallet = wallets.find((w) => w.walletClientType === 'privy');
   const { signTypedData } = usePrivy();
 
   const [userId, setUserId] = useState<string | null>(null);
@@ -216,13 +205,11 @@ export default function SpanishTeacherConversation() {
   const [remainingMs, setRemainingMs] = useState<number>(FIVE_MIN_MS);
   const expiryRef = useRef<number | null>(null);
   const rAFRef = useRef<number | null>(null);
-  const startCountdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null
-  );
+  const startCountdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // auto-scroll chat
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   // ---- AUDIO QUEUE with a "gate" so audio waits until text has painted
@@ -277,7 +264,7 @@ export default function SpanishTeacherConversation() {
       queueRef.current.push(url);
       if (audioGateOpenRef.current && !currentAudioRef.current) playNext();
     },
-    [playNext]
+    [playNext],
   );
 
   const stopAllAudio = useCallback(() => {
@@ -309,25 +296,24 @@ export default function SpanishTeacherConversation() {
         expiresAt?: string;
       };
     },
-    [API_URL]
+    [API_URL],
   );
 
   const handleSessionEnd = useCallback(
     (msg: string) => {
       if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
       rAFRef.current = null;
-      if (startCountdownTimeoutRef.current)
-        clearTimeout(startCountdownTimeoutRef.current);
+      if (startCountdownTimeoutRef.current) clearTimeout(startCountdownTimeoutRef.current);
       startCountdownTimeoutRef.current = null;
 
       setShowCountdown(false);
       setHasAccess(false);
-      showSnackbar({ message: msg, variant: "info", duration: 2500 });
+      showSnackbar({ message: msg, variant: 'info', duration: 2500 });
 
-      const t = setTimeout(() => router.replace("/home"), 900);
+      const t = setTimeout(() => router.replace('/home'), 900);
       (handleSessionEnd as any)._t = t;
     },
-    [router, showSnackbar]
+    [router, showSnackbar],
   );
 
   const startCountdown = useCallback(
@@ -335,7 +321,7 @@ export default function SpanishTeacherConversation() {
       try {
         const data = await fetchSession(uid);
         if (!data?.hasAccess) {
-          handleSessionEnd("Session ended.");
+          handleSessionEnd('Session ended.');
           return;
         }
         const rem = Math.max(0, Number(data.remainingMs || 0));
@@ -345,13 +331,10 @@ export default function SpanishTeacherConversation() {
 
         if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
         const tick = () => {
-          const msLeft = Math.max(
-            0,
-            (expiryRef.current as number) - Date.now()
-          );
+          const msLeft = Math.max(0, (expiryRef.current as number) - Date.now());
           setRemainingMs(msLeft);
           if (msLeft <= 0) {
-            handleSessionEnd("Session ended. Thanks for practicing!");
+            handleSessionEnd('Session ended. Thanks for practicing!');
             return;
           }
           rAFRef.current = requestAnimationFrame(tick);
@@ -365,13 +348,10 @@ export default function SpanishTeacherConversation() {
 
         if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
         const tick = () => {
-          const msLeft = Math.max(
-            0,
-            (expiryRef.current as number) - Date.now()
-          );
+          const msLeft = Math.max(0, (expiryRef.current as number) - Date.now());
           setRemainingMs(msLeft);
           if (msLeft <= 0) {
-            handleSessionEnd("Session ended. Thanks for practicing!");
+            handleSessionEnd('Session ended. Thanks for practicing!');
             return;
           }
           rAFRef.current = requestAnimationFrame(tick);
@@ -379,7 +359,7 @@ export default function SpanishTeacherConversation() {
         rAFRef.current = requestAnimationFrame(tick);
       }
     },
-    [FIVE_MIN_MS, fetchSession, handleSessionEnd]
+    [FIVE_MIN_MS, fetchSession, handleSessionEnd],
   );
 
   const scheduleCountdownFromServerRemaining = useCallback(
@@ -390,13 +370,12 @@ export default function SpanishTeacherConversation() {
         return;
       }
       const msUntilFiveLeft = rem - FIVE_MIN_MS;
-      if (startCountdownTimeoutRef.current)
-        clearTimeout(startCountdownTimeoutRef.current);
+      if (startCountdownTimeoutRef.current) clearTimeout(startCountdownTimeoutRef.current);
       startCountdownTimeoutRef.current = setTimeout(() => {
         startCountdown(uid);
       }, msUntilFiveLeft);
     },
-    [FIVE_MIN_MS, startCountdown]
+    [FIVE_MIN_MS, startCountdown],
   );
 
   /* ---------- AI text streaming handling ---------- */
@@ -415,17 +394,15 @@ export default function SpanishTeacherConversation() {
             ...prev,
             {
               id,
-              kind: "text",
+              kind: 'text',
               text: chunk,
-              sender: "ai",
+              sender: 'ai',
               timestamp: new Date(),
             },
           ];
         } else {
           const id = streamingIdRef.current;
-          const next = prev.map((m) =>
-            m.id === id ? { ...m, text: m.text + chunk } : m
-          );
+          const next = prev.map((m) => (m.id === id ? { ...m, text: m.text + chunk } : m));
           if (isFinal) streamingIdRef.current = null;
           return next;
         }
@@ -446,7 +423,7 @@ export default function SpanishTeacherConversation() {
         });
       }
     },
-    [playNext]
+    [playNext],
   );
 
   const handleAck = useCallback(() => {
@@ -454,7 +431,7 @@ export default function SpanishTeacherConversation() {
   }, []);
 
   const handleErr = useCallback((m: string) => {
-    console.warn("[agent-ws] error:", m);
+    console.warn('[agent-ws] error:', m);
   }, []);
 
   // ---- Open/maintain ONE websocket when we have access
@@ -462,7 +439,7 @@ export default function SpanishTeacherConversation() {
     enabled: Boolean(userId && hasAccess),
     onText: upsertStreamingAi,
     onAudio: (ab) => {
-      const url = URL.createObjectURL(new Blob([ab], { type: "audio/wav" }));
+      const url = URL.createObjectURL(new Blob([ab], { type: 'audio/wav' }));
       enqueueAudio(url); // will not play until the first text chunk opens the gate
     },
     onAck: handleAck,
@@ -472,9 +449,9 @@ export default function SpanishTeacherConversation() {
   // ---- access flow (modal/pay) ----
   useEffect(() => {
     (async () => {
-      const stored = localStorage.getItem("userId");
+      const stored = localStorage.getItem('userId');
       if (!stored) {
-        router.replace("/home");
+        router.replace('/home');
         return;
       }
       setUserId(stored);
@@ -484,17 +461,17 @@ export default function SpanishTeacherConversation() {
 
         if (!accessData?.hasAccess) {
           const confirmed = await open(
-            `Get 20 mins of personalized Spanish tutoring for just 1 Yap.\nYour AI tutor will assess your level, identify your strengths, and help you improve pronunciation in real-time.`
+            `Get 20 mins of personalized Spanish tutoring for just 1 Yap.\nYour AI tutor will assess your level, identify your strengths, and help you improve pronunciation in real-time.`,
           );
           if (!confirmed) {
             close?.();
-            router.replace("/home");
+            router.replace('/home');
             return;
           }
 
           setIsVerifying(true);
           const ethProvider = await embeddedWallet?.getEthereumProvider();
-          if (!ethProvider) throw new Error("No wallet provider found");
+          if (!ethProvider) throw new Error('No wallet provider found');
 
           const provider = new ethers.BrowserProvider(ethProvider);
           const signer = await provider.getSigner();
@@ -503,8 +480,7 @@ export default function SpanishTeacherConversation() {
             userId: stored,
             showSnackbar,
             signer,
-            BACKEND_WALLET_ADDRESS:
-              process.env.NEXT_PUBLIC_BACKEND_WALLET_ADDRESS!,
+            BACKEND_WALLET_ADDRESS: process.env.NEXT_PUBLIC_BACKEND_WALLET_ADDRESS!,
             TOKEN_ADDRESS: process.env.NEXT_PUBLIC_TOKEN_ADDRESS!,
             API_URL,
             router,
@@ -516,7 +492,7 @@ export default function SpanishTeacherConversation() {
           } as any);
 
           const data2 = await fetchSession(stored);
-          if (!data2?.hasAccess) throw new Error("Access not granted");
+          if (!data2?.hasAccess) throw new Error('Access not granted');
           setIsVerifying(false);
           setHasAccess(true);
           scheduleCountdownFromServerRemaining(stored, data2.remainingMs);
@@ -526,19 +502,17 @@ export default function SpanishTeacherConversation() {
         setHasAccess(true);
         scheduleCountdownFromServerRemaining(stored, accessData.remainingMs);
       } catch (err) {
-        console.error("Access error:", err);
+        console.error('Access error:', err);
         setIsVerifying(false);
-        router.replace("/home");
+        router.replace('/home');
       }
     })();
 
     // cleanup timers & audio on unmount
     return () => {
       if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
-      if (startCountdownTimeoutRef.current)
-        clearTimeout(startCountdownTimeoutRef.current);
-      if ((handleSessionEnd as any)._t)
-        clearTimeout((handleSessionEnd as any)._t);
+      if (startCountdownTimeoutRef.current) clearTimeout(startCountdownTimeoutRef.current);
+      if ((handleSessionEnd as any)._t) clearTimeout((handleSessionEnd as any)._t);
       streamingIdRef.current = null;
 
       stopAllAudio();
@@ -558,10 +532,7 @@ export default function SpanishTeacherConversation() {
     <div className="min-h-[100dvh] bg-background-primary relative">
       {/* Top bar (64px) */}
       <div className="fixed inset-x-0 top-0 h-16 bg-background-primary z-30 flex items-center justify-center px-4">
-        <button
-          onClick={() => router.replace("/home")}
-          className="absolute left-4"
-        >
+        <button onClick={() => router.replace('/home')} className="absolute left-4">
           <TablerX className="w-6 h-6 text-gray-700" />
         </button>
         <div className="text-center">
@@ -575,12 +546,12 @@ export default function SpanishTeacherConversation() {
           fixed left-0 right-0 z-30 flex justify-center
           w-full top-16
           transition-opacity duration-200
-          ${showCountdown ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+          ${showCountdown ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
         `}
       >
         {showCountdown && (
           <span className="block w-full max-w-screen-sm mx-auto bg-[#fdfbfa] text-secondary text-xs font-semibold py-1 shadow text-left pl-4">
-        You have {prettyTime} left in your tutor session
+            You have {prettyTime} left in your tutor session
           </span>
         )}
       </span>
@@ -589,49 +560,43 @@ export default function SpanishTeacherConversation() {
       <div
         className="fixed inset-x-0 z-10 overflow-y-auto"
         style={{
-          top: showCountdown ? "5.5rem" : "4rem", // push chat down if countdown is visible
-          bottom: "calc(96px + 7rem + 5px + env(safe-area-inset-bottom))",
-          WebkitOverflowScrolling: "touch",
+          top: showCountdown ? '5.5rem' : '4rem', // push chat down if countdown is visible
+          bottom: 'calc(96px + 7rem + 5px + env(safe-area-inset-bottom))',
+          WebkitOverflowScrolling: 'touch',
         }}
       >
         <div className="px-4 space-y-2 py-3">
           {!hasAccess ? (
-            <div className="text-center text-gray-500 text-xs py-2">
-              Checking access…
-            </div>
+            <div className="text-center text-gray-500 text-xs py-2">Checking access…</div>
           ) : messages.length === 0 && !awaitingFirstText ? (
-            <div className="text-center text-gray-500 text-xs py-2">
-              No messages yet
-            </div>
+            <div className="text-center text-gray-500 text-xs py-2">No messages yet</div>
           ) : (
             <>
               {messages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`flex items-start gap-2 ${
-                    msg.sender === "user" ? "justify-end" : "justify-start"
+                    msg.sender === 'user' ? 'justify-end' : 'justify-start'
                   }`}
                 >
-                  {msg.sender === "ai" && (
+                  {msg.sender === 'ai' && (
                     <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-sm font-semibold">
-                        AI
-                      </span>
+                      <span className="text-white text-sm font-semibold">AI</span>
                     </div>
                   )}
                   <div
                     className={`rounded-lg px-3 py-2 max-w-[70vw] text-sm ${
-                      msg.sender === "user"
-                        ? "bg-background-secondary text-white"
-                        : "bg-white text-[#2D1C1C]"
+                      msg.sender === 'user'
+                        ? 'bg-background-secondary text-white'
+                        : 'bg-white text-[#2D1C1C]'
                     }`}
                   >
                     <div>{msg.text}</div>
                   </div>
-                  {msg.sender === "user" && (
+                  {msg.sender === 'user' && (
                     <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
                       <span className="text-white text-sm font-semibold">
-                        {(userName || "U").charAt(0).toUpperCase()}
+                        {(userName || 'U').charAt(0).toUpperCase()}
                       </span>
                     </div>
                   )}
@@ -659,8 +624,8 @@ export default function SpanishTeacherConversation() {
         <div
           className={
             hasAccess
-              ? "w-full flex justify-center"
-              : "pointer-events-none opacity-50 w-full flex justify-center"
+              ? 'w-full flex justify-center'
+              : 'pointer-events-none opacity-50 w-full flex justify-center'
           }
         >
           <div className="w-full max-w-screen-sm px-4">
@@ -672,17 +637,17 @@ export default function SpanishTeacherConversation() {
                   const ok = sendUserText(message);
                   if (!ok) {
                     showSnackbar({
-                      message: "Reconnecting to tutor…",
-                      variant: "info",
+                      message: 'Reconnecting to tutor…',
+                      variant: 'info',
                     });
                   } else {
                     setMessages((prev) => [
                       ...prev,
                       {
                         id: crypto.randomUUID(),
-                        kind: "text",
+                        kind: 'text',
                         text: message,
-                        sender: "user",
+                        sender: 'user',
                         timestamp: new Date(),
                       },
                     ]);
@@ -696,9 +661,7 @@ export default function SpanishTeacherConversation() {
         </div>
       </div>
 
-      {isVerifying && (
-        <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
-      )}
+      {isVerifying && <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />}
       <BottomNavBar />
     </div>
   );

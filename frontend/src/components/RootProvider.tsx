@@ -27,17 +27,10 @@ const seiTestnet = {
   },
 };
 
-export default function RootProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootProvider({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Script
-        src="https://cdn.privy.io/privy.bundle.js"
-        strategy="lazyOnload"
-      />
+      <Script src="https://cdn.privy.io/privy.bundle.js" strategy="lazyOnload" />
       <PrivyProvider
         appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
         clientId={process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID!}

@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useWallets, useSignTypedData } from "@privy-io/react-auth";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useWallets, useSignTypedData } from '@privy-io/react-auth';
 
-import HeaderGreeting from "@/components/dashboard/HeaderGreeting";
-import BalanceCard from "@/components/dashboard/BalanceCard";
-import DailyStreak from "@/components/dashboard/DailyStreak";
-import BottomNavBar from "@/components/layout/BottomNavBar";
-import LessonCard from "@/components/dashboard/LessonCard";
-import DailyQuizCard from "@/components/dashboard/DailyQuizPrompt";
-import allLessons from "@/mock/allLessons";
+import HeaderGreeting from '@/components/dashboard/HeaderGreeting';
+import BalanceCard from '@/components/dashboard/BalanceCard';
+import DailyStreak from '@/components/dashboard/DailyStreak';
+import BottomNavBar from '@/components/layout/BottomNavBar';
+import LessonCard from '@/components/dashboard/LessonCard';
+import DailyQuizCard from '@/components/dashboard/DailyQuizPrompt';
+import allLessons from '@/mock/allLessons';
 
-import { useInitializeUser } from "@/hooks/useUserInitalizer";
-import { useCompletedLessons } from "@/hooks/useCompletedLessons";
-import { useUserProfile } from "@/hooks/useUserProfile";
-import { useUserStats } from "@/hooks/useUserStats";
-import { useOnChainBalance } from "@/hooks/useOnBlockChain";
-import isEqual from "lodash.isequal";
-import { ethers } from "ethers";
-import { tokenAbi } from "@/app/abis/YAPToken";
-import TestingNoticeModal from "@/components/TestingNoticeModal";
-import { useMessageSignModal } from "@/components/cards/MessageSignModal";
-import { useSnackbar } from "@/components/ui/SnackBar";
-import { getTodayStatus } from "@/utils/dailyQuizStorage";
-import { TablerCheck } from "@/icons/Check"; // Make sure this import exists
+import { useInitializeUser } from '@/hooks/useUserInitalizer';
+import { useCompletedLessons } from '@/hooks/useCompletedLessons';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useUserStats } from '@/hooks/useUserStats';
+import { useOnChainBalance } from '@/hooks/useOnBlockChain';
+import isEqual from 'lodash.isequal';
+import { ethers } from 'ethers';
+import { tokenAbi } from '@/app/abis/YAPToken';
+import TestingNoticeModal from '@/components/TestingNoticeModal';
+import { useMessageSignModal } from '@/components/cards/MessageSignModal';
+import { useSnackbar } from '@/components/ui/SnackBar';
+import { getTodayStatus } from '@/utils/dailyQuizStorage';
+import { TablerCheck } from '@/icons/Check'; // Make sure this import exists
 
 export default function HomePage() {
   useInitializeUser();
@@ -32,8 +32,7 @@ export default function HomePage() {
   // const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
   const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const BACKEND_WALLET_ADDRESS =
-    process.env.NEXT_PUBLIC_BACKEND_WALLET_ADDRESS!;
+  const BACKEND_WALLET_ADDRESS = process.env.NEXT_PUBLIC_BACKEND_WALLET_ADDRESS!;
   const { showSnackbar, removeSnackbar } = useSnackbar();
   const { open } = useMessageSignModal();
   const [lessons, setLessons] = useState<
@@ -41,25 +40,21 @@ export default function HomePage() {
       id: string;
       title: string;
       description: string;
-      status: "locked" | "available" | "completed";
+      status: 'locked' | 'available' | 'completed';
     }[]
   >([]);
 
   const { wallets } = useWallets();
   const router = useRouter();
 
-  const userId =
-    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-  const evmAddress =
-    typeof window !== "undefined" ? localStorage.getItem("evmAddress") : null;
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+  const evmAddress = typeof window !== 'undefined' ? localStorage.getItem('evmAddress') : null;
 
   // Fetch user-related data with SWR hooks
-  const { completedLessons, isLoading: isLessonsLoading } =
-    useCompletedLessons(userId);
+  const { completedLessons, isLoading: isLessonsLoading } = useCompletedLessons(userId);
   const { profile, isLoading: isProfileLoading } = useUserProfile(userId);
   const { stats, isLoading: isStatsLoading } = useUserStats(userId);
-  const { balance: onChainBalance, isLoading: isBalanceLoading } =
-    useOnChainBalance(evmAddress);
+  const { balance: onChainBalance, isLoading: isBalanceLoading } = useOnChainBalance(evmAddress);
 
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
 
@@ -72,22 +67,17 @@ export default function HomePage() {
 
     const computed = Object.values(allLessons).map((lesson: any) => {
       const isCompleted = completedSet.has(lesson.lesson_id);
-      const isFirst = lesson.lesson_id === "SPA1_001";
+      const isFirst = lesson.lesson_id === 'SPA1_001';
       const prereqs = lesson.prerequisite_lessons || [];
 
       const isAvailable =
-        isFirst ||
-        (!isCompleted && prereqs.every((p: string) => completedSet.has(p)));
+        isFirst || (!isCompleted && prereqs.every((p: string) => completedSet.has(p)));
 
       return {
         id: lesson.lesson_id,
         title: lesson.title,
         description: lesson.description,
-        status: isCompleted
-          ? "completed"
-          : isAvailable
-          ? "available"
-          : "locked",
+        status: isCompleted ? 'completed' : isAvailable ? 'available' : 'locked',
       };
     });
 
@@ -123,15 +113,15 @@ export default function HomePage() {
   const lockedEffective = localLocked || completedToday;
 
   // Gate by lesson unlock as before:
-  const lessonUnlocked = completedLessons?.includes("SPA1_005");
+  const lessonUnlocked = completedLessons?.includes('SPA1_005');
   const dailyQuizUnlocked = !!lessonUnlocked && !lockedEffective; // -------- CHANGED
 
   const handleDailyQuizUnlocked = () => {
     // Not unlocked by lessons
     if (!lessonUnlocked) {
       showSnackbar({
-        message: "Complete Lesson 5 to unlock Daily Quiz.",
-        variant: "info",
+        message: 'Complete Lesson 5 to unlock Daily Quiz.',
+        variant: 'info',
         duration: 3000,
       });
       return;
@@ -140,8 +130,8 @@ export default function HomePage() {
     // Server says it's already done today ------------------------------- NEW
     if (completedToday) {
       showSnackbar({
-        message: "You’ve already completed today’s Daily Quiz.",
-        variant: "info",
+        message: 'You’ve already completed today’s Daily Quiz.',
+        variant: 'info',
         duration: 3000,
       });
       return;
@@ -150,39 +140,32 @@ export default function HomePage() {
     // Out of attempts
     if (attemptsLeft <= 0) {
       showSnackbar({
-        message: "No attempts left. Daily Quiz is locked until tomorrow.",
-        variant: "info",
+        message: 'No attempts left. Daily Quiz is locked until tomorrow.',
+        variant: 'info',
         duration: 3000,
       });
       return;
     }
 
-    router.push("/daily-quiz");
+    router.push('/daily-quiz');
   };
 
   if (userId === null) {
-    router.push("/auth");
+    router.push('/auth');
     return null;
   }
 
-  if (
-    isLessonsLoading ||
-    isProfileLoading ||
-    isStatsLoading ||
-    isBalanceLoading
-  ) {
+  if (isLessonsLoading || isProfileLoading || isStatsLoading || isBalanceLoading) {
     return (
       <div className="min-h-[100dvh] flex items-center justify-center bg-background-primary">
-        <p className="text-secondary text-lg font-semibold">
-          Loading dashboard…
-        </p>
+        <p className="text-secondary text-lg font-semibold">Loading dashboard…</p>
       </div>
     );
   }
 
   return (
     <div className="bg-background-primary min-h-[100dvh] w-full flex flex-col overflow-y-auto overflow-x-hidden pb-nav">
-      <div className="flex-1 w-full max-w-4xl mx-auto px-4">
+      <div className="flex-1 w-full lg:w-1/2 lg:mx-auto px-4">
         <HeaderGreeting />
         <div className="mt-2">
           <BalanceCard />
@@ -197,7 +180,7 @@ export default function HomePage() {
           {/* <h6 className="text-secondary text-md font-extralight ">See all</h6> */}
         </div>
         <div className="overflow-x-auto pb-2">
-          {" "}
+          {' '}
           <div className="flex gap-4 px-4 -mx-4 w-max">
             {lessons.map((lesson) => (
               <LessonCard
@@ -211,16 +194,16 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-        {/* Talk to Spanish Teacher */}
+
         <div className="mt-3">
           <button
-            onClick={() => router.push("/spanish-teacher")}
+            onClick={() => router.push('/spanish-teacher')}
             className="w-full border-b-3 border-r-1 border-black bg-secondary hover:bg-secondary-darker text-white font-bold py-3 rounded-2xl hover:cursor-pointer transition-colors duration-200 shadow-md"
           >
             Talk to Spanish Teacher
           </button>
         </div>
-        {/* Daily Quiz */}
+
         <h3 className="text-secondary text-xl font-semibold mt-2 mb-2 flex items-center gap-2">
           Daily Quiz
         </h3>
@@ -229,7 +212,7 @@ export default function HomePage() {
             isUnlocked={dailyQuizUnlocked}
             isCompleted={completedToday}
             attemptsLeft={attemptsLeft}
-            lastAttemptAvg={lastAttemptAvg} // <-- was avgScore
+            lastAttemptAvg={lastAttemptAvg} 
           />
         </div>
       </div>

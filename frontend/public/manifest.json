@@ -1,14 +1,14 @@
 {
-    "name": "YAP App",
-    "short_name": "YAP",
-    "description": "Making language learning fun and rewarding by leveraging AI and blockchain technology.",
-    "start_url": "/",
-    "scope": "/",
-    "display": "standalone",
-    "theme_color": "#000000",
-    "background_color": "#ffffff",
-    "orientation": "portrait",
-    "icons": [
+  "name": "YAP App",
+  "short_name": "YAP",
+  "description": "Making language learning fun and rewarding by leveraging AI and blockchain technology.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "icons": [
     {
       "src": "/icons/android-chrome-192x192.png",
       "sizes": "192x192",
@@ -26,5 +26,4 @@
       "purpose": "any"
     }
   ]
-  }
-  
+}

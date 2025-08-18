@@ -12,7 +12,7 @@ export function useCompletedLessons(userId: string | null) {
     {
       revalidateOnFocus: true,
       refreshInterval: 60_000, // Re-fetch every 60 seconds
-    }
+    },
   );
 
   return {

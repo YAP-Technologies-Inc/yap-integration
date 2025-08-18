@@ -1,14 +1,11 @@
-"use client";
+'use client';
 
 interface AuthCardProps {
   onEmailClick: () => void;
   hideFooter?: boolean;
 }
 
-export default function AuthCard({
-  onEmailClick,
-  hideFooter = false,
-}: AuthCardProps) {
+export default function AuthCard({ onEmailClick, hideFooter = false }: AuthCardProps) {
   return (
     <div className="fixed inset-0 z-0">
       <img
@@ -20,19 +17,15 @@ export default function AuthCard({
       {/* Foreground content */}
       <div className="relative z-10 flex flex-col items-center w-full h-full">
         <div className="flex items-center justify-center flex-1 ">
-          <img
-            src="/assets/yapwhite.svg"
-            alt="YAP Logo"
-            className="h-50 w-auto"
-          />
+          <img src="/assets/yapwhite.svg" alt="YAP Logo" className="h-50 w-auto" />
         </div>
 
         <div
           className={[
-            "w-full px-6 pb-2 rounded-t-3xl mt-auto sm:max-w-md",
-            "transform transition-transform duration-300 ease-in-out",
-            hideFooter ? "translate-y-full" : "translate-y-0",
-          ].join(" ")}
+            'w-full px-6 pb-2 rounded-t-3xl mt-auto sm:max-w-md',
+            'transform transition-transform duration-300 ease-in-out',
+            hideFooter ? 'translate-y-full' : 'translate-y-0',
+          ].join(' ')}
         >
           <div className="flex flex-col items-center justify-center h-full lg:pb-20 gap-6">
             <button

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { TablerChevronLeft } from "@/icons";
-import AuthLogo from "@/components/auth/AuthLogo";
+import { TablerChevronLeft } from '@/icons';
+import AuthLogo from '@/components/auth/AuthLogo';
 // Use a relative path string for images in the public directory
-const languages = [{ name: "Spanish", flag: "/assets/spain.svg" }];
+const languages = [{ name: 'Spanish', flag: '/assets/spain.svg' }];
 
 interface Props {
   onNext: () => void;
@@ -11,11 +11,7 @@ interface Props {
   onSelect: (lang: string) => void;
 }
 
-export default function SelectLanguageForm({
-  onNext,
-  onBack,
-  onSelect,
-}: Props) {
+export default function SelectLanguageForm({ onNext, onBack, onSelect }: Props) {
   return (
     <div className="min-h-[100dvh] w-full bg-background-primary px-4 pb-safe pt-safe flex flex-col relative">
       <div className="relative flex items-center pt-4 mb-4">
@@ -27,9 +23,7 @@ export default function SelectLanguageForm({
           <TablerChevronLeft />
         </button>
         <div className="w-full flex justify-center">
-          <h2 className="text-sm font-semibold text-[#2D1C1C]">
-        Select a language
-          </h2>
+          <h2 className="text-sm font-semibold text-[#2D1C1C]">Select a language</h2>
         </div>
       </div>
 
@@ -48,11 +42,7 @@ export default function SelectLanguageForm({
             hover:cursor-pointer 
             "
           >
-            <img
-              src={flag}
-              alt={`${name} flag`}
-              className="w-6 h-4 rounded-sm object-cover"
-            />
+            <img src={flag} alt={`${name} flag`} className="w-6 h-4 rounded-sm object-cover" />
             <span>{name}</span>
           </button>
         ))}

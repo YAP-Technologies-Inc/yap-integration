@@ -53,11 +53,7 @@ const mockLesson3 = {
     {
       type: 'information_exchange',
       student_a_tasks: ['Ask age', 'Ask birthday', 'Ask birth month'],
-      student_b_tasks: [
-        'Answer with age',
-        'Give birthday date',
-        'Say birth month',
-      ],
+      student_b_tasks: ['Answer with age', 'Give birthday date', 'Say birth month'],
       swap_roles: true,
     },
   ],
@@ -96,11 +92,7 @@ const mockLesson3 = {
     task: 'Create an ID card introduction',
     include: ['name', 'origin', 'age', 'birthday'],
     time_limit: 60,
-    criteria: [
-      'Correct number pronunciation',
-      'Accurate use of tener',
-      'Complete date expression',
-    ],
+    criteria: ['Correct number pronunciation', 'Accurate use of tener', 'Complete date expression'],
   },
   skill_distribution: {
     speaking: 35,

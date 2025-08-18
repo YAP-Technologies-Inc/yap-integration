@@ -6,7 +6,6 @@ import "./config/env.js";
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 const server = http.createServer(app);
 
-
 attachAgentBridge(server);
 
 server.listen(PORT, () => {

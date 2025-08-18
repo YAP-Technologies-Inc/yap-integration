@@ -32,7 +32,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
     <div className="min-h-[100dvh] w-full bg-background-primary px-4 flex flex-col pb-2">
       {/* Logo and Skip */}
       <div className="relative flex items-center justify-center mt-2">
-        <AuthLogo variant='red' />
+        <AuthLogo variant="red" />
         <button
           onClick={onFinish}
           className="absolute right-0 top-6 text-sm text-secondary hover:cursor-pointer
@@ -69,7 +69,8 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
       >
         <button
           onClick={() => (isLastSlide ? onFinish() : setIndex(index + 1))}
-          className="bg-secondary text-white py-3 px-6 rounded-full border-b-3 border-r-1 border-black w-full max-w-xs hover:cursor-pointer">
+          className="bg-secondary text-white py-3 px-6 rounded-full border-b-3 border-r-1 border-black w-full max-w-xs hover:cursor-pointer"
+        >
           {isLastSlide ? 'Start' : 'Next'}
         </button>
       </div>

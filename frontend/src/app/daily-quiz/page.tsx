@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 
 import {
   TablerX as TablerXIcon,
@@ -13,11 +13,11 @@ import {
   TablerFlagFilled,
   TablerCheck,
   TablerX,
-} from "@/icons";
-import { ReportIssue } from "@/components/debug/ReportIssue";
-import Flashcard from "@/components/cards/FlashCard";
-import { useSnackbar } from "@/components/ui/SnackBar";
-import mockDailyQuiz from "@/mock/mockDailyQuizShort";
+} from '@/icons';
+import { ReportIssue } from '@/components/debug/ReportIssue';
+import Flashcard from '@/components/cards/FlashCard';
+import { useSnackbar } from '@/components/ui/SnackBar';
+import mockDailyQuiz from '@/mock/mockDailyQuizShort';
 
 import {
   getQuizState,
@@ -30,16 +30,16 @@ import {
   setAttemptAvg,
   setLastAttemptAvg,
   type DailyQuizState,
-} from "@/utils/dailyQuizStorage";
+} from '@/utils/dailyQuizStorage';
 
-import { ScoreModal } from "@/components/lesson/ScoreModal";
+import { ScoreModal } from '@/components/lesson/ScoreModal';
 
 const PASSING_CARD_SCORE = 70; // per-card pass threshold (visual only)
 const PASSING_AVG = 90; // quiz pass threshold (avg)
 const MAX_ATTEMPTS = 3;
 
 type Step = {
-  variant: "vocab";
+  variant: 'vocab';
   front: string;
   back: string;
   example?: string;
@@ -56,7 +56,7 @@ export default function DailyQuizUi() {
 
   // ==== Build steps from mock (same visual as LessonUi) ====
   const allSteps: Step[] = (mockDailyQuiz?.[0]?.questions ?? []).map((q) => ({
-    variant: "vocab",
+    variant: 'vocab',
     front: q.es,
     back: q.en,
     example: q.example,
@@ -65,7 +65,7 @@ export default function DailyQuizUi() {
 
   // ==== Daily quiz persisted state (unchanged core logic) ====
   const initial: DailyQuizState =
-    typeof window !== "undefined"
+    typeof window !== 'undefined'
       ? getQuizState(total)
       : {
           attemptsLeft: MAX_ATTEMPTS,
@@ -75,9 +75,7 @@ export default function DailyQuizUi() {
           lastAttemptAvg: 0,
         };
 
-  const [attemptsLeft, setAttemptsLeft] = useState<number>(
-    initial.attemptsLeft
-  );
+  const [attemptsLeft, setAttemptsLeft] = useState<number>(initial.attemptsLeft);
   const [scores, setScores] = useState<number[]>(initial.scores);
   const [avgScore, setAvgScore] = useState<number>(initial.avgScore);
   const [completed, setCompleted] = useState<boolean>(initial.completed);
@@ -86,9 +84,7 @@ export default function DailyQuizUi() {
   const current = allSteps[stepIndex];
 
   // ==== Media / scoring state (match LessonUi behavior) ====
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
-    null
-  );
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
@@ -111,11 +107,11 @@ export default function DailyQuizUi() {
 
   // ==== TEST MODE (identical toggles as LessonUi) ====
   const TEST_MODE =
-    process.env.NEXT_PUBLIC_PRON_TEST === "1" ||
-    (typeof window !== "undefined" &&
-      (localStorage.getItem("pron_test_mode") === "1" ||
-        localStorage.getItem("testing") === "1" ||
-        new URLSearchParams(window.location.search).get("test") === "1"));
+    process.env.NEXT_PUBLIC_PRON_TEST === '1' ||
+    (typeof window !== 'undefined' &&
+      (localStorage.getItem('pron_test_mode') === '1' ||
+        localStorage.getItem('testing') === '1' ||
+        new URLSearchParams(window.location.search).get('test') === '1'));
 
   // Fake result, same shape as LessonUi
   function applyFakePronunciationResult() {
@@ -127,36 +123,34 @@ export default function DailyQuizUi() {
       completeness: 75,
     });
     setTextFeedback({
-      transcript: "hola",
-      accuracyText: "Pretty close—watch the opening consonant.",
-      fluencyText: "Generally smooth; a tiny hesitation mid-word.",
-      intonationText: "Natural melody, slightly falling too early.",
-      overallText: "Nice try! Keep practicing the first syllable.",
-      specificIssues: ["Initial consonant a bit soft", "Pitch drops too soon"],
+      transcript: 'hola',
+      accuracyText: 'Pretty close—watch the opening consonant.',
+      fluencyText: 'Generally smooth; a tiny hesitation mid-word.',
+      intonationText: 'Natural melody, slightly falling too early.',
+      overallText: 'Nice try! Keep practicing the first syllable.',
+      specificIssues: ['Initial consonant a bit soft', 'Pitch drops too soon'],
     });
   }
 
   // ==== Web Speech transcript capture (fresh per attempt) ====
-  const [spokenText, setSpokenText] = useState("");
+  const [spokenText, setSpokenText] = useState('');
   const recognitionRef = useRef<any>(null);
-  const attemptIdRef = useRef<string>("");
+  const attemptIdRef = useRef<string>('');
   const [hasFreshTranscript, setHasFreshTranscript] = useState(false);
 
   useEffect(() => {
-    const SR =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR) return;
     const rec = new SR();
     rec.continuous = false;
-    rec.lang = "es-ES";
+    rec.lang = 'es-ES';
     rec.interimResults = false;
     rec.maxAlternatives = 1;
     rec.onresult = (e: any) => {
-      const t = e?.results?.[0]?.[0]?.transcript || "";
+      const t = e?.results?.[0]?.[0]?.transcript || '';
       setSpokenText(t);
       setHasFreshTranscript(true);
-      console.log("[SR] transcript:", t);
+      console.log('[SR] transcript:', t);
     };
     recognitionRef.current = rec;
   }, []);
@@ -172,13 +166,11 @@ export default function DailyQuizUi() {
   }>(null);
 
   // ScoreModal visibility (reuses the same modal)
-  const [showScore, setShowScore] = useState<
-    "Accuracy" | "Fluency" | "Intonation" | null
-  >(null);
+  const [showScore, setShowScore] = useState<'Accuracy' | 'Fluency' | 'Intonation' | null>(null);
   const handleModalClose = () => setShowScore(null);
 
   // ==== Helpers ====
-  const referenceText = current?.front ?? "";
+  const referenceText = current?.front ?? '';
   const needsSpeaking = true;
 
   const newUploadId = () => Math.random().toString(36).slice(2);
@@ -189,7 +181,7 @@ export default function DailyQuizUi() {
     setScore(null);
     setFeedback(null);
     setBreakdown(null);
-    setSpokenText("");
+    setSpokenText('');
     setHasFreshTranscript(false);
     setShowScore(null);
     setTextFeedback(null);
@@ -197,25 +189,25 @@ export default function DailyQuizUi() {
 
   const getSupportedMimeType = (): string => {
     const types = [
-      "audio/webm", // Chrome/Edge/Android
-      "audio/mp4", // Safari/iOS
-      "audio/ogg", // Firefox
-      "audio/webm;codecs=opus",
-      "audio/ogg;codecs=opus",
+      'audio/webm', // Chrome/Edge/Android
+      'audio/mp4', // Safari/iOS
+      'audio/ogg', // Firefox
+      'audio/webm;codecs=opus',
+      'audio/ogg;codecs=opus',
     ];
     for (const t of types) {
       try {
         if ((MediaRecorder as any).isTypeSupported?.(t)) return t;
       } catch {}
     }
-    return "";
+    return '';
   };
 
   // ==== Recording controls (parity with LessonUi) ====
   const startRecording = async () => {
     try {
       attemptIdRef.current = crypto?.randomUUID?.() || newUploadId();
-      setSpokenText("");
+      setSpokenText('');
       setHasFreshTranscript(false);
       setScore(null);
       setBreakdown(null);
@@ -225,8 +217,8 @@ export default function DailyQuizUi() {
 
       if (!mimeType) {
         showSnackbar({
-          message: "No supported recording format",
-          variant: "error",
+          message: 'No supported recording format',
+          variant: 'error',
           duration: 3000,
         });
         return;
@@ -242,7 +234,7 @@ export default function DailyQuizUi() {
         setAudioURL(null);
       }
 
-      console.log("[REC] start", {
+      console.log('[REC] start', {
         mimeType,
         time: Date.now(),
         attempt: attemptIdRef.current,
@@ -253,11 +245,11 @@ export default function DailyQuizUi() {
       } catch {}
     } catch (e) {
       showSnackbar({
-        message: "Microphone permission denied or not found",
-        variant: "error",
+        message: 'Microphone permission denied or not found',
+        variant: 'error',
         duration: 3000,
       });
-      router.push("/home");
+      router.push('/home');
     }
   };
 
@@ -279,7 +271,7 @@ export default function DailyQuizUi() {
         }
       };
       rec.onerror = (e: any) => {
-        if (!resolved) reject(e?.error ?? new Error("Recorder error"));
+        if (!resolved) reject(e?.error ?? new Error('Recorder error'));
       };
 
       try {
@@ -299,21 +291,21 @@ export default function DailyQuizUi() {
     }
     if (!mediaRecorder) return;
     try {
-      const mimeType = (mediaRecorder as any).mimeType || "audio/unknown";
-      console.log("[REC] stop requested", {
+      const mimeType = (mediaRecorder as any).mimeType || 'audio/unknown';
+      console.log('[REC] stop requested', {
         mimeType,
         time: Date.now(),
         attempt: attemptIdRef.current,
       });
 
       const blob = await stopRecorderAndGetBlob(mediaRecorder, mimeType);
-      console.log("[REC] stop resolved", { size: blob.size, type: blob.type });
+      console.log('[REC] stop resolved', { size: blob.size, type: blob.type });
 
       if (!blob || blob.size < 200) {
-        console.warn("[REC] tiny/empty blob - ignoring", { size: blob?.size });
+        console.warn('[REC] tiny/empty blob - ignoring', { size: blob?.size });
         showSnackbar({
-          message: "Recording too short, try again",
-          variant: "error",
+          message: 'Recording too short, try again',
+          variant: 'error',
           duration: 2000,
         });
         return;
@@ -328,10 +320,10 @@ export default function DailyQuizUi() {
         applyFakePronunciationResult();
       }
     } catch (err) {
-      console.error("[REC] stop error", err);
+      console.error('[REC] stop error', err);
       showSnackbar({
-        message: "Recording error",
-        variant: "error",
+        message: 'Recording error',
+        variant: 'error',
         duration: 2000,
       });
     } finally {
@@ -360,13 +352,13 @@ export default function DailyQuizUi() {
 
     const uploadId = newUploadId();
     const extFromBlob = (() => {
-      const t = audioBlob.type || "";
-      if (t.includes("webm")) return "webm";
-      if (t.includes("mp4")) return "mp4";
-      if (t.includes("m4a")) return "m4a";
-      if (t.includes("ogg")) return "ogg";
-      if (t.includes("wav")) return "wav";
-      return "dat";
+      const t = audioBlob.type || '';
+      if (t.includes('webm')) return 'webm';
+      if (t.includes('mp4')) return 'mp4';
+      if (t.includes('m4a')) return 'm4a';
+      if (t.includes('ogg')) return 'ogg';
+      if (t.includes('wav')) return 'wav';
+      return 'dat';
     })();
     const filename = `dq-${uploadId}.${extFromBlob}`;
 
@@ -379,7 +371,7 @@ export default function DailyQuizUi() {
     setIsLoading(true);
     setIsSubmitting(true);
 
-    console.log("[UPLOAD] begin", {
+    console.log('[UPLOAD] begin', {
       uploadId,
       filename,
       size: audioBlob.size,
@@ -389,34 +381,30 @@ export default function DailyQuizUi() {
     });
 
     const fd = new FormData();
-    fd.append("audio", audioBlob, filename);
+    fd.append('audio', audioBlob, filename);
     // Keep the daily-quiz API contract: "referenceText"
-    fd.append("referenceText", referenceText);
-    fd.append("uploadId", uploadId);
+    fd.append('referenceText', referenceText);
+    fd.append('uploadId', uploadId);
     // (Optional) pass transcript when we have it fresh
     if (hasFreshTranscript && spokenText?.trim()) {
-      fd.append("spokenText", spokenText.trim());
+      fd.append('spokenText', spokenText.trim());
     }
 
     try {
-      const res = await fetch(
-        `${API_URL}/api/pronunciation-assessment-upload`,
-        {
-          method: "POST",
-          body: fd,
-        }
-      );
+      const res = await fetch(`${API_URL}/api/pronunciation-assessment-upload`, {
+        method: 'POST',
+        body: fd,
+      });
 
-      const result = await res.json().catch(() => ({} as any));
-      console.log("[UPLOAD] response", {
+      const result = await res.json().catch(() => ({}) as any);
+      console.log('[UPLOAD] response', {
         uploadId,
         status: res.status,
         ok: res.ok,
         result,
       });
 
-      if (!res.ok)
-        throw new Error(result?.detail || `Server error: ${res.status}`);
+      if (!res.ok) throw new Error(result?.detail || `Server error: ${res.status}`);
 
       const overall = Math.round(result.overallScore ?? 0);
       setScore(overall);
@@ -427,16 +415,12 @@ export default function DailyQuizUi() {
       });
 
       setTextFeedback({
-        transcript: result.transcript || "",
-        accuracyText:
-          result.accuracyText || "Pronunciation feedback unavailable.",
-        fluencyText: result.fluencyText || "Fluency feedback unavailable.",
-        intonationText:
-          result.intonationText || "Intonation feedback unavailable.",
-        overallText: result.overallText || "",
-        specificIssues: Array.isArray(result.specificIssues)
-          ? result.specificIssues
-          : [],
+        transcript: result.transcript || '',
+        accuracyText: result.accuracyText || 'Pronunciation feedback unavailable.',
+        fluencyText: result.fluencyText || 'Fluency feedback unavailable.',
+        intonationText: result.intonationText || 'Intonation feedback unavailable.',
+        overallText: result.overallText || '',
+        specificIssues: Array.isArray(result.specificIssues) ? result.specificIssues : [],
       });
 
       // Persist per-step score now so avg reflects latest when finishing
@@ -445,10 +429,10 @@ export default function DailyQuizUi() {
 
       await new Promise((r) => setTimeout(r, 200)); // slight pause for UI smoothness
     } catch (err) {
-      console.error("[UPLOAD] error", err);
+      console.error('[UPLOAD] error', err);
       showSnackbar({
-        message: "Failed to assess pronunciation",
-        variant: "error",
+        message: 'Failed to assess pronunciation',
+        variant: 'error',
         duration: 3000,
       });
     } finally {
@@ -465,9 +449,7 @@ export default function DailyQuizUi() {
       return;
     }
 
-    const finalScores = scores.map((s, i) =>
-      i === stepIndex && score != null ? score : s
-    );
+    const finalScores = scores.map((s, i) => (i === stepIndex && score != null ? score : s));
     const avg = computeAvg(finalScores);
     setAvgScore(avg);
 
@@ -478,7 +460,7 @@ export default function DailyQuizUi() {
     } else {
       setLastAttemptAvg(total, avg);
       setAttemptAvg(total, avg);
-      window.dispatchEvent(new Event("daily-quiz-progress"));
+      window.dispatchEvent(new Event('daily-quiz-progress'));
 
       if (attemptsLeft > 1) {
         const afterDec = decrementAttempt(total);
@@ -491,18 +473,18 @@ export default function DailyQuizUi() {
 
         showSnackbar({
           message: `Average ${avg}%. Try again! Attempts left: ${afterDec.attemptsLeft}`,
-          variant: "error",
+          variant: 'error',
           duration: 3000,
         });
       } else {
         const decFinal = decrementAttempt(total);
         setAttemptsLeft(decFinal.attemptsLeft);
         showSnackbar({
-          message: "Quiz failed. No attempts left for today.",
-          variant: "error",
+          message: 'Quiz failed. No attempts left for today.',
+          variant: 'error',
           duration: 3500,
         });
-        router.push("/home");
+        router.push('/home');
       }
     }
   };
@@ -512,23 +494,23 @@ export default function DailyQuizUi() {
     setIsVerifying(true);
     showSnackbar({
       id: snackId,
-      message: "Verifying quiz on-chain…",
-      variant: "completion",
+      message: 'Verifying quiz on-chain…',
+      variant: 'completion',
       manual: true,
     });
 
     try {
       const res = await fetch(`${API_URL}/api/complete-daily-quiz`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, walletAddress }),
       });
-      if (!res.ok) throw new Error("Verification failed");
+      if (!res.ok) throw new Error('Verification failed');
 
       removeSnackbar(snackId);
       showSnackbar({
-        message: "Daily Quiz complete! YAP token sent",
-        variant: "custom",
+        message: 'Daily Quiz complete! YAP token sent',
+        variant: 'custom',
         duration: 3000,
       });
 
@@ -536,26 +518,23 @@ export default function DailyQuizUi() {
 
       setTimeout(() => {
         setIsVerifying(false);
-        router.push("/home");
+        router.push('/home');
       }, 1000);
     } catch (err) {
       removeSnackbar(snackId);
       showSnackbar({
-        message: "Quiz failed to verify. Please try again.",
-        variant: "error",
+        message: 'Quiz failed to verify. Please try again.',
+        variant: 'error',
       });
       setIsVerifying(false);
-      console.error("Verification error:", err);
+      console.error('Verification error:', err);
     }
   };
 
   // ==== Chime like LessonUi ====
   useEffect(() => {
     if (score == null) return;
-    const sound =
-      score >= PASSING_CARD_SCORE
-        ? "/audio/correct.mp3"
-        : "/audio/incorrect.mp3";
+    const sound = score >= PASSING_CARD_SCORE ? '/audio/correct.mp3' : '/audio/incorrect.mp3';
     new Audio(sound).play().catch(() => {});
   }, [score]);
 
@@ -573,14 +552,12 @@ export default function DailyQuizUi() {
         {/* Top bar */}
         <div className="flex items-center">
           <button
-            onClick={() => router.push("/home")}
+            onClick={() => router.push('/home')}
             className="text-secondary hover:cursor-pointer"
           >
             <TablerXIcon className="w-6 h-6" />
           </button>
-          <h3 className="flex-1 text-center text-secondary font-bold text-xl">
-            Daily Quiz
-          </h3>
+          <h3 className="flex-1 text-center text-secondary font-bold text-xl">Daily Quiz</h3>
           <div>
             <button
               onClick={() => setShowReport(true)}
@@ -637,8 +614,8 @@ export default function DailyQuizUi() {
                       disabled={isLoading || isVerifying}
                       className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#ededed] ${
                         isLoading || isVerifying
-                          ? "opacity-50 pointer-events-none"
-                          : "hover:cursor-pointer"
+                          ? 'opacity-50 pointer-events-none'
+                          : 'hover:cursor-pointer'
                       }`}
                     >
                       <TablerRefresh className="w-8 h-8 text-secondary" />
@@ -646,14 +623,12 @@ export default function DailyQuizUi() {
                   )}
 
                   <button
-                    onClick={() =>
-                      isRecording ? stopRecording() : startRecording()
-                    }
+                    onClick={() => (isRecording ? stopRecording() : startRecording())}
                     disabled={isLoading || isVerifying || !!audioURL}
                     className={`w-20 h-20 bg-[#EF4444] rounded-full flex items-center justify-center border-b-3 border-r-1 border-[#bf373a] ${
                       isLoading || isVerifying || !!audioURL
-                        ? "opacity-50 pointer-events-none"
-                        : "hover:cursor-pointer"
+                        ? 'opacity-50 pointer-events-none'
+                        : 'hover:cursor-pointer'
                     }`}
                   >
                     {isRecording ? (
@@ -674,17 +649,15 @@ export default function DailyQuizUi() {
                       disabled={isLoading || isVerifying}
                       className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3] ${
                         isLoading || isVerifying
-                          ? "opacity-50 pointer-events-none"
-                          : "hover:cursor-pointer"
+                          ? 'opacity-50 pointer-events-none'
+                          : 'hover:cursor-pointer'
                       }`}
                     >
                       <TablerVolume className="w-8 h-8 text-secondary" />
                     </button>
                   )}
                 </div>
-                {audioURL && (
-                  <audio ref={audioRef} src={audioURL} className="hidden" />
-                )}
+                {audioURL && <audio ref={audioRef} src={audioURL} className="hidden" />}
               </div>
 
               {/* Submit */}
@@ -694,15 +667,11 @@ export default function DailyQuizUi() {
                   disabled={!audioURL || isLoading}
                   className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 ${
                     audioURL
-                      ? "bg-secondary text-white border-b-3 border-r-1 font-semibold border-black"
-                      : "bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed"
+                      ? 'bg-secondary text-white border-b-3 border-r-1 font-semibold border-black'
+                      : 'bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed'
                   }`}
                 >
-                  {isLoading
-                    ? "Scoring…"
-                    : TEST_MODE
-                    ? "Submit (Test)"
-                    : "Submit"}
+                  {isLoading ? 'Scoring…' : TEST_MODE ? 'Submit (Test)' : 'Submit'}
                 </button>
               </div>
             </>
@@ -714,7 +683,7 @@ export default function DailyQuizUi() {
               {/* Pass/fail underline */}
               <div
                 className={`w-screen left-1/2 right-1/2 -ml-[50vw] relative h-1 rounded-full mb-3 ${
-                  score >= PASSING_CARD_SCORE ? "bg-green-200" : "bg-red-200"
+                  score >= PASSING_CARD_SCORE ? 'bg-green-200' : 'bg-red-200'
                 }`}
               />
               <div className="flex flex-col items-start mb-4">
@@ -723,8 +692,8 @@ export default function DailyQuizUi() {
                   <div
                     className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
                       score >= PASSING_CARD_SCORE
-                        ? "bg-[#4eed71] border-[#41ca55]"
-                        : "bg-[#f04648] border-[#d12a2d]"
+                        ? 'bg-[#4eed71] border-[#41ca55]'
+                        : 'bg-[#f04648] border-[#d12a2d]'
                     }`}
                   >
                     {score >= PASSING_CARD_SCORE ? (
@@ -734,7 +703,7 @@ export default function DailyQuizUi() {
                     )}
                   </div>
                   <p className="text-2xl font-semibold text-[#2D1C1C]">
-                    {score >= PASSING_CARD_SCORE ? "Correct" : "Incorrect"}
+                    {score >= PASSING_CARD_SCORE ? 'Correct' : 'Incorrect'}
                   </p>
                 </div>
 
@@ -742,38 +711,33 @@ export default function DailyQuizUi() {
                 <div className="flex flex-row gap-6 text-secondary">
                   {[
                     {
-                      label: "Accuracy",
+                      label: 'Accuracy',
                       value: breakdown?.accuracy ?? 0,
-                      text: textFeedback?.accuracyText || "",
+                      text: textFeedback?.accuracyText || '',
                     },
                     {
-                      label: "Fluency",
+                      label: 'Fluency',
                       value: breakdown?.fluency ?? 0,
-                      text: textFeedback?.fluencyText || "",
+                      text: textFeedback?.fluencyText || '',
                     },
                     {
-                      label: "Intonation",
+                      label: 'Intonation',
                       value: breakdown?.completeness ?? 0,
-                      text: textFeedback?.intonationText || "",
+                      text: textFeedback?.intonationText || '',
                     },
                   ].map(({ label, value, text }) => {
-                    let color =
-                      "bg-tertiary border-b-3 border-r-1 border-[#e4a92d]";
+                    let color = 'bg-tertiary border-b-3 border-r-1 border-[#e4a92d]';
                     if (value >= PASSING_CARD_SCORE)
-                      color =
-                        "bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]";
+                      color = 'bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]';
                     else if (value < 60)
-                      color =
-                        "bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]";
+                      color = 'bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]';
 
                     return (
                       <div className="flex items-center gap-2" key={label}>
                         <button
                           type="button"
                           onClick={() =>
-                            setShowScore(
-                              label as "Accuracy" | "Fluency" | "Intonation"
-                            )
+                            setShowScore(label as 'Accuracy' | 'Fluency' | 'Intonation')
                           }
                           className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
                           aria-label={`Show ${label} score details`}
@@ -785,11 +749,9 @@ export default function DailyQuizUi() {
                         {showScore === (label as any) && textFeedback && (
                           <ScoreModal
                             onClose={handleModalClose}
-                            scoreType={
-                              label as "Accuracy" | "Fluency" | "Intonation"
-                            }
+                            scoreType={label as 'Accuracy' | 'Fluency' | 'Intonation'}
                             value={value}
-                            text={text || "No details available."}
+                            text={text || 'No details available.'}
                             transcript={textFeedback.transcript}
                             specificIssues={textFeedback.specificIssues}
                           />
@@ -818,9 +780,7 @@ export default function DailyQuizUi() {
           )}
         </div>
 
-        {isVerifying && (
-          <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
-        )}
+        {isVerifying && <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />}
       </div>
     </div>
   );

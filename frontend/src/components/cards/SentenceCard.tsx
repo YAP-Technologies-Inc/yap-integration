@@ -2,12 +2,7 @@
 'use client';
 
 import { FC, useRef, useState } from 'react';
-import {
-  TablerRefresh,
-  TablerPlayerPauseFilled,
-  TablerMicrophone,
-  TablerVolume,
-} from '@/icons';
+import { TablerRefresh, TablerPlayerPauseFilled, TablerMicrophone, TablerVolume } from '@/icons';
 import { useSnackbar } from '../ui/SnackBar';
 
 interface SentenceCardProps {
@@ -17,16 +12,8 @@ interface SentenceCardProps {
   feedback: string | null;
 }
 
-export const SentenceCard: FC<SentenceCardProps> = ({
-  sentence,
-  onSubmit,
-  score,
-  feedback,
-}) => {
-
-  const mediaRef = useRef<{ recorder: MediaRecorder; chunks: Blob[] } | null>(
-    null
-  );
+export const SentenceCard: FC<SentenceCardProps> = ({ sentence, onSubmit, score, feedback }) => {
+  const mediaRef = useRef<{ recorder: MediaRecorder; chunks: Blob[] } | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,11 +34,11 @@ export const SentenceCard: FC<SentenceCardProps> = ({
       recorder.start();
       setIsRecording(true);
     } catch {
-        showSnackbar({
-          message: "Failed to start recording",
-          variant: "error",
-          duration: 3000,
-        });
+      showSnackbar({
+        message: 'Failed to start recording',
+        variant: 'error',
+        duration: 3000,
+      });
     }
   };
 
@@ -67,11 +54,11 @@ export const SentenceCard: FC<SentenceCardProps> = ({
       const blob = new Blob(mediaRef.current.chunks, { type: 'audio/webm' });
       await onSubmit(blob);
     } catch {
-        showSnackbar({
-          message: "Failed to submit audio",
-          variant: "error",
-          duration: 3000,
-        });
+      showSnackbar({
+        message: 'Failed to submit audio',
+        variant: 'error',
+        duration: 3000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -87,9 +74,7 @@ export const SentenceCard: FC<SentenceCardProps> = ({
           <>
             <p className="text-xl font-bold text-secondary">Score: {score}/100</p>
             {feedback && (
-              <p className="text-sm mt-2 text-secondary whitespace-pre-line">
-                {feedback}
-              </p>
+              <p className="text-sm mt-2 text-secondary whitespace-pre-line">{feedback}</p>
             )}
           </>
         )}
