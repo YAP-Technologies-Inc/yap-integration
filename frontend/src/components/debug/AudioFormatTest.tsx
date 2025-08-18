@@ -51,9 +51,7 @@ export default function AudioFormatTest() {
           <p className="mb-2">
             <strong>Blob Size:</strong> {blobSize !== null ? `${blobSize} bytes` : 'N/A'}
           </p>
-          {blobUrl && (
-            <audio controls src={blobUrl} className="w-full mt-2" />
-          )}
+          {blobUrl && <audio controls src={blobUrl} className="w-full mt-2" />}
         </>
       )}
     </div>

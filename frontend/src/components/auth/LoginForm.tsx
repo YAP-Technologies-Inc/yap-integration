@@ -1,8 +1,8 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { TablerChevronLeft, TablerEye, TablerEyeOff } from "@/icons";
-import AuthLogo from "@/components/auth/AuthLogo";
+'use client';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { TablerChevronLeft, TablerEye, TablerEyeOff } from '@/icons';
+import AuthLogo from '@/components/auth/AuthLogo';
 
 interface EmailFormProps {
   onBack: () => void;
@@ -11,7 +11,7 @@ interface EmailFormProps {
 
 export default function LoginForm({ onBack }: EmailFormProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,11 +45,7 @@ export default function LoginForm({ onBack }: EmailFormProps) {
       </div>
 
       {/* Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm flex flex-col gap-4"
-        id="login-form"
-      >
+      <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-4" id="login-form">
         <input
           type="email"
           name="email"
@@ -62,7 +58,7 @@ export default function LoginForm({ onBack }: EmailFormProps) {
 
         <div className="relative w-full">
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             name="password"
             placeholder="Password"
             value={formData.password}
@@ -86,7 +82,7 @@ export default function LoginForm({ onBack }: EmailFormProps) {
         <div className="w-full flex justify-end mt-1">
           <button
             type="button"
-            onClick={() => router.push("/forgot-password")}
+            onClick={() => router.push('/forgot-password')}
             className="text-sm text-secondary underline"
           >
             Forgot password?

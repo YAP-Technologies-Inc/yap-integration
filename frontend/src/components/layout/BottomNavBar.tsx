@@ -1,20 +1,14 @@
 // BottomNavBar.tsx
 // This component renders the bottom navigation bar for the app.
 // It includes links to Home, Learn, Progress, and Profile pages.
-// Needs to be rendered on every page essentially 
+// Needs to be rendered on every page essentially
 
-import {
-  TablerSmartHome,
-  TablerUser,
-  PhWechatLogoLight,
-  TablerChartLine,
-} from "@/icons";
-import tutor from "@icons/tutor.svg";
+import { TablerSmartHome, TablerUser, PhWechatLogoLight } from '@/icons';
 
 export default function BottomNavBar() {
   return (
-    <div className="fixed w-full h-16 bottom-0 left-0 right-0 text-black">
-      <nav className="fixed bottom-0 left-0 w-full h-16 bg-[#fdfbfa] z-50 flex justify-around items-center">
+    <div className="fixed w-full h-16 bottom-0 left-0 right-0 text-black bg-[#fdfbfa] z-50">
+      <nav className="w-full lg:w-1/2 lg:mx-auto h-16 flex justify-around items-center">
         <a href="/home" className="flex flex-col items-center hover:cursor-pointer">
           <TablerSmartHome className="text-[#999595] w-6 h-6" />
           <span className="text-[#999595] text-sm">Home</span>

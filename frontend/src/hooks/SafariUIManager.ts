@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 export function useSafariUIManager() {
   useEffect(() => {
@@ -10,9 +10,9 @@ export function useSafariUIManager() {
       const heightDiff = initialHeight - currentHeight;
 
       if (heightDiff > 100) {
-        document.body.classList.add("safari-ui-compact");
+        document.body.classList.add('safari-ui-compact');
       } else {
-        document.body.classList.remove("safari-ui-compact");
+        document.body.classList.remove('safari-ui-compact');
       }
     });
 
@@ -20,7 +20,7 @@ export function useSafariUIManager() {
 
     return () => {
       resizeObserver.disconnect();
-      document.body.classList.remove("safari-ui-compact");
+      document.body.classList.remove('safari-ui-compact');
     };
   }, []);
 }

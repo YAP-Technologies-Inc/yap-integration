@@ -4,7 +4,10 @@ const { genAI, MODEL_ID } = require("./google");
 
 // ---------------- existing text-based scoring (unchanged) ----------------
 function stripCodeFences(s = "") {
-  return s.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
+  return s
+    .replace(/^```json\s*/i, "")
+    .replace(/```$/i, "")
+    .trim();
 }
 
 async function getPronunciationFeedback({ spokenText, targetPhrase }) {
@@ -112,10 +115,16 @@ async function loadGenkitFlow() {
  * @param {string} params.targetPhrase
  * @param {string} [params.mime]
  */
-async function getPronunciationFeedbackFromAudio({ audio, targetPhrase, mime }) {
+async function getPronunciationFeedbackFromAudio({
+  audio,
+  targetPhrase,
+  mime,
+}) {
   const { getAudioPronunciationFeedback } = await loadGenkitFlow();
 
-  const audioData = Buffer.isBuffer(audio) ? audio.toString("base64") : String(audio);
+  const audioData = Buffer.isBuffer(audio)
+    ? audio.toString("base64")
+    : String(audio);
   const audioFormat = pickFormatFromMime(mime);
 
   // This returns the rich object your flow defines (with transcribedText, specificIssues, etc.)

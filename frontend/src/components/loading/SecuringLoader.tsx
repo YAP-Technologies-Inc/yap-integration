@@ -1,13 +1,13 @@
 // SecuringLoader.tsx
 // This component displays a loader while securing the user's account.
 // TODO: This is onyl a placeholder for now, we will need to implement the actual logic later.
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import SplashScreen from "../../components/layout/SplashScreen";
-import "./SecuringLoader.css";
-import { useSnackbar } from "../ui/SnackBar";
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import SplashScreen from '../../components/layout/SplashScreen';
+import './SecuringLoader.css';
+import { useSnackbar } from '../ui/SnackBar';
 
 export default function SecuringLoader() {
   const router = useRouter();
@@ -16,9 +16,9 @@ export default function SecuringLoader() {
   const snackbarShownRef = useRef(false);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, []);
 
@@ -34,8 +34,8 @@ export default function SecuringLoader() {
   useEffect(() => {
     if (showSplash && !snackbarShownRef.current) {
       showSnackbar({
-        message: "Your wallet is ready!",
-        variant: "custom", 
+        message: 'Your wallet is ready!',
+        variant: 'custom',
         duration: 3000,
       });
       snackbarShownRef.current = true;
@@ -43,7 +43,7 @@ export default function SecuringLoader() {
   }, [showSplash, showSnackbar]);
 
   const handleFinishSplash = () => {
-    router.push("/home");
+    router.push('/home');
   };
 
   if (showSplash) return <SplashScreen onFinish={handleFinishSplash} />;

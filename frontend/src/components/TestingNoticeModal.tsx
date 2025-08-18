@@ -22,12 +22,11 @@ export default function TestingNoticeModal() {
   return (
     <div className="fixed inset-0 bg-opacity-10 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full mx-4 text-center">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">
-          👋  YAP is in Testing Mode
-        </h2>
+        <h2 className="text-xl font-bold text-gray-800 mb-2">👋 YAP is in Testing Mode</h2>
         <p className="text-sm text-gray-600 mb-4">
-          You’re using an early test version of our app. If you see any bugs,
-          broken features, or error messages, please let us know! Don’t worry, we are working hard to improve the experience.
+          You’re using an early test version of our app. If you see any bugs, broken features, or
+          error messages, please let us know! Don’t worry, we are working hard to improve the
+          experience.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a

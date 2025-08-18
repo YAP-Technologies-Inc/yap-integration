@@ -1,24 +1,23 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { usePrivy } from "@privy-io/react-auth";
-import SelectLanguageForm from "@/components/auth/SelectLanguageForm";
-import SecuringLoader from "../loading/SecuringLoader";
-import AuthLogo from "@/components/auth/AuthLogo";
-import { useSnackbar } from "../ui/SnackBar";
+import { useState } from 'react';
+import { usePrivy } from '@privy-io/react-auth';
+import SelectLanguageForm from '@/components/auth/SelectLanguageForm';
+import SecuringLoader from '../loading/SecuringLoader';
+import AuthLogo from '@/components/auth/AuthLogo';
+import { useSnackbar } from '../ui/SnackBar';
 export default function SignUpForm() {
-
   const { user } = usePrivy();
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const [step, setStep] = useState<"signup" | "language" | "loading">("signup");
-  const [name, setName] = useState("");
+  const [step, setStep] = useState<'signup' | 'language' | 'loading'>('signup');
+  const [name, setName] = useState('');
   const { showSnackbar } = useSnackbar();
 
   const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim().length > 0) {
-      setStep("language");
+      setStep('language');
     }
   };
 
@@ -30,7 +29,7 @@ export default function SignUpForm() {
   // TODO: if user already exists, we should redirect them to the home page instead of asking for name again
 
   const handleFinalSubmit = async (language: string) => {
-    setStep("loading");
+    setStep('loading');
 
     const payload = {
       user_id: user?.id,
@@ -40,36 +39,36 @@ export default function SignUpForm() {
 
     try {
       const res = await fetch(`${API_URL}/api/auth/secure-signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.error || "Failed to save user");
+        throw new Error(data.error || 'Failed to save user');
       }
 
-      localStorage.setItem("userId", data.user_id);
+      localStorage.setItem('userId', data.user_id);
     } catch (err) {
-      console.error("Failed to save user:", err);
-        showSnackbar({
-          message: "Something went wrong. Please try again.",
-          variant: "error",
-          duration: 3000,
-        });
-      setStep("language");
+      console.error('Failed to save user:', err);
+      showSnackbar({
+        message: 'Something went wrong. Please try again.',
+        variant: 'error',
+        duration: 3000,
+      });
+      setStep('language');
     }
   };
 
-  if (step === "loading") return <SecuringLoader />;
+  if (step === 'loading') return <SecuringLoader />;
 
-  if (step === "language") {
+  if (step === 'language') {
     return (
       <SelectLanguageForm
         onNext={() => {}}
-        onBack={() => setStep("signup")}
+        onBack={() => setStep('signup')}
         onSelect={handleFinalSubmit}
       />
     );

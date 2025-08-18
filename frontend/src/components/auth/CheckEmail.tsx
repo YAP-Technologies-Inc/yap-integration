@@ -24,16 +24,13 @@ export default function CheckEmail() {
 
       {/* Title + illustration */}
       <div className="mt-20 mb-6 w-20 h-20">
-        <img
-          src={Vector.src}
-          alt="Check Email"
-          className="w-full h-full object-contain"
-        />
+        <img src={Vector.src} alt="Check Email" className="w-full h-full object-contain" />
       </div>
 
       <h2 className="text-2xl font-bold text-secondary mb-2">Check your email</h2>
       <p className="text-base text-secondary text-center max-w-xs">
-        If there is an email associated with that account, you’ll receive instructions to reset your password.
+        If there is an email associated with that account, you’ll receive instructions to reset your
+        password.
       </p>
     </div>
   );

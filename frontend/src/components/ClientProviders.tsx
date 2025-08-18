@@ -17,7 +17,7 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
     <ToastProvider>
       <SnackProvider>
         <MessageSignProvider>
-        <RootProvider>{children}</RootProvider>
+          <RootProvider>{children}</RootProvider>
         </MessageSignProvider>
       </SnackProvider>
     </ToastProvider>

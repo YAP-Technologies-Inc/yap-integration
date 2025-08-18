@@ -29,7 +29,7 @@ export async function handleSpanishTeacherAccessFromPage({
   clearAllSnackbars?: () => void; // <-- add this to your snackbar hook if you can
   signTypedData: (
     data: { domain: any; types: any; message: any; primaryType: string },
-    opts: { address: string; uiOptions?: { showWalletUIs?: boolean } }
+    opts: { address: string; uiOptions?: { showWalletUIs?: boolean } },
   ) => Promise<{ signature: string }>;
 }) {
   setCheckingAccess(true);
@@ -70,7 +70,7 @@ export async function handleSpanishTeacherAccessFromPage({
 
     const { signature } = await signTypedData(
       { domain, types, message, primaryType: 'Permit' },
-      { address: walletAddress, uiOptions: { showWalletUIs: false } }
+      { address: walletAddress, uiOptions: { showWalletUIs: false } },
     );
 
     setIsVerifyingPermit(true);

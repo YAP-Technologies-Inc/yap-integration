@@ -1,7 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { TablerMicrophone, TablerSend2, TablerPlay, TablerPlayerPauseFilled, TablerX } from '@/icons';
+import {
+  TablerMicrophone,
+  TablerSend2,
+  TablerPlay,
+  TablerPlayerPauseFilled,
+  TablerX,
+} from '@/icons';
 import { useSnackbar } from '@/components/ui/SnackBar';
 
 interface TutorProps {
@@ -63,7 +69,9 @@ export default function Tutor({
   const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
   const hardKillMicrophone = async () => {
-    try { mediaRecorderRef.current?.stop(); } catch {}
+    try {
+      mediaRecorderRef.current?.stop();
+    } catch {}
     mediaRecorderRef.current = null;
     if (mediaStreamRef.current) {
       mediaStreamRef.current.getTracks().forEach((t) => t.stop());
@@ -81,7 +89,9 @@ export default function Tutor({
   }, []);
 
   useEffect(() => {
-    const onVis = () => { if (document.hidden) hardKillMicrophone(); };
+    const onVis = () => {
+      if (document.hidden) hardKillMicrophone();
+    };
     document.addEventListener('visibilitychange', onVis);
     return () => document.removeEventListener('visibilitychange', onVis);
   }, []);
@@ -92,7 +102,10 @@ export default function Tutor({
 
     const onLoaded = () => setDuration(el.duration || 0);
     const onTime = () => setCurrTime(el.currentTime || 0);
-    const onEnded = () => { setIsPlaying(false); setCurrTime(0); };
+    const onEnded = () => {
+      setIsPlaying(false);
+      setCurrTime(0);
+    };
 
     el.addEventListener('loadedmetadata', onLoaded);
     el.addEventListener('timeupdate', onTime);
@@ -107,8 +120,15 @@ export default function Tutor({
   const togglePlay = async () => {
     const el = audioRef.current;
     if (!el) return;
-    if (isPlaying) { el.pause(); setIsPlaying(false); }
-    else { try { await el.play(); setIsPlaying(true); } catch {} }
+    if (isPlaying) {
+      el.pause();
+      setIsPlaying(false);
+    } else {
+      try {
+        await el.play();
+        setIsPlaying(true);
+      } catch {}
+    }
   };
 
   const clearPendingAudio = () => {
@@ -165,7 +185,11 @@ export default function Tutor({
       }, 15000);
     } catch (err) {
       console.error('Recording error:', err);
-      showSnackbar({ message: 'Mic permission denied or not available.', variant: 'error', duration: 3000 });
+      showSnackbar({
+        message: 'Mic permission denied or not available.',
+        variant: 'error',
+        duration: 3000,
+      });
       await hardKillMicrophone();
     }
   };
@@ -177,11 +201,15 @@ export default function Tutor({
       try {
         const fd = new FormData();
         const mime = pendingMime || pendingAudioBlob.type || 'audio/webm';
-        const ext =
-          mime.includes('mp3') ? 'mp3' :
-          mime.includes('mp4') ? 'mp4' :
-          mime.includes('m4a') ? 'm4a' :
-          mime.includes('ogg') ? 'ogg' : 'webm';
+        const ext = mime.includes('mp3')
+          ? 'mp3'
+          : mime.includes('mp4')
+            ? 'mp4'
+            : mime.includes('m4a')
+              ? 'm4a'
+              : mime.includes('ogg')
+                ? 'ogg'
+                : 'webm';
         fd.append('audio', pendingAudioBlob, `recording.${ext}`);
 
         const res = await fetch(`${API_URL}/api/transcribe`, { method: 'POST', body: fd });
@@ -224,12 +252,27 @@ export default function Tutor({
           {pendingAudioUrl && (
             <div className="mb-2 rounded-2xl bg-[#2D1C1C] text-white px-3 py-2 shadow-md flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <button onClick={togglePlay} className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center" aria-label={isPlaying ? 'Pause' : 'Play'}>
-                  {isPlaying ? <TablerPlayerPauseFilled className="w-5 h-5 text-white" /> : <TablerPlay className="w-5 h-5 text-white" />}
+                <button
+                  onClick={togglePlay}
+                  className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center"
+                  aria-label={isPlaying ? 'Pause' : 'Play'}
+                >
+                  {isPlaying ? (
+                    <TablerPlayerPauseFilled className="w-5 h-5 text-white" />
+                  ) : (
+                    <TablerPlay className="w-5 h-5 text-white" />
+                  )}
                 </button>
-                <div className="text-xs opacity-90">{formatTime(currTime)} / {formatTime(duration)}</div>
+                <div className="text-xs opacity-90">
+                  {formatTime(currTime)} / {formatTime(duration)}
+                </div>
               </div>
-              <button onClick={clearPendingAudio} className="w-7 h-7 rounded-full bg_white/10 flex items-center justify-center" aria-label="Remove recording" title="Remove recording">
+              <button
+                onClick={clearPendingAudio}
+                className="w-7 h-7 rounded-full bg_white/10 flex items-center justify-center"
+                aria-label="Remove recording"
+                title="Remove recording"
+              >
                 <TablerX className="w-4 h-4 text-white" />
               </button>
               <audio ref={audioRef} src={pendingAudioUrl} className="hidden" preload="metadata" />

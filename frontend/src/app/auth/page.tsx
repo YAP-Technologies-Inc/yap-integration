@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { usePrivy } from "@privy-io/react-auth";
-import AuthCard from "@/components/auth/AuthCard";
-import SignUpForm from "@/components/auth/SignUpForm";
-import { themeColors, setThemeColor } from "@/utils/themeColor";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { usePrivy } from '@privy-io/react-auth';
+import AuthCard from '@/components/auth/AuthCard';
+import SignUpForm from '@/components/auth/SignUpForm';
+import { themeColors, setThemeColor } from '@/utils/themeColor';
 
 export default function AuthPage() {
   const { ready, authenticated, login, user } = usePrivy();
@@ -16,9 +16,9 @@ export default function AuthPage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === 'undefined') return;
 
-    const MODAL_SELECTOR = "#headlessui-portal-root";
+    const MODAL_SELECTOR = '#headlessui-portal-root';
     let wasOpen = false;
 
     const observer = new MutationObserver(() => {
@@ -50,8 +50,8 @@ export default function AuthPage() {
 
   //Modal detection to hide footer
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const MODAL_SELECTOR = "#headlessui-portal-root";
+    if (typeof window === 'undefined') return;
+    const MODAL_SELECTOR = '#headlessui-portal-root';
     let wasOpen = false;
     const observer = new MutationObserver(() => {
       const isOpen = Boolean(document.body.querySelector(MODAL_SELECTOR));
@@ -72,16 +72,16 @@ export default function AuthPage() {
         .then((res) => {
           if (res.ok) {
             setHasProfile(true);
-            localStorage.setItem("userId", user.id);
+            localStorage.setItem('userId', user.id);
           } else if (res.status === 404) {
             setHasProfile(false);
           } else {
-            console.error("Profile lookup error:", res.status);
+            console.error('Profile lookup error:', res.status);
             setHasProfile(false);
           }
         })
         .catch((err) => {
-          console.error("Profile fetch failed:", err);
+          console.error('Profile fetch failed:', err);
           setHasProfile(false);
         });
     }
@@ -99,7 +99,7 @@ export default function AuthPage() {
 
   //Already authenticated and has profile -> redirect to home
   if (authenticated && hasProfile && !modalOpen) {
-    router.push("/home");
+    router.push('/home');
     return null;
   }
 

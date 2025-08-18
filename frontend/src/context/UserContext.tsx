@@ -18,11 +18,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     if (stored) setUserId(stored);
   }, []);
 
-  return (
-    <UserContext.Provider value={{ userId, setUserId }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ userId, setUserId }}>{children}</UserContext.Provider>;
 }
 
 export const useUserContext = () => useContext(UserContext);

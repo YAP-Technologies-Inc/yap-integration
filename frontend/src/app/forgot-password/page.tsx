@@ -1,4 +1,4 @@
-// TODO: Have this route back to the login page if user goes back 
+// TODO: Have this route back to the login page if user goes back
 // But since we have auth page render formtypes it needs to be handled in the auth page
 'use client';
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ interface Props {
   onBack: () => void;
 }
 
-export default function ForgotPasswordPage({  }: Props) {
+export default function ForgotPasswordPage({}: Props) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const router = useRouter();

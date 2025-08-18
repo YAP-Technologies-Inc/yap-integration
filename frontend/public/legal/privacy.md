@@ -137,4 +137,3 @@ For privacy-related questions, requests, or complaints, please contact us at:
 
 **YAP Technologies Inc.**  
 Email: support@goyap.ai
-

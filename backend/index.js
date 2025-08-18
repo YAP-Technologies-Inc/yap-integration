@@ -115,7 +115,7 @@ app.post("/api/complete-lesson", async (req, res) => {
          FROM user_lessons
         WHERE user_id   = $1
           AND lesson_id = $2`,
-      [userId, lessonId]
+      [userId, lessonId],
     );
     if (already.length) {
       return res.status(400).json({ error: "Lesson already completed." });
@@ -129,7 +129,7 @@ app.post("/api/complete-lesson", async (req, res) => {
       `INSERT INTO user_lessons
            (user_id, lesson_id, completed_at, tx_hash)
          VALUES ($1, $2, NOW(), $3)`,
-      [userId, lessonId, txHash]
+      [userId, lessonId, txHash],
     );
 
     // 4) Upsert into user_stats
@@ -141,7 +141,7 @@ app.post("/api/complete-lesson", async (req, res) => {
            SET token_balance    = user_stats.token_balance   + 1,
                total_yap_earned = user_stats.total_yap_earned + 1,
                updated_at       = NOW()`,
-      [userId]
+      [userId],
     );
 
     // 5) Return success
@@ -158,7 +158,7 @@ app.get("/api/user-lessons/:userId", async (req, res) => {
   try {
     const result = await db.query(
       "SELECT lesson_id FROM user_lessons WHERE user_id = $1",
-      [userId]
+      [userId],
     );
     const completedLessons = result.rows.map((row) => row.lesson_id);
     res.json({ completedLessons });
@@ -180,7 +180,7 @@ app.get("/api/user-stats/:userId", async (req, res) => {
               updated_at
        FROM user_stats
        WHERE user_id = $1`,
-      [userId]
+      [userId],
     );
     if (rows.length === 0) {
       // Can auto create stats if not found if we need to
@@ -204,7 +204,7 @@ app.post("/api/user-stats/:userId/streak", async (req, res) => {
              highest_streak = GREATEST(highest_streak, $3),
              updated_at     = NOW()
        WHERE user_id = $1`,
-      [userId, currentStreak, highestStreak]
+      [userId, currentStreak, highestStreak],
     );
     res.json({ success: true });
   } catch (err) {
@@ -248,7 +248,7 @@ app.post("/api/auth/secure-signup", async (req, res) => {
        ON CONFLICT (user_id)
          DO UPDATE SET name = EXCLUDED.name,
                        language_to_learn = EXCLUDED.language_to_learn`,
-      [user_id, name, language_to_learn]
+      [user_id, name, language_to_learn],
     );
 
     // 2) Initialize stats row with sensible defaults
@@ -257,7 +257,7 @@ app.post("/api/auth/secure-signup", async (req, res) => {
          (user_id, token_balance, current_streak, highest_streak, total_yap_earned)
        VALUES ($1, 0, 1, 1, 0)
        ON CONFLICT (user_id) DO NOTHING`,
-      [user_id]
+      [user_id],
     );
 
     return res.json({
@@ -326,7 +326,7 @@ app.get("/api/profile/:userId", async (req, res) => {
     const { userId } = req.params;
     const result = await db.query(
       "SELECT name, language_to_learn, created_at FROM users WHERE user_id = $1",
-      [userId]
+      [userId],
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, error: "User not found" });
@@ -435,7 +435,7 @@ app.post("/api/request-spanish-teacher", async (req, res) => {
       deadline,
       v,
       r,
-      s
+      s,
     );
     await permitTx.wait();
 
@@ -454,7 +454,7 @@ app.post("/api/request-spanish-teacher", async (req, res) => {
     SET tx_hash    = EXCLUDED.tx_hash,
         expires_at = NOW() + interval '20 minutes'
   `,
-      [userId, spendTx.hash]
+      [userId, spendTx.hash],
     );
 
     return res.json({ success: true, txHash: spendTx.hash });
@@ -478,7 +478,7 @@ app.get("/api/teacher-session/:userId", async (req, res) => {
       ORDER BY expires_at DESC
       LIMIT 1
       `,
-      [userId]
+      [userId],
     );
 
     if (rows.length === 0) {
@@ -514,7 +514,7 @@ app.post("/api/complete-daily-quiz", async (req, res) => {
          FROM daily_quiz 
         WHERE user_id = $1 
           AND date = CURRENT_DATE`,
-      [userId]
+      [userId],
     );
     if (rows.length > 0) {
       return res.status(409).json({ error: "Already completed today" });
@@ -532,7 +532,7 @@ app.post("/api/complete-daily-quiz", async (req, res) => {
       `INSERT INTO daily_quiz (user_id, tx_hash, reward_sent)
            VALUES ($1, $2, true)
         RETURNING id`,
-      [userId, tx.hash]
+      [userId, tx.hash],
     );
     return res.json({ success: true, txHash: tx.hash });
   } catch (err) {
@@ -548,7 +548,7 @@ app.get("/api/daily-quiz-status/:userId", async (req, res) => {
   try {
     const { rows } = await db.query(
       `SELECT 1 FROM daily_quiz WHERE user_id = $1 AND date = CURRENT_DATE`,
-      [userId]
+      [userId],
     );
     return res.json({ completed: rows.length > 0 });
   } catch (err) {
@@ -582,7 +582,7 @@ app.post("/api/elevenlabs-tts", async (req, res) => {
             similarity_boost: 0.5,
           },
         }),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -788,7 +788,7 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
         if (err?.status === 503) {
           console.error(
             "[/api/pronunciation] transcribe error 503:",
-            err.message
+            err.message,
           );
           return res
             .status(503)
@@ -811,7 +811,7 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
       } catch (e) {
         console.warn(
           "[/api/pronunciation] audio flow failed, falling back to text:",
-          e?.message
+          e?.message,
         );
       }
     }
@@ -859,7 +859,7 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
       transcriptLen: (payload.transcript || "").length,
     });
     console.log(
-      `Spoken Text: ${spokenText} -> What it got graded as: ${payload.transcript}`
+      `Spoken Text: ${spokenText} -> What it got graded as: ${payload.transcript}`,
     );
     console.log(`Target phrase: ${targetPhrase}`);
 
@@ -914,7 +914,7 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
         if (err?.status === 503) {
           console.error(
             "[/api/pronunciation] transcribe error 503:",
-            err.message
+            err.message,
           );
           return res
             .status(503)
@@ -937,7 +937,7 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
       } catch (e) {
         console.warn(
           "[/api/pronunciation] audio flow failed, falling back to text:",
-          e?.message
+          e?.message,
         );
       }
     }
@@ -995,7 +995,7 @@ app.post("/api/pronunciation", upload.single("audio"), async (req, res) => {
       transcriptLen: (payload.transcript || "").length,
     });
     console.log(
-      `Spoken Text: ${spokenText} -> What it got graded as: ${payload.transcript}`
+      `Spoken Text: ${spokenText} -> What it got graded as: ${payload.transcript}`,
     );
     console.log(`Target phrase: ${targetPhrase}`);
 
@@ -1022,7 +1022,7 @@ async function transcribeWavToText_OpenAI(wavBuffer) {
     form.append(
       "file",
       new Blob([wavBuffer], { type: "audio/wav" }),
-      "turn.wav"
+      "turn.wav",
     );
     form.append("model", "whisper-1");
 
@@ -1036,7 +1036,7 @@ async function transcribeWavToText_OpenAI(wavBuffer) {
       console.warn(
         "[transcribe] HTTP",
         r.status,
-        await r.text().catch(() => "")
+        await r.text().catch(() => ""),
       );
       return null;
     }
@@ -1051,7 +1051,7 @@ async function transcribeWavToText_OpenAI(wavBuffer) {
 server.on("upgrade", (req, socket, head) => {
   // Helpful logs so you can see the upgrade actually fires
   socket.on("error", (err) =>
-    console.error("[upgrade] socket error:", err.message)
+    console.error("[upgrade] socket error:", err.message),
   );
 
   if (!req.url || !req.url.startsWith("/api/agent-ws")) {
@@ -1065,7 +1065,7 @@ server.on("upgrade", (req, socket, head) => {
 
 async function getSignedUrl(agentId) {
   const url = `https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=${encodeURIComponent(
-    agentId
+    agentId,
   )}`;
   const r = await fetch(url, { headers: { "xi-api-key": ELEVENLABS_API_KEY } });
   if (!r.ok)
@@ -1080,7 +1080,7 @@ function wrapPcmAsWav(
   pcmBuffers,
   sampleRate = 16000,
   numChannels = 1,
-  bytesPerSample = 2
+  bytesPerSample = 2,
 ) {
   const pcmLength = pcmBuffers.reduce((a, b) => a + b.length, 0);
   const blockAlign = numChannels * bytesPerSample;
@@ -1116,7 +1116,7 @@ wss.on("connection", async (client) => {
 
   if (!ELEVENLABS_API_KEY || !ELEVENLABS_AGENT_ID) {
     client.send(
-      JSON.stringify({ type: "error", error: "Missing ELEVENLABS env vars" })
+      JSON.stringify({ type: "error", error: "Missing ELEVENLABS env vars" }),
     );
     client.close();
     return;
@@ -1133,8 +1133,8 @@ wss.on("connection", async (client) => {
   let hardTimer = null;
 
   function clearTimers() {
-    if (silenceTimer) clearTimeout(silenceTimer), (silenceTimer = null);
-    if (hardTimer) clearTimeout(hardTimer), (hardTimer = null);
+    if (silenceTimer) (clearTimeout(silenceTimer), (silenceTimer = null));
+    if (hardTimer) (clearTimeout(hardTimer), (hardTimer = null));
   }
 
   function startTurn() {
@@ -1237,7 +1237,7 @@ wss.on("connection", async (client) => {
     await connectEL();
   } catch (e) {
     client.send(
-      JSON.stringify({ type: "error", error: "Failed to reach agent" })
+      JSON.stringify({ type: "error", error: "Failed to reach agent" }),
     );
     // keep browser socket open; they can retry sending text which will try again
   }
@@ -1263,7 +1263,7 @@ wss.on("connection", async (client) => {
           elWs.send(JSON.stringify({ type: "user_message", text: msg.text }));
         } else {
           client.send(
-            JSON.stringify({ type: "error", error: "Agent not ready" })
+            JSON.stringify({ type: "error", error: "Agent not ready" }),
           );
         }
       } else if (msg?.type === "close") {

@@ -12,10 +12,7 @@ export function GrammarCard({ rule, examples }: GrammarCardProps) {
       <h2 className="text-2xl font-bold text-secondary mb-4">{rule}</h2>
       <ul className="space-y-2 flex-1 overflow-auto">
         {examples.map((ex, i) => (
-          <li
-            key={i}
-            className="bg-gray-100 rounded-lg p-3 text-secondary text-sm"
-          >
+          <li key={i} className="bg-gray-100 rounded-lg p-3 text-secondary text-sm">
             {ex}
           </li>
         ))}
