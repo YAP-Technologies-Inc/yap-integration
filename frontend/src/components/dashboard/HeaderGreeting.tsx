@@ -39,12 +39,8 @@ export default function HeaderGreeting() {
         </span>
       </div> */}
       <div className="flex flex-col">
-        <h1 className="text-lg font-bold text-secondary leading-tight">
-          Welcome {name}
-        </h1>
-        <p className="text-sm text-[#5C4B4B] leading-snug">
-          Hola, ¿cómo estás hoy?
-        </p>
+        <h1 className="text-lg font-bold text-secondary leading-tight">Welcome {name}</h1>
+        <p className="text-sm text-[#5C4B4B] leading-snug">Hola, ¿cómo estás hoy?</p>
       </div>
     </div>
   );

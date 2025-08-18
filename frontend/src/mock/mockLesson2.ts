@@ -36,12 +36,7 @@ const mockLesson2 = {
   grammar_explanations: [
     {
       rule: "Use 'ser' to express origin and nationality. Forms: soy (I am), eres (you are). Nationalities agree with gender: español/española.",
-      examples: [
-        'Soy de Argentina.',
-        '¿Eres mexicano?',
-        'Ella es española.',
-        'Somos de Colombia.',
-      ],
+      examples: ['Soy de Argentina.', '¿Eres mexicano?', 'Ella es española.', 'Somos de Colombia.'],
     },
   ],
   speaking_tasks: [

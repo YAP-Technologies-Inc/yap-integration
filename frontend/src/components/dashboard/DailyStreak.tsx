@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { TablerCheck } from "@/icons";
-import { useUserContext } from "@/context/UserContext";
-import { useUserStats } from "@/hooks/useUserStats";
+import React, { useState, useEffect } from 'react';
+import { TablerCheck } from '@/icons';
+import { useUserContext } from '@/context/UserContext';
+import { useUserStats } from '@/hooks/useUserStats';
 
-const days = ["M", "T", "W", "T", "F", "S", "S"];
-const STORAGE_KEY = "login-days";
+const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+const STORAGE_KEY = 'login-days';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const getStartOfWeek = () => {
@@ -21,19 +21,13 @@ const getStartOfWeek = () => {
 export default function DailyStreak() {
   const { userId } = useUserContext();
   // pull your current & highest streak straight from the DB
-  const {
-    stats,
-    isLoading: statsLoading,
-    isError: statsError,
-  } = useUserStats(userId);
+  const { stats, isLoading: statsLoading, isError: statsError } = useUserStats(userId);
 
   const totalStreak = stats?.currentStreak ?? 0;
   const highestStreak = stats?.highestStreak ?? 0;
 
   // weekly check‑in
-  const [completedDays, setCompletedDays] = useState<boolean[]>(
-    Array(7).fill(false)
-  );
+  const [completedDays, setCompletedDays] = useState<boolean[]>(Array(7).fill(false));
   const today = new Date();
   const todayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
   const weekStart = getStartOfWeek();
@@ -50,47 +44,37 @@ export default function DailyStreak() {
         // same week: mark today as done
         days[todayIndex] = true;
         setCompletedDays(days);
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({ weekStart: ws, days })
-        );
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ weekStart: ws, days }));
       } else {
         // new week
         const fresh = Array(7).fill(false);
         fresh[todayIndex] = true;
         setCompletedDays(fresh);
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({ weekStart, days: fresh })
-        );
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ weekStart, days: fresh }));
       }
     } else {
       // first time
       const fresh = Array(7).fill(false);
       fresh[todayIndex] = true;
       setCompletedDays(fresh);
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ weekStart, days: fresh })
-      );
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ weekStart, days: fresh }));
     }
 
     // sync your new total and highest streak up to the server
     if (userId) {
       fetch(`${API_URL}/api/user-stats/${userId}/streak`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           currentStreak: totalStreak,
           highestStreak,
         }),
-      }).catch((err) => console.error("Sync streak error", err));
+      }).catch((err) => console.error('Sync streak error', err));
     }
   }, [userId, totalStreak, highestStreak, todayIndex, weekStart]);
 
   if (statsLoading) return null;
-  if (statsError)
-    return <p className="text-red-500">Failed to load streak data.</p>;
+  if (statsError) return <p className="text-red-500">Failed to load streak data.</p>;
 
   return (
     <div className="bg-secondary w-full rounded-3xl px-4 py-4 flex flex-col border-b-3 border-[#100909] relative">
@@ -112,11 +96,9 @@ export default function DailyStreak() {
                 className={`
               w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold
               ${
-                done
-                  ? "bg-[#382324] text-[#382324]" 
-                  : "bg-secondary ring-2 ring-[#382324]"
+                done ? 'bg-[#382324] text-[#382324]' : 'bg-secondary ring-2 ring-[#382324]'
               } // not done = transparent background with dark ring
-              ${isToday && !done ? "opacity-100" : ""}
+              ${isToday && !done ? 'opacity-100' : ''}
             `}
               >
                 {done && <TablerCheck className="w-5 h-5 text-white" />}

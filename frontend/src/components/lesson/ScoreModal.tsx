@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
 interface ScoreModalProps {
   onClose: () => void;
-  scoreType: "Accuracy" | "Fluency" | "Intonation";
+  scoreType: 'Accuracy' | 'Fluency' | 'Intonation';
   value: number;
   text: string;
   transcript?: string;
@@ -10,9 +10,9 @@ interface ScoreModalProps {
 }
 
 function getScoreColor(_: string, value: number) {
-  if (value >= 80) return "bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]";
-  if (value < 60) return "bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]";
-  return "bg-tertiary border-b-3 border-r-1 border-[#e4a92d]";
+  if (value >= 80) return 'bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]';
+  if (value < 60) return 'bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]';
+  return 'bg-tertiary border-b-3 border-r-1 border-[#e4a92d]';
 }
 
 export function ScoreModal({
@@ -20,7 +20,7 @@ export function ScoreModal({
   scoreType,
   value,
   text,
-  transcript,
+  // transcript,
   specificIssues = [],
 }: ScoreModalProps) {
   const color = getScoreColor(scoreType, value);
@@ -40,7 +40,7 @@ export function ScoreModal({
     <div
       onClick={handleClose}
       className={`fixed inset-0 z-50 flex items-end justify-center
-        ${closing ? "animate-fade-out" : "animate-fade-in"}`}
+        ${closing ? 'animate-fade-out' : 'animate-fade-in'}`}
       // keep the tint in CSS so fade anim is visible
     >
       {/* Backdrop via pseudo-elem */}
@@ -52,12 +52,10 @@ export function ScoreModal({
         className={`relative bg-background-primary w-full max-w-md min-h-[30dvh]
           flex flex-col justify-start pt-3 px-5 pb-5 rounded-t-3xl shadow-lg
           will-change-transform
-          ${closing ? "animate-slide-down" : "animate-slide-up"}`}
+          ${closing ? 'animate-slide-down' : 'animate-slide-up'}`}
       >
         <div className="flex flex-col items-center mb-2">
-          <div className="text-xs font-semibold text-secondary mb-1">
-            {scoreType}
-          </div>
+          <div className="text-xs font-semibold text-secondary mb-1">{scoreType}</div>
           <div
             className={`w-12 h-12 flex items-center justify-center rounded-full
             text-[#141414] text-2xl font-bold mb-2 ${color}`}
@@ -70,9 +68,7 @@ export function ScoreModal({
 
         {specificIssues.length > 0 && (
           <div className="mt-2">
-            <div className="text-xs font-semibold text-gray-500 mb-1">
-              Details:
-            </div>
+            <div className="text-xs font-semibold text-gray-500 mb-1">Details:</div>
             <ul className="list-disc list-inside text-xs text-gray-700">
               {specificIssues.map((issue, i) => (
                 <li key={i}>{issue}</li>
@@ -80,12 +76,6 @@ export function ScoreModal({
             </ul>
           </div>
         )}
-        {/* If you want transcript, uncomment below
-        {transcript && (
-          <div className="mt-4 text-xs text-gray-400 text-center">
-            Transcript: <span className="font-mono">{transcript}</span>
-          </div>
-        )} */}
       </div>
 
       <style>{`

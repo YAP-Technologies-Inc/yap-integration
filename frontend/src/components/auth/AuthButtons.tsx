@@ -8,12 +8,7 @@ interface AuthButtonProps {
   className?: string;
 }
 
-const AuthButton: React.FC<AuthButtonProps> = ({
-  icon,
-  label,
-  onClick,
-  className,
-}) => {
+const AuthButton: React.FC<AuthButtonProps> = ({ icon, label, onClick, className }) => {
   return (
     <button
       onClick={onClick}

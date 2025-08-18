@@ -22,9 +22,7 @@ export default function InfoListCard({ items }: InfoListCardProps) {
         >
           <div className="flex items-center space-x-3">
             <div className="text-lg text-black">{item.icon}</div>
-            <span className="text-sm font-medium text-secondary">
-              {item.label}
-            </span>
+            <span className="text-sm font-medium text-secondary">{item.label}</span>
           </div>
           <TablerChevronRight className="text-[#A59C9C]" />
         </div>

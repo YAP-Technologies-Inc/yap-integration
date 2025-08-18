@@ -4,11 +4,11 @@ import { genAI, MODEL_ID } from "./google.js";
 
 export interface PronunciationFeedbackText {
   isCorrect: boolean;
-  accuracyScore: number;   // 0–100
-  fluencyScore: number;    // 0–100
+  accuracyScore: number; // 0–100
+  fluencyScore: number; // 0–100
   intonationScore: number; // 0–100
-  overallScore: number;    // 0–100
-  confidence: number;      // 0–1
+  overallScore: number; // 0–100
+  confidence: number; // 0–1
   accuracy: string;
   fluency: string;
   intonation: string;
@@ -35,7 +35,7 @@ type GetPronunciationTextArgs = {
 };
 
 type GetPronunciationAudioArgs = {
-  audio: Buffer | string;   // raw Buffer or base64 string
+  audio: Buffer | string; // raw Buffer or base64 string
   targetPhrase: string;
   mime?: string;
 };
@@ -43,10 +43,15 @@ type GetPronunciationAudioArgs = {
 /* ============ Helpers ============ */
 
 function stripCodeFences(s = ""): string {
-  return s.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
+  return s
+    .replace(/^```json\s*/i, "")
+    .replace(/```$/i, "")
+    .trim();
 }
 
-function pickFormatFromMime(mime = ""): "webm" | "ogg" | "m4a" | "wav" | "mp3" | "wav" {
+function pickFormatFromMime(
+  mime = "",
+): "webm" | "ogg" | "m4a" | "wav" | "mp3" | "wav" {
   const m = mime.toLowerCase();
   if (m.includes("webm")) return "webm";
   if (m.includes("ogg")) return "ogg";
@@ -60,11 +65,15 @@ function pickFormatFromMime(mime = ""): "webm" | "ogg" | "m4a" | "wav" | "mp3" |
  * Dynamically import your Genkit flow. Works in dev (tsx) and in dist.
  * Tries `.js` first (built output), then `.ts` (dev).
  */
-async function loadGenkitFlow(): Promise<{ getAudioPronunciationFeedback: (args: any) => Promise<AudioPronunciationFeedback> }> {
+async function loadGenkitFlow(): Promise<{
+  getAudioPronunciationFeedback: (
+    args: any,
+  ) => Promise<AudioPronunciationFeedback>;
+}> {
   let lastErr: unknown;
   const candidates = [
     new URL("./flows/audio-pronunciation-feedback.js", import.meta.url).href,
-    new URL("./flows/audio-pronunciation-feedback.ts", import.meta.url).href
+    new URL("./flows/audio-pronunciation-feedback.ts", import.meta.url).href,
   ];
 
   for (const href of candidates) {
@@ -75,14 +84,14 @@ async function loadGenkitFlow(): Promise<{ getAudioPronunciationFeedback: (args:
       lastErr = err;
     }
   }
-  throw (lastErr ?? new Error("Could not load audio-pronunciation Genkit flow"));
+  throw lastErr ?? new Error("Could not load audio-pronunciation Genkit flow");
 }
 
 /* ============ Text-based scoring (unchanged behavior) ============ */
 
 export async function getPronunciationFeedback({
   spokenText,
-  targetPhrase
+  targetPhrase,
 }: GetPronunciationTextArgs): Promise<PronunciationFeedbackText> {
   const prompt = `
 You are an expert Spanish pronunciation coach. A user is trying to pronounce the phrase "${targetPhrase}" and they said "${spokenText}".
@@ -127,11 +136,11 @@ overall (string).
 
   const model = genAI.getGenerativeModel({
     model: MODEL_ID!,
-    generationConfig: { responseMimeType: "application/json" }
+    generationConfig: { responseMimeType: "application/json" },
   });
 
   const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }]
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
   });
 
   const raw = result?.response?.text?.() ?? "";
@@ -150,7 +159,7 @@ overall (string).
       accuracy: "I couldn't parse the assessment. Please try again.",
       fluency: "I couldn't parse the assessment. Please try again.",
       intonation: "I couldn't parse the assessment. Please try again.",
-      overall: "Please try again."
+      overall: "Please try again.",
     };
     return fallback;
   }
@@ -161,19 +170,20 @@ overall (string).
 export async function getPronunciationFeedbackFromAudio({
   audio,
   targetPhrase,
-  mime
+  mime,
 }: GetPronunciationAudioArgs): Promise<AudioPronunciationFeedback> {
   const { getAudioPronunciationFeedback } = await loadGenkitFlow();
 
-  const audioData =
-    Buffer.isBuffer(audio) ? (audio as Buffer).toString("base64") : String(audio);
+  const audioData = Buffer.isBuffer(audio)
+    ? (audio as Buffer).toString("base64")
+    : String(audio);
 
   const audioFormat = pickFormatFromMime(mime);
 
   const out = await getAudioPronunciationFeedback({
     audioData,
     targetPhrase,
-    audioFormat
+    audioFormat,
   });
 
   return out as AudioPronunciationFeedback;

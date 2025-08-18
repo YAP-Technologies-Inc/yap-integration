@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useState, useCallback, useRef, useEffect } from "react";
+import { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
 
 interface MessageSignContextType {
   isOpen: boolean;
@@ -12,9 +12,9 @@ interface MessageSignContextType {
 const MessageSignContext = createContext<MessageSignContextType | null>(null);
 
 export function MessageSignProvider({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);  // controls DOM presence
-  const [entered, setEntered] = useState(false);  // drives ENTER (slide-up) animation
-  const [message, setMessage] = useState("");
+  const [mounted, setMounted] = useState(false); // controls DOM presence
+  const [entered, setEntered] = useState(false); // drives ENTER (slide-up) animation
+  const [message, setMessage] = useState('');
 
   const resolverRef = useRef<((v: boolean) => void) | null>(null);
 
@@ -69,19 +69,25 @@ export function MessageSignProvider({ children }: { children: React.ReactNode })
       {mounted && (
         <div
           className={`fixed inset-0 z-50 transition-opacity duration-300 ${
-            entered ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+            entered ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
         >
-          {/* Backdrop — just unmounts; no routing here */}
+          {/* Backdrop */}
           <div className="absolute inset-0 backdrop-blur-sm bg-black/30" onClick={close} />
 
-          {/* Sheet — enter-only slide up */}
+          {/* Sheet — bottom sheet on mobile, centered modal on lg+ */}
           <div
-            className={`absolute left-0 bottom-0 w-full bg-background-primary rounded-t-3xl shadow-xl transform ${
-              entered
-                ? "translate-y-0 transition-transform duration-300 ease-out"
-                : "translate-y-full"
-            }`}
+            className={`absolute bg-background-primary shadow-xl transform
+              /* Mobile: bottom sheet */
+              left-0 bottom-0 w-full rounded-t-3xl
+              /* Large devices: centered modal */
+              lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 
+              lg:w-auto lg:min-w-96 lg:max-w-md lg:rounded-3xl lg:bottom-auto
+              ${
+                entered
+                  ? 'translate-y-0 transition-transform duration-300 ease-out'
+                  : 'translate-y-full lg:translate-y-0 lg:scale-95 lg:opacity-0'
+              }`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-center pt-4">
@@ -93,10 +99,10 @@ export function MessageSignProvider({ children }: { children: React.ReactNode })
               <p className="text-base text-secondary">{message}</p>
             </div>
 
-            <div className="px-4 pb-2">
+            <div className="px-4 pb-4">
               <button
                 onClick={handleConfirm}
-                className="w-full py-3 bg-secondary text-white border-b-3 border-black font-semibold rounded-3xl transition flex items-center justify-center gap-2"
+                className="w-full py-3 bg-secondary text-white border-b-3 border-black font-semibold rounded-3xl transition flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-secondary/90"
               >
                 <img src="/assets/coin.png" alt="YAP" className="h-5 w-5" />
                 <span className="text-base">Spend 1 YAP</span>
@@ -111,6 +117,6 @@ export function MessageSignProvider({ children }: { children: React.ReactNode })
 
 export function useMessageSignModal() {
   const ctx = useContext(MessageSignContext);
-  if (!ctx) throw new Error("Wrap your app with <MessageSignProvider />");
+  if (!ctx) throw new Error('Wrap your app with <MessageSignProvider />');
   return ctx;
 }

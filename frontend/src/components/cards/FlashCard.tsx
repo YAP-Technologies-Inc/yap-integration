@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { FC, useState, useEffect } from "react";
-import { TablerVolume, TablerArrowBack } from "@/icons";
+import { FC, useState, useEffect } from 'react';
+import { TablerVolume, TablerArrowBack } from '@/icons';
 
 interface FlashcardProps {
   es: string;
@@ -13,20 +13,13 @@ interface FlashcardProps {
 }
 
 function getUnderlineColor(score: number | null) {
-  if (score === null) return "border-transparent";
-  if (score >= 80) return "border-[#4eed71]"; // green
-  if (score >= 60) return "border-[#e4a92d]"; // yellow
-  return "border-[#f04648]"; // red
+  if (score === null) return 'border-transparent';
+  if (score >= 80) return 'border-[#4eed71]'; // green
+  if (score >= 60) return 'border-[#e4a92d]'; // yellow
+  return 'border-[#f04648]'; // red
 }
 
-const Flashcard: FC<FlashcardProps> = ({
-  es,
-  en,
-  example,
-  stepIndex,
-  total,
-  score,
-}) => {
+const Flashcard: FC<FlashcardProps> = ({ es, en, example, stepIndex, total, score }) => {
   const [showBack, setShowBack] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -37,8 +30,8 @@ const Flashcard: FC<FlashcardProps> = ({
       const voiceId = process.env.NEXT_PUBLIC_ELEVENLABS_VOICE_ID;
 
       const res = await fetch(`${API_URL}/api/elevenlabs-tts`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, voiceId }),
       });
 
@@ -48,7 +41,7 @@ const Flashcard: FC<FlashcardProps> = ({
       const audio = new Audio(url);
       await audio.play();
     } catch (err) {
-      console.error("Audio play failed", err);
+      console.error('Audio play failed', err);
     } finally {
       setIsPlaying(false);
     }
@@ -95,17 +88,11 @@ const Flashcard: FC<FlashcardProps> = ({
                 className="p-1.5 rounded-full mt-1 mr-2"
               >
                 <TablerVolume
-                  className={`w-4 h-4 text-[#bfb7b7] ${
-                    isPlaying ? "animate-pulse" : ""
-                  }`}
+                  className={`w-4 h-4 text-[#bfb7b7] ${isPlaying ? 'animate-pulse' : ''}`}
                 />
               </button>
             </div>
-            {example && (
-              <p className="text-base text-gray-400 leading-relaxed mt-2">
-                {en}
-              </p>
-            )}
+            {example && <p className="text-base text-gray-400 leading-relaxed mt-2">{en}</p>}
           </>
         )}
 

@@ -24,7 +24,7 @@ export async function transcribeWithWhisper(filePath: string): Promise<string> {
   const fileStream = fsSync.createReadStream(filePath);
   const resp = await openai.audio.transcriptions.create({
     file: fileStream as any,
-    model: "whisper-1"
+    model: "whisper-1",
   } as any);
   return (resp as any).text || "";
 }
@@ -34,7 +34,7 @@ export function wrapPcmAsWav(
   pcmBuffers: Buffer[],
   sampleRate = 16000,
   numChannels = 1,
-  bytesPerSample = 2
+  bytesPerSample = 2,
 ): Buffer {
   const pcmLength = pcmBuffers.reduce((a, b) => a + b.length, 0);
   const blockAlign = numChannels * bytesPerSample;
@@ -66,4 +66,5 @@ export function wrapPcmAsWav(
 }
 
 // for Gemini MIME normalization
-export const cleanMime = (m?: string) => String(m || "audio/webm").split(";")[0];
+export const cleanMime = (m?: string) =>
+  String(m || "audio/webm").split(";")[0];

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from 'react';
 
 export function useAudioQueue() {
   const queueRef = useRef<string[]>([]);
@@ -10,13 +10,18 @@ export function useAudioQueue() {
   const stopAll = useCallback(() => {
     // stop and release any currently playing audio
     for (const a of activeAudiosRef.current) {
-      try { a.pause(); a.src = ""; } catch {}
+      try {
+        a.pause();
+        a.src = '';
+      } catch {}
     }
     activeAudiosRef.current.clear();
 
     // revoke all object URLs we created
     for (const u of urlPoolRef.current) {
-      try { URL.revokeObjectURL(u); } catch {}
+      try {
+        URL.revokeObjectURL(u);
+      } catch {}
     }
     urlPoolRef.current.clear();
 
@@ -28,7 +33,10 @@ export function useAudioQueue() {
   const drain = useCallback(() => {
     if (unmountedRef.current) return;
     const next = queueRef.current.shift();
-    if (!next) { playingRef.current = false; return; }
+    if (!next) {
+      playingRef.current = false;
+      return;
+    }
 
     playingRef.current = true;
     const a = new Audio(next);
@@ -36,7 +44,9 @@ export function useAudioQueue() {
 
     const cleanupOne = () => {
       activeAudiosRef.current.delete(a);
-      try { URL.revokeObjectURL(next); } catch {}
+      try {
+        URL.revokeObjectURL(next);
+      } catch {}
       urlPoolRef.current.delete(next);
       drain();
     };
@@ -51,13 +61,15 @@ export function useAudioQueue() {
     });
   }, []);
 
-  const enqueue = useCallback((blobOrUrl: Blob | string) => {
-    const url =
-      typeof blobOrUrl === "string" ? blobOrUrl : URL.createObjectURL(blobOrUrl);
-    urlPoolRef.current.add(url);
-    queueRef.current.push(url);
-    if (!playingRef.current) drain();
-  }, [drain]);
+  const enqueue = useCallback(
+    (blobOrUrl: Blob | string) => {
+      const url = typeof blobOrUrl === 'string' ? blobOrUrl : URL.createObjectURL(blobOrUrl);
+      urlPoolRef.current.add(url);
+      queueRef.current.push(url);
+      if (!playingRef.current) drain();
+    },
+    [drain],
+  );
 
   useEffect(() => {
     unmountedRef.current = false;
@@ -66,11 +78,11 @@ export function useAudioQueue() {
       // if user navigates away / tab hidden, kill playback immediately
       if (document.hidden) stopAll();
     };
-    document.addEventListener("visibilitychange", onVis);
+    document.addEventListener('visibilitychange', onVis);
 
     return () => {
       unmountedRef.current = true;
-      document.removeEventListener("visibilitychange", onVis);
+      document.removeEventListener('visibilitychange', onVis);
       stopAll(); // <- critical: ensures no leak across pages
     };
   }, [stopAll]);

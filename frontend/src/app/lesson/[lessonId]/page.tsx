@@ -97,21 +97,27 @@ export default function LessonPage() {
     if (profileLoading) return <p>Loading…</p>;
 
     return (
-      <div className="min-h-[100dvh] w-full bg-background-primary flex flex-col items-center px-4 relative pb-2">
-        <button
-          onClick={() => router.push('/home')}
-          className="absolute left-2 top-2 text-2xl font-semibold text-secondary
-           lg:left-6 lg:top-6 lg:text-4xl
-          ">
-          <TablerChevronLeft />
-        </button>
-        <div className="flex flex-col items-center justify-center pt-20 flex-grow">
+      <div className="min-h-[100dvh] w-full bg-background-primary flex flex-col items-center relative pb-2">
+        {/* Back button - 50% width on lg */}
+        <div className="w-full lg:w-1/2 lg:mx-auto relative px-4">
+          <button
+            onClick={() => router.push('/home')}
+            className="absolute left-4 top-2 text-2xl font-semibold text-secondary hover:cursor-pointer
+             lg:top-6 lg:text-4xl lg:left-0
+            "
+          >
+            <TablerChevronLeft />
+          </button>
+        </div>
+
+        {/* Content container - 50% width on lg */}
+        <div className="w-full lg:w-1/2 lg:mx-auto flex flex-col items-center justify-center pt-20 flex-grow px-4">
           <img src="/assets/yappy.png" alt="Yappy Logo" className="h-40 w-auto" />
           <h2 className="text-lg font-light mt-1 text-secondary text-center">
-            Lesson{" "}
+            Lesson{' '}
             {(() => {
-              const num = lessonData.lesson_id.split("_")[1];
-              return num.startsWith("0") ? num.slice(1) : num;
+              const num = lessonData.lesson_id.split('_')[1];
+              return num.startsWith('0') ? num.slice(1) : num;
             })()}
           </h2>
           <p className="text-secondary mt-1 font-bold text-xl text-center px-2">
@@ -120,10 +126,12 @@ export default function LessonPage() {
         </div>
 
         <div className="flex-grow" />
-        <div className='flex flex-col items-center w-full lg:pb-20'>
+
+        {/* Button container - 50% width on lg */}
+        <div className="flex flex-col items-center w-full lg:w-1/2 lg:mx-auto px-4">
           <button
             onClick={() => setStarted(true)}
-            className="hover:cursor-pointer w-full max-w-xs py-4 rounded-full bg-secondary border-b-3 border-r-1 border-black text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
+            className="hover:cursor-pointer w-full py-4 rounded-full bg-secondary border-b-3 border-r-1 border-black text-white font-semibold shadow-md hover:bg-secondary-dark transition-transform transform hover:scale-105 active:scale-95"
           >
             Get Started
           </button>

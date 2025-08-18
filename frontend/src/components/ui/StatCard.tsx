@@ -7,12 +7,7 @@ interface StatCardProps {
   isImage?: boolean;
 }
 
-export default function StatCard({
-  icon,
-  label,
-  value,
-  isImage = false,
-}: StatCardProps) {
+export default function StatCard({ icon, label, value, isImage = false }: StatCardProps) {
   return (
     <div className="w-28 h-32 bg-white/90 rounded-2xl border border-gray-200 shadow-md px-3 py-4 flex flex-col items-center justify-between transition-all hover:shadow-lg active:scale-95">
       <div className="flex justify-center items-center h-8 w-8">

@@ -21,14 +21,14 @@ router.post("/auth/secure-signup", async (req, res) => {
        ON CONFLICT (user_id) DO UPDATE
          SET name = EXCLUDED.name,
              language_to_learn = EXCLUDED.language_to_learn`,
-      [user_id, name, language_to_learn]
+      [user_id, name, language_to_learn],
     );
 
     await db.query(
       `INSERT INTO user_stats (user_id, token_balance, current_streak, highest_streak, total_yap_earned)
        VALUES ($1, 0, 1, 1, 0)
        ON CONFLICT (user_id) DO NOTHING`,
-      [user_id]
+      [user_id],
     );
 
     res.json({

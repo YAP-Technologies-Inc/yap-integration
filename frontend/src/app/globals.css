@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /*
 @media (min-width: 1024px) {
@@ -76,20 +76,18 @@ html {
   --privy-border-radius-lg: 32px;
   --privy-color-background-2: #f0ebe1;
   --privy-color-background-3: #f0ebe1;
-
-
 }
 
 /* Used to remove default browser eye icons from popping up beside our icon */
-input[type="password"]::-ms-reveal,
-input[type="password"]::-ms-clear {
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
   display: none;
 }
 
-input[type="password"]::-webkit-credentials-auto-fill-button,
-input[type="password"]::-webkit-clear-button,
-input[type="password"]::-webkit-inner-spin-button,
-input[type="password"]::-webkit-calendar-picker-indicator {
+input[type='password']::-webkit-credentials-auto-fill-button,
+input[type='password']::-webkit-clear-button,
+input[type='password']::-webkit-inner-spin-button,
+input[type='password']::-webkit-calendar-picker-indicator {
   display: none !important;
 }
 
@@ -99,7 +97,7 @@ input[type="password"]::-webkit-calendar-picker-indicator {
 .pt-safe {
   padding-top: env(safe-area-inset-top);
 }
-.pb-nav{
+.pb-nav {
   padding-bottom: calc(env(safe-area-inset-bottom) + 5rem);
 }
 
@@ -108,7 +106,6 @@ input[type="password"]::-webkit-calendar-picker-indicator {
   touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
 }
-
 
 .flip-horizontal {
   transform: scaleX(-1);

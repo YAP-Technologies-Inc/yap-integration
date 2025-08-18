@@ -105,5 +105,3 @@ For questions about these Terms, please contact us at:
 
 **YAP Technologies Inc.**  
 Email: support@goyap.ai
-
-

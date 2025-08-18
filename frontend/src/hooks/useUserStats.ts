@@ -16,7 +16,7 @@ export function useUserStats(userId: string | null): {
 } {
   const { data, error, isLoading } = useSWR(
     userId ? `${API_URL}/api/user-stats/${encodeURIComponent(userId)}` : null,
-    fetcher
+    fetcher,
   );
 
   const stats: UserStats | null = data

@@ -10,9 +10,10 @@ router.get("/user-stats/:userId", async (req, res) => {
     const { rows } = await db.query(
       `SELECT token_balance, current_streak, highest_streak, total_yap_earned, updated_at
        FROM user_stats WHERE user_id=$1`,
-      [userId]
+      [userId],
     );
-    if (rows.length === 0) return res.status(404).json({ error: "Stats not found" });
+    if (rows.length === 0)
+      return res.status(404).json({ error: "Stats not found" });
     res.json(rows[0]);
   } catch (err) {
     console.error("Error fetching user stats:", err);
@@ -31,7 +32,7 @@ router.post("/user-stats/:userId/streak", async (req, res) => {
              highest_streak=GREATEST(highest_streak, $3),
              updated_at=NOW()
        WHERE user_id=$1`,
-      [userId, currentStreak, highestStreak]
+      [userId, currentStreak, highestStreak],
     );
     res.json({ success: true });
   } catch (err) {

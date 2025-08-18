@@ -6,21 +6,27 @@ import artifact from "../abi/YapToken.json" with { type: "json" };
 
 const provider = new JsonRpcProvider(SEI_RPC);
 const wallet = new Wallet(String(PRIVATE_KEY), provider);
-const token = new Contract(String(TOKEN_ADDRESS), (artifact as any).abi, wallet);
+const token = new Contract(
+  String(TOKEN_ADDRESS),
+  (artifact as any).abi,
+  wallet,
+);
 
 const router = Router();
 
 // POST /api/complete-daily-quiz
 router.post("/complete-daily-quiz", async (req, res) => {
   const { userId, walletAddress } = req.body || {};
-  if (!userId || !walletAddress) return res.status(400).json({ error: "Missing fields" });
+  if (!userId || !walletAddress)
+    return res.status(400).json({ error: "Missing fields" });
 
   try {
     const { rows } = await db.query(
       `SELECT id FROM daily_quiz WHERE user_id=$1 AND date = CURRENT_DATE`,
-      [userId]
+      [userId],
     );
-    if (rows.length > 0) return res.status(409).json({ error: "Already completed today" });
+    if (rows.length > 0)
+      return res.status(409).json({ error: "Already completed today" });
 
     const oneYap = ethers.parseUnits("1", 18);
     const tx = await token.transfer(walletAddress, oneYap);
@@ -29,7 +35,7 @@ router.post("/complete-daily-quiz", async (req, res) => {
     await db.query(
       `INSERT INTO daily_quiz (user_id, tx_hash, reward_sent)
        VALUES ($1, $2, true)`,
-      [userId, tx.hash]
+      [userId, tx.hash],
     );
     return res.json({ success: true, txHash: tx.hash });
   } catch (err: any) {
@@ -44,7 +50,7 @@ router.get("/daily-quiz-status/:userId", async (req, res) => {
   try {
     const { rows } = await db.query(
       `SELECT 1 FROM daily_quiz WHERE user_id=$1 AND date = CURRENT_DATE`,
-      [userId]
+      [userId],
     );
     return res.json({ completed: rows.length > 0 });
   } catch (err: any) {
