@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useWallets, useSignTypedData } from '@privy-io/react-auth';
 
 import HeaderGreeting from '@/components/dashboard/HeaderGreeting';
 import BalanceCard from '@/components/dashboard/BalanceCard';
@@ -18,23 +17,16 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import { useUserStats } from '@/hooks/useUserStats';
 import { useOnChainBalance } from '@/hooks/useOnBlockChain';
 import isEqual from 'lodash.isequal';
-import { ethers } from 'ethers';
-import { tokenAbi } from '@/app/abis/YAPToken';
 import TestingNoticeModal from '@/components/TestingNoticeModal';
-import { useMessageSignModal } from '@/components/cards/MessageSignModal';
 import { useSnackbar } from '@/components/ui/SnackBar';
 import { getTodayStatus } from '@/utils/dailyQuizStorage';
-import { TablerCheck } from '@/icons/Check'; // Make sure this import exists
 
 export default function HomePage() {
   useInitializeUser();
 
   // const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_ADDRESS!;
-  const TOKEN_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_ADDRESS!;
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const BACKEND_WALLET_ADDRESS = process.env.NEXT_PUBLIC_BACKEND_WALLET_ADDRESS!;
-  const { showSnackbar, removeSnackbar } = useSnackbar();
-  const { open } = useMessageSignModal();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+  const { showSnackbar } = useSnackbar();
   const [lessons, setLessons] = useState<
     {
       id: string;
@@ -44,7 +36,6 @@ export default function HomePage() {
     }[]
   >([]);
 
-  const { wallets } = useWallets();
   const router = useRouter();
 
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
@@ -52,20 +43,19 @@ export default function HomePage() {
 
   // Fetch user-related data with SWR hooks
   const { completedLessons, isLoading: isLessonsLoading } = useCompletedLessons(userId);
-  const { profile, isLoading: isProfileLoading } = useUserProfile(userId);
-  const { stats, isLoading: isStatsLoading } = useUserStats(userId);
-  const { balance: onChainBalance, isLoading: isBalanceLoading } = useOnChainBalance(evmAddress);
+  const { isLoading: isProfileLoading } = useUserProfile(userId);
+  const { isLoading: isStatsLoading } = useUserStats(userId);
+  const { isLoading: isBalanceLoading } = useOnChainBalance(evmAddress);
 
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
 
-  const { signTypedData } = useSignTypedData();
   // Compute lesson availability based on completed lessons
   useEffect(() => {
     if (!completedLessons) return;
 
     const completedSet = new Set<string>(completedLessons);
 
-    const computed = Object.values(allLessons).map((lesson: any) => {
+    const computed = Object.values(allLessons).map((lesson) => {
       const isCompleted = completedSet.has(lesson.lesson_id);
       const isFirst = lesson.lesson_id === 'SPA1_001';
       const prereqs = lesson.prerequisite_lessons || [];
@@ -146,7 +136,6 @@ export default function HomePage() {
       });
       return;
     }
-
     router.push('/daily-quiz');
   };
 
@@ -212,7 +201,7 @@ export default function HomePage() {
             isUnlocked={dailyQuizUnlocked}
             isCompleted={completedToday}
             attemptsLeft={attemptsLeft}
-            lastAttemptAvg={lastAttemptAvg} 
+            lastAttemptAvg={lastAttemptAvg}
           />
         </div>
       </div>

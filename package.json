@@ -27,6 +27,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/fluent-ffmpeg": "^2.1.27",
+    "@types/lodash.isequal": "^4.5.8",
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^24.3.0",

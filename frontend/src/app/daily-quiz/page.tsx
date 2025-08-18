@@ -18,6 +18,10 @@ import { ReportIssue } from '@/components/debug/ReportIssue';
 import Flashcard from '@/components/cards/FlashCard';
 import { useSnackbar } from '@/components/ui/SnackBar';
 import mockDailyQuiz from '@/mock/mockDailyQuizShort';
+import { ScoreModal } from '@/components/lesson/ScoreModal';
+
+// match LessonUi chime UX
+import { prepareChimes, playChimeOnce } from '@/utils/chimeOnce';
 
 import {
   getQuizState,
@@ -32,10 +36,8 @@ import {
   type DailyQuizState,
 } from '@/utils/dailyQuizStorage';
 
-import { ScoreModal } from '@/components/lesson/ScoreModal';
-
-const PASSING_CARD_SCORE = 70; // per-card pass threshold (visual only)
-const PASSING_AVG = 90; // quiz pass threshold (avg)
+const PASSING_CARD_SCORE = 70; // per-card visual pass
+const PASSING_AVG = 90; // quiz pass threshold
 const MAX_ATTEMPTS = 3;
 
 type Step = {
@@ -63,7 +65,7 @@ export default function DailyQuizUi() {
   }));
   const total = allSteps.length;
 
-  // ==== Daily quiz persisted state (unchanged core logic) ====
+  // ==== Daily quiz persisted state ====
   const initial: DailyQuizState =
     typeof window !== 'undefined'
       ? getQuizState(total)
@@ -83,7 +85,7 @@ export default function DailyQuizUi() {
   const [stepIndex, setStepIndex] = useState(0);
   const current = allSteps[stepIndex];
 
-  // ==== Media / scoring state (match LessonUi behavior) ====
+  // ==== Media / scoring state (parity with LessonUi) ====
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
@@ -105,7 +107,7 @@ export default function DailyQuizUi() {
   const { showSnackbar, removeSnackbar } = useSnackbar();
   const [showReport, setShowReport] = useState(false);
 
-  // ==== TEST MODE (identical toggles as LessonUi) ====
+  // ==== TEST MODE (same toggles as LessonUi) ====
   const TEST_MODE =
     process.env.NEXT_PUBLIC_PRON_TEST === '1' ||
     (typeof window !== 'undefined' &&
@@ -165,7 +167,7 @@ export default function DailyQuizUi() {
     specificIssues: string[];
   }>(null);
 
-  // ScoreModal visibility (reuses the same modal)
+  // ScoreModal visibility
   const [showScore, setShowScore] = useState<'Accuracy' | 'Fluency' | 'Intonation' | null>(null);
   const handleModalClose = () => setShowScore(null);
 
@@ -202,6 +204,13 @@ export default function DailyQuizUi() {
     }
     return '';
   };
+
+  // ==== Prepare chimes once (match LessonUi) ====
+  const correctChime = '/audio/correct.mp3';
+  const incorrectChime = '/audio/incorrect.mp3';
+  useEffect(() => {
+    prepareChimes({ correct: correctChime, incorrect: incorrectChime });
+  }, []);
 
   // ==== Recording controls (parity with LessonUi) ====
   const startRecording = async () => {
@@ -315,7 +324,6 @@ export default function DailyQuizUi() {
       setAudioBlob(blob);
       setAudioURL(url);
 
-      // In TEST mode, show fake scores instantly (like LessonUi).
       if (TEST_MODE) {
         applyFakePronunciationResult();
       }
@@ -341,7 +349,6 @@ export default function DailyQuizUi() {
 
   // ==== Assess (Prod) OR Fake (Test) ====
   const assessPronunciation = async () => {
-    // Test mode: never hit backend
     if (TEST_MODE) {
       applyFakePronunciationResult();
       setIsLoading(false);
@@ -382,16 +389,15 @@ export default function DailyQuizUi() {
 
     const fd = new FormData();
     fd.append('audio', audioBlob, filename);
-    // Keep the daily-quiz API contract: "referenceText"
+    // keep the daily-quiz API contract: "referenceText"
     fd.append('referenceText', referenceText);
     fd.append('uploadId', uploadId);
-    // (Optional) pass transcript when we have it fresh
     if (hasFreshTranscript && spokenText?.trim()) {
       fd.append('spokenText', spokenText.trim());
     }
 
     try {
-      const res = await fetch(`${API_URL}/api/pronunciation-assessment-upload`, {
+      const res = await fetch(`${API_URL}/api/pronunciation`, {
         method: 'POST',
         body: fd,
       });
@@ -423,7 +429,7 @@ export default function DailyQuizUi() {
         specificIssues: Array.isArray(result.specificIssues) ? result.specificIssues : [],
       });
 
-      // Persist per-step score now so avg reflects latest when finishing
+      // persist per-step score so avg reflects latest on finish
       const updated = updateScoreForStep(total, stepIndex, overall);
       setScores(updated.scores);
 
@@ -441,7 +447,7 @@ export default function DailyQuizUi() {
     }
   };
 
-  // ==== Next Step / Finish (keeps your daily quiz rules) ====
+  // ==== Next Step / Finish ====
   const toNextStepOrFinish = () => {
     if (stepIndex + 1 < total) {
       setStepIndex(stepIndex + 1);
@@ -531,12 +537,16 @@ export default function DailyQuizUi() {
     }
   };
 
-  // ==== Chime like LessonUi ====
+  // ==== Play chime once per attempt key (like LessonUi) ====
   useEffect(() => {
     if (score == null) return;
-    const sound = score >= PASSING_CARD_SCORE ? '/audio/correct.mp3' : '/audio/incorrect.mp3';
-    new Audio(sound).play().catch(() => {});
-  }, [score]);
+    const key =
+      attemptIdRef.current && attemptIdRef.current.length > 0
+        ? attemptIdRef.current
+        : `daily:${stepIndex}`;
+    const pass = score >= PASSING_CARD_SCORE;
+    playChimeOnce(key, pass);
+  }, [score, stepIndex]);
 
   if (!current) {
     return (
@@ -549,37 +559,39 @@ export default function DailyQuizUi() {
   return (
     <div className="fixed inset-0 bg-background-primary flex flex-col h-[100dvh] overflow-hidden">
       <div className="min-h-[100dvh] fixed inset-0 bg-background-primary flex flex-col px-4 ">
-        {/* Top bar */}
-        <div className="flex items-center">
-          <button
-            onClick={() => router.push('/home')}
-            className="text-secondary hover:cursor-pointer"
-          >
-            <TablerXIcon className="w-6 h-6" />
-          </button>
-          <h3 className="flex-1 text-center text-secondary font-bold text-xl">Daily Quiz</h3>
-          <div>
+        {/* Header — 50% width on lg (match LessonUi) */}
+        <div className="w-full lg:w-1/2 lg:mx-auto">
+          <div className="flex items-center">
             <button
-              onClick={() => setShowReport(true)}
-              className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
+              onClick={() => router.push('/home')}
+              className="text-secondary hover:cursor-pointer"
             >
-              <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+              <TablerXIcon className="w-6 h-6" />
             </button>
-            {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
+            <h3 className="flex-1 text-center text-secondary font-bold text-xl">Daily Quiz</h3>
+            <div>
+              <button
+                onClick={() => setShowReport(true)}
+                className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
+              >
+                <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+              </button>
+              {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
+            </div>
+          </div>
+
+          {/* Progress bar — 50% width on lg */}
+          <div className="flex-shrink-0">
+            <div className="h-4 w-full border-2 border-gray-50 bg-white/90 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-tertiary transition-all"
+                style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Progress bar */}
-        <div className="w-full flex-shrink-0">
-          <div className="h-4 w-full border-2 border-gray-50 bg-white/90 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-tertiary transition-all"
-              style={{ width: `${((stepIndex + 1) / total) * 100}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Card */}
+        {/* Card area — centered, same min heights */}
         <div className="flex flex-1 items-start justify-center mt-8 min-h-[56dvh] sm:min-h-[50dvh]">
           <Flashcard
             es={current.front}
@@ -602,7 +614,7 @@ export default function DailyQuizUi() {
           />
         </div>
 
-        {/* Mic controls */}
+        {/* Mic controls + Submit — match LessonUi widths */}
         <div className="w-full space-y-6">
           {score === null && (
             <>
@@ -660,8 +672,8 @@ export default function DailyQuizUi() {
                 {audioURL && <audio ref={audioRef} src={audioURL} className="hidden" />}
               </div>
 
-              {/* Submit */}
-              <div className="pb-2">
+              {/* Submit — 50% width on lg */}
+              <div className="pb-2 w-full lg:w-1/2 lg:mx-auto">
                 <button
                   onClick={assessPronunciation}
                   disabled={!audioURL || isLoading}
@@ -677,95 +689,99 @@ export default function DailyQuizUi() {
             </>
           )}
 
-          {/* Post-score actions */}
+          {/* Score + Feedback + Actions — match LessonUi centering */}
           {score !== null && (
-            <div className="w-full rounded-xl pb-2 space-y-4">
-              {/* Pass/fail underline */}
+            <div className="w-full rounded-xl pb-2 space-y-4 ">
+              {/* Pass/fail underline (full width strip like LessonUi) */}
               <div
                 className={`w-screen left-1/2 right-1/2 -ml-[50vw] relative h-1 rounded-full mb-3 ${
                   score >= PASSING_CARD_SCORE ? 'bg-green-200' : 'bg-red-200'
                 }`}
               />
-              <div className="flex flex-col items-start mb-4">
-                {/* Pass/fail icon and label */}
-                <div className="flex items-center gap-2 mb-2">
-                  <div
-                    className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
-                      score >= PASSING_CARD_SCORE
-                        ? 'bg-[#4eed71] border-[#41ca55]'
-                        : 'bg-[#f04648] border-[#d12a2d]'
-                    }`}
-                  >
-                    {score >= PASSING_CARD_SCORE ? (
-                      <TablerCheck className="w-6 h-6 text-white" />
-                    ) : (
-                      <TablerX className="w-6 h-6 text-white" />
-                    )}
+              
+              {/* Centered details on lg */}
+              <div className="w-full lg:w-1/2 lg:mx-auto">
+                <div className="flex flex-col items-start mb-4">
+                  {/* Pass/fail icon + label */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <div
+                      className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
+                        score >= PASSING_CARD_SCORE
+                          ? 'bg-[#4eed71] border-[#41ca55]'
+                          : 'bg-[#f04648] border-[#d12a2d]'
+                      }`}
+                    >
+                      {score >= PASSING_CARD_SCORE ? (
+                        <TablerCheck className="w-6 h-6 text-white" />
+                      ) : (
+                        <TablerX className="w-6 h-6 text-white" />
+                      )}
+                    </div>
+                    <p className="text-2xl font-semibold text-[#2D1C1C]">
+                      {score >= PASSING_CARD_SCORE ? 'Correct' : 'Incorrect'}
+                    </p>
                   </div>
-                  <p className="text-2xl font-semibold text-[#2D1C1C]">
-                    {score >= PASSING_CARD_SCORE ? 'Correct' : 'Incorrect'}
-                  </p>
-                </div>
 
-                {/* Score breakdown (colors per part still use their thresholds) */}
-                <div className="flex flex-row gap-6 text-secondary">
-                  {[
-                    {
-                      label: 'Accuracy',
-                      value: breakdown?.accuracy ?? 0,
-                      text: textFeedback?.accuracyText || '',
-                    },
-                    {
-                      label: 'Fluency',
-                      value: breakdown?.fluency ?? 0,
-                      text: textFeedback?.fluencyText || '',
-                    },
-                    {
-                      label: 'Intonation',
-                      value: breakdown?.completeness ?? 0,
-                      text: textFeedback?.intonationText || '',
-                    },
-                  ].map(({ label, value, text }) => {
-                    let color = 'bg-tertiary border-b-3 border-r-1 border-[#e4a92d]';
-                    if (value >= PASSING_CARD_SCORE)
-                      color = 'bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]';
-                    else if (value < 60)
-                      color = 'bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]';
+                  {/* Score breakdown — centered on lg */}
+                  <div className="flex flex-row gap-6 text-secondary w-full lg:justify-center lg:space-x-25">
+                    {[
+                      { label: 'Accuracy', value: breakdown?.accuracy ?? 0 },
+                      { label: 'Fluency', value: breakdown?.fluency ?? 0 },
+                      { label: 'Intonation', value: breakdown?.completeness ?? 0 },
+                    ].map(({ label, value }) => {
+                      let color = 'bg-tertiary border-b-3 border-r-1 border-[#e4a92d]';
+                      if (value >= PASSING_CARD_SCORE)
+                        color = 'bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]';
+                      else if (value < 60)
+                        color = 'bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]';
 
-                    return (
-                      <div className="flex items-center gap-2" key={label}>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setShowScore(label as 'Accuracy' | 'Fluency' | 'Intonation')
-                          }
-                          className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
-                          aria-label={`Show ${label} score details`}
-                        >
-                          {Math.round(value)}
-                        </button>
-                        <span className="text-sm">{label}</span>
-
-                        {showScore === (label as any) && textFeedback && (
-                          <ScoreModal
-                            onClose={handleModalClose}
-                            scoreType={label as 'Accuracy' | 'Fluency' | 'Intonation'}
-                            value={value}
-                            text={text || 'No details available.'}
-                            transcript={textFeedback.transcript}
-                            specificIssues={textFeedback.specificIssues}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div className="flex items-center gap-2" key={label}>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowScore(label as 'Accuracy' | 'Fluency' | 'Intonation')
+                            }
+                            className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
+                            aria-label={`Show ${label} score details`}
+                          >
+                            {Math.round(value)}
+                          </button>
+                          <span className="text-sm">{label}</span>
+                          {showScore === label && textFeedback && (
+                            <ScoreModal
+                              onClose={handleModalClose}
+                              scoreType={label as 'Accuracy' | 'Fluency' | 'Intonation'}
+                              value={
+                                label === 'Accuracy'
+                                  ? (breakdown?.accuracy ?? 0)
+                                  : label === 'Fluency'
+                                    ? (breakdown?.fluency ?? 0)
+                                    : (breakdown?.completeness ?? 0)
+                              }
+                              text={
+                                label === 'Accuracy'
+                                  ? textFeedback?.accuracyText || ''
+                                  : label === 'Fluency'
+                                    ? textFeedback?.fluencyText || ''
+                                    : textFeedback?.intonationText || ''
+                              }
+                              transcript={textFeedback?.transcript || ''}
+                              specificIssues={textFeedback?.specificIssues || []}
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-
-              <div className="flex justify-between gap-4 pt-2">
+              
+              {/* Actions — 50% width on lg */}
+              <div className="flex justify-between gap-4 pt-2 w-full lg:w-1/2 lg:mx-auto">
                 <button
                   onClick={resetAudioState}
-                  className="flex-1 py-4 bg-white text-black rounded-full border-b-3 border-r-1 border-[#ebe6df] shadow"
+                  className="flex-1 py-4 bg-white text-black rounded-full border-b-3 border-r-1 border-[#ebe6df] shadow hover:cursor-pointer"
                 >
                   Retry
                 </button>

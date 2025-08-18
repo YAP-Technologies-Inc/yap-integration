@@ -679,76 +679,80 @@ export default function LessonUi({
                   score >= passingScore ? 'bg-green-200' : 'bg-red-200'
                 }`}
               />
-              <div className="flex flex-col items-start mb-4">
-                {/* Pass/fail icon and label */}
-                <div className="flex items-center gap-2 mb-2">
-                  <div
-                    className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
-                      score >= passingScore
-                        ? 'bg-[#4eed71] border-[#41ca55]'
-                        : 'bg-[#f04648] border-[#d12a2d]'
-                    }`}
-                  >
-                    {score >= passingScore ? (
-                      <TablerCheck className="w-6 h-6 text-white" />
-                    ) : (
-                      <TablerXIcon className="w-6 h-6 text-white" />
-                    )}
+              
+              {/* Pass/fail section - centered container on lg */}
+              <div className="w-full lg:w-1/2 lg:mx-auto">
+                <div className="flex flex-col items-start mb-4">
+                  {/* Pass/fail icon and label */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <div
+                      className={`w-8 h-8 rounded-xl border-b-3 border-r-1 flex items-center mb-2 ml-1 justify-center ${
+                        score >= passingScore
+                          ? 'bg-[#4eed71] border-[#41ca55]'
+                          : 'bg-[#f04648] border-[#d12a2d]'
+                      }`}
+                    >
+                      {score >= passingScore ? (
+                        <TablerCheck className="w-6 h-6 text-white" />
+                      ) : (
+                        <TablerXIcon className="w-6 h-6 text-white" />
+                      )}
+                    </div>
+                    <p className="text-2xl font-semibold text-[#2D1C1C]">
+                      {score >= passingScore ? 'Correct' : 'Incorrect'}
+                    </p>
                   </div>
-                  <p className="text-2xl font-semibold text-[#2D1C1C]">
-                    {score >= passingScore ? 'Correct' : 'Incorrect'}
-                  </p>
-                </div>
 
-                {/* Score breakdown - centered on lg */}
-                <div className="flex flex-row gap-6 text-secondary w-full lg:justify-center">
-                  {[
-                    { label: 'Accuracy', value: breakdown?.accuracy ?? 0 },
-                    { label: 'Fluency', value: breakdown?.fluency ?? 0 },
-                    { label: 'Intonation', value: breakdown?.completeness ?? 0 },
-                  ].map(({ label, value }) => {
-                    let color = 'bg-tertiary border-b-3 border-r-1 border-[#e4a92d]';
-                    if (value >= passingScore)
-                      color = 'bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]';
-                    else if (value < 60)
-                      color = 'bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]';
+                  {/* Score breakdown - centered on lg */}
+                  <div className="flex flex-row gap-6 text-secondary w-full lg:justify-center lg:space-x-25">
+                    {[
+                      { label: 'Accuracy', value: breakdown?.accuracy ?? 0 },
+                      { label: 'Fluency', value: breakdown?.fluency ?? 0 },
+                      { label: 'Intonation', value: breakdown?.completeness ?? 0 },
+                    ].map(({ label, value }) => {
+                      let color = 'bg-tertiary border-b-3 border-r-1 border-[#e4a92d]';
+                      if (value >= passingScore)
+                        color = 'bg-[#4eed71] border-b-3 border-r-1 border-[#41ca55]';
+                      else if (value < 60)
+                        color = 'bg-[#f04648] border-b-3 border-r-1 border-[#bf383a]';
 
-                    return (
-                      <div className="flex items-center gap-2" key={label}>
-                        <button
-                          type="button"
-                          onClick={() => setShowScore(label)}
-                          className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
-                          aria-label={`Show ${label} score details`}
-                        >
-                          {Math.round(value)}
-                        </button>
-                        <span className="text-sm">{label}</span>
-                        {showScore === label && textFeedback && (
-                          <ScoreModal
-                            onClose={handleModalClose}
-                            scoreType={label as 'Accuracy' | 'Fluency' | 'Intonation'}
-                            value={
-                              label === 'Accuracy'
-                                ? (breakdown?.accuracy ?? 0)
-                                : label === 'Fluency'
-                                  ? (breakdown?.fluency ?? 0)
-                                  : (breakdown?.completeness ?? 0)
-                            }
-                            text={
-                              label === 'Accuracy'
-                                ? textFeedback.accuracyText
-                                : label === 'Fluency'
-                                  ? textFeedback.fluencyText
-                                  : textFeedback.intonationText
-                            }
-                            transcript={textFeedback.transcript}
-                            specificIssues={textFeedback.specificIssues}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div className="flex items-center gap-2" key={label}>
+                          <button
+                            type="button"
+                            onClick={() => setShowScore(label)}
+                            className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
+                            aria-label={`Show ${label} score details`}
+                          >
+                            {Math.round(value)}
+                          </button>
+                          <span className="text-sm">{label}</span>
+                          {showScore === label && textFeedback && (
+                            <ScoreModal
+                              onClose={handleModalClose}
+                              scoreType={label as 'Accuracy' | 'Fluency' | 'Intonation'}
+                              value={
+                                label === 'Accuracy'
+                                  ? (breakdown?.accuracy ?? 0)
+                                  : label === 'Fluency'
+                                    ? (breakdown?.fluency ?? 0)
+                                    : (breakdown?.completeness ?? 0)
+                              }
+                              text={
+                                label === 'Accuracy'
+                                  ? textFeedback.accuracyText
+                                  : label === 'Fluency'
+                                    ? textFeedback.fluencyText
+                                    : textFeedback.intonationText
+                              }
+                              transcript={textFeedback.transcript}
+                              specificIssues={textFeedback.specificIssues}
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 

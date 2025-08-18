@@ -41,17 +41,17 @@ export function ScoreModal({
       onClick={handleClose}
       className={`fixed inset-0 z-50 flex items-end justify-center
         ${closing ? 'animate-fade-out' : 'animate-fade-in'}`}
-      // keep the tint in CSS so fade anim is visible
     >
-      {/* Backdrop via pseudo-elem */}
       <div className="absolute inset-0" />
 
       {/* Panel */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`relative bg-background-primary w-full max-w-md min-h-[30dvh]
+        className={`relative bg-background-primary w-full min-h-[30dvh] 
           flex flex-col justify-start pt-3 px-5 pb-5 rounded-t-3xl shadow-lg
           will-change-transform
+          max-w-md
+          lg:max-w-sm lg:rounded-3xl lg:mb-20
           ${closing ? 'animate-slide-down' : 'animate-slide-up'}`}
       >
         <div className="flex flex-col items-center mb-2">
