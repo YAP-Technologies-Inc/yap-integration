@@ -67,3 +67,23 @@
 - Feature: Users can report issues during lessons
 - Conflicts: None
 - Notes: Lesson UI might break on some devices :(
+## August 15, 2025 – Merged `style/full-redesign` → `main`
+
+- Merged by: Landon Hadre
+- Feature: Full site ui change
+- Conflicts: None
+- Notes: Took forever
+
+## August 18, 2025 – Merged `style/desktop` → `main`
+
+- Merged by: Landon Hadre
+- Feature: Desktop styled to a degree
+- Conflicts: None
+- Notes: Subject to change
+
+## August 18, 2025 – Merged `feat/new-tokencontract` → `main`
+
+- Merged by: Landon Hadre
+- Feature: Backend logic changed to support payment and sending yap
+- Conflicts: None
+- Notes: Was confusing, but works
