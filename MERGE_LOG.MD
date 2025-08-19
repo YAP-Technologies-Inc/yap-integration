@@ -87,3 +87,10 @@
 - Feature: Backend logic changed to support payment and sending yap
 - Conflicts: None
 - Notes: Was confusing, but works
+
+## August 19, 2025 – Merged `feat/new-tokencontract` → `main`
+
+- Merged by: Landon Hadre
+- Feature: Now we can test new deployments locally before we go live
+- Conflicts: None
+- Notes: I think automatica deplyoment doesnt work yet
