@@ -534,7 +534,7 @@ export default function SpanishTeacherConversation() {
       <div className="fixed inset-x-0 top-0 h-16 bg-background-primary z-30 flex items-center justify-center px-4">
         <div className="absolute left-4 lg:left-1/4">
           <button onClick={() => router.replace('/home')}>
-        <TablerX className="w-6 h-6 text-gray-700" />
+            <TablerX className="w-6 h-6 text-gray-700" />
           </button>
         </div>
         <div className="text-center">
@@ -569,60 +569,60 @@ export default function SpanishTeacherConversation() {
       >
         <div className="px-4 space-y-2 py-3 flex justify-center">
           <div className="w-full lg:w-1/3">
-        {!hasAccess ? (
-          <div className="text-center text-gray-500 text-xs py-2">Checking access…</div>
-        ) : messages.length === 0 && !awaitingFirstText ? (
-          <div className="text-center text-gray-500 text-xs py-2">No messages yet</div>
-        ) : (
-          <>
-            {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex items-start gap-2 ${
-              msg.sender === 'user' ? 'justify-end' : 'justify-start'
-            }`}
-          >
-            {msg.sender === 'ai' && (
-              <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-white text-sm font-semibold">AI</span>
-              </div>
-            )}
-            <div
-              className={`rounded-lg px-3 py-2 max-w-[70vw] text-sm ${
-            msg.sender === 'user'
-              ? 'bg-background-secondary text-white'
-              : 'bg-white text-[#2D1C1C]'
-              }`}
-            >
-              <div>{msg.text}</div>
-            </div>
-            {msg.sender === 'user' && (
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-white text-sm font-semibold">
-              {(userName || 'U').charAt(0).toUpperCase()}
-            </span>
-              </div>
-            )}
-          </div>
-            ))}
+            {!hasAccess ? (
+              <div className="text-center text-gray-500 text-xs py-2">Checking access…</div>
+            ) : messages.length === 0 && !awaitingFirstText ? (
+              <div className="text-center text-gray-500 text-xs py-2">No messages yet</div>
+            ) : (
+              <>
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex items-start gap-2 ${
+                      msg.sender === 'user' ? 'justify-end' : 'justify-start'
+                    }`}
+                  >
+                    {msg.sender === 'ai' && (
+                      <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-sm font-semibold">AI</span>
+                      </div>
+                    )}
+                    <div
+                      className={`rounded-lg px-3 py-2 max-w-[70vw] text-sm ${
+                        msg.sender === 'user'
+                          ? 'bg-background-secondary text-white'
+                          : 'bg-white text-[#2D1C1C]'
+                      }`}
+                    >
+                      <div>{msg.text}</div>
+                    </div>
+                    {msg.sender === 'user' && (
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-sm font-semibold">
+                          {(userName || 'U').charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
 
-            {awaitingFirstText && (
-          <div className="flex items-start gap-2 justify-start">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-white text-sm font-semibold">AI</span>
-            </div>
-            <div className="rounded-lg px-3 py-2 max-w-[70vw] text-sm bg-white text-[#2D1C1C]">
-              <span className="opacity-60">…</span>
-            </div>
-          </div>
+                {awaitingFirstText && (
+                  <div className="flex items-start gap-2 justify-start">
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 via-green-700 to-green-900 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-semibold">AI</span>
+                    </div>
+                    <div className="rounded-lg px-3 py-2 max-w-[70vw] text-sm bg-white text-[#2D1C1C]">
+                      <span className="opacity-60">…</span>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
-          </>
-        )}
-        <div ref={messagesEndRef} className="h-2" />
+            <div ref={messagesEndRef} className="h-2" />
           </div>
         </div>
       </div>
-                   
+
       {/* Composer (≈ 7rem tall) sits above the bottom nav (56px) */}
       <div className="fixed inset-x-0 bottom-24 pb-[env(safe-area-inset-bottom)] z-20 flex justify-center items-center">
         <div

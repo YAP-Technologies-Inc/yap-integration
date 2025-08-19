@@ -152,7 +152,6 @@ export default function LessonUi({
       const t = e?.results?.[0]?.[0]?.transcript || '';
       setSpokenText(t);
       setHasFreshTranscript(true);
-      console.log('[SR] transcript:', t);
     };
     recognitionRef.current = rec;
   }, []);
@@ -256,11 +255,6 @@ export default function LessonUi({
         setAudioURL(null);
       }
 
-      console.log('[REC] start', {
-        mimeType,
-        time: Date.now(),
-        attempt: attemptIdRef.current,
-      });
       recorder.start();
       try {
         recognitionRef.current?.start();
@@ -286,14 +280,8 @@ export default function LessonUi({
     if (!mediaRecorder) return;
     try {
       const mimeType = (mediaRecorder as any).mimeType || 'audio/unknown';
-      console.log('[REC] stop requested]', {
-        mimeType,
-        time: Date.now(),
-        attempt: attemptIdRef.current,
-      });
 
       const blob = await stopRecorderAndGetBlob(mediaRecorder, mimeType);
-      console.log('[REC] stop resolved', { size: blob.size, type: blob.type });
 
       if (!blob || blob.size < 200) {
         console.warn('[REC] tiny/empty blob - ignoring', { size: blob?.size });
@@ -390,16 +378,6 @@ export default function LessonUi({
 
       const normalizedBlob = new Blob([audioBlob], { type: cleanMime });
 
-      console.log('[UPLOAD] building formdata', {
-        attempt: attemptIdRef.current,
-        blobType: audioBlob.type,
-        cleanMime,
-        size: audioBlob.size,
-        ext,
-        hasTranscriptThisAttempt: hasFreshTranscript,
-        referenceText,
-      });
-
       const fd = new FormData();
       fd.append('audio', normalizedBlob, `recording.${ext}`);
       fd.append('targetPhrase', referenceText);
@@ -433,16 +411,6 @@ export default function LessonUi({
         accuracy: result.accuracyScore || 0,
         fluency: result.fluencyScore || 0,
         completeness: result.intonationScore || 0,
-      });
-
-      console.log('[FEEDBACK]', {
-        target: referenceText,
-        heard: result.transcript,
-        accuracyText: result.accuracyText,
-        fluencyText: result.fluencyText,
-        intonationText: result.intonationText,
-        overallText: result.overallText,
-        specificIssues: result.specificIssues,
       });
 
       setTextFeedback({
@@ -679,7 +647,7 @@ export default function LessonUi({
                   score >= passingScore ? 'bg-green-200' : 'bg-red-200'
                 }`}
               />
-              
+
               {/* Pass/fail section - centered container on lg */}
               <div className="w-full lg:w-1/2 lg:mx-auto">
                 <div className="flex flex-col items-start mb-4">
