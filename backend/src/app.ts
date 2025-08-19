@@ -13,7 +13,7 @@ import transcribeRouter from "./routes/transcribe.routes.js";
 import teacherRouter from "./routes/teacher.routes.js";
 import dailyQuizRouter from "./routes/dailyQuiz.routes.js";
 import ttsRouter from "./routes/tts.routes.js";
-import reportRouter from "../src/routes/report.routes.js";
+import reportRouter from "./routes/report.routes.js";
 
 const app = express();
 app.use(cors());
