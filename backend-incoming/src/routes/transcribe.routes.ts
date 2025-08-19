@@ -24,12 +24,10 @@ router.post("/transcribe", uploadDisk.single("audio"), async (req, res) => {
     res.json({ text: transcript, transcript });
   } catch (err: any) {
     console.error("Transcription error:", err);
-    res
-      .status(500)
-      .json({
-        error: "Transcription failed",
-        detail: err?.message ?? String(err),
-      });
+    res.status(500).json({
+      error: "Transcription failed",
+      detail: err?.message ?? String(err),
+    });
   }
 });
 

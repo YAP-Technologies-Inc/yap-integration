@@ -44,7 +44,7 @@ export async function handleSpanishTeacherAccessFromPage({
     const deadline = Math.floor(Date.now() / 1000) + 3600;
 
     const domain = {
-      name: 'YapTokenTestV2',
+      name: 'YapTokenTestV4',
       version: '1',
       chainId: 1328,
       verifyingContract: TOKEN_ADDRESS,

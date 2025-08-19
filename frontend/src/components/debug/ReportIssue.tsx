@@ -80,10 +80,7 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
         {/* Header - 50% width on lg */}
         <div className="w-full lg:w-1/2 lg:mx-auto">
           <div className="flex items-center mt-2">
-            <button
-              onClick={onClose}
-              className="text-secondary hover:cursor-pointer"
-            >
+            <button onClick={onClose} className="text-secondary hover:cursor-pointer">
               <TablerX className="w-6 h-6" />
             </button>
             <h3 className="flex-1 text-center text-secondary font-bold text-xl">Report an Issue</h3>
@@ -94,11 +91,7 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
         {/* Content area */}
         <div className="flex flex-1 items-start justify-center mt-8">
           <div className="w-full lg:w-1/2 lg:mx-auto">
-            <form
-              id="report-issue-form"
-              className="flex flex-col gap-4"
-              onSubmit={handleSubmit}
-            >
+            <form id="report-issue-form" className="flex flex-col gap-4" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Reason</label>
                 <input

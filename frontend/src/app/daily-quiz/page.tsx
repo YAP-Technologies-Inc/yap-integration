@@ -152,7 +152,6 @@ export default function DailyQuizUi() {
       const t = e?.results?.[0]?.[0]?.transcript || '';
       setSpokenText(t);
       setHasFreshTranscript(true);
-      console.log('[SR] transcript:', t);
     };
     recognitionRef.current = rec;
   }, []);
@@ -242,12 +241,6 @@ export default function DailyQuizUi() {
         URL.revokeObjectURL(audioURL);
         setAudioURL(null);
       }
-
-      console.log('[REC] start', {
-        mimeType,
-        time: Date.now(),
-        attempt: attemptIdRef.current,
-      });
       recorder.start();
       try {
         recognitionRef.current?.start();
@@ -301,14 +294,8 @@ export default function DailyQuizUi() {
     if (!mediaRecorder) return;
     try {
       const mimeType = (mediaRecorder as any).mimeType || 'audio/unknown';
-      console.log('[REC] stop requested', {
-        mimeType,
-        time: Date.now(),
-        attempt: attemptIdRef.current,
-      });
 
       const blob = await stopRecorderAndGetBlob(mediaRecorder, mimeType);
-      console.log('[REC] stop resolved', { size: blob.size, type: blob.type });
 
       if (!blob || blob.size < 200) {
         console.warn('[REC] tiny/empty blob - ignoring', { size: blob?.size });
@@ -378,15 +365,6 @@ export default function DailyQuizUi() {
     setIsLoading(true);
     setIsSubmitting(true);
 
-    console.log('[UPLOAD] begin', {
-      uploadId,
-      filename,
-      size: audioBlob.size,
-      type: audioBlob.type,
-      referenceText,
-      stepIndex,
-    });
-
     const fd = new FormData();
     fd.append('audio', audioBlob, filename);
     // keep the daily-quiz API contract: "referenceText"
@@ -403,13 +381,6 @@ export default function DailyQuizUi() {
       });
 
       const result = await res.json().catch(() => ({}) as any);
-      console.log('[UPLOAD] response', {
-        uploadId,
-        status: res.status,
-        ok: res.ok,
-        result,
-      });
-
       if (!res.ok) throw new Error(result?.detail || `Server error: ${res.status}`);
 
       const overall = Math.round(result.overallScore ?? 0);
@@ -698,7 +669,7 @@ export default function DailyQuizUi() {
                   score >= PASSING_CARD_SCORE ? 'bg-green-200' : 'bg-red-200'
                 }`}
               />
-              
+
               {/* Centered details on lg */}
               <div className="w-full lg:w-1/2 lg:mx-auto">
                 <div className="flex flex-col items-start mb-4">
@@ -776,7 +747,7 @@ export default function DailyQuizUi() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Actions — 50% width on lg */}
               <div className="flex justify-between gap-4 pt-2 w-full lg:w-1/2 lg:mx-auto">
                 <button

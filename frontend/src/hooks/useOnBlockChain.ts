@@ -3,7 +3,7 @@ import { JsonRpcProvider, Contract, formatUnits } from 'ethers';
 import useSWR from 'swr';
 
 const SEI_RPC = 'https://evm-rpc-testnet.sei-apis.com';
-const YAP_CONTRACT = '0xbd266F0992d62714EC4c4cc2608E6a755F4FAE15';
+const YAP_CONTRACT = '0xaD8503294dE1b31490DDd0c9D0a8B62AB4Ab3538';
 const CW20_ABI = [
   'function balanceOf(address) view returns (uint256)',
   'function decimals() view returns (uint8)',

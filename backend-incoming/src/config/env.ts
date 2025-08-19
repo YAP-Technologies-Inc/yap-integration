@@ -18,4 +18,8 @@ export const {
   EMAIL_PASS,
   EMAIL_TO,
   SEI_RPC,
+  HOT_PRIVATE_KEY,
+  RELAYER_PRIVATE_KEY,
+  RELAYER_ADDRESS,
+  HOT_ADDRESS,
 } = process.env;
