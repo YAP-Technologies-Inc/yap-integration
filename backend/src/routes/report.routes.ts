@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { transporter } from "../config/mailer.js";
-import { EMAIL_USER, EMAIL_TO } from "../config/env.js";
+import { EMAIL_USER, EMAIL_TO, EMAIL_FROM } from "../config/env.js";
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.post("/report-form", async (req, res) => {
 
   try {
     await transporter.sendMail({
-      from: `"YAP Reporter" <${EMAIL_USER}>`,
+      from: `"YAP Reporter" <${EMAIL_FROM}>`, 
       to: EMAIL_TO,
       subject: `Issue Reported: ${reason}`,
       text: explain,

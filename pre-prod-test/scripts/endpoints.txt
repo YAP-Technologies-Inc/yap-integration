@@ -1,0 +1,22 @@
+# health
+GET       /                         200,404
+GET       /                             200,404
+
+# non-mutating checks (or allow 404 when user missing)
+GET       /api/daily-quiz-status/testuser     200,404
+GET       /api/user-lessons/testuser          200,404
+GET       /api/user-stats/testuser            200,404
+GET       /api/teacher-session/testuser       200,404
+
+# write endpoints: preflight only (no side effects)
+OPTIONS   /api/auth/secure-signup             200,204,404
+OPTIONS   /api/auth/login                     200,204,404
+OPTIONS   /api/complete-daily-quiz            200,204,404
+OPTIONS   /api/complete-lesson                200,204,404
+OPTIONS   /api/user-stats/testuser/streak     200,204,404
+OPTIONS   /api/request-spanish-teacher        200,204,404
+OPTIONS   /api/redeem-yap                     200,204,404
+OPTIONS   /api/transcribe                     200,204,404
+OPTIONS   /api/elevenlabs-tts                 200,204,404
+OPTIONS   /api/pronunciation                  200,204,404
+OPTIONS   /api/report-form                    200,204,404

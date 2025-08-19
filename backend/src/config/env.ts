@@ -22,4 +22,7 @@ export const {
   RELAYER_PRIVATE_KEY,
   RELAYER_ADDRESS,
   HOT_ADDRESS,
+  EMAIL_FROM,
+  EMAIL_HOST,
+  EMAIL_PORT,
 } = process.env;

@@ -1,0 +1,76 @@
+services:
+  db:
+    image: postgres:15
+    container_name: preprod-db
+    environment:
+      POSTGRES_DB: yapdb
+      POSTGRES_USER: yapuser
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "55432:5432"
+    volumes:
+      - dbdata-preprod:/var/lib/postgresql/data
+
+  backend:
+    build: ../backend
+    container_name: preprod-backend
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+
+      # Postgres (service name is 'db' inside compose network)
+      PGHOST: db
+      PGUSER: yapuser
+      PGPASSWORD: 1234
+      PGDATABASE: yapdb
+      PGPORT: 5432
+
+      # Chain (dummy/no-op; we never call tx endpoints in smoke)
+      # IMPORTANT: match your code’s expectation re: 0x prefix.
+      # If your code *adds* "0x", keep these WITHOUT "0x" (as below).
+      PRIVATE_KEY: "0000000000000000000000000000000000000000000000000000000000000001"
+      HOT_PRIVATE_KEY: "0000000000000000000000000000000000000000000000000000000000000002"
+      RELAYER_PRIVATE_KEY: "0000000000000000000000000000000000000000000000000000000000000003"
+      RELAYER_ADDRESS: "0x0000000000000000000000000000000000000003"
+      HOT_ADDRESS: "0x0000000000000000000000000000000000000002"
+      TOKEN_ADDRESS: "0x0000000000000000000000000000000000000000"
+      TREASURY_ADDRESS: "0x0000000000000000000000000000000000000004"
+      SEI_RPC: "http://127.0.0.1:8545"   # dummy RPC that won’t be used during smoke
+
+      # AI / TTS (dummy; smoke doesn’t invoke these)
+      OPENAI_API_KEY: "sk-local-dummy"
+      GOOGLE_API_KEY: "local-dummy"
+      ELEVENLABS_API_KEY: "local-dummy"
+      ELEVENLABS_AGENT_ID: "agent_dummy"
+      ELEVENLABS_VOICE_ID: "voice_dummy"
+      LYNDSAY_VOICE_ID: "voice_dummy"
+      MODEL_ID: "gemini-2.0-flash"
+      TRANSCRIBE_MODEL_ID: "gemini-1.5-flash"
+      GEM_MODELS: "gemini-1.5-flash,gemini-1.5-pro"
+
+      # Email (dummy so nothing sends)
+      EMAIL_HOST: "smtp.invalid"
+      EMAIL_PORT: "587"
+      EMAIL_FROM: "noreply@example.test"
+      EMAIL_USER: "noreply@example.test"
+      EMAIL_PASS: "dummy"
+      EMAIL_TO:   "ops@example.test"
+
+    ports:
+      - "4001:4000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ../frontend
+    container_name: preprod-frontend
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://localhost:4001
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+
+volumes:
+  dbdata-preprod:
