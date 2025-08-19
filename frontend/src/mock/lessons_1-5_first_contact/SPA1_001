@@ -1,0 +1,165 @@
+{
+  "lesson_id": "SPA1_001",
+  "title": "Self-Introductions and Basic Courtesies",
+  "level": "A1",
+  "theme": "First Contact",
+  "focus": "Greet, introduce yourself, ask for someone’s name, thank, and say goodbye",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Say hello and goodbye in simple phrases",
+    "Say your name with a fixed formula",
+    "Ask for someone’s name",
+    "Use a basic courtesy phrase appropriately"
+  ],
+
+  "vocabulary": {
+    "items": [
+      { "term": "hola", "translation": "hello", "part_of_speech": "interjection", "example": "Hola, me llamo Ana.", "example_translation": "Hello, my name is Ana." },
+      { "term": "adiós", "translation": "goodbye", "part_of_speech": "interjection", "example": "Adiós, hasta luego.", "example_translation": "Goodbye, see you later." },
+      { "term": "por favor", "translation": "please", "part_of_speech": "phrase", "example": "¿Me ayudas, por favor?", "example_translation": "Can you help me, please?" },
+      { "term": "gracias", "translation": "thank you", "part_of_speech": "interjection", "example": "Gracias.", "example_translation": "Thank you." },
+      { "term": "de nada", "translation": "you are welcome", "part_of_speech": "phrase", "example": "— Gracias. — De nada.", "example_translation": "— Thanks. — You are welcome." },
+      { "term": "mucho gusto", "translation": "nice to meet you", "part_of_speech": "phrase", "example": "Mucho gusto.", "example_translation": "Nice to meet you." },
+      { "term": "encantado", "translation": "pleased to meet you", "part_of_speech": "adjective", "gender": "masculine", "example": "Encantado.", "example_translation": "Pleased to meet you." },
+      { "term": "encantada", "translation": "pleased to meet you", "part_of_speech": "adjective", "gender": "feminine", "example": "Encantada.", "example_translation": "Pleased to meet you." },
+      { "term": "me llamo …", "translation": "my name is …", "part_of_speech": "phrase", "example": "Me llamo Ana.", "example_translation": "My name is Ana." },
+      { "term": "¿Cómo te llamas?", "translation": "what is your name?", "part_of_speech": "question", "example": "¿Cómo te llamas?", "example_translation": "What is your name?" },
+      { "term": "soy …", "translation": "I am …", "part_of_speech": "verb phrase", "example": "Soy Carlos.", "example_translation": "I am Carlos." }
+    ],
+    "practice": [
+      {
+        "id": 1,
+        "type": "match",
+        "prompt": "Match the Spanish word with its meaning.",
+        "pairs": [
+          { "spanish": "hola", "english": "hello" },
+          { "spanish": "gracias", "english": "thank you" },
+          { "spanish": "adiós", "english": "goodbye" }
+        ]
+      }
+    ]
+  },
+
+  "speaking": {
+    "models": [
+      { "spanish": "Hola, me llamo ____. ¿Cómo te llamas?", "translation": "Hi, my name is ____. What is your name?", "audio_url": null },
+      { "spanish": "Mucho gusto. Encantado.", "translation": "Nice to meet you. Pleased to meet you.", "audio_url": null },
+      { "spanish": "Mucho gusto. Encantada.", "translation": "Nice to meet you. Pleased to meet you.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "type": "listen_and_repeat",
+        "prompt": "Repeat each phrase.",
+        "items": ["Hola", "Me llamo ____.", "¿Cómo te llamas?", "Mucho gusto.", "Encantado.", "Encantada.", "Adiós"]
+      },
+      {
+        "id": 2,
+        "type": "micro_dialogue_build",
+        "prompt": "Arrange the cards to form a natural first-meeting exchange.",
+        "cards": ["Hola", "Me llamo ___.", "¿Cómo te llamas?", "Mucho gusto", "Encantado.", "Encantada.", "Adiós"],
+        "solution": ["Hola", "Me llamo ___.", "¿Cómo te llamas?", "Mucho gusto", "Encantado.", "Adiós"]
+      },
+      {
+        "id": 3,
+        "type": "call_and_response",
+        "pairs": [
+          { "cue": "Hola, me llamo Luis.", "expected": ["Mucho gusto.", "Encantado.", "Encantada."] },
+          { "cue": "Soy Ana. ¿Cómo te llamas?", "expected": ["Me llamo ____.", "Soy ____."] },
+          { "cue": "Gracias.", "expected": ["De nada."] }
+        ]
+      },
+      {
+        "id": 4,
+        "type": "controlled_production",
+        "prompt": "Record a 2-turn introduction: greet, say your name, ask theirs.",
+        "expected_example": "Hola, me llamo ____. ¿Cómo te llamas?",
+        "acceptable_variants": ["Hola, soy ____. ¿Cómo te llamas?"],
+        "rubric": {
+          "accuracy": "Uses 'me llamo' or 'soy' correctly; includes ¿…? in the question.",
+          "range": "2 to 3 fixed phrases.",
+          "pronunciation": "Understandable stress and question intonation."
+        }
+      }
+    ]
+  },
+
+  "grammar": {
+    "topics": [
+      {
+        "id": "PRON_SUBJ_01",
+        "name": "Subject pronouns",
+        "scope": ["yo", "tú"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Yo soy Ana.", "translation": "I am Ana." },
+          { "spanish": "Tú eres Juan.", "translation": "You are Juan." }
+        ],
+        "notes": "Learners only need to recognize 'yo' and 'tú' if they appear. They are not required to produce them yet."
+      },
+      {
+        "id": "VERB_SER_01",
+        "name": "Ser, present",
+        "forms": [
+          { "person": "yo", "form": "soy", "recognition_only": false },
+          { "person": "tú", "form": "eres", "recognition_only": false }
+        ],
+        "examples": [
+          { "spanish": "Soy Carlos.", "translation": "I am Carlos." },
+          { "spanish": "Tú eres Marta.", "translation": "You are Marta." }
+        ]
+      },
+      {
+        "id": "VERB_LLAMARSE_01",
+        "name": "Llamarse, fixed introductions",
+        "forms": [
+          { "person": "yo", "form": "me llamo" },
+          { "person": "tú", "form": "te llamas" }
+        ],
+        "examples": [
+          { "spanish": "Me llamo Ana.", "translation": "My name is Ana." },
+          { "spanish": "¿Cómo te llamas?", "translation": "What is your name?" }
+        ],
+        "notes": "Accept both 'Me llamo Ana' and 'Soy Ana' in production."
+      },
+      {
+        "id": "ORTHO_01",
+        "name": "Orthography basics",
+        "scope": ["inverted question marks", "accent on 'Cómo'"],
+        "recognition_only": false,
+        "examples": [
+          { "spanish": "¿Cómo te llamas?", "translation": "What is your name?" }
+        ]
+      }
+    ],
+    "exercises": [
+      {
+        "id": 1,
+        "type": "orthography_check",
+        "prompt": "Choose the correctly written question.",
+        "options": ["Como te llamas?", "¿Cómo te llamas?", "¿Como te llamas?"],
+        "correct": "¿Cómo te llamas?",
+        "feedback": {
+          "Como te llamas?": "Needs inverted question mark and accent on 'Cómo'.",
+          "¿Como te llamas?": "Add the accent on 'Cómo'.",
+          "¿Cómo te llamas?": "Correct."
+        }
+      }
+    ]
+  },
+
+  "cultural_note": "In first meetings, 'Mucho gusto' and 'Encantado' or 'Encantada' are common closings. 'Hola' works any time of day.",
+  "assessment": {
+    "auto_criteria": [
+      "Produces one complete self-introduction with a greeting",
+      "Asks '¿Cómo te llamas?' correctly",
+      "Uses one courtesy phrase appropriately"
+    ]
+  },
+  "content_policy": {
+    "gendered_forms_split": true
+  },
+  "tags": ["A1", "First Contact", "introductions", "speaking-first"]
+}

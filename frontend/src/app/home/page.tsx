@@ -20,6 +20,8 @@ import isEqual from 'lodash.isequal';
 import TestingNoticeModal from '@/components/TestingNoticeModal';
 import { useSnackbar } from '@/components/ui/SnackBar';
 import { getTodayStatus } from '@/utils/dailyQuizStorage';
+import LessonModal from '@/components/lesson/LessonModal';
+import { set } from 'zod';
 
 export default function HomePage() {
   useInitializeUser();
@@ -48,6 +50,7 @@ export default function HomePage() {
   const { isLoading: isBalanceLoading } = useOnChainBalance(evmAddress);
 
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
+  const [lessonModalOpen, setLessonModalOpen] = useState(false);
 
   // Compute lesson availability based on completed lessons
   useEffect(() => {
@@ -165,8 +168,13 @@ export default function HomePage() {
         <TestingNoticeModal />
         <div className="flex items-center justify-between mt-2">
           <h3 className="text-secondary text-xl font-semibold">Lessons</h3>
-          {/* TODO: Implement this */}
-          {/* <h6 className="text-secondary text-md font-extralight ">See all</h6> */}
+
+          <h6
+            onClick={() => setLessonModalOpen(true)}
+            className="text-secondary text-md font-extralight hover:cursor-pointer"
+          >
+            See all
+          </h6>
         </div>
         <div className="overflow-x-auto pb-2">
           {' '}
@@ -207,6 +215,18 @@ export default function HomePage() {
       </div>
 
       <BottomNavBar />
+
+      {/* Add the LessonModal here */}
+      {lessonModalOpen && (
+        <LessonModal
+          lessons={lessons}
+          onClose={() => setLessonModalOpen(false)}
+          onLessonClick={(lessonId) => {
+            setLessonModalOpen(false);
+            router.push(`/lesson/${lessonId}`);
+          }}
+        />
+      )}
     </div>
   );
 }

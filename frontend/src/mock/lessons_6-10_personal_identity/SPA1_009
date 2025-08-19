@@ -1,0 +1,98 @@
+{
+  "lesson_id": "SPA1_009",
+  "level": "A1",
+  "title": "Telling Time and Simple Schedules",
+  "duration_minutes": 8,
+  "topic_tags": ["time", "schedules", "daily_life"],
+  "learning_objectives": [
+    "Ask and tell the time",
+    "Use a la(s) to say at + time",
+    "Use parts of the day (de la mañana/tarde/noche)"
+  ],
+  "key_phrases": [
+    {"target": "¿Qué hora es?", "translation": "What time is it?"},
+    {"target": "Es la una.", "translation": "It is one o’clock."},
+    {"target": "Son las dos y media.", "translation": "It is 2:30."},
+    {"target": "A las ocho tengo clase.", "translation": "At eight I have class."}
+  ],
+  "vocabulary": {
+    "items": [
+      {"term": "hora", "translation": "hour; time (of day)", "part_of_speech": "noun", "gender": "f", "example": "¿Qué hora es?"},
+      {"term": "minuto", "translation": "minute", "part_of_speech": "noun", "gender": "m"},
+      {"term": "y cuarto", "translation": "quarter past", "part_of_speech": "phrase"},
+      {"term": "y media", "translation": "half past", "part_of_speech": "phrase"},
+      {"term": "menos cuarto", "translation": "quarter to", "part_of_speech": "phrase"},
+      {"term": "de la mañana", "translation": "in the morning", "part_of_speech": "phrase"},
+      {"term": "de la tarde", "translation": "in the afternoon", "part_of_speech": "phrase"},
+      {"term": "de la noche", "translation": "at night", "part_of_speech": "phrase"},
+      {"term": "a la(s)", "translation": "at (time)", "part_of_speech": "prep_phrase"},
+      {"term": "empezar", "translation": "to start", "part_of_speech": "verb", "example": "La clase empieza a las nueve."},
+      {"term": "terminar", "translation": "to finish", "part_of_speech": "verb", "example": "El trabajo termina a las cinco."}
+    ],
+    "exercises": [
+      {"type": "read_time", "prompt": "Write the time you see on the clock.", "items": [
+        {"clock": "01:00", "answer": "Es la una."},
+        {"clock": "02:30", "answer": "Son las dos y media."},
+        {"clock": "07:15", "answer": "Son las siete y cuarto."}
+      ]},
+      {"type": "select", "prompt": "Choose the correct preposition.", "items": [
+        {"question": "___ las tres tengo reunión.", "options": ["A", "En"], "answer": "A"},
+        {"question": "La tienda abre ___ las nueve.", "options": ["a", "en"], "answer": "a"}
+      ]},
+      {"type": "fill_in_the_blank", "prompt": "Complete with y media / y cuarto / menos cuarto.", "items": [
+        {"text": "Son las diez ___", "answer": "y media"},
+        {"text": "Son las ocho ___", "answer": "y cuarto"}
+      ]},
+      {"type": "match", "prompt": "Match time phrase to meaning.", "pairs": [
+        {"left": "de la mañana", "right": "in the morning"},
+        {"left": "de la noche", "right": "at night"}
+      ]},
+      {"type": "sort", "prompt": "Order a mini-schedule by time (earliest to latest).", "items": [
+        {"jumbled": ["A las 9:00 desayuno", "A las 7:30 me ducho", "A las 8:00 salgo"] , "answer": ["A las 7:30 me ducho", "A las 8:00 salgo", "A las 9:00 desayuno"]}
+      ]}
+    ]
+  },
+  "grammar": {
+    "topics": ["Preguntar la hora", "Es la / Son las", "A la(s) + hora", "Y/menos cuarto, y media"],
+    "explanations": [
+      "Para la 1: Es la una. Para otras horas: Son las dos, tres...",
+      "Para decir a qué hora: A la una / A las dos.",
+      "Partes del día: de la mañana/tarde/noche."
+    ],
+    "examples": [
+      {"target": "¿Qué hora es? Son las cuatro menos cuarto.", "translation": "What time is it? It is quarter to four."},
+      {"target": "La clase es a las nueve.", "translation": "Class is at nine."}
+    ],
+    "exercises": [
+      {"type": "transform", "prompt": "Change from the time now to at + time.", "items": [
+        {"input": "Son las tres y media.", "answer": "A las tres y media."},
+        {"input": "Es la una y cuarto.", "answer": "A la una y cuarto."}
+      ]},
+      {"type": "fill_in_the_blank", "prompt": "Complete.", "items": [
+        {"text": "___ la una.", "answer": "Es"},
+        {"text": "___ las seis.", "answer": "Son"}
+      ]},
+      {"type": "select", "prompt": "Choose the correct part of day.", "items": [
+        {"question": "07:00", "options": ["de la mañana", "de la noche"], "answer": "de la mañana"},
+        {"question": "21:30", "options": ["de la tarde", "de la noche"], "answer": "de la noche"}
+      ]},
+      {"type": "error_correction", "prompt": "Fix the mistake.", "items": [
+        {"text": "Son la una.", "answer": "Es la una."},
+        {"text": "La reunión es en las dos.", "answer": "La reunión es a las dos."}
+      ]},
+      {"type": "short_answer", "prompt": "Answer with a full sentence.", "items": [
+        {"question": "¿A qué hora terminas?", "sample_answer": "Termino a las [hora]."},
+        {"question": "¿Qué hora es ahora?", "sample_answer": "Son las/Es la [hora]."}
+      ]}
+    ]
+  },
+  "speaking": {
+    "exercises": [
+      {"type": "listen_and_repeat", "content": "¿Qué hora es? Son las...", "variations": 3},
+      {"type": "prompted_response", "prompt": "Di la hora de tres relojes.", "expected_output_pattern": "Es la/Son las [hora]."},
+      {"type": "role_play", "scenario": "Organizar una cita", "roles": ["A: propone hora", "B: acepta o sugiere otra"]},
+      {"type": "guided_interview", "prompt": "Pregunta horarios de clase y trabajo.", "model": "¿A qué hora empieza/termina...?"},
+      {"type": "personal_statement", "prompt": "Describe tu mañana con 3 horas específicas.", "sentence_frames": ["A las...", "Luego a las...", "Finalmente a las..."]}
+    ]
+  }
+}

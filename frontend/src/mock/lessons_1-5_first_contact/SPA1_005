@@ -1,0 +1,140 @@
+{
+  "lesson_id": "SPA1_005",
+  "title": "Clarifying and Asking to Repeat",
+  "level": "A1",
+  "theme": "First Contact",
+  "focus": "Signal non-understanding and ask for slower or repeated speech",
+  "duration_minutes": 8,
+  "register": "tú",
+  "spiral_from": ["SPA1_001", "SPA1_002", "SPA1_003", "SPA1_004"],
+  "can_do": [
+    "Say you do not understand",
+    "Ask someone to repeat or speak more slowly",
+    "Confirm understanding with a short response"
+  ],
+
+  "vocabulary": {
+    "items": [
+      { "term": "no entiendo", "translation": "I do not understand", "part_of_speech": "phrase", "example": "Perdón, no entiendo.", "example_translation": "Excuse me, I do not understand." },
+      { "term": "no sé", "translation": "I do not know", "part_of_speech": "phrase", "example": "Lo siento, no sé.", "example_translation": "I am sorry, I do not know." },
+      { "term": "más despacio, por favor", "translation": "more slowly, please", "part_of_speech": "phrase", "example": "Más despacio, por favor.", "example_translation": "More slowly, please." },
+      { "term": "otra vez, por favor", "translation": "again, please", "part_of_speech": "phrase", "example": "¿Puedes decirlo otra vez, por favor?", "example_translation": "Can you say it again, please?" },
+      { "term": "claro", "translation": "of course", "part_of_speech": "adverb", "example": "— ¿Puedes repetir? — Claro.", "example_translation": "— Can you repeat? — Of course." },
+      { "term": "sí", "translation": "yes", "part_of_speech": "adverb", "example": "Sí, entiendo.", "example_translation": "Yes, I understand." },
+      { "term": "no", "translation": "no, not", "part_of_speech": "adverb", "example": "No, no entiendo.", "example_translation": "No, I do not understand." },
+      { "term": "¿Puedes repetir, por favor?", "translation": "can you repeat, please?", "part_of_speech": "phrase", "example": "¿Puedes repetir, por favor?", "example_translation": "Can you repeat, please?" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_5_1",
+        "type": "match",
+        "prompt": "Match each Spanish expression to its meaning.",
+        "pairs": [
+          { "spanish": "más despacio, por favor", "english": "more slowly, please" },
+          { "spanish": "otra vez, por favor", "english": "again, please" },
+          { "spanish": "no entiendo", "english": "I do not understand" }
+        ]
+      }
+    ]
+  },
+
+  "speaking": {
+    "models": [
+      { "spanish": "Perdón, no entiendo.", "translation": "Excuse me, I do not understand.", "audio_url": null },
+      { "spanish": "¿Puedes repetir, por favor?", "translation": "Can you repeat, please?", "audio_url": null },
+      { "spanish": "Más despacio, por favor.", "translation": "More slowly, please.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_5_1",
+        "type": "listen_and_choose",
+        "prompt": "Choose the best response to the cue.",
+        "audio_items": [
+          { "cue_text": "Habla muy rápido.", "options": ["Más despacio, por favor.", "Gracias."], "correct": "Más despacio, por favor." },
+          { "cue_text": "No oí la última palabra.", "options": ["¿Puedes repetir, por favor?", "Adiós."], "correct": "¿Puedes repetir, por favor?" }
+        ]
+      },
+      {
+        "id": "SPK_5_2",
+        "type": "call_and_response",
+        "prompt": "Respond to each line with a polite clarifying phrase.",
+        "pairs": [
+          { "cue": "No entiendo.", "expected": ["¿Puedes repetir, por favor?", "Más despacio, por favor."] },
+          { "cue": "¿Puedes repetir?", "expected": ["Claro.", "Sí."] }
+        ]
+      },
+      {
+        "id": "SPK_5_3",
+        "type": "controlled_production",
+        "prompt": "Record a short message asking someone to repeat slowly.",
+        "expected_example": "¿Puedes repetir más despacio, por favor?",
+        "acceptable_variants": ["Más despacio, por favor.", "¿Puedes repetir, por favor?"],
+        "rubric": {
+          "accuracy": "Includes por favor and correct question punctuation if a question is used.",
+          "range": "1 to 2 fixed phrases linked naturally.",
+          "pronunciation": "Understandable, clear vowels."
+        }
+      }
+    ]
+  },
+
+  "grammar": {
+    "topics": [
+      {
+        "id": "NEG_NO_01",
+        "name": "Negation with no",
+        "scope": ["no + verb"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "No entiendo.", "translation": "I do not understand." },
+          { "spanish": "No sé.", "translation": "I do not know." }
+        ]
+      },
+      {
+        "id": "ADVERBS_RATE_01",
+        "name": "Adverbs of manner in requests",
+        "scope": ["más despacio"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Más despacio, por favor.", "translation": "More slowly, please." }
+        ]
+      },
+      {
+        "id": "PODER_02",
+        "name": "Poder for requests",
+        "forms": [
+          { "person": "tú", "form": "puedes", "recognition_only": false }
+        ],
+        "examples": [
+          { "spanish": "¿Puedes repetir, por favor?", "translation": "Can you repeat, please?" }
+        ],
+        "notes": "Keep to the request frame only."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_5_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con no o sí.",
+        "items": [
+          { "text": "__ entiendo." },
+          { "text": "__, puedo repetir." }
+        ],
+        "solution": ["No", "Sí"]
+      }
+    ]
+  },
+
+  "cultural_note": "In many contexts, a short Claro or Sí is a natural way to agree to repeat or slow down.",
+  "assessment": {
+    "auto_criteria": [
+      "Signals non-understanding appropriately",
+      "Asks to repeat or to speak more slowly",
+      "Produces a short confirmation like Sí or Claro"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "First Contact", "clarification", "requests"]
+}
