@@ -1,0 +1,13 @@
+# never ship secrets or server config
+**/.env
+.env
+nginx/**            
+uploads/**        
+
+# speed up deploys
+**/node_modules/**
+**/.next/**
+**/dist/**
+**/.git/**
+**/.DS_Store**
+pre-prod-test/**

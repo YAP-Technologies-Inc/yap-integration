@@ -1,4 +1,4 @@
-import { Pool } from "../../node_modules/@types/pg/index.js";
+import { Pool } from "pg"; 
 import { PGUSER, PGHOST, PGDATABASE, PGPASSWORD, PGPORT } from "./env.js";
 
 export const db = new Pool({

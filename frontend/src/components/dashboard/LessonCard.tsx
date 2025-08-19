@@ -11,9 +11,10 @@ interface LessonCardProps {
   title: string;
   description: string;
   status: 'completed' | 'locked' | 'available';
+  onClick?: () => void; // Optional click handler
 }
 
-export default function LessonCard({ title, description, status, id }: LessonCardProps) {
+export default function LessonCard({ title, description, status, id, onClick }: LessonCardProps) {
   const router = useRouter();
 
   const baseClasses =

@@ -16,15 +16,27 @@ import ttsRouter from "./routes/tts.routes.js";
 import reportRouter from "./routes/report.routes.js";
 
 const app = express();
-app.use(cors());
+
+/**
+ * CORS — open (no cookies)
+ * Sends: Access-Control-Allow-Origin: *
+ * Do NOT add any CORS headers in nginx.
+ */
+//app.use(cors());
+
+// parsers
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// health for API host
+app.get("/api/health", (_req, res) => res.type("text").send("ok\n"));
 
 // static uploads
 const uploadsDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 app.use("/uploads", express.static("uploads"));
 
-// mount routes (no security middleware yet)
+// mount routes
 app.use("/api", tokenRouter);
 app.use("/api", lessonsRouter);
 app.use("/api", statsRouter);
