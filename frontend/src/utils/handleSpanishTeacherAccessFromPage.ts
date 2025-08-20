@@ -81,7 +81,7 @@ export async function handleSpanishTeacherAccessFromPage({
       manual: true,
     });
 
-    const res = await fetch(`${API_URL}/api/request-spanish-teacher`, {
+    const res = await fetch(`${API_URL}/request-spanish-teacher`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

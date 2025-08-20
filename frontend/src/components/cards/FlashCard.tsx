@@ -29,7 +29,7 @@ const Flashcard: FC<FlashcardProps> = ({ es, en, example, stepIndex, total, scor
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
       const voiceId = process.env.NEXT_PUBLIC_ELEVENLABS_VOICE_ID;
 
-      const res = await fetch(`${API_URL}/api/elevenlabs-tts`, {
+      const res = await fetch(`${API_URL}/elevenlabs-tts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, voiceId }),

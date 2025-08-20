@@ -62,7 +62,7 @@ export default function DailyStreak() {
 
     // sync your new total and highest streak up to the server
     if (userId) {
-      fetch(`${API_URL}/api/user-stats/${userId}/streak`, {
+      fetch(`${API_URL}/user-stats/${userId}/streak`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

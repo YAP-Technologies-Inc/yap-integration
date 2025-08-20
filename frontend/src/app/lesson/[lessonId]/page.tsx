@@ -1,116 +1,136 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import LessonUi from '@/components/lesson/LessonUi';
 import { useUserContext } from '@/context/UserContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { useCompletedLessons } from '@/hooks/useCompletedLessons';
 import allLessons from '@/mock/allLessons';
 import { TablerChevronLeft } from '@/icons';
 
+// ---- helpers ----
+const lessonNum = (id: string) =>
+  parseInt((id?.split('_')[1] || '0').replace(/^0+/, '') || '0', 10);
+
+const orderedIds = Object.keys(allLessons).sort((a, b) => lessonNum(a) - lessonNum(b));
+
 export default function LessonPage() {
-  const { lessonId } = useParams();
+  const { lessonId } = useParams<{ lessonId: string }>();
   const router = useRouter();
   const { userId } = useUserContext();
 
-  // 1) Find the lesson
-  const lessonData = allLessons[lessonId as string];
+  // ALWAYS call hooks (no early returns)
+  const [started, setStarted] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [redirecting, setRedirecting] = useState(false);
+
+  const lessonData = useMemo(() => allLessons[lessonId], [lessonId]);
+
+  const { name, isLoading: profileLoading } = useUserProfile(userId);
+  const { completedLessons, isLoading: completedLoading } = useCompletedLessons(userId ?? null);
+
+  // Build sets + gating utils
+  const completedSet = useMemo(() => new Set<string>(completedLessons ?? []), [completedLessons]);
+
+  const isUnlocked = (id: string) => {
+    const prereqs: string[] = allLessons[id]?.prerequisite_lessons || [];
+    return prereqs.every((p) => completedSet.has(p));
+  };
+
+  const nextAllowedLessonId = useMemo(() => {
+    // first unlocked NOT completed
+    for (const id of orderedIds) {
+      if (isUnlocked(id) && !completedSet.has(id)) return id;
+    }
+    // otherwise last unlocked/completed
+    for (let i = orderedIds.length - 1; i >= 0; i--) {
+      const id = orderedIds[i];
+      if (isUnlocked(id) || completedSet.has(id)) return id;
+    }
+    // absolute fallback
+    return orderedIds[0];
+  }, [completedSet, isUnlocked]);
+
+  // Redirect logic (auth → not found → locked)
+  useEffect(() => {
+    if (!userId) {
+      setRedirecting(true);
+      router.replace('/home');
+      return;
+    }
+    if (profileLoading || completedLoading) return;
+
+    // If requested lesson doesn't exist, send to next allowed
+    if (!lessonData) {
+      setRedirecting(true);
+      router.replace(`/lesson/${nextAllowedLessonId}`);
+      return;
+    }
+
+    // If requested lesson is locked, send to next allowed
+    if (!isUnlocked(lessonId)) {
+      if (nextAllowedLessonId && nextAllowedLessonId !== lessonId) {
+        setRedirecting(true);
+        router.replace(`/lesson/${nextAllowedLessonId}`);
+      }
+    }
+  }, [
+    userId,
+    profileLoading,
+    completedLoading,
+    lessonData,
+    lessonId,
+    nextAllowedLessonId,
+    router,
+    isUnlocked
+  ]);
+
+  // Lightweight transitional states (prevents hook-order issues)
+  if (!userId || profileLoading || completedLoading || redirecting) {
+    return <p className="p-6 text-center">Loading…</p>;
+  }
+
+  // Safety: if somehow no lesson and no redirect yet
   if (!lessonData) {
     return (
       <div className="p-6 text-center">
         <h1 className="text-xl font-semibold text-red-600">Lesson not found</h1>
-        <p className="mt-2 text-sm text-secondary">{lessonId}</p>
+        <p className="mt-2 text-sm text-secondary">{String(lessonId)}</p>
+        <button
+          onClick={() => router.push(`/lessons/${nextAllowedLessonId}`)}
+          className="mt-4 px-4 py-2 rounded bg-secondary text-white"
+        >
+          Go to your next lesson
+        </button>
       </div>
     );
   }
 
-  const [started, setStarted] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
+  // Build steps (safe now)
+  type StepVocab = { variant: 'vocab'; front: string; back: string; example?: string };
+  const allSteps: StepVocab[] =
+    lessonData?.vocabulary_items?.map((item: any) => ({
+      variant: 'vocab',
+      front: item.es,
+      back: item.en,
+      example: item.example,
+    })) ?? [];
 
-  // 2) Load the user
-  const { name, isLoading: profileLoading } = useUserProfile(userId);
-
-  // 3a) Vocabulary
-  type StepVocab = {
-    variant: 'vocab';
-    front: string;
-    back: string;
-    example?: string;
-  };
-  const vocabSteps: StepVocab[] = lessonData.vocabulary_items.map((item) => ({
-    variant: 'vocab',
-    front: item.es,
-    back: item.en,
-    example: item.example,
-  }));
-
-  // 3b) Grammar (commented for now)
-  // type StepGrammar = { variant: 'grammar'; rule: string; examples: string[] };
-  // const grammarSteps: StepGrammar[] = lessonData.grammar_explanations.map(g => ({
-  //   variant: 'grammar',
-  //   rule: g.rule,
-  //   examples: g.examples,
-  // }));
-
-  // 3c) Comprehension (commented for now)
-  // type StepComp = {
-  //   variant: 'comprehension';
-  //   text: string;
-  //   audioUrl?: boolean;
-  //   questions: { question: string; answer: string }[];
-  // };
-  // const compSteps: StepComp[] = (lessonData.comprehension_tasks || []).map(c => ({
-  //   variant: 'comprehension',
-  //   text: c.text,
-  //   questions: c.questions,
-  // }));
-
-  // 3d) Sentence tasks (commented for now)
-  // type StepSentence = { variant: 'sentence'; question: string };
-  // const sentenceSteps: StepSentence[] = (lessonData.speaking_tasks || []).flatMap(task => {
-  //   switch (task.type) {
-  //     case 'listen_and_repeat':
-  //       return [{ variant: 'sentence', question: task.content }];
-  //     case 'role_play':
-  //       return task.prompts.map((p: string) => ({ variant: 'sentence', question: p }));
-  //     case 'q_and_a':
-  //       return task.questions.map((q: string) => ({ variant: 'sentence', question: q }));
-  //     case 'conversation_building':
-  //       return [{ variant: 'sentence', question: task.starter }];
-  //     case 'pronunciation_practice':
-  //       return task.words.map((w: string) => ({ variant: 'sentence', question: w }));
-  //     default:
-  //       return [];
-  //   }
-  // });
-
-  // 4) Combine
-  const allSteps = [
-    ...vocabSteps,
-    // ...grammarSteps,
-    // ...compSteps,
-    // ...sentenceSteps,
-  ];
-
-  // 5) Pre‑start screen
+  // Pre-start screen
   if (!started) {
-    if (profileLoading) return <p>Loading…</p>;
-
     return (
       <div className="min-h-[100dvh] w-full bg-background-primary flex flex-col items-center relative pb-2">
-        {/* Back button - 50% width on lg */}
         <div className="w-full lg:w-1/2 lg:mx-auto relative px-4">
           <button
             onClick={() => router.push('/home')}
             className="absolute left-4 top-2 text-2xl font-semibold text-secondary hover:cursor-pointer
-             lg:top-6 lg:text-4xl lg:left-0
-            "
+             lg:top-6 lg:text-4xl lg:left-0"
           >
             <TablerChevronLeft />
           </button>
         </div>
 
-        {/* Content container - 50% width on lg */}
         <div className="w-full lg:w-1/2 lg:mx-auto flex flex-col items-center justify-center pt-20 flex-grow px-4">
           <img src="/assets/yappy.png" alt="Yappy Logo" className="h-40 w-auto" />
           <h2 className="text-lg font-light mt-1 text-secondary text-center">
@@ -126,8 +146,6 @@ export default function LessonPage() {
         </div>
 
         <div className="flex-grow" />
-
-        {/* Button container - 50% width on lg */}
         <div className="flex flex-col items-center w-full lg:w-1/2 lg:mx-auto px-4">
           <button
             onClick={() => setStarted(true)}
@@ -140,7 +158,7 @@ export default function LessonPage() {
     );
   }
 
-  // 6) Lesson in progress
+  // Lesson in progress
   return (
     <LessonUi
       lessonId={lessonData.lesson_id}

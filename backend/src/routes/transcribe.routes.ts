@@ -2,7 +2,9 @@ import { Router } from "express";
 import { uploadDisk } from "../middleware/upload.js";
 import { convertToMp3, transcribeWithWhisper } from "../services/audio.js";
 import fs from "node:fs/promises";
-
+import ffmpeg from "fluent-ffmpeg";
+import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
+ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 const router = Router();
 
 // POST /api/transcribe
@@ -23,7 +25,7 @@ router.post("/transcribe", uploadDisk.single("audio"), async (req, res) => {
 
     res.json({ text: transcript, transcript });
   } catch (err: any) {
-    console.error("Transcription error:", err);
+    console.error("Transcription error:", err?.stack || err);
     res.status(500).json({
       error: "Transcription failed",
       detail: err?.message ?? String(err),

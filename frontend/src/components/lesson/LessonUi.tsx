@@ -386,7 +386,7 @@ export default function LessonUi({
         fd.append('spokenText', spokenText.trim());
       }
 
-      const res = await fetch(`${API_URL}/api/pronunciation`, {
+      const res = await fetch(`${API_URL}/pronunciation`, {
         method: 'POST',
         body: fd,
       });
@@ -446,7 +446,7 @@ export default function LessonUi({
     });
 
     try {
-      const res = await fetch(`${API_URL}/api/complete-lesson`, {
+      const res = await fetch(`${API_URL}/complete-lesson`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, walletAddress, lessonId }),
@@ -509,7 +509,7 @@ export default function LessonUi({
                 onClick={() => setShowReport(true)}
                 className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
               >
-                <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+                <TablerFlagFilled className="w-5 h-5 inline-block mr-1 hover:cursor-pointer" />
               </button>
 
               {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
@@ -607,7 +607,7 @@ export default function LessonUi({
                         : 'hover:cursor-pointer'
                     }`}
                   >
-                    <TablerVolume className="w-8 h-8 text-secondary" />
+                    <TablerVolume className="w-8 h-8 text-secondary " />
                   </button>
                 )}
               </div>
@@ -628,12 +628,12 @@ export default function LessonUi({
                   }
                 }}
                 disabled={!audioURL || isLoading}
-                className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 ${
+                className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 transition-colors ${
                   audioURL
-                    ? 'bg-secondary text-white border-b-3 border-r-1 font-semibold border-black'
-                    : 'bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed'
+                  ? 'bg-secondary text-white border-b-3 border-r-1 font-semibold border-black hover:bg-secondary-dark hover:cursor-pointer'
+                  : 'bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed'
                 }`}
-              >
+                >
                 {isLoading ? 'Scoring…' : 'Submit'}
               </button>
             </div>
@@ -689,12 +689,23 @@ export default function LessonUi({
                           <button
                             type="button"
                             onClick={() => setShowScore(label)}
-                            className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
+                            className={`w-10 h-10 flex items-center hover:cursor-pointer justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
                             aria-label={`Show ${label} score details`}
                           >
                             {Math.round(value)}
                           </button>
-                          <span className="text-sm">{label}</span>
+                          <span
+                            className="text-sm cursor-pointer"
+                            onClick={() => setShowScore(label)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') setShowScore(label);
+                            }}
+                            aria-label={`Show ${label} score details`}
+                          >
+                            {label}
+                          </span>
                           {showScore === label && textFeedback && (
                             <ScoreModal
                               onClose={handleModalClose}

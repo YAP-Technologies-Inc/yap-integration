@@ -41,7 +41,7 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
     });
 
     try {
-      const res = await fetch(`${API_URL}/api/report-form`, {
+      const res = await fetch(`${API_URL}/report-form`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reason, explain }),
@@ -121,7 +121,7 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
             <button
               type="submit"
               form="report-issue-form"
-              className="bg-secondary text-white py-4 px-4 rounded-4xl border-b-3 border-r-1 border-black w-full font-semibold"
+              className="bg-secondary text-white py-4 px-4 rounded-4xl border-b-3 border-r-1 border-black w-full font-semibold hover:cursor-pointer"
               disabled={submitting}
             >
               {submitting ? 'Submitting...' : 'Submit'}

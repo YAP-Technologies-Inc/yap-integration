@@ -3,7 +3,7 @@ import { ELEVENLABS_API_KEY } from "../config/env.js";
 
 const router = Router();
 
-// POST /api/elevenlabs-tts
+// POST //elevenlabs-tts
 router.post("/elevenlabs-tts", async (req, res) => {
   try {
     const { text, voiceId = process.env.ELEVENLABS_VOICE_ID } = req.body || {};

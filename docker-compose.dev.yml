@@ -1,0 +1,70 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_PRIVY_APP_ID: ${NEXT_PUBLIC_PRIVY_APP_ID}
+        NEXT_PUBLIC_PRIVY_CLIENT_ID: ${NEXT_PUBLIC_PRIVY_CLIENT_ID}
+        NEXT_PUBLIC_API_URL: /api   # or your full API origin if you’re not proxying
+    environment:
+      - NODE_ENV=production
+  # no need to pass NEXT_PUBLIC_* here again for prod; they’re baked at build
+
+    expose:
+      - "3000"
+    networks: [yapnet]
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    command: npm run dev
+    environment:
+      - DB_URL=${DB_URL}
+    env_file:
+      - ./backend/.env
+    expose:
+      - "4000"
+    ports:
+      - "4000:4000"
+    networks: [yapnet]
+
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=yapuser
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=yapdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yapuser -d yapdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [yapnet]
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro   # <-- full file
+      - /etc/letsencrypt:/etc/letsencrypt:ro          # certs on the server
+    depends_on:
+      - frontend
+      - backend
+    networks: [yapnet]
+    restart: unless-stopped
+
+
+
+
+
+volumes:
+  pgdata:
+
+networks:
+  yapnet:

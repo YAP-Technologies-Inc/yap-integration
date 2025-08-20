@@ -1,4 +1,4 @@
-// app/api/legal/[slug]/route.ts  (or src/app/...)
+// app//legal/[slug]/route.ts  (or src/app/...)
 import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
 import { promises as fs } from 'fs';
