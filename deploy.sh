@@ -9,14 +9,14 @@ MODE="${1:-all}"  # all | frontend | backend
 case "$MODE" in
   frontend)
     ssh "$SERVER" "mkdir -p '$REMOTE_DIR/frontend'"
-    rsync -az --delete --filter=':- .deployignore' ./frontend/ "$SERVER:$REMOTE_DIR/frontend/"
+    rsync -az --filter=':- .deployignore' ./frontend/ "$SERVER:$REMOTE_DIR/frontend/"
     ;;
   backend)
     ssh "$SERVER" "mkdir -p '$REMOTE_DIR/backend'"
-    rsync -az --delete --filter=':- .deployignore' ./backend/ "$SERVER:$REMOTE_DIR/backend/"
+    rsync -az --filter=':- .deployignore' ./backend/ "$SERVER:$REMOTE_DIR/backend/"
     ;;
   all|*)
-    rsync -az --delete --filter=':- .deployignore' ./ "$SERVER:$REMOTE_DIR/"
+    rsync -az --filter=':- .deployignore' ./ "$SERVER:$REMOTE_DIR/"
     ;;
 esac
 

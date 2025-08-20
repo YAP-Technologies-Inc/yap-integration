@@ -12,12 +12,21 @@ export function attachAgentBridge(server: HttpServer) {
 
   server.on("upgrade", (req, socket, head) => {
     socket.on("error", (err) =>
-      console.error("[upgrade] socket error:", err.message),
+      console.error("[upgrade] socket error:", err.message)
     );
-    if (!req.url || !req.url.startsWith("/api/agent-ws"))
+    const pathname = (() => {
+      try {
+        return new URL(req.url || "/", `http://${req.headers.host}`).pathname;
+      } catch {
+        return "";
+      }
+    })();
+    if (pathname !== "/api/agent-ws") {
       return socket.destroy();
+    }
+
     wss.handleUpgrade(req, socket, head, (ws) =>
-      wss.emit("connection", ws, req),
+      wss.emit("connection", ws, req)
     );
   });
 
@@ -40,7 +49,7 @@ export function attachAgentBridge(server: HttpServer) {
       form.append(
         "file",
         new Blob([wavBuffer], { type: "audio/wav" }),
-        "turn.wav",
+        "turn.wav"
       );
       form.append("model", "whisper-1");
       const r = await fetch("https://api.openai.com/v1/audio/transcriptions", {
@@ -61,7 +70,7 @@ export function attachAgentBridge(server: HttpServer) {
 
     if (!ELEVENLABS_API_KEY || !ELEVENLABS_AGENT_ID) {
       client.send(
-        JSON.stringify({ type: "error", error: "Missing ELEVENLABS env vars" }),
+        JSON.stringify({ type: "error", error: "Missing ELEVENLABS env vars" })
       );
       client.close();
       return;
@@ -160,7 +169,7 @@ export function attachAgentBridge(server: HttpServer) {
       await connectEL();
     } catch {
       client.send(
-        JSON.stringify({ type: "error", error: "Failed to reach agent" }),
+        JSON.stringify({ type: "error", error: "Failed to reach agent" })
       );
     }
 
@@ -182,7 +191,7 @@ export function attachAgentBridge(server: HttpServer) {
             elWs.send(JSON.stringify({ type: "user_message", text: msg.text }));
           } else {
             client.send(
-              JSON.stringify({ type: "error", error: "Agent not ready" }),
+              JSON.stringify({ type: "error", error: "Agent not ready" })
             );
           }
         } else if (msg?.type === "close") {

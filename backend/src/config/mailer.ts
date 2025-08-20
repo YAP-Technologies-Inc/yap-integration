@@ -4,7 +4,7 @@ import Mailgun from "mailgun.js";
 
 const API_KEY = process.env.MAILGUN_API_KEY!;
 const DOMAIN = process.env.MAILGUN_DOMAIN!;
-const FROM = process.env.MAILGUN_FROM || "support@goyap.io";
+const FROM = process.env.MAILGUN_FROM!;
 
 const mailgun = new Mailgun(formData);
 const mg = mailgun.client({ username: "api", key: API_KEY });

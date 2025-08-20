@@ -5,7 +5,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export function useUserProfile(userId: string | null) {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { data, error, isLoading } = useSWR(
-    userId ? `${API_URL}/api/profile/${userId}` : null,
+    userId ? `${API_URL}/profile/${userId}` : null,
     fetcher,
   );
 

@@ -386,7 +386,7 @@ export default function LessonUi({
         fd.append('spokenText', spokenText.trim());
       }
 
-      const res = await fetch(`${API_URL}/api/pronunciation`, {
+      const res = await fetch(`${API_URL}/pronunciation`, {
         method: 'POST',
         body: fd,
       });
@@ -446,7 +446,7 @@ export default function LessonUi({
     });
 
     try {
-      const res = await fetch(`${API_URL}/api/complete-lesson`, {
+      const res = await fetch(`${API_URL}/complete-lesson`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, walletAddress, lessonId }),
@@ -607,7 +607,7 @@ export default function LessonUi({
                         : 'hover:cursor-pointer'
                     }`}
                   >
-                    <TablerVolume className="w-8 h-8 text-secondary" />
+                    <TablerVolume className="w-8 h-8 text-secondary " />
                   </button>
                 )}
               </div>
@@ -628,12 +628,12 @@ export default function LessonUi({
                   }
                 }}
                 disabled={!audioURL || isLoading}
-                className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 ${
+                className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 transition-colors ${
                   audioURL
-                    ? 'bg-secondary text-white border-b-3 border-r-1 font-semibold border-black'
-                    : 'bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed'
+                  ? 'bg-secondary text-white border-b-3 border-r-1 font-semibold border-black hover:bg-secondary-dark hover:cursor-pointer'
+                  : 'bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed'
                 }`}
-              >
+                >
                 {isLoading ? 'Scoring…' : 'Submit'}
               </button>
             </div>

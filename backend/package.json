@@ -8,6 +8,7 @@
     "start": "node -r dotenv/config dist/server.js"
   },
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@flowglad/server": "^0.10.17",
     "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.2",

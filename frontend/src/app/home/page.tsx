@@ -79,7 +79,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!userId) return;
-    fetch(`${API_URL}/api/daily-quiz-status/${userId}`)
+    fetch(`${API_URL}/daily-quiz-status/${userId}`)
       .then((res) => res.json())
       .then((data) => setDailyQuizCompleted(!!data.completed))
       .catch(() => {});

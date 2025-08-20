@@ -375,7 +375,7 @@ export default function DailyQuizUi() {
     }
 
     try {
-      const res = await fetch(`${API_URL}/api/pronunciation`, {
+      const res = await fetch(`${API_URL}/pronunciation`, {
         method: 'POST',
         body: fd,
       });
@@ -477,7 +477,7 @@ export default function DailyQuizUi() {
     });
 
     try {
-      const res = await fetch(`${API_URL}/api/complete-daily-quiz`, {
+      const res = await fetch(`${API_URL}/complete-daily-quiz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, walletAddress }),

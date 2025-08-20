@@ -82,7 +82,7 @@ export default function ProfilePage() {
     setMdError(null);
     setMdText('');
 
-    fetch(`/api/legal/${activePage}`, { cache: 'no-store' })
+    fetch(`/legal/${activePage}`, { cache: 'no-store' })
       .then(async (r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         const text = await r.text();

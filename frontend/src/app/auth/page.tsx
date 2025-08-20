@@ -68,7 +68,7 @@ export default function AuthPage() {
   useEffect(() => {
     if (authenticated && user?.id) {
       setHasProfile(null);
-      fetch(`${API_URL}/api/profile/${user.id}`)
+      fetch(`${API_URL}/profile/${user.id}`)
         .then((res) => {
           if (res.ok) {
             setHasProfile(true);

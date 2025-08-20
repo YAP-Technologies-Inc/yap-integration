@@ -41,7 +41,7 @@ export function ReportIssue({ onClose }: ReportIssueProps) {
     });
 
     try {
-      const res = await fetch(`${API_URL}/api/report-form`, {
+      const res = await fetch(`${API_URL}/report-form`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reason, explain }),

@@ -73,7 +73,7 @@ function useAgentSocket({
     )
       .replace(/^https:/i, 'wss:')
       .replace(/^http:/i, 'ws:');
-    const url = `${base}/api/agent-ws`;
+    const url = `${base}/agent-ws`;
 
     const ws = new WebSocket(url);
     ws.binaryType = 'arraybuffer';
@@ -287,7 +287,7 @@ export default function SpanishTeacherConversation() {
   // ---- server helpers
   const fetchSession = useCallback(
     async (uid: string) => {
-      const res = await fetch(`${API_URL}/api/teacher-session/${uid}`);
+      const res = await fetch(`${API_URL}/teacher-session/${uid}`);
       if (!res.ok) throw new Error(`Session check failed (${res.status})`);
       const data = await res.json();
       return data as {
@@ -534,7 +534,7 @@ export default function SpanishTeacherConversation() {
       <div className="fixed inset-x-0 top-0 h-16 bg-background-primary z-30 flex items-center justify-center px-4">
         <div className="absolute left-4 lg:left-1/4">
           <button onClick={() => router.replace('/home')}>
-            <TablerX className="w-6 h-6 text-gray-700" />
+            <TablerX className="w-6 h-6 text-gray-700 hover:cursor-pointer" />
           </button>
         </div>
         <div className="text-center">

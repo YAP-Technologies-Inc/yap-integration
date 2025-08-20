@@ -4,7 +4,7 @@ import { sendMail } from "../config/mailer.js";
 
 const router = Router();
 
-const REPORTS_TO = process.env.REPORTS_TO || "support@goyap.io";
+const REPORTS_TO = process.env.REPORTS_TO!;
 
 router.post("/report-form", async (req, res) => {
   const { reason, explain, replyTo } = req.body || {};
@@ -32,7 +32,7 @@ router.post("/report-form", async (req, res) => {
       subject,
       text: plain,
       html,
-      replyTo, // if you want replies to reach the reporter’s email
+      replyTo, 
     });
     res.json({ success: true });
   } catch (err: any) {

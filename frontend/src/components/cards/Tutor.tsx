@@ -212,7 +212,7 @@ export default function Tutor({
                 : 'webm';
         fd.append('audio', pendingAudioBlob, `recording.${ext}`);
 
-        const res = await fetch(`${API_URL}/api/transcribe`, { method: 'POST', body: fd });
+        const res = await fetch(`${API_URL}/transcribe`, { method: 'POST', body: fd });
         if (!res.ok) throw new Error(`Transcribe failed (${res.status})`);
         const data = await res.json();
         const transcript = (data?.text ?? data?.transcript ?? '').trim();
