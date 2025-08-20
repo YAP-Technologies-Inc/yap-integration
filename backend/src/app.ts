@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import path from "node:path";
 import fs from "node:fs";
 
@@ -14,20 +13,14 @@ import teacherRouter from "./routes/teacher.routes.js";
 import dailyQuizRouter from "./routes/dailyQuiz.routes.js";
 import ttsRouter from "./routes/tts.routes.js";
 import reportRouter from "./routes/report.routes.js";
+import cors from "cors";
 
 const app = express();
-
-/**
- * CORS — open (no cookies)
- * Sends: Access-Control-Allow-Origin: *
- * Do NOT add any CORS headers in nginx.
- */
-//app.use(cors());
 
 // parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors()); // enable CORS for all routes
 // health for API host
 app.get("/api/health", (_req, res) => res.type("text").send("ok\n"));
 

@@ -73,7 +73,10 @@ function Snack({
       <div className="w-6 h-6">{icon || defaultIcon}</div>
       <span className="flex-1 text-sm font-medium">{message}</span>
       {action && <div>{action}</div>}
-      <button onClick={() => onDismiss(id)} className="text-sm text-secondary hover:text-black">
+      <button
+        onClick={() => onDismiss(id)}
+        className="text-sm text-secondary hover:text-black hover:cursor-pointer"
+      >
         &#10005;
       </button>
     </div>

@@ -190,7 +190,7 @@ export default function ProfilePage() {
             }}
             className="p-1.5 rounded-full hover:bg-black/5 active:scale-95 transition"
           >
-            <TablerArrowUpRight className="w-5 h-5 text-secondary" />
+            <TablerArrowUpRight className="w-5 h-5 text-secondary hover:cursor-pointer" />
           </button>
         </div>
       </div>
@@ -211,7 +211,7 @@ export default function ProfilePage() {
               <button
                 key={key}
                 onClick={() => setActivePage(key)}
-                className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left"
+                className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left hover:cursor-pointer"
               >
                 <span className="text-[15px] font-medium text-secondary">{label}</span>
                 <TablerChevronRight className="w-4 h-4 text-gray-400" />
@@ -221,7 +221,7 @@ export default function ProfilePage() {
             {/* --- Add Report Issue item --- */}
             <button
               onClick={() => setShowReport(true)}
-              className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left"
+              className="relative w-full flex items-center justify-between px-4 py-4 active:scale-[0.995] transition text-left hover:cursor-pointer"
             >
               <span className="text-[15px] font-medium text-secondary">Report an Issue</span>
               <TablerChevronRight className="w-4 h-4 text-gray-400" />
@@ -247,7 +247,7 @@ export default function ProfilePage() {
               <button
                 onClick={() => setActivePage('menu')}
                 aria-label="Close"
-                className="rounded-md p-2 hover:bg-muted active:scale-95 transition"
+                className="rounded-md p-2 hover:bg-muted active:scale-95 transition hover:cursor-pointer"
               >
                 <svg className="w-5 h-5 text-secondary" viewBox="0 0 24 24" fill="none">
                   <path

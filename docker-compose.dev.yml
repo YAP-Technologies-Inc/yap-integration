@@ -1,0 +1,43 @@
+# docker-compose.dev.yml (private dev)
+services:
+  frontend:
+    build: ./frontend
+    command: npm run dev
+    networks: [yapnet]          # no published port needed
+    # (optional) for direct debug only:
+    # ports: ["127.0.0.1:3000:3000"]
+
+  backend:
+    build: ./backend
+    command: npm run dev
+    environment:
+      - DATABASE_URL=postgresql://yapuser:1234@db:5432/yapdb
+    networks: [yapnet]
+    # (optional) for direct debug only:
+    # ports: ["127.0.0.1:4000:4000"]
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=yapuser
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=yapdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [yapnet]
+    # DO NOT publish DB port in dev (use docker exec/psql inside container)
+
+  nginx:
+    image: nginx:1.27
+    volumes:
+      - ./nginx/dev.conf:/etc/nginx/conf.d/default.conf:ro
+    # Bind ONLY to localhost so it’s not reachable from your LAN
+    ports:
+      - "127.0.0.1:80:80"
+    depends_on: [frontend, backend]
+    networks: [yapnet]
+
+volumes:
+  pgdata:
+networks:
+  yapnet:

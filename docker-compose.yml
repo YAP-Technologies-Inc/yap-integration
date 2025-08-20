@@ -1,54 +1,39 @@
-version: "3.8"
+version: "3.9"
 services:
   frontend:
     build: ./frontend
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
     ports:
-      - "${FRONTEND_PORT}:3000"
-    env_file:
-      - ./.env
-      - ./frontend/.env
-    depends_on:
-      - backend
-    networks:
-      - yapnet
+      - "3000:3000" # optional direct access
+    networks: [yapnet]
+    depends_on: [nginx]
+
   backend:
     build: ./backend
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=4000
+    expose:
+      - "4000"
     ports:
-      - "${BACKEND_PORT}:4000"
-    env_file:
-      - ./.env
-      - ./backend/.env
-    depends_on:
-      - db
-    networks:
-      - yapnet
-  db:
-    image: postgres:15
-    restart: unless-stopped
-    env_file:
-      - ./.env
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - yapnet
+      - "4000:4000" # optional direct access
+    networks: [yapnet]
+
   nginx:
-    image: nginx:latest
+    image: nginx:1.27
+    volumes:
+      - ./nginx/dev.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - frontend
       - backend
     networks:
       - yapnet
-
-volumes:
-  pgdata:
 
 networks:
   yapnet:

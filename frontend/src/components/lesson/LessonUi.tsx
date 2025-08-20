@@ -509,7 +509,7 @@ export default function LessonUi({
                 onClick={() => setShowReport(true)}
                 className="py-2 text-black rounded hover:bg-secondary-dark transition-colors"
               >
-                <TablerFlagFilled className="w-5 h-5 inline-block mr-1" />
+                <TablerFlagFilled className="w-5 h-5 inline-block mr-1 hover:cursor-pointer" />
               </button>
 
               {showReport && <ReportIssue onClose={() => setShowReport(false)} />}
@@ -689,12 +689,23 @@ export default function LessonUi({
                           <button
                             type="button"
                             onClick={() => setShowScore(label)}
-                            className={`w-10 h-10 flex items-center justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
+                            className={`w-10 h-10 flex items-center hover:cursor-pointer justify-center rounded-full text-[#141414] text-sm font-medium focus:outline-none ${color}`}
                             aria-label={`Show ${label} score details`}
                           >
                             {Math.round(value)}
                           </button>
-                          <span className="text-sm">{label}</span>
+                          <span
+                            className="text-sm cursor-pointer"
+                            onClick={() => setShowScore(label)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') setShowScore(label);
+                            }}
+                            aria-label={`Show ${label} score details`}
+                          >
+                            {label}
+                          </span>
                           {showScore === label && textFeedback && (
                             <ScoreModal
                               onClose={handleModalClose}
