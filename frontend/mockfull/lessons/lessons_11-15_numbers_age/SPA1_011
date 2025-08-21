@@ -1,0 +1,195 @@
+{
+  "lesson_id": "SPA1_011",
+  "title": "¿Qué hora es?",
+  "level": "A1",
+  "theme": "Tiempo y horarios",
+  "focus": "Preguntar y decir la hora en punto, y media y y cuarto",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puede preguntar la hora de forma sencilla.",
+    "Puede decir la hora en punto y con y media o y cuarto.",
+    "Puede decir a qué hora tiene una actividad básica."
+  ],
+  "vocabulary": {
+    "items": [
+      {
+        "term": "¿Qué hora es?",
+        "translation": "What time is it?",
+        "part_of_speech": "question",
+        "example": "—¿Qué hora es?",
+        "example_translation": "—What time is it?"
+      },
+      {
+        "term": "Es la una.",
+        "translation": "It is one o’clock.",
+        "part_of_speech": "phrase",
+        "example": "Es la una en punto.",
+        "example_translation": "It is one o’clock sharp."
+      },
+      {
+        "term": "Son las dos.",
+        "translation": "It is two o’clock.",
+        "part_of_speech": "phrase",
+        "example": "Son las dos y media.",
+        "example_translation": "It is two thirty."
+      },
+      {
+        "term": "en punto",
+        "translation": "o’clock sharp",
+        "part_of_speech": "adverb",
+        "example": "La clase empieza a las tres en punto.",
+        "example_translation": "Class starts at three o’clock sharp."
+      },
+      {
+        "term": "y media",
+        "translation": "half past",
+        "part_of_speech": "adverb",
+        "example": "Son las cuatro y media.",
+        "example_translation": "It is four thirty."
+      },
+      {
+        "term": "y cuarto",
+        "translation": "quarter past",
+        "part_of_speech": "adverb",
+        "example": "Son las cinco y cuarto.",
+        "example_translation": "It is five fifteen."
+      },
+      {
+        "term": "a la / a las",
+        "translation": "at (time)",
+        "part_of_speech": "phrase",
+        "example": "Tengo clase a las ocho.",
+        "example_translation": "I have class at eight."
+      },
+      {
+        "term": "de la mañana",
+        "translation": "in the morning",
+        "part_of_speech": "adverb",
+        "example": "Trabajo a las nueve de la mañana.",
+        "example_translation": "I work at nine in the morning."
+      },
+      {
+        "term": "de la tarde",
+        "translation": "in the afternoon",
+        "part_of_speech": "adverb",
+        "example": "Estudio a las cuatro de la tarde.",
+        "example_translation": "I study at four in the afternoon."
+      },
+      {
+        "term": "de la noche",
+        "translation": "at night / in the evening",
+        "part_of_speech": "adverb",
+        "example": "Ceno a las ocho de la noche.",
+        "example_translation": "I have dinner at eight at night."
+      },
+      {
+        "term": "la clase",
+        "translation": "class",
+        "part_of_speech": "noun",
+        "gender": "feminine",
+        "example": "La clase es a las diez.",
+        "example_translation": "Class is at ten."
+      },
+      {
+        "term": "el trabajo",
+        "translation": "work",
+        "part_of_speech": "noun",
+        "gender": "masculine",
+        "example": "El trabajo empieza a las siete.",
+        "example_translation": "Work starts at seven."
+      }
+    ],
+    "practice": [
+      {
+        "id": "VOC_11_1",
+        "type": "match",
+        "prompt": "Une la hora con la frase correcta.",
+        "pairs": [
+          ["3:00", "Son las tres en punto."],
+          ["1:00", "Es la una en punto."],
+          ["2:30", "Son las dos y media."],
+          ["5:15", "Son las cinco y cuarto."]
+        ],
+        "feedback_rule": {
+          "correct_pair": "¡Bien!",
+          "wrong_pair": "Revisa en punto, y media o y cuarto."
+        }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Qué hora es?", "translation": "What time is it?", "audio_url": null },
+      { "spanish": "Es la una.", "translation": "It is one o’clock.", "audio_url": null },
+      { "spanish": "Son las dos.", "translation": "It is two o’clock.", "audio_url": null },
+      { "spanish": "Tengo clase a las ocho.", "translation": "I have class at eight.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_11_1",
+        "type": "listen_and_repeat",
+        "prompt": "Escucha y repite las horas.",
+        "audio_items": ["Es la una en punto.", "Son las dos y media.", "Son las cinco y cuarto."],
+        "success_criteria": ["Pronuncia la hora con claridad.", "Incluye en punto, y media o y cuarto."]
+      },
+      {
+        "id": "SPK_11_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa el mini diálogo con la hora.",
+        "dialogue_template": [
+          "A: Hola, ¿qué hora es?",
+          "B: ____ las ____ __ ____."
+        ],
+        "word_bank": ["Es", "Son", "dos", "tres", "y media", "en punto", "y cuarto"],
+        "acceptable_variants": ["Es la una en punto.", "Son las dos y media.", "Son las tres y cuarto."],
+        "feedback_rule": { "missing_parts": "Incluye el verbo (Es/Son) y el minuto." }
+      },
+      {
+        "id": "SPK_11_3",
+        "type": "controlled_production",
+        "prompt": "Di a qué hora tienes una actividad.",
+        "frames": ["Tengo clase a las __ de la mañana.", "Trabajo a las __ de la tarde."],
+        "expected_example": ["Tengo clase a las nueve de la mañana."],
+        "rubric": ["Usa a la(s) + hora.", "Usa mañana/tarde/noche correctamente."]
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G_TIME_SER",
+        "name": "La hora con ser",
+        "forms": ["Es la una", "Son las + 2–12", "a la / a las + hora"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Es la una.", "translation": "It is one o’clock." },
+          { "spanish": "Son las tres y media.", "translation": "It is three thirty." },
+          { "spanish": "Tenemos clase a las diez.", "translation": "We have class at ten." }
+        ],
+        "notes": "Usa Es la para la una. Usa Son las para 2–12. Añade de la mañana/tarde/noche si es necesario."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_11_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con Es la o Son las.",
+        "items": ["__ una.", "__ cuatro y cuarto.", "__ dos en punto."],
+        "solution": ["Es la", "Son las", "Son las"],
+        "feedback_rule": { "tip": "Recuerda: la una = Es la." }
+      }
+    ]
+  },
+  "cultural_note": "En muchos países hispanos se usa también el formato de 24 horas en horarios. En conversación, el formato de 12 horas con mañana/tarde/noche es común.",
+  "assessment": {
+    "auto_criteria": [
+      "Pregunta la hora con ¿Qué hora es?",
+      "Dice horas en punto, y media o y cuarto correctamente.",
+      "Usa a la(s) + hora para hablar de un horario."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "time", "horarios"]
+}

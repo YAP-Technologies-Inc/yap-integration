@@ -1,0 +1,99 @@
+{
+  "lesson_id": "SPA1_055",
+  "title": "Compra completa: preguntar, elegir, pagar",
+  "level": "A1",
+  "theme": "Shopping Essentials",
+  "focus": "Encadenar una compra simple con este/esta, precio y pago.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puedo señalar un producto con este/esta.",
+    "Puedo preguntar precio y confirmar el total.",
+    "Puedo pagar y cerrar con cortesía."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "recibo (reconocimiento)", "translation": "receipt", "part_of_speech": "noun", "gender": "masculine", "example": "Aquí tiene el recibo. (reconocimiento)", "example_translation": "Here is the receipt. (recognition)", "recognition_only": true },
+      { "term": "bolsa", "translation": "bag", "part_of_speech": "noun", "gender": "feminine", "example": "¿Tienes bolsa?", "example_translation": "Do you have a bag?" },
+      { "term": "gracias", "translation": "thanks", "part_of_speech": "interjection", "example": "Gracias, adiós.", "example_translation": "Thanks, bye." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_55_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la secuencia más natural.",
+        "options": [
+          "Pagar → Señalar → Preguntar precio",
+          "Señalar → Preguntar precio → Pagar",
+          "Preguntar precio → Pagar → Señalar"
+        ],
+        "correct": "Señalar → Preguntar precio → Pagar",
+        "feedback": { "tip": "Primero el producto, luego el precio, después el pago." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cuánto cuesta este libro?", "translation": "How much does this book cost?", "audio_url": null },
+      { "spanish": "Son treinta euros. — Pago con tarjeta.", "translation": "It’s thirty euros. — I pay by card.", "audio_url": null },
+      { "spanish": "Gracias, adiós.", "translation": "Thanks, bye.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_55_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Roleplay de compra.",
+        "dialogue_template": [
+          "Cliente: ¿Cuánto cuesta __ libro?",
+          "Dependiente: Cuesta veinte euros.",
+          "Cliente: Bien. __ con tarjeta.",
+          "Dependiente: Son veinte euros.",
+          "Cliente: __, adiós."
+        ],
+        "word_bank": ["este", "Pago", "Gracias"],
+        "solutions": [["este", "Pago", "Gracias"]],
+        "feedback_rule": { "ok": "Secuencia completa.", "error": "Incluye este/esta y medio de pago." }
+      },
+      {
+        "id": "SPK_55_2",
+        "type": "micro_reflection",
+        "prompt": "Di qué comprarías hoy y cómo pagarías.",
+        "expected_example": "Quiero esta camiseta. ¿Cuánto cuesta? Pago en efectivo.",
+        "rubric": { "claridad": "Frases cortas, orden lógico.", "demostrativo": "este/esta correcto." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G55_resumen_compra",
+        "name": "Resumen compra básica",
+        "scope": ["este/esta + sustantivo", "¿Cuánto cuesta…? / Cuesta…", "¿Cuánto es? / Son…", "Pago en/ con…"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Pago con tarjeta.", "translation": "I pay by card." }],
+        "notes": "Mantén las frases breves para fluidez."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_55_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa las piezas de la compra.",
+        "items": ["¿Cuánto __ esta bolsa?", "— __ veinte euros.", "__ en efectivo."],
+        "solution": ["cuesta", "Cuesta", "Pago"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Revisa verbo costar y pago." }
+      }
+    ]
+  },
+  "cultural_note": "Un cierre típico es “Gracias. Adiós.” No hace falta conversación larga al final.",
+  "assessment": {
+    "auto_criteria": [
+      "Señala con este/esta y pregunta precio correctamente.",
+      "Confirma un total y indica medio de pago.",
+      "Cierra con una fórmula de cortesía."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "compra", "precios", "pago", "demostrativos"]
+}

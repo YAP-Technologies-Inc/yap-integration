@@ -1,0 +1,75 @@
+{
+  "quiz_id": "SPA1_Q011",
+  "title": "Quiz 51–55: Shopping Essentials",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_051", "SPA1_052", "SPA1_053", "SPA1_054", "SPA1_055"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q11_SPK_1",
+        "type": "controlled_production",
+        "prompt": "Señala y pregunta el precio de un producto masculino y otro femenino.",
+        "expected_example": ["¿Cuánto cuesta este libro?", "¿Cuánto cuesta esta camiseta?"],
+        "success_criteria": ["Uso de este/esta correcto.", "¿Cuánto cuesta…? con artículo omitido tras demostrativo."]
+      },
+      {
+        "id": "Q11_SPK_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Cierra la compra con medio de pago.",
+        "dialogue_template": [
+          "Dependiente: Son treinta euros.",
+          "Tú: __ __ __/ __ __ __.",
+          "Dependiente: Gracias."
+        ],
+        "word_bank": ["Pago", "en", "efectivo", "con", "tarjeta"],
+        "solutions": [["Pago", "en", "efectivo"], ["Pago", "con", "tarjeta"]],
+        "success_criteria": ["Preposición correcta: en efectivo / con tarjeta."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q11_VOC_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la lectura correcta de 90€.",
+        "options": ["noventa euros", "diecinueve euros", "nueve euros"],
+        "correct": "noventa euros",
+        "feedback": { "tip": "Decenas: veinte, treinta… noventa." }
+      },
+      {
+        "id": "Q11_VOC_2",
+        "type": "match",
+        "prompt": "Empareja frase y función.",
+        "pairs": [
+          ["¿Cuánto cuesta…?", "Pedir precio"],
+          ["¿Cuánto es?", "Pedir total"],
+          ["Son veinte euros.", "Dar total"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa función vs forma." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q11_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con este/esta.",
+        "items": ["¿Cuánto cuesta __ libro?", "¿Cuánto cuesta __ bolsa?"],
+        "solution": ["este", "esta"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "este = masc., esta = fem." }
+      },
+      {
+        "id": "Q11_GR_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la respuesta natural a “¿Cuánto es?”",
+        "options": ["Es veinte euros.", "Son veinte euros.", "Cuesta veinte euros."],
+        "correct": "Son veinte euros.",
+        "feedback": { "tip": "Totales → Son + euros." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Usa este/esta correctamente.", "Da precios con 20–90 sin error.", "Indica medio de pago adecuado."] }
+}

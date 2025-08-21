@@ -1,0 +1,117 @@
+{
+  "lesson_id": "SPA1_051",
+  "title": "Números 1–10 y precios",
+  "level": "A1",
+  "theme": "Shopping Essentials",
+  "focus": "Preguntar y decir precios básicos con números 1–10 y euros.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo preguntar: “¿Cuánto cuesta?”",
+    "Puedo decir: “Cuesta __ euros.” con 1–10.",
+    "Puedo reconocer “¿Cuánto es?” como alternativa."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "euro", "translation": "euro", "part_of_speech": "noun", "gender": "masculine", "example": "Cuesta dos euros.", "example_translation": "It costs two euros." },
+      { "term": "precio", "translation": "price", "part_of_speech": "noun", "gender": "masculine", "example": "El precio es bajo.", "example_translation": "The price is low." },
+      { "term": "uno", "translation": "one", "part_of_speech": "noun", "gender": "masculine", "example": "Cuesta un euro.", "example_translation": "It costs one euro." },
+      { "term": "dos", "translation": "two", "part_of_speech": "noun", "gender": "masculine", "example": "Dos euros.", "example_translation": "Two euros." },
+      { "term": "tres", "translation": "three", "part_of_speech": "noun", "gender": "masculine", "example": "Tres euros.", "example_translation": "Three euros." },
+      { "term": "cuatro", "translation": "four", "part_of_speech": "noun", "gender": "masculine", "example": "Cuesta cuatro euros.", "example_translation": "It costs four euros." },
+      { "term": "cinco", "translation": "five", "part_of_speech": "noun", "gender": "masculine", "example": "Cinco euros.", "example_translation": "Five euros." },
+      { "term": "seis", "translation": "six", "part_of_speech": "noun", "gender": "masculine", "example": "Seis euros.", "example_translation": "Six euros." },
+      { "term": "siete", "translation": "seven", "part_of_speech": "noun", "gender": "masculine", "example": "Siete euros.", "example_translation": "Seven euros." },
+      { "term": "ocho", "translation": "eight", "part_of_speech": "noun", "gender": "masculine", "example": "Ocho euros.", "example_translation": "Eight euros." },
+      { "term": "nueve", "translation": "nine", "part_of_speech": "noun", "gender": "masculine", "example": "Nueve euros.", "example_translation": "Nine euros." },
+      { "term": "diez", "translation": "ten", "part_of_speech": "noun", "gender": "masculine", "example": "Diez euros.", "example_translation": "Ten euros." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_51_1",
+        "type": "match",
+        "prompt": "Relaciona número y cifra.",
+        "pairs": [
+          ["uno", "1"],
+          ["tres", "3"],
+          ["cinco", "5"],
+          ["ocho", "8"],
+          ["diez", "10"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa la correspondencia 1–10." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cuánto cuesta?", "translation": "How much does it cost?", "audio_url": null },
+      { "spanish": "Cuesta cinco euros.", "translation": "It costs five euros.", "audio_url": null },
+      { "spanish": "¿Cuánto es? (reconocimiento)", "translation": "How much is it? (recognition)", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_51_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite pregunta y respuesta de precio.",
+        "audio_items": ["¿Cuánto cuesta?", "Cuesta dos euros.", "Cuesta diez euros."],
+        "success_criteria": { "entonación": "Subida al final en la pregunta.", "claridad": "Pronuncia euros claramente." }
+      },
+      {
+        "id": "SPK_51_2",
+        "type": "controlled_production",
+        "prompt": "Contesta con el precio.",
+        "items": ["¿Cuánto cuesta? — __ __ euros.", "¿Cuánto cuesta? — __ __ euros."],
+        "expected_example": ["Cuesta tres euros.", "Cuesta siete euros."],
+        "success_criteria": { "número": "1–10 correcto.", "estructura": "Cuesta + número + euros." }
+      },
+      {
+        "id": "SPK_51_3",
+        "type": "exit_ticket",
+        "prompt": "Di un precio entre 1 y 10 euros.",
+        "expected_example": "Cuesta cuatro euros.",
+        "rubric": { "exactitud": "Número correcto y plural de euros." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G51_precio_cuesta",
+        "name": "Estructura de precio con cuesta",
+        "scope": ["¿Cuánto cuesta?", "Cuesta + número + euros"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Cuesta seis euros.", "translation": "It costs six euros." }],
+        "notes": "Usa cuesta para 1 ítem. Forma plural cuestan (reconocimiento) para varios."
+      },
+      {
+        "id": "G51_cuestan_ro",
+        "name": "cuestan (reconocimiento)",
+        "scope": ["Cuestan + número + euros"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Cuestan diez euros.", "translation": "They cost ten euros." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_51_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa la frase de precio.",
+        "items": ["Cuesta __ euros.", "Cuesta __ euros."],
+        "solution": ["dos", "nueve"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Usa números 1–10." }
+      }
+    ]
+  },
+  "cultural_note": "En España es común ver precios en euros con símbolo €. Al hablar, se dice “euros”.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula la pregunta “¿Cuánto cuesta?” correctamente.",
+      "Da dos precios con 1–10 sin error.",
+      "Reconoce “¿Cuánto es?” como alternativa."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "precios", "números", "euros"]
+}

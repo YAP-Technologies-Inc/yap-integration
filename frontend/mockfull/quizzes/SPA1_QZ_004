@@ -1,0 +1,167 @@
+{
+  "lesson_id": "SPA1_Q004",
+  "title": "Quiz 4, Lecciones 16–20",
+  "level": "A1",
+  "theme": "Family Basics",
+  "focus": "Familia, posesivos, descripciones con ser, edad con tener, vivir con, hábitos con los + día.",
+  "duration_minutes": 10,
+  "register": "tú",
+  "covers": ["SPA1_016", "SPA1_017", "SPA1_018", "SPA1_019", "SPA1_020"],
+  "can_do": [
+    "Comprendo y produzco frases breves sobre familia y edad.",
+    "Uso mi/mis y tu/tus de forma correcta.",
+    "Relato con quién vivo y un hábito familiar con los + día."
+  ],
+  "vocabulary": {
+    "items": [],
+    "practice": [
+      {
+        "id": "VOC_Q4_1",
+        "type": "match",
+        "prompt": "Empareja el término de familia con su traducción.",
+        "pairs": [
+          ["padre", "father"],
+          ["hermana", "sister"],
+          ["abuelo", "grandfather"],
+          ["tía", "aunt"],
+          ["hijos", "children"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Correcto!", "incorrect_pair": "Revisa el significado del término." }
+      },
+      {
+        "id": "VOC_Q4_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la mejor traducción de “parents”.",
+        "options": ["padres", "parientes", "madres"],
+        "correct": "padres",
+        "feedback": { "tip": "Ojo: parientes = relatives." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Mi madre se llama Ana. Es trabajadora.", "translation": "My mother’s name is Ana. She is hard-working.", "audio_url": null },
+      { "spanish": "Tengo 20 años. Vivo con mis padres.", "translation": "I am 20 years old. I live with my parents.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_Q4_1",
+        "type": "guided_interview",
+        "prompt": "Entrevista rápida sobre familia, edad y vivienda.",
+        "frames": [
+          "¿Cómo se llama tu __?",
+          "Mi __ se llama __. Es __.",
+          "¿Cuántos años tienes?",
+          "Tengo __ años.",
+          "¿Con quién vives?",
+          "Vivo con __."
+        ],
+        "acceptable_variants": ["No tengo hermanos.", "Vivo solo/sola."],
+        "rubric": { "claridad": "Respuestas cortas y comprensibles.", "acuerdo": "Género y singular/plural correctos." }
+      },
+      {
+        "id": "SPK_Q4_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa el diálogo y practícalo.",
+        "dialogue_template": [
+          "A: ¿Tienes hermanos?",
+          "B: Sí, __ __ hermanos. Mi hermana __ __ alta.",
+          "A: ¿Y los domingos?",
+          "B: __ visitamos a __ abuelos."
+        ],
+        "word_bank": ["tengo", "dos", "es", "muy", "Los domingos", "mis"],
+        "solutions": [
+          ["tengo", "dos", "es", "muy", "Los domingos", "mis"]
+        ],
+        "feedback_rule": { "ok": "Diálogo natural.", "error": "Cuida orden: es + adjetivo y los + día." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "GQ4_pos",
+        "name": "Posesivos básicos",
+        "scope": ["mi/mis", "tu/tus"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Mis abuelos viven cerca.", "translation": "My grandparents live nearby." }
+        ],
+        "notes": "Concordancia con número."
+      },
+      {
+        "id": "GQ4_tener",
+        "name": "Tener: familia y edad",
+        "forms": ["tengo", "tienes"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Tengo una hermana.", "translation": "I have one sister." },
+          { "spanish": "Tengo 19 años.", "translation": "I am 19 years old." }
+        ],
+        "notes": "Edad con tener + años."
+      },
+      {
+        "id": "GQ4_vivir_habito",
+        "name": "Vivir con y hábitos con los + día",
+        "scope": ["vivo con…", "los + lunes/martes/…"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Vivo con mis padres.", "translation": "I live with my parents." },
+          { "spanish": "Los domingos comemos juntos.", "translation": "On Sundays we eat together." }
+        ],
+        "notes": "Días en minúscula."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_Q4_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con mi/mis o tu/tus.",
+        "items": ["__ madre es médica.", "__ abuelos viven lejos.", "¿Cómo se llama __ hermana?", "¿Dónde viven __ padres?"],
+        "solution": ["Mi", "Mis", "tu", "tus"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Singular → mi/tu; plural → mis/tus." }
+      },
+      {
+        "id": "GR_Q4_2",
+        "type": "fill_in_blank",
+        "prompt": "Completa con la forma correcta de tener + años.",
+        "items": ["Yo __ 18 __.", "Mi padre __ 50 __."],
+        "solution": ["tengo, años", "tiene, años"],
+        "feedback_rule": { "note": "Recuerda: tengo/tienes/tiene." }
+      },
+      {
+        "id": "GR_Q4_3",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase correcta.",
+        "options": [
+          "Vivo con mi madres.",
+          "Vives con tus padres.",
+          "Vivimos con su tío y su tía."
+        ],
+        "correct": "Vives con tus padres.",
+        "feedback": { "tip": "Concordancia y plural correctos." }
+      },
+      {
+        "id": "GR_Q4_4",
+        "type": "orthography_check",
+        "prompt": "Añade signos y tildes correctas.",
+        "items": ["Como se llama tu padre", "Los sabados visitamos a mis abuelos"],
+        "solution": ["¿Cómo se llama tu padre?", "Los sábados visitamos a mis abuelos."],
+        "feedback_rule": { "note": "¿…? y tildes: cómo, sábados." }
+      }
+    ]
+  },
+  "cultural_note": "Decir la edad y hablar de la familia son temas frecuentes al conocerse. Mantén frases cortas y claras.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa correctamente mi/mis y tu/tus en 3 de 4 casos.",
+      "Produce una frase con tener + años sin errores.",
+      "Completa un mini diálogo sobre familia y hábitos."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "quiz", "familia", "posesivos", "tener", "hábitos"]
+}

@@ -1,0 +1,116 @@
+{
+  "lesson_id": "SPA1_041",
+  "title": "Comidas del día y artículos",
+  "level": "A1",
+  "theme": "Food & Drink Basics",
+  "focus": "Nombrar comidas del día y usar el/la/un/una con alimentos básicos.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo nombrar desayuno, comida y cena.",
+    "Puedo usar el/la y un/una con alimentos simples.",
+    "Puedo decir si me gusta un alimento básico."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "desayuno", "translation": "breakfast", "part_of_speech": "noun", "gender": "masculine", "example": "El desayuno es a las ocho.", "example_translation": "Breakfast is at eight." },
+      { "term": "comida", "translation": "lunch (Spain)", "part_of_speech": "noun", "gender": "feminine", "example": "La comida es a las dos.", "example_translation": "Lunch is at two." },
+      { "term": "almuerzo (reconocimiento)", "translation": "lunch (LatAm/alt.)", "part_of_speech": "noun", "gender": "masculine", "example": "El almuerzo es a la una.", "example_translation": "Lunch is at one.", "recognition_only": true },
+      { "term": "cena", "translation": "dinner", "part_of_speech": "noun", "gender": "feminine", "example": "La cena es tarde.", "example_translation": "Dinner is late." },
+      { "term": "pan", "translation": "bread", "part_of_speech": "noun", "gender": "masculine", "example": "El pan es fresco.", "example_translation": "The bread is fresh." },
+      { "term": "manzana", "translation": "apple", "part_of_speech": "noun", "gender": "feminine", "example": "Como una manzana.", "example_translation": "I eat an apple." },
+      { "term": "sopa", "translation": "soup", "part_of_speech": "noun", "gender": "feminine", "example": "La sopa está caliente.", "example_translation": "The soup is hot." },
+      { "term": "arroz", "translation": "rice", "part_of_speech": "noun", "gender": "masculine", "example": "El arroz es blanco.", "example_translation": "The rice is white." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_41_1",
+        "type": "categorize",
+        "prompt": "Clasifica en artículo definido o indefinido según corresponda.",
+        "items": ["el pan", "la sopa", "un pan", "una manzana"],
+        "solution": {
+          "definido": ["el pan", "la sopa"],
+          "indefinido": ["un pan", "una manzana"]
+        },
+        "feedback": { "tip": "el/la = algo específico; un/una = uno entre varios." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me gusta el pan.", "translation": "I like bread.", "audio_url": null },
+      { "spanish": "Para el desayuno como una manzana.", "translation": "For breakfast I eat an apple.", "audio_url": null },
+      { "spanish": "La cena es a las ocho.", "translation": "Dinner is at eight.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_41_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite con el/la y un/una.",
+        "audio_items": ["Me gusta el pan.", "Como una manzana.", "La cena es a las ocho."],
+        "success_criteria": { "artículos": "Usa el/la o un/una según el modelo.", "claridad": "Frases cortas y claras." }
+      },
+      {
+        "id": "SPK_41_2",
+        "type": "choice_drill_minimal_pairs",
+        "prompt": "Elige y di la opción natural.",
+        "items": [
+          { "pairs": ["Me gusta el pan.", "Me gusta un pan."], "solution": "Me gusta el pan." },
+          { "pairs": ["Como la manzana.", "Como una manzana."], "solution": "Como una manzana." }
+        ],
+        "feedback_rule": { "ok": "¡Exacto!", "error": "Gusto general → el; una unidad → un/una." }
+      },
+      {
+        "id": "SPK_41_3",
+        "type": "exit_ticket",
+        "prompt": "Di una frase con desayuno y un/una.",
+        "expected_example": "Para el desayuno tomo una manzana.",
+        "rubric": { "artículo": "un/una correcto.", "tema": "Menciona desayuno." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G41_articulos",
+        "name": "Artículos definidos e indefinidos con comida",
+        "scope": ["el/la + sustantivo", "un/una + sustantivo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me gusta el pan.", "translation": "I like bread." },
+          { "spanish": "Quiero una sopa. (verbo reconocer)", "translation": "I want a soup. (recognition)" }
+        ],
+        "notes": "Para gustos generales usa el/la. Para una porción/unidad usa un/una."
+      },
+      {
+        "id": "G41_comidas_dia_ro",
+        "name": "Comidas del día (reconocimiento)",
+        "scope": ["el desayuno", "la comida/almuerzo", "la cena"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "La cena es a las ocho.", "translation": "Dinner is at eight." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_41_1",
+        "type": "multiple_choice",
+        "prompt": "Elige el artículo correcto.",
+        "options": ["Me gusta un pan.", "Me gusta el pan."],
+        "correct": "Me gusta el pan.",
+        "feedback": { "tip": "Gusto general → artículo definido." }
+      }
+    ]
+  },
+  "cultural_note": "En España, la comida del mediodía suele ser más fuerte y la cena más tarde.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa el/la para gustos generales.",
+      "Usa un/una para una unidad.",
+      "Produce 1 frase con una comida del día."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "comida", "artículos", "gustos"]
+}

@@ -1,0 +1,89 @@
+{
+  "lesson_id": "SPA1_094",
+  "title": "Fin de semana 4: planes simples de ocio",
+  "level": "A1",
+  "theme": "Weekend Activities",
+  "focus": "Responder y preguntar por planes del fin de semana.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Pregunto ¿Qué haces el sábado?",
+    "Digo 1–2 planes con momento del día.",
+    "Cierro con cortesía simple."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "plan", "translation": "plan", "part_of_speech": "noun", "gender": "masculine", "example": "Tengo un plan el sábado.", "example_translation": "I have a plan on Saturday." },
+      { "term": "¿Qué haces el sábado?", "translation": "What are you doing on Saturday?", "part_of_speech": "question", "example": "¿Qué haces el sábado por la tarde?", "example_translation": "What are you doing on Saturday afternoon?" },
+      { "term": "gracias", "translation": "thanks", "part_of_speech": "interjection", "example": "¡Genial, gracias!", "example_translation": "Great, thanks!" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_94_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la pregunta correcta.",
+        "options": ["¿Qué haces el sábado?", "¿Qué haces sábado el?", "¿Qué haces sábado?"],
+        "correct": "¿Qué haces el sábado?",
+        "feedback": { "tip": "Incluye el artículo el." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Qué haces el sábado por la tarde?", "translation": "What are you doing on Saturday afternoon?", "audio_url": null },
+      { "spanish": "Voy al cine por la noche. Gracias.", "translation": "I go to the cinema at night. Thanks.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_94_1",
+        "type": "micro_dialogue_build",
+        "prompt": "Haz preguntas y respuestas cortas.",
+        "pairs": [
+          ["A: ¿Qué haces el sábado?", "B: Voy al parque por la mañana."],
+          ["A: ¿Y el domingo?", "B: Cocino por la tarde. Gracias."]
+        ],
+        "feedback_rule": { "ok": "Incluye día y momento.", "error": "Usa por la mañana/tarde/noche." }
+      },
+      {
+        "id": "SPK_94_2",
+        "type": "exit_ticket",
+        "prompt": "Di 2 planes para el fin de semana.",
+        "expected_example": "El sábado voy al cine por la noche. El domingo descanso por la mañana.",
+        "rubric": { "claridad": "2 frases completas", "tiempo": "día + momento presentes" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G94_interrogativas_cuando",
+        "name": "Pregunta de tiempo con ¿Qué haces + día?",
+        "forms": ["¿Qué haces + el + día?", "El + día + por la + momento"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "¿Qué haces el domingo?", "translation": "What are you doing on Sunday?" }],
+        "notes": "Usa el artículo con días específicos."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_94_1",
+        "type": "orthography_check",
+        "prompt": "Añade signos y tildes donde corresponda.",
+        "items": ["Que haces el domingo"],
+        "solution": ["¿Qué haces el domingo?"],
+        "feedback_rule": { "note": "¿…? y tilde en qué." }
+      }
+    ]
+  },
+  "cultural_note": "Reservar entradas con antelación es común para cine en fin de semana.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula una pregunta correcta sobre planes.",
+      "Incluye día y momento en la respuesta.",
+      "Cierra con cortesía simple si procede."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "fin de semana", "planes", "preguntas"]
+}

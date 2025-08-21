@@ -1,0 +1,114 @@
+{
+  "lesson_id": "SPA1_037",
+  "title": "En clase y en el trabajo",
+  "level": "A1",
+  "theme": "Daily Routines Part 2",
+  "focus": "Describir actividades de clase y trabajo con verbos -ar y objetos comunes.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir 3 actividades de clase o trabajo.",
+    "Puedo preguntar por una actividad y hora.",
+    "Puedo usar en + lugar básico (reconocimiento)."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "estudiar", "translation": "to study", "part_of_speech": "verb", "example": "Estudio gramática.", "example_translation": "I study grammar." },
+      { "term": "practicar", "translation": "to practice", "part_of_speech": "verb", "example": "Practico español.", "example_translation": "I practice Spanish." },
+      { "term": "preparar", "translation": "to prepare", "part_of_speech": "verb", "example": "Preparo una reunión.", "example_translation": "I prepare a meeting." },
+      { "term": "llamar", "translation": "to call", "part_of_speech": "verb", "example": "Llamo a un cliente.", "example_translation": "I call a client." },
+      { "term": "ordenador/computadora (reconocimiento)", "translation": "computer", "part_of_speech": "noun", "gender": "masculine", "example": "Trabajo con el ordenador.", "example_translation": "I work with the computer." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_37_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la traducción correcta.",
+        "options": ["preparar = to prepare", "practicar = to call", "llamar = to study"],
+        "correct": "preparar = to prepare",
+        "feedback": { "tip": "Fíjate en los falsos amigos." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Preparo una reunión.", "translation": "I prepare a meeting.", "audio_url": null },
+      { "spanish": "Practico español en clase.", "translation": "I practice Spanish in class.", "audio_url": null },
+      { "spanish": "Llamo a un cliente a las diez.", "translation": "I call a client at ten.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_37_1",
+        "type": "call_and_response",
+        "prompt": "Responde con verbo -ar y hora.",
+        "pairs": [
+          ["¿Qué haces a las diez?", "A las diez __ __."],
+          ["¿Qué haces en clase?", "__ español."]
+        ],
+        "word_bank": ["llamo", "a un cliente", "Practico"],
+        "success_criteria": { "forma": "-o en yo.", "hora": "a las + número." }
+      },
+      {
+        "id": "SPK_37_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa el diálogo de oficina.",
+        "dialogue_template": [
+          "A: ¿A qué hora preparas la reunión?",
+          "B: __ __ diez.",
+          "A: Perfecto."
+        ],
+        "word_bank": ["A", "las"],
+        "solutions": [["A", "las"]],
+        "feedback_rule": { "ok": "Natural.", "error": "Usa a las + hora." }
+      },
+      {
+        "id": "SPK_37_3",
+        "type": "micro_reflection",
+        "prompt": "Di 2 acciones que haces en clase o trabajo.",
+        "expected_example": "Practico español y preparo notas.",
+        "rubric": { "claridad": "Dos verbos -o en yo." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G37_ar_mas",
+        "name": "Más -ar en presente (yo/tú)",
+        "scope": ["practico / practicas", "preparo / preparas", "llamo / llamas"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "¿Llamas a tu jefe?", "translation": "Do you call your boss?" }]
+      },
+      {
+        "id": "G37_personal_a_ro",
+        "name": "a personal (reconocimiento)",
+        "scope": ["llamar a + persona"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Llamo a un cliente.", "translation": "I call a client." }],
+        "notes": "Solo comprensión."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_37_1",
+        "type": "fill_in_blank",
+        "prompt": "Conjuga en yo/tú.",
+        "items": ["Yo __ (practicar) español.", "¿Tú __ (preparar) la clase?"],
+        "solution": ["practico", "preparas"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "-o/-as correctos." }
+      }
+    ]
+  },
+  "cultural_note": "En correos y llamadas se usa mucho la cortesía: “¿Podemos hablar a las diez?”",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 3 verbos -ar en yo correctamente.",
+      "Formula 1 pregunta con “¿A qué hora…?”",
+      "Reconoce la a personal con llamar."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "clase", "trabajo", "presente -ar"]
+}

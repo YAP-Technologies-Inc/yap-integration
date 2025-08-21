@@ -1,0 +1,107 @@
+{
+  "lesson_id": "SPA1_047",
+  "title": "Café: comida sencilla y extras",
+  "level": "A1",
+  "theme": "Café & Restaurant Basics",
+  "focus": "Pedir bocadillo/tostada/pastel con querer y gestionar “¿Algo más?”",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo pedir un snack sencillo con querer.",
+    "Puedo responder a “¿Algo más?” con sí/no y otro producto.",
+    "Puedo usar un/una correctamente."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "bocadillo", "translation": "baguette sandwich", "part_of_speech": "noun", "gender": "masculine", "example": "Quiero un bocadillo de queso.", "example_translation": "I want a cheese sandwich." },
+      { "term": "tostada", "translation": "toast", "part_of_speech": "noun", "gender": "feminine", "example": "Quiero una tostada.", "example_translation": "I want a toast." },
+      { "term": "pastel", "translation": "cake/pastry", "part_of_speech": "noun", "gender": "masculine", "example": "Quiero un pastel.", "example_translation": "I want a piece of cake." },
+      { "term": "¿Algo más?", "translation": "Anything else?", "part_of_speech": "phrase", "example": "—¿Algo más? —No, gracias.", "example_translation": "—Anything else? —No, thanks." },
+      { "term": "gracias", "translation": "thanks", "part_of_speech": "interjection", "example": "Sí, gracias.", "example_translation": "Yes, thank you." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_47_1",
+        "type": "multiple_choice",
+        "prompt": "Completa el pedido.",
+        "options": [
+          "Quiero una bocadillo.",
+          "Quiero un bocadillo.",
+          "Quiero un tostada."
+        ],
+        "correct": "Quiero un bocadillo.",
+        "feedback": { "tip": "un + masculino; una + femenino." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Quiero una tostada, por favor.", "translation": "I want a toast, please.", "audio_url": null },
+      { "spanish": "¿Algo más?", "translation": "Anything else?", "audio_url": null },
+      { "spanish": "Sí, un pastel. Gracias.", "translation": "Yes, a cake. Thanks.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_47_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa y practica.",
+        "dialogue_template": [
+          "Cliente: __ una tostada, __ __.",
+          "Dependiente: ¿__ más?",
+          "Cliente: Sí, __ pastel. Gracias."
+        ],
+        "word_bank": ["Quiero", "por", "favor", "Algo", "un"],
+        "solutions": [["Quiero", "por", "favor", "Algo", "un"]],
+        "feedback_rule": { "ok": "Interacción completa.", "error": "Incluye por favor y artículo correcto." }
+      },
+      {
+        "id": "SPK_47_2",
+        "type": "controlled_production",
+        "prompt": "Responde a “¿Algo más?”",
+        "items": ["No, __.", "Sí, __ __."],
+        "expected_example": ["No, gracias.", "Sí, un bocadillo."],
+        "success_criteria": { "cortesía": "Incluye gracias o por favor.", "artículos": "un/una correctos." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G47_querer_refuerzo",
+        "name": "Querer + snack",
+        "scope": ["Quiero + un/una + comida", "¿Quieres…? (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Quiero un bocadillo, por favor.", "translation": "I want a sandwich, please." }]
+      },
+      {
+        "id": "G47_cortesia",
+        "name": "Cortesía: por favor / gracias",
+        "scope": ["por favor", "gracias"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Una tostada, por favor. —Gracias.", "translation": "A toast, please. —Thanks." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_47_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con artículo y cortesía.",
+        "items": ["Quiero __ tostada, __ __.", "Quiero __ pastel, __."],
+        "solution": ["una, por, favor", "un, gracias"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Revisa género y cortesía." }
+      }
+    ]
+  },
+  "cultural_note": "Responder “No, gracias” a “¿Algo más?” es suficiente y amable.",
+  "assessment": {
+    "auto_criteria": [
+      "Pide 2 productos con querer + por favor.",
+      "Responde a “¿Algo más?” adecuadamente.",
+      "Usa artículos adecuados en 3/3 casos."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "café", "querer", "cortesía", "snacks"]
+}

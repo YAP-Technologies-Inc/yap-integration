@@ -1,0 +1,97 @@
+{
+  "lesson_id": "SPA1_088",
+  "title": "Gustos 3: me encanta / me encantan",
+  "level": "A1",
+  "theme": "Likes & Dislikes",
+  "focus": "Expresar gusto fuerte con me encanta(n).",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Uso me encanta + singular o infinitivo.",
+    "Uso me encantan + plural.",
+    "Respondo con mucho / un poco para matizar."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "me encanta", "translation": "I love (sing./inf.)", "part_of_speech": "phrase", "example": "Me encanta bailar.", "example_translation": "I love to dance." },
+      { "term": "me encantan", "translation": "I love (plural)", "part_of_speech": "phrase", "example": "Me encantan las películas.", "example_translation": "I love movies.", "gender": "invariable" },
+      { "term": "mucho", "translation": "a lot", "part_of_speech": "adverb", "example": "Me gusta mucho la música.", "example_translation": "I like music a lot." },
+      { "term": "un poco", "translation": "a little", "part_of_speech": "adverb", "example": "Me gusta un poco el tenis.", "example_translation": "I like tennis a little." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_88_1",
+        "type": "multiple_choice",
+        "prompt": "Completa la frase natural.",
+        "options": [
+          "Me encantas las series.",
+          "Me encantan las series.",
+          "Me encanta las series."
+        ],
+        "correct": "Me encantan las series.",
+        "feedback": { "tip": "Plural → encantan + las." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me encanta escuchar música.", "translation": "I love listening to music.", "audio_url": null },
+      { "spanish": "Me encantan los conciertos.", "translation": "I love concerts.", "audio_url": null },
+      { "spanish": "Me gusta un poco el baloncesto.", "translation": "I like basketball a little.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_88_1",
+        "type": "choice_drill_minimal_pairs",
+        "prompt": "Elige encanta/encantan y di la frase.",
+        "items": [
+          ["Me encanta/encantan las películas.", "Me encantan las películas."],
+          ["Me encanta/encantan bailar.", "Me encanta bailar."]
+        ],
+        "acceptable_variants": [],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Plural → encantan; infinitivo → encanta." }
+      },
+      {
+        "id": "SPK_88_2",
+        "type": "controlled_production",
+        "prompt": "Expresa gusto fuerte y matiza otra idea.",
+        "frames": ["Me encanta __.", "Me gusta __ __."],
+        "word_bank": ["bailar", "los conciertos", "un poco", "mucho"],
+        "success_criteria": { "verbo": "encanta/encantan correcto", "matiz": "mucho / un poco presente" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G88_me_encanta",
+        "name": "Me encanta / Me encantan",
+        "forms": ["me encanta + infinitivo/singular", "me encantan + plural"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Me encanta el teatro.", "translation": "I love theatre." }],
+        "notes": "Estructura paralela a gustar. Plural → encantan."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_88_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con encanta/encantan.",
+        "items": ["Me __ las series.", "Me __ correr."],
+        "solution": ["encantan", "encanta"],
+        "feedback_rule": { "tip": "Plural vs. infinitivo." }
+      }
+    ]
+  },
+  "cultural_note": "Para sonar natural, combina me encanta con actividades culturales frecuentes como conciertos o cine.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa me encanta/encantan correctamente.",
+      "Añade mucho o un poco para matizar.",
+      "Produce 2 frases sobre gustos fuertes."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "gustos", "encantar", "preferencias"]
+}

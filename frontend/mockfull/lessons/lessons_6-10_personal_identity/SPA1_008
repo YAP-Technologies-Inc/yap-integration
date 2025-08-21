@@ -1,0 +1,101 @@
+{
+  "lesson_id": "SPA1_008",
+  "level": "A1",
+  "title": "Days, Months, and Dates",
+  "duration_minutes": 8,
+  "topic_tags": ["calendar", "routines", "time_expressions"],
+  "learning_objectives": [
+    "Name days of the week and months",
+    "Say today’s date",
+    "Talk about habitual days with los + día"
+  ],
+  "key_phrases": [
+    {"target": "¿Qué día es hoy?", "translation": "What day is it today?"},
+    {"target": "Hoy es lunes.", "translation": "Today is Monday."},
+    {"target": "Es el [número] de [mes].", "translation": "It is the [number] of [month]."},
+    {"target": "Los lunes estudio español.", "translation": "On Mondays I study Spanish."}
+  ],
+  "vocabulary": {
+    "items": [
+      {"term": "lunes", "translation": "Monday", "part_of_speech": "noun", "example": "Hoy es lunes."},
+      {"term": "martes", "translation": "Tuesday", "part_of_speech": "noun", "example": "Mañana es martes."},
+      {"term": "miércoles", "translation": "Wednesday", "part_of_speech": "noun", "example": "El examen es el miércoles."},
+      {"term": "jueves", "translation": "Thursday", "part_of_speech": "noun", "example": "Trabajo los jueves."},
+      {"term": "viernes", "translation": "Friday", "part_of_speech": "noun", "example": "Salimos el viernes."},
+      {"term": "sábado", "translation": "Saturday", "part_of_speech": "noun", "example": "Corro el sábado."},
+      {"term": "domingo", "translation": "Sunday", "part_of_speech": "noun", "example": "Descanso el domingo."},
+      {"term": "enero", "translation": "January", "part_of_speech": "noun", "example": "Mi cumpleaños es en enero."},
+      {"term": "febrero", "translation": "February", "part_of_speech": "noun"},
+      {"term": "marzo", "translation": "March", "part_of_speech": "noun"},
+      {"term": "hoy", "translation": "today", "part_of_speech": "adv"},
+      {"term": "mañana", "translation": "tomorrow", "part_of_speech": "adv"},
+      {"term": "ayer", "translation": "yesterday", "part_of_speech": "adv"},
+      {"term": "fecha", "translation": "date", "part_of_speech": "noun", "gender": "f", "example": "¿Cuál es la fecha de hoy?"}
+    ],
+    "exercises": [
+      {"type": "match", "prompt": "Match day to translation.", "pairs": [
+        {"left": "miércoles", "right": "Wednesday"},
+        {"left": "sábado", "right": "Saturday"},
+        {"left": "domingo", "right": "Sunday"}
+      ]},
+      {"type": "fill_in_the_blank", "prompt": "Complete with the correct day.", "items": [
+        {"text": "Hoy es lunes. Mañana es ___", "answer": "martes"},
+        {"text": "Ayer fue viernes. Hoy es ___", "answer": "sábado"}
+      ]},
+      {"type": "select", "prompt": "Choose the correct date format.", "items": [
+        {"question": "___ 15 de enero", "options": ["Es el", "Es la"], "answer": "Es el"},
+        {"question": "Mi cumpleaños es ___ marzo.", "options": ["en", "de"], "answer": "en"}
+      ]},
+      {"type": "sort", "prompt": "Order to form a correct date sentence.", "items": [
+        {"jumbled": "es el hoy de marzo 3", "answer": "Hoy es el 3 de marzo."}
+      ]},
+      {"type": "classification", "prompt": "Sort into days vs. months.", "groups": [
+        {"name": "Días", "answers": ["lunes", "jueves", "domingo"]},
+        {"name": "Meses", "answers": ["enero", "marzo", "febrero"]}
+      ]}
+    ]
+  },
+  "grammar": {
+    "topics": ["Fechas: es el + número + de + mes", "Días en minúscula", "Hábitos: los + día"],
+    "explanations": [
+      "Hoy es el 5 de mayo.",
+      "Los días y meses van en minúscula en español.",
+      "Para hábitos: Los lunes tengo clase."
+    ],
+    "examples": [
+      {"target": "¿Qué día es hoy? Hoy es lunes.", "translation": "What day is it today? Today is Monday."},
+      {"target": "Es el 20 de febrero.", "translation": "It is February 20th."}
+    ],
+    "exercises": [
+      {"type": "fill_in_the_blank", "prompt": "Write the date.", "items": [
+        {"text": "___ 12 de enero.", "answer": "Es el"},
+        {"text": "Mi cita es ___ 7 de marzo.", "answer": "el"}
+      ]},
+      {"type": "transform", "prompt": "Change to habitual with los.", "items": [
+        {"input": "El lunes estudio.", "answer": "Los lunes estudio."},
+        {"input": "El jueves trabajo.", "answer": "Los jueves trabajo."}
+      ]},
+      {"type": "error_correction", "prompt": "Fix capitalization.", "items": [
+        {"text": "Hoy es Lunes.", "answer": "Hoy es lunes."},
+        {"text": "Mi viaje es en Marzo.", "answer": "Mi viaje es en marzo."}
+      ]},
+      {"type": "select", "prompt": "Choose en or de.", "items": [
+        {"question": "Mi cumple es ___ abril.", "options": ["en", "de"], "answer": "en"},
+        {"question": "Hoy es el 2 ___ mayo.", "options": ["en", "de"], "answer": "de"}
+      ]},
+      {"type": "short_answer", "prompt": "Answer the question.", "items": [
+        {"question": "¿Qué día es hoy?", "sample_answer": "Hoy es [día]."},
+        {"question": "¿Cuál es la fecha de hoy?", "sample_answer": "Es el [número] de [mes]."}
+      ]}
+    ]
+  },
+  "speaking": {
+    "exercises": [
+      {"type": "listen_and_repeat", "content": "Hoy es lunes. Es el 5 de mayo.", "variations": 3},
+      {"type": "prompted_response", "prompt": "Di la fecha de hoy.", "expected_output_pattern": "Es el [número] de [mes]."},
+      {"type": "role_play", "scenario": "Planear una reunión", "roles": ["A: propone día", "B: confirma o cambia"]},
+      {"type": "guided_interview", "prompt": "Pregunta por cumpleaños y días favoritos.", "model": "¿Cuándo es tu cumpleaños? ¿Qué día te gusta?"},
+      {"type": "personal_statement", "prompt": "Cuenta tu rutina semanal con los + día.", "sentence_frames": ["Los [día]...", "El fin de semana..."]}
+    ]
+  }
+}

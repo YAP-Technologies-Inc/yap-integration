@@ -1,0 +1,76 @@
+{
+  "quiz_id": "SPA1_Q016",
+  "title": "Quiz 76–80: First Review & Integration",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_076", "SPA1_077", "SPA1_078", "SPA1_079", "SPA1_080"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q16_SPK_1",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena de 6 turnos: saludo → nombre → origen → clima → pedido → cierre.",
+        "cards": ["Hola", "Me llamo __", "Soy de __", "Hoy hace/está __", "¿Me das __, por favor?", "Gracias"],
+        "success_criteria": ["6 turnos completos.", "Frases cortas y claras.", "Incluye cortesía."]
+      },
+      {
+        "id": "Q16_SPK_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Final de restaurante con la cuenta.",
+        "dialogue_template": [
+          "A: ¿Algo más?",
+          "B: __ __, __.",
+          "A: Aquí tienes."
+        ],
+        "word_bank": ["La cuenta", "por favor", "gracias"],
+        "solutions": [["La cuenta", "por favor", "gracias"]],
+        "success_criteria": ["Pide la cuenta con por favor.", "Cierra con gracias."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q16_VOC_1",
+        "type": "categorize",
+        "prompt": "Clasifica conectores por función.",
+        "items": ["y", "pero", "también", "porque"],
+        "solution": [
+          { "suma": ["y", "también"] },
+          { "contraste": ["pero"] },
+          { "causa": ["porque"] }
+        ],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Piensa en el uso típico." }
+      },
+      {
+        "id": "Q16_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción más cortés para pedir.",
+        "options": ["Dame un agua.", "¿Me das un agua, por favor?", "Quiero agua ya."],
+        "correct": "¿Me das un agua, por favor?",
+        "feedback": { "tip": "A1 usa fórmulas fijas con por favor." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q16_GR_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la pregunta correcta.",
+        "options": ["De dónde eres", "¿De dónde eres?", "¿De donde eres?"],
+        "correct": "¿De dónde eres?",
+        "feedback": { "tip": "¿…? y tilde en dónde." }
+      },
+      {
+        "id": "Q16_GR_2",
+        "type": "fill_in_blank",
+        "prompt": "Completa con de / a la / recto.",
+        "items": ["Soy __ Perú.", "Gira __ derecha.", "Sigue __."],
+        "solution": ["de", "a la", "recto"],
+        "feedback_rule": { "tip": "de para origen; a la + derecha/izquierda." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Completa la cadena de 6 turnos con cortesía.", "Usa conectores y/pero/porque correctamente.", "Formula ¿De dónde eres? sin errores."] }
+}

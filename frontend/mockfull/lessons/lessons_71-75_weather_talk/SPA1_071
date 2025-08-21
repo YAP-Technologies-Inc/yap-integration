@@ -1,0 +1,140 @@
+{
+  "lesson_id": "SPA1_071",
+  "title": "¿Qué tiempo hace hoy?",
+  "level": "A1",
+  "theme": "Weather Talk",
+  "focus": "Decir el tiempo de hoy con hace y está.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Pregunto: ¿Qué tiempo hace hoy?",
+    "Digo 1–2 ideas con hace o está.",
+    "Entiendo respuestas simples sobre el tiempo."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Qué tiempo hace?", "translation": "What’s the weather like?", "part_of_speech": "question", "example": "¿Qué tiempo hace hoy?", "example_translation": "What’s the weather like today?" },
+      { "term": "hoy", "translation": "today", "part_of_speech": "adverb", "example": "Hoy hace sol.", "example_translation": "Today it’s sunny." },
+      { "term": "hace sol", "translation": "it’s sunny", "part_of_speech": "phrase", "example": "En Sevilla hace sol.", "example_translation": "It’s sunny in Seville." },
+      { "term": "hace viento", "translation": "it’s windy", "part_of_speech": "phrase", "example": "En la costa hace viento.", "example_translation": "It’s windy on the coast." },
+      { "term": "hace frío", "translation": "it’s cold", "part_of_speech": "phrase", "example": "En enero hace frío.", "example_translation": "It’s cold in January." },
+      { "term": "hace calor", "translation": "it’s hot", "part_of_speech": "phrase", "example": "En agosto hace calor.", "example_translation": "It’s hot in August." },
+      { "term": "nublado", "translation": "cloudy (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El día está nublado.", "example_translation": "The day is cloudy." },
+      { "term": "nublada", "translation": "cloudy (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La tarde está nublada.", "example_translation": "The afternoon is cloudy." },
+      { "term": "despejado", "translation": "clear (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El cielo está despejado.", "example_translation": "The sky is clear." },
+      { "term": "despejada", "translation": "clear (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La noche está despejada.", "example_translation": "The night is clear." },
+      { "term": "soleado", "translation": "sunny (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El día está soleado.", "example_translation": "The day is sunny." },
+      { "term": "soleada", "translation": "sunny (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La mañana está soleada.", "example_translation": "The morning is sunny." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_71_1",
+        "type": "match",
+        "prompt": "Relaciona el español con el inglés.",
+        "pairs": [
+          ["hace sol", "it’s sunny"],
+          ["hace viento", "it’s windy"],
+          ["está nublado", "it’s cloudy"],
+          ["hace frío", "it’s cold"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Vuelve a leer las opciones." }
+      },
+      {
+        "id": "VOC_71_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la mejor respuesta: “¿Qué tiempo hace hoy?”",
+        "options": ["Hace sol.", "Me llamo Ana.", "Tengo dos hermanos."],
+        "correct": "Hace sol.",
+        "feedback": { "tip": "Responde con hace o está + clima." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Qué tiempo hace hoy?", "translation": "What’s the weather like today?", "audio_url": null },
+      { "spanish": "Hoy hace sol.", "translation": "Today it’s sunny.", "audio_url": null },
+      { "spanish": "Hoy está nublado.", "translation": "Today it’s cloudy.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_71_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite las frases modelo.",
+        "audio_items": ["¿Qué tiempo hace hoy?", "Hoy hace viento.", "Hoy está despejado."],
+        "success_criteria": { "pronunciación": "clara", "entonación": "sube en la pregunta" }
+      },
+      {
+        "id": "SPK_71_2",
+        "type": "call_and_response",
+        "prompt": "Yo pregunto, tú respondes con hace o está.",
+        "pairs": [
+          ["¿Qué tiempo hace hoy?", "Hoy hace frío."],
+          ["¿Qué tiempo hace en tu ciudad?", "Está nublado."]
+        ],
+        "feedback_rule": { "ok": "Respuesta breve y correcta.", "error": "Usa hace + sol/viento/frío/calor o está + adjetivo." }
+      },
+      {
+        "id": "SPK_71_3",
+        "type": "exit_ticket",
+        "prompt": "Di una frase sobre el tiempo de hoy.",
+        "expected_example": "Hoy hace calor.",
+        "rubric": { "claridad": "1 idea completa", "verbo": "hace o está correcto" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G71_hacer_tiempo",
+        "name": "Hacer para el tiempo",
+        "forms": ["hace sol", "hace viento", "hace frío", "hace calor"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Hoy hace sol.", "translation": "Today it’s sunny." },
+          { "spanish": "En invierno hace frío.", "translation": "In winter it’s cold." }
+        ],
+        "notes": "Uso impersonal, sin sujeto. Fórmula fija: hace + sustantivo de clima."
+      },
+      {
+        "id": "G71_estar_adjetivo",
+        "name": "Está + adjetivo del tiempo",
+        "forms": ["está nublado", "está despejado", "está soleado"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Hoy está nublado.", "translation": "Today it’s cloudy." }
+        ],
+        "notes": "Uso impersonal con estar + adjetivo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_71_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con hace o está.",
+        "items": ["Hoy __ sol.", "El cielo __ nublado."],
+        "solution": ["hace", "está"],
+        "feedback_rule": { "tip": "Hace + nombre, está + adjetivo." }
+      },
+      {
+        "id": "GR_71_2",
+        "type": "orthography_check",
+        "prompt": "Añade signos y tildes correctos.",
+        "items": ["Que tiempo hace hoy"],
+        "solution": ["¿Qué tiempo hace hoy?"],
+        "feedback_rule": { "note": "¿…? y tilde en qué." }
+      }
+    ]
+  },
+  "cultural_note": "En español se usan dos patrones muy comunes: hace + clima y está + adjetivo.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula una pregunta correcta sobre el tiempo.",
+      "Produce una frase con hace + clima.",
+      "Produce una frase con está + adjetivo."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "clima", "tiempo", "hoy", "hacer", "estar"]
+}

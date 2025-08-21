@@ -1,0 +1,99 @@
+{
+  "lesson_id": "SPA1_049",
+  "title": "Cuenta y pago sencillo",
+  "level": "A1",
+  "theme": "Café & Restaurant Basics",
+  "focus": "Pedir la cuenta, confirmar “¿Algo más?” y cerrar pago básico.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo pedir la cuenta con cortesía.",
+    "Puedo decir que no quiero nada más.",
+    "Puedo cerrar la interacción con gracias/adiós."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "la cuenta", "translation": "the bill/check", "part_of_speech": "noun", "gender": "feminine", "example": "La cuenta, por favor.", "example_translation": "The bill, please." },
+      { "term": "¿Cuánto es?", "translation": "How much is it?", "part_of_speech": "question", "example": "¿Cuánto es en total?", "example_translation": "How much is it in total?" },
+      { "term": "efectivo (reconocimiento)", "translation": "cash", "part_of_speech": "noun", "gender": "masculine", "example": "Pago en efectivo.", "example_translation": "I pay in cash.", "recognition_only": true },
+      { "term": "tarjeta (reconocimiento)", "translation": "card", "part_of_speech": "noun", "gender": "feminine", "example": "Pago con tarjeta.", "example_translation": "I pay by card.", "recognition_only": true },
+      { "term": "Nada más, gracias.", "translation": "Nothing else, thanks.", "part_of_speech": "phrase", "example": "—¿Algo más? —Nada más, gracias.", "example_translation": "—Anything else? —Nothing else, thanks." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_49_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase para cerrar.",
+        "options": ["¿Algo más?", "Nada más, gracias.", "Quiero un café."],
+        "correct": "Nada más, gracias.",
+        "feedback": { "tip": "Para terminar, usa “Nada más, gracias.”" }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "La cuenta, por favor.", "translation": "The bill, please.", "audio_url": null },
+      { "spanish": "¿Cuánto es?", "translation": "How much is it?", "audio_url": null },
+      { "spanish": "Nada más, gracias. Adiós.", "translation": "Nothing else, thanks. Bye.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_49_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Cierra la visita.",
+        "dialogue_template": [
+          "Cliente: __ cuenta, __ __.",
+          "Camarero/a: ¿Algo más?",
+          "Cliente: __ __, gracias. ¿__ __?",
+          "Camarero/a: Son 8 euros."
+        ],
+        "word_bank": ["La", "por", "favor", "Nada", "más", "Cuánto", "es"],
+        "solutions": [["La", "por", "favor", "Nada", "más", "Cuánto", "es"]],
+        "feedback_rule": { "ok": "Cierre correcto.", "error": "Incluye por favor y gracias." }
+      },
+      {
+        "id": "SPK_49_2",
+        "type": "controlled_production",
+        "prompt": "Pide la cuenta y despídete.",
+        "items": ["__ cuenta, __ __.", "__.", "__."],
+        "expected_example": ["La cuenta, por favor.", "Nada más, gracias.", "Adiós."],
+        "success_criteria": { "cortesía": "por favor/ gracias presentes.", "claridad": "Frases cortas." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G49_formulas_cierre",
+        "name": "Fórmulas de cierre",
+        "scope": ["La cuenta, por favor.", "Nada más, gracias.", "¿Cuánto es?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "La cuenta, por favor.", "translation": "The bill, please." }
+        ],
+        "notes": "Cortas y directas."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_49_1",
+        "type": "orthography_check",
+        "prompt": "Añade signos adecuados.",
+        "items": ["La cuenta por favor", "Cuanto es"],
+        "solution": ["La cuenta, por favor.", "¿Cuánto es?"],
+        "feedback_rule": { "note": "Coma y signos de interrogación con tilde en cuánto." }
+      }
+    ]
+  },
+  "cultural_note": "En muchos lugares se pide la cuenta con una frase corta y un gesto; verbalmente, “La cuenta, por favor.” es suficiente.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 fórmulas de cierre correctas.",
+      "Responde a “¿Algo más?” de forma adecuada.",
+      "Mantiene cortesía durante el cierre."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "cuenta", "cortesía", "pago"]
+}

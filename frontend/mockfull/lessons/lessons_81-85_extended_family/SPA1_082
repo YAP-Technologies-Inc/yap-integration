@@ -1,0 +1,107 @@
+{
+  "lesson_id": "SPA1_082",
+  "title": "Familia extendida 2: cuñados y suegros",
+  "level": "A1",
+  "theme": "Extended Family",
+  "focus": "Nombrar afinidad (in-laws) y usar nuestros/nuestras.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Identifico cuñado/cuñada y suegro/suegra.",
+    "Uso nuestros/nuestras con sustantivos plurales.",
+    "Digo quién viene a una comida familiar."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "cuñado", "translation": "brother-in-law", "part_of_speech": "noun", "gender": "masculine", "example": "Mi cuñado es simpático.", "example_translation": "My brother-in-law is nice." },
+      { "term": "cuñada", "translation": "sister-in-law", "part_of_speech": "noun", "gender": "feminine", "example": "Mi cuñada trabaja mucho.", "example_translation": "My sister-in-law works a lot." },
+      { "term": "suegro", "translation": "father-in-law", "part_of_speech": "noun", "gender": "masculine", "example": "Mi suegro cocina paella.", "example_translation": "My father-in-law cooks paella." },
+      { "term": "suegra", "translation": "mother-in-law", "part_of_speech": "noun", "gender": "feminine", "example": "Mi suegra es de Valencia.", "example_translation": "My mother-in-law is from Valencia." },
+      { "term": "nuestro", "translation": "our (masc. sing.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Nuestro tío llega hoy.", "example_translation": "Our uncle arrives today." },
+      { "term": "nuestra", "translation": "our (fem. sing.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Nuestra tía trae postre.", "example_translation": "Our aunt brings dessert." },
+      { "term": "nuestros", "translation": "our (masc. pl.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Nuestros primos vienen.", "example_translation": "Our (male/mixed) cousins are coming." },
+      { "term": "nuestras", "translation": "our (fem. pl.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Nuestras tías hablan mucho.", "example_translation": "Our aunts talk a lot." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_82_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": [
+          "Nuestros tías vienen a la cena.",
+          "Nuestras tías vienen a la cena.",
+          "Nuestro tías vienen a la cena."
+        ],
+        "correct": "Nuestras tías vienen a la cena.",
+        "feedback": { "tip": "Concordancia con tías (femenino plural)." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Nuestros primos vienen el sábado.", "translation": "Our cousins are coming on Saturday.", "audio_url": null },
+      { "spanish": "Mi cuñado y mi cuñada traen bebida.", "translation": "My brother-in-law and sister-in-law bring drinks.", "audio_url": null },
+      { "spanish": "Mis suegros llegan a las dos.", "translation": "My in-laws arrive at two.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_82_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa: ¿Quién viene a la comida?",
+        "dialogue_template": [
+          "A: ¿Quién viene el sábado?",
+          "B: Vienen __ __ y __ __.",
+          "A: ¡Qué bien!"
+        ],
+        "word_bank": ["nuestros", "primos", "mi", "cuñada", "mi", "cuñado"],
+        "solutions": [["nuestros", "primos", "mi", "cuñada", "mi", "cuñado"]],
+        "feedback_rule": { "ok": "Buena concordancia.", "error": "Recuerda nuestros/nuestras según el sustantivo." }
+      },
+      {
+        "id": "SPK_82_2",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige quiénes vienen.",
+        "audio_items": ["Nuestras tías vienen el domingo."],
+        "options": ["tíos", "tías", "primos"],
+        "solution": ["tías"],
+        "feedback_rule": { "ok": "Correcto.", "error": "Atiende a -os / -as." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G82_posesivos_nuestros",
+        "name": "Posesivos: nuestro/a, nuestros/as",
+        "forms": ["nuestro + masc. sing.", "nuestra + fem. sing.", "nuestros + masc. pl.", "nuestras + fem. pl."],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Nuestros primos viven lejos.", "translation": "Our cousins live far away." },
+          { "spanish": "Nuestras tías son muy amables.", "translation": "Our aunts are very kind." }
+        ],
+        "notes": "Concordancia en género y número con el sustantivo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_82_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con nuestro/a/os/as.",
+        "items": ["__ tíos llegan a las tres.", "__ prima trae pan."],
+        "solution": ["Nuestros", "Nuestra"],
+        "feedback_rule": { "tip": "Mira género y número del sustantivo." }
+      }
+    ]
+  },
+  "cultural_note": "Decir suegros para referirse a ambos es común: mis suegros.",
+  "assessment": {
+    "auto_criteria": [
+      "Distingue cuñado/cuñada y suegro/suegra.",
+      "Usa nuestros/nuestras con precisión.",
+      "Indica quiénes asisten a una comida familiar."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "posesivos", "afinidad"]
+}

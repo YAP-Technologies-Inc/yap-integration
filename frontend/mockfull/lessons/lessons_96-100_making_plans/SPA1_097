@@ -1,0 +1,104 @@
+{
+  "lesson_id": "SPA1_097",
+  "title": "Invitar y responder: ¿Vamos a…?",
+  "level": "A1",
+  "theme": "Making Plans",
+  "focus": "Invitar con ¿Vamos a…? / ¿Quieres…? y aceptar o rechazar.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Invito con ¿Vamos a…? o ¿Quieres…?",
+    "Acepto con Vale / Sí, vamos.",
+    "Rechazo con Lo siento, no puedo y doy opción simple."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Vamos a…?", "translation": "Shall we…?", "part_of_speech": "question", "example": "¿Vamos a tomar un café?", "example_translation": "Shall we have a coffee?" },
+      { "term": "¿Quieres…?", "translation": "Do you want to…?", "part_of_speech": "question", "example": "¿Quieres salir mañana?", "example_translation": "Do you want to go out tomorrow?" },
+      { "term": "vale", "translation": "okay", "part_of_speech": "interjection", "example": "Vale, vamos.", "example_translation": "Okay, let’s go." },
+      { "term": "Lo siento, no puedo.", "translation": "Sorry, I can’t.", "part_of_speech": "phrase", "example": "Lo siento, no puedo hoy.", "example_translation": "Sorry, I can’t today." },
+      { "term": "¿Otro día?", "translation": "Another day?", "part_of_speech": "question", "example": "No puedo hoy, ¿otro día?", "example_translation": "I can’t today, another day?" },
+      { "term": "ocupado", "translation": "busy (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy ocupado.", "example_translation": "I’m busy." },
+      { "term": "ocupada", "translation": "busy (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy ocupada.", "example_translation": "I’m busy." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_97_1",
+        "type": "categorize",
+        "prompt": "Clasifica por función: invitar, aceptar, rechazar.",
+        "items": ["¿Vamos a…?", "¿Quieres…?", "Vale", "Sí, vamos", "Lo siento, no puedo.", "¿Otro día?"],
+        "solution": [
+          { "invitar": ["¿Vamos a…?", "¿Quieres…?"] },
+          { "aceptar": ["Vale", "Sí, vamos"] },
+          { "rechazar": ["Lo siento, no puedo.", "¿Otro día?"] }
+        ],
+        "feedback_rule": { "ok": "Funciones claras.", "error": "Fíjate en la intención." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Vamos a caminar esta tarde?", "translation": "Shall we go for a walk this afternoon?", "audio_url": null },
+      { "spanish": "Vale, vamos.", "translation": "Okay, let’s go.", "audio_url": null },
+      { "spanish": "Lo siento, no puedo hoy. ¿Mañana?", "translation": "Sorry, I can’t today. Tomorrow?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_97_1",
+        "type": "request_builder",
+        "prompt": "Invita a un plan con 2 opciones.",
+        "frames": ["¿Vamos a __ hoy?", "¿Quieres __ mañana?"],
+        "word_bank": ["tomar un café", "estudiar juntos", "caminar", "ver una película"],
+        "success_criteria": { "claridad": "invitación clara", "cortesía": "tono amable" }
+      },
+      {
+        "id": "SPK_97_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Acepta o rechaza y ofrece alternativa.",
+        "dialogue_template": [
+          "A: ¿Quieres __ esta tarde?",
+          "B: __. __, no puedo. ¿__ día?"
+        ],
+        "word_bank": ["Vale", "Lo siento", "Otro"],
+        "solutions": [["Vale", "Lo siento", "Otro"]],
+        "feedback_rule": { "ok": "Flujo natural.", "error": "Incluye aceptación o rechazo y alternativa." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G97_invitar",
+        "name": "Invitaciones: ¿Vamos a…? / ¿Quieres…?",
+        "forms": ["¿Vamos a + infinitivo…?", "¿Quieres + infinitivo…?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Vamos a cenar?", "translation": "Shall we have dinner?" },
+          { "spanish": "¿Quieres estudiar mañana?", "translation": "Do you want to study tomorrow?" }
+        ],
+        "notes": "Respuestas cortas: Vale / Sí, vamos / Lo siento, no puedo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_97_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la invitación correcta.",
+        "options": ["Vamos cenar?", "¿Vamos a cenar?", "¿Vamos cenamos?"],
+        "correct": "¿Vamos a cenar?",
+        "feedback": { "tip": "Estructura: ¿Vamos a + infinitivo?" }
+      }
+    ]
+  },
+  "cultural_note": "Vale es común en España; también puedes decir “Está bien” o “De acuerdo”.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 1 invitación con ¿Vamos a…? o ¿Quieres…?",
+      "Responde aceptando o rechazando.",
+      "Ofrece una alternativa simple si rechaza."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "planes", "invitaciones", "aceptar", "rechazar"]
+}

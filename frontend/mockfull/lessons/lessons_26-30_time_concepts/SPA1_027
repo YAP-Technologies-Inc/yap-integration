@@ -1,0 +1,156 @@
+{
+  "lesson_id": "SPA1_027",
+  "title": "Objetos y colores en mi habitación",
+  "level": "A1",
+  "theme": "Home & Housing",
+  "focus": "Describir objetos con colores y tamaño usando ser + adjetivo y concordancia.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo nombrar objetos comunes del hogar.",
+    "Puedo decir el color y tamaño de un objeto con ser + adjetivo.",
+    "Puedo concordar género y número con colores que cambian."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "lámpara", "translation": "lamp", "part_of_speech": "noun", "gender": "feminine", "example": "La lámpara es nueva.", "example_translation": "The lamp is new." },
+      { "term": "sofá", "translation": "sofa", "part_of_speech": "noun", "gender": "masculine", "example": "El sofá es cómodo.", "example_translation": "The sofa is comfortable." },
+      { "term": "libro", "translation": "book", "part_of_speech": "noun", "gender": "masculine", "example": "El libro es interesante.", "example_translation": "The book is interesting." },
+      { "term": "teléfono", "translation": "phone", "part_of_speech": "noun", "gender": "masculine", "example": "Mi teléfono es nuevo.", "example_translation": "My phone is new." },
+      { "term": "rojo", "translation": "red (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El sofá es rojo.", "example_translation": "The sofa is red." },
+      { "term": "roja", "translation": "red (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La lámpara es roja.", "example_translation": "The lamp is red." },
+      { "term": "negro", "translation": "black (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El teléfono es negro.", "example_translation": "The phone is black." },
+      { "term": "negra", "translation": "black (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La silla es negra.", "example_translation": "The chair is black." },
+      { "term": "blanco", "translation": "white (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El libro es blanco.", "example_translation": "The book is white." },
+      { "term": "blanca", "translation": "white (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La mesa es blanca.", "example_translation": "The table is white." },
+      { "term": "azul", "translation": "blue", "part_of_speech": "adjective", "gender": "invariable", "example": "Las sillas son azules.", "example_translation": "The chairs are blue." },
+      { "term": "grande", "translation": "big", "part_of_speech": "adjective", "gender": "invariable", "example": "La mesa es grande.", "example_translation": "The table is big." },
+      { "term": "pequeño", "translation": "small (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El dormitorio es pequeño.", "example_translation": "The bedroom is small." },
+      { "term": "pequeña", "translation": "small (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La cocina es pequeña.", "example_translation": "The kitchen is small." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_27_1",
+        "type": "categorize",
+        "prompt": "Clasifica los adjetivos por género.",
+        "items": ["rojo", "roja", "negro", "negra", "blanco", "blanca", "azul", "grande"],
+        "solution": {
+          "masculino": ["rojo", "negro", "blanco"],
+          "femenino": ["roja", "negra", "blanca"],
+          "invariable": ["azul", "grande"]
+        },
+        "feedback": { "tip": "Algunos colores no cambian de género, pero sí de número: azules." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "La lámpara es roja y grande.", "translation": "The lamp is red and big.", "audio_url": null },
+      { "spanish": "El sofá es negro.", "translation": "The sofa is black.", "audio_url": null },
+      { "spanish": "Las sillas son azules.", "translation": "The chairs are blue.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_27_1",
+        "type": "call_and_response",
+        "prompt": "Responde con color y tamaño.",
+        "pairs": [
+          ["¿De qué color es la lámpara?", "La lámpara es __."],
+          ["¿Cómo es la mesa?", "La mesa es __ y __."],
+          ["¿De qué color son las sillas?", "Las sillas son __."]
+        ],
+        "word_bank": ["roja/rojo", "grande", "pequeña/pequeño", "azules", "blanca/blanco"],
+        "success_criteria": { "acuerdo": "Género y número correctos.", "orden": "ser + sustantivo + adjetivo." }
+      },
+      {
+        "id": "SPK_27_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Describe dos objetos de tu habitación.",
+        "cards": [
+          "A: ¿Qué objeto es?",
+          "B: Es __. Es __ __."
+        ],
+        "word_bank": ["una lámpara", "un libro", "roja/rojo", "negra/negro", "grande", "pequeña/pequeño"],
+        "acceptable_variants": ["Es una lámpara. Es roja y grande.", "Es un libro. Es pequeño y negro."],
+        "feedback": { "tip": "Conecta adjetivos con y." }
+      },
+      {
+        "id": "SPK_27_3",
+        "type": "pronunciation_focus",
+        "prompt": "Practica la r suave en rojo y la g fuerte en grande.",
+        "items": ["rojo", "grande", "blanca", "negro"],
+        "feedback_rule": { "correct": "Sonidos claros.", "incorrect": "Marca la r suave y la g de gra-nde." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G27_ser_adj",
+        "name": "Ser + adjetivos de color y tamaño",
+        "scope": ["ser + rojo/roja", "ser + negro/negra", "ser + blanco/blanca", "ser + azul", "ser + grande/pequeño(a)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "El sofá es negro.", "translation": "The sofa is black." },
+          { "spanish": "La mesa es blanca.", "translation": "The table is white." }
+        ],
+        "notes": "Adjetivo normalmente va después del sustantivo."
+      },
+      {
+        "id": "G27_concordancia",
+        "name": "Concordancia de género y número",
+        "scope": ["-o/-a cambio de género", "invariables: azul, grande"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Las sillas son azules.", "translation": "The chairs are blue." }
+        ],
+        "notes": "Plural en -s o -es según la palabra."
+      },
+      {
+        "id": "G27_material_ro",
+        "name": "Ser de + material (reconocimiento)",
+        "scope": ["ser de madera/metal/plástico"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "La mesa es de madera.", "translation": "The table is made of wood." }
+        ],
+        "notes": "Solo comprensión."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_27_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con el adjetivo correcto.",
+        "items": ["La lámpara es __ (rojo/roja).", "El teléfono es __ (negro/negra)."],
+        "solution": ["roja", "negro"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Ajusta el género al sustantivo." }
+      },
+      {
+        "id": "GR_27_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural.",
+        "options": [
+          "El mesa es blanco.",
+          "La mesa es blanca.",
+          "La mesa blanca es."
+        ],
+        "correct": "La mesa es blanca.",
+        "feedback": { "tip": "Orden: sustantivo + ser + adjetivo." }
+      }
+    ]
+  },
+  "cultural_note": "En descripciones de vivienda se usan colores y adjetivos simples: “cocina blanca”, “salón grande”.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 descripciones con color y tamaño.",
+      "Aplica concordancia correcta en 3 de 4 casos.",
+      "Reconoce adjetivos invariables como azul/grande."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "colores", "objetos", "ser", "concordancia"]
+}

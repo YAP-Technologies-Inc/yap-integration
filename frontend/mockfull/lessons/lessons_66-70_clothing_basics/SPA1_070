@@ -1,0 +1,98 @@
+{
+  "lesson_id": "SPA1_070",
+  "title": "¿Qué llevas hoy? Presentación breve",
+  "level": "A1",
+  "theme": "Clothing Basics",
+  "focus": "Hacer una mini presentación de tu ropa con colores.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Respondo a ¿Qué llevas hoy? con 2–3 prendas.",
+    "Uso colores con acuerdo básico.",
+    "Cierro con gracias o comentario simple."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "hoy", "translation": "today", "part_of_speech": "adverb", "example": "Hoy llevo una chaqueta.", "example_translation": "Today I am wearing a jacket." },
+      { "term": "gracias", "translation": "thanks", "part_of_speech": "interjection", "example": "Gracias, eso es todo.", "example_translation": "Thanks, that’s all." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_70_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase con orden natural.",
+        "options": [
+          "Llevo negra chaqueta.",
+          "Llevo una chaqueta negra.",
+          "Negra llevo una chaqueta."
+        ],
+        "correct": "Llevo una chaqueta negra.",
+        "feedback": { "tip": "Sustantivo + adjetivo de color." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Hoy llevo una camisa blanca y pantalones negros.", "translation": "Today I’m wearing a white shirt and black trousers.", "audio_url": null },
+      { "spanish": "Llevo una falda negra y una chaqueta azul.", "translation": "I’m wearing a black skirt and a blue jacket.", "audio_url": null },
+      { "spanish": "Gracias.", "translation": "Thanks.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_70_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Presentación rápida.",
+        "dialogue_template": [
+          "A: ¿Qué llevas hoy?",
+          "B: Hoy llevo __ __ __ y __ __.",
+          "A: __."
+        ],
+        "word_bank": ["una", "camisa", "blanca", "pantalones", "negros", "Gracias"],
+        "solutions": [["una", "camisa", "blanca", "pantalones", "negros", "Gracias"]],
+        "feedback_rule": { "ok": "Presentación clara.", "error": "Orden prenda + color y acuerdo." }
+      },
+      {
+        "id": "SPK_70_2",
+        "type": "exit_ticket",
+        "prompt": "Di 2 prendas con colores en una sola frase.",
+        "expected_example": "Hoy llevo una camiseta azul y zapatos blancos.",
+        "rubric": { "acuerdo": "colores correctos.", "fluidez": "Frase corta y completa." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G70_resumen_llevar_color",
+        "name": "Resumen llevar + color",
+        "scope": ["Llevo + prenda + color", "coordinación con y", "acuerdo básico masc./fem."],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Llevo una chaqueta negra y una falda azul.", "translation": "I’m wearing a black jacket and a blue skirt." }
+        ],
+        "notes": "Mantén el color después del sustantivo; usa y para conectar."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_70_1",
+        "type": "orthography_check",
+        "prompt": "Añade signos y tildes donde corresponda.",
+        "items": ["Que llevas hoy"],
+        "solution": ["¿Qué llevas hoy?"],
+        "feedback_rule": { "note": "¿…? y tilde en qué." }
+      }
+    ]
+  },
+  "cultural_note": "En presentaciones informales, una frase breve con hoy + llevo es suficiente.",
+  "assessment": {
+    "auto_criteria": [
+      "Responde a ¿Qué llevas hoy? con 2+ prendas.",
+      "Incluye al menos 2 colores con acuerdo básico.",
+      "Usa y para conectar sin errores."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "ropa", "colores", "presentación", "llevar"]
+}

@@ -1,0 +1,125 @@
+{
+  "lesson_id": "SPA1_006",
+  "level": "A1",
+  "title": "Nationality and Origin",
+  "duration_minutes": 8,
+  "topic_tags": ["identity", "countries", "nationalities"],
+  "learning_objectives": [
+    "Ask and answer about origin",
+    "State nationality with correct gender",
+    "Use ser + de to talk about where someone is from"
+  ],
+  "key_phrases": [
+    {"target": "¿De dónde eres?", "translation": "Where are you from?"},
+    {"target": "Soy de [país/ciudad].", "translation": "I am from [country/city]."},
+    {"target": "¿Cuál es tu nacionalidad?", "translation": "What is your nationality?"},
+    {"target": "Soy español / Soy española.", "translation": "I am Spanish (m/f)."},
+    {"target": "Vivo en [ciudad].", "translation": "I live in [city]."}
+  ],
+  "vocabulary": {
+    "items": [
+      {"term": "país", "translation": "country", "part_of_speech": "noun", "gender": "m", "example": "España es un país."},
+      {"term": "ciudad", "translation": "city", "part_of_speech": "noun", "gender": "f", "example": "Madrid es una ciudad."},
+      {"term": "español", "translation": "Spanish (nationality, m.)", "part_of_speech": "adj", "gender": "m", "example": "Él es español."},
+      {"term": "española", "translation": "Spanish (nationality, f.)", "part_of_speech": "adj", "gender": "f", "example": "Ella es española."},
+      {"term": "mexicano", "translation": "Mexican (m.)", "part_of_speech": "adj", "gender": "m", "example": "Él es mexicano."},
+      {"term": "mexicana", "translation": "Mexican (f.)", "part_of_speech": "adj", "gender": "f", "example": "Ella es mexicana."},
+      {"term": "francés", "translation": "French (m.)", "part_of_speech": "adj", "gender": "m", "example": "Él es francés."},
+      {"term": "francesa", "translation": "French (f.)", "part_of_speech": "adj", "gender": "f", "example": "Ella es francesa."},
+      {"term": "estadounidense", "translation": "American (m/f)", "part_of_speech": "adj", "gender": "invariable", "example": "Soy estadounidense."},
+      {"term": "vivir", "translation": "to live", "part_of_speech": "verb", "example": "Vivo en Valencia."},
+      {"term": "ser", "translation": "to be", "part_of_speech": "verb", "example": "Soy de Perú."},
+      {"term": "de", "translation": "from, of", "part_of_speech": "prep", "example": "Soy de Chile."}
+    ],
+    "exercises": [
+      {
+        "type": "match",
+        "prompt": "Match nationality to country.",
+        "pairs": [
+          {"left": "español / española", "right": "España"},
+          {"left": "mexicano / mexicana", "right": "México"},
+          {"left": "francés / francesa", "right": "Francia"},
+          {"left": "estadounidense", "right": "Estados Unidos"}
+        ]
+      },
+      {
+        "type": "select",
+        "prompt": "Choose the correct gender form.",
+        "items": [
+          {"question": "Laura es ___", "options": ["español", "española"], "answer": "española"},
+          {"question": "Carlos es ___", "options": ["mexicana", "mexicano"], "answer": "mexicano"},
+          {"question": "Marie es ___", "options": ["francés", "francesa"], "answer": "francesa"}
+        ]
+      },
+      {
+        "type": "fill_in_the_blank",
+        "prompt": "Complete with de, ser, or vivir in the present.",
+        "items": [
+          {"text": "Yo ___ de Argentina.", "answer": "soy"},
+          {"text": "Nosotros ___ en Sevilla.", "answer": "vivimos"},
+          {"text": "¿Tú eres ___ Colombia?", "answer": "de"}
+        ]
+      },
+      {
+        "type": "sort",
+        "prompt": "Order the words to make a sentence.",
+        "items": [
+          {"jumbled": "eres ¿ dónde de tú ?", "answer": "¿De dónde eres?"},
+          {"jumbled": "de soy México yo", "answer": "Yo soy de México."}
+        ]
+      },
+      {
+        "type": "picture_label",
+        "prompt": "Write the nationality based on the flag shown.",
+        "items": [
+          {"image_id": "flag_spain", "answer": "español / española"},
+          {"image_id": "flag_france", "answer": "francés / francesa"}
+        ]
+      }
+    ]
+  },
+  "grammar": {
+    "topics": ["Ser + de (origen)", "Adjetivos de nacionalidad: género y número", "Ortografía: nacionalidades en minúscula"],
+    "explanations": [
+      "Usa ser + de para el origen: Soy de Perú.",
+      "Ajusta el género: español/española, francés/francesa, mexicano/mexicana.",
+      "Los nombres de nacionalidad se escriben en minúscula."
+    ],
+    "examples": [
+      {"target": "¿De dónde eres?", "translation": "Where are you from?"},
+      {"target": "Soy de Chile. Soy chileno / chilena.", "translation": "I am from Chile. I am Chilean."}
+    ],
+    "exercises": [
+      {"type": "conjugation", "prompt": "Conjugate ser for the subject.", "items": [
+        {"subject": "yo", "answer": "soy"},
+        {"subject": "tú", "answer": "eres"},
+        {"subject": "él/ella", "answer": "es"}
+      ]},
+      {"type": "agree_gender", "prompt": "Choose the correct gender for the adjective.", "items": [
+        {"text": "Ana es ___ (mexicano/mexicana)", "answer": "mexicana"},
+        {"text": "Luis es ___ (francés/francesa)", "answer": "francés"}
+      ]},
+      {"type": "transform", "prompt": "Change the subject and adjust the sentence.", "items": [
+        {"input": "Yo soy de España.", "target_subject": "ella", "answer": "Ella es de España."},
+        {"input": "Él es francés.", "target_subject": "ella", "answer": "Ella es francesa."}
+      ]},
+      {"type": "error_correction", "prompt": "Fix the mistake.", "items": [
+        {"text": "Soy De Perú.", "answer": "Soy de Perú."},
+        {"text": "Ella es Espanola.", "answer": "Ella es española."}
+      ]},
+      {"type": "fill_in_the_blank", "prompt": "Complete.", "items": [
+        {"text": "Nosotros ___ de Colombia.", "answer": "somos"},
+        {"text": "Ustedes ___ argentinos.", "answer": "son"}
+      ]}
+    ]
+  },
+  "speaking": {
+    "exercises": [
+      {"type": "listen_and_repeat", "content": "¿De dónde eres? Soy de [país].", "variations": 3},
+      {"type": "guided_interview", "prompt": "Entrevista a un compañero: origen y ciudad.", "model": "¿De dónde eres? ¿De qué ciudad?"},
+      {"type": "role_play", "scenario": "Primera reunión en clase", "roles": ["A: pregunta origen", "B: responde con país y ciudad"]},
+      {"type": "prompted_response", "prompt": "Di tu nacionalidad con género correcto.", "expected_output_pattern": "Soy [nacionalidad]."},
+      {"type": "personal_statement", "prompt": "Preséntate: origen, ciudad actual, nacionalidad.", "sentence_frames": ["Soy de...", "Vivo en...", "Soy ..."]}
+    ]
+  }
+}

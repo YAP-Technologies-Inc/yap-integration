@@ -1,0 +1,79 @@
+{
+  "quiz_id": "SPA1_Q015",
+  "title": "Quiz 71–75: Weather Talk",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_071", "SPA1_072", "SPA1_073", "SPA1_074", "SPA1_075"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q15_SPK_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Mini parte meteorológica de hoy con estación.",
+        "dialogue_template": [
+          "A: ¿Qué tiempo hace hoy?",
+          "B: Estamos en __. Hoy __ __ y __ __."
+        ],
+        "word_bank": ["verano", "otoño", "invierno", "primavera", "está", "nublado", "hace", "viento", "hace", "calor", "hace", "frío", "está", "despejado"],
+        "solutions": [
+          ["primavera", "está", "nublado", "hace", "viento"],
+          ["verano", "hace", "calor", "está", "despejado"]
+        ],
+        "success_criteria": ["Usa en + estación.", "Usa hace + nombre y está + adjetivo."]
+      },
+      {
+        "id": "Q15_SPK_2",
+        "type": "controlled_production",
+        "prompt": "Di 2 ideas sobre el clima de hoy conectadas con y o pero.",
+        "items": ["Frase 1:", "Frase 2:"],
+        "expected_example": ["Hoy hace sol pero está ventoso.", "También hay un poco de lluvia."],
+        "success_criteria": ["Incluye hoy + hace/está.", "Usa y o pero correctamente."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q15_VOC_1",
+        "type": "match",
+        "prompt": "Empareja clima y traducción.",
+        "pairs": [
+          ["hace sol", "it’s sunny"],
+          ["está nublado", "it’s cloudy"],
+          ["lluvia", "rain"],
+          ["viento", "wind"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Recuerda: hace + sol/viento; está + adjetivo." }
+      },
+      {
+        "id": "Q15_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural.",
+        "options": ["Está calor.", "Hace calor.", "Hay nublado."],
+        "correct": "Hace calor.",
+        "feedback": { "tip": "Hace + calor/frío/sol/viento; está + nublado/despejado." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q15_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con hace / está / hay.",
+        "items": ["Hoy __ sol.", "El cielo __ nublado.", "__ niebla por la mañana."],
+        "solution": ["hace", "está", "Hay"],
+        "feedback_rule": { "tip": "Hace + nombre, está + adjetivo, hay + fenómeno." }
+      },
+      {
+        "id": "Q15_GR_2",
+        "type": "orthography_check",
+        "prompt": "Añade signos y tildes correctos.",
+        "items": ["Que tiempo hace hoy"],
+        "solution": ["¿Qué tiempo hace hoy?"],
+        "feedback_rule": { "note": "Interrogación completa y tilde en qué." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Produce 2 frases sobre el clima con hace/está.", "Nombra la estación correctamente.", "Usa y o pero para conectar."] }
+}

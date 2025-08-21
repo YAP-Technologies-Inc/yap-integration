@@ -1,0 +1,136 @@
+{
+  "lesson_id": "SPA1_023",
+  "title": "Emociones: contento, nervioso, tranquilo",
+  "level": "A1",
+  "theme": "Feelings & States",
+  "focus": "Describir emociones propias y de otra persona con estar en presente.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir cómo estoy emocionalmente con 2 adjetivos.",
+    "Puedo preguntar y decir cómo está otra persona.",
+    "Puedo corregir la acentuación de está."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "nervioso", "translation": "nervous (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy nervioso.", "example_translation": "I am nervous." },
+      { "term": "nerviosa", "translation": "nervous (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy nerviosa.", "example_translation": "I am nervous." },
+      { "term": "tranquilo", "translation": "calm (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy tranquilo.", "example_translation": "I am calm." },
+      { "term": "tranquila", "translation": "calm (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy tranquila.", "example_translation": "I am calm." },
+      { "term": "aburrido", "translation": "bored (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy aburrido.", "example_translation": "I am bored." },
+      { "term": "aburrida", "translation": "bored (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy aburrida.", "example_translation": "I am bored." },
+      { "term": "feliz", "translation": "happy", "part_of_speech": "adjective", "gender": "invariable", "example": "Estoy feliz hoy.", "example_translation": "I am happy today." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_23_1",
+        "type": "match",
+        "prompt": "Empareja emoción y traducción.",
+        "pairs": [
+          ["nerviosa", "nervous (fem.)"],
+          ["tranquilo", "calm (masc.)"],
+          ["aburrida", "bored (fem.)"],
+          ["feliz", "happy"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Muy bien!", "incorrect_pair": "Revisa el género y el significado." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cómo está tu hermano?", "translation": "How is your brother?", "audio_url": null },
+      { "spanish": "Mi hermano está tranquilo.", "translation": "My brother is calm.", "audio_url": null },
+      { "spanish": "Estoy nerviosa pero feliz.", "translation": "I am nervous but happy. (fem.)", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_23_1",
+        "type": "guided_interview",
+        "prompt": "Pregunta por el estado de otra persona y responde.",
+        "frames": [
+          "¿Cómo está tu __?",
+          "Mi __ está __.",
+          "¿Y tu __?",
+          "Está __ y __."
+        ],
+        "word_bank": ["madre", "padre", "amigo/amiga", "tranquilo/a", "nervioso/a", "aburrido/a", "feliz"],
+        "feedback": { "tip": "No olvides el acento: está." }
+      },
+      {
+        "id": "SPK_23_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa y practica el diálogo.",
+        "dialogue_template": [
+          "A: ¿Cómo está tu amiga Marta?",
+          "B: Está __, pero __.",
+          "A: ¡Qué bien!"
+        ],
+        "word_bank": ["feliz", "un poco nerviosa", "tranquila", "aburrida"],
+        "solutions": [
+          ["tranquila", "un poco nerviosa"],
+          ["feliz", "un poco nerviosa"]
+        ],
+        "feedback_rule": { "ok": "Frase natural.", "error": "Orden: está + adjetivo." }
+      },
+      {
+        "id": "SPK_23_3",
+        "type": "orthography_check",
+        "prompt": "Elige la forma correcta: esta / está.",
+        "items": ["Mi madre __ contenta.", "¿Cómo __ tu padre?"],
+        "solution": ["está", "está"],
+        "feedback_rule": { "note": "está = verbo; esta = determinante. Usa tilde en está." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G23_estar_tercera",
+        "name": "Estar en 3.ª persona",
+        "forms": ["él/ella está"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Mi amiga está feliz.", "translation": "My friend is happy." },
+          { "spanish": "¿Cómo está tu padre?", "translation": "How is your father?" }
+        ],
+        "notes": "Acuerdo de género con la persona descrita."
+      },
+      {
+        "id": "G23_sentirse_ro",
+        "name": "Sentirse (reconocimiento)",
+        "scope": ["(él/ella) se siente + adjetivo"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Se siente nerviosa.", "translation": "She feels nervous." }
+        ],
+        "notes": "Solo para comprensión; no se exige producirlo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_23_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": [
+          "Mi padre está tranquila.",
+          "Mi padre está tranquilo.",
+          "Mi padre es bien."
+        ],
+        "correct": "Mi padre está tranquilo.",
+        "feedback": { "tip": "Acuerdo de género y usar estar." }
+      }
+    ]
+  },
+  "cultural_note": "Decir cómo está otra persona es común en conversaciones breves, especialmente al preguntar por familia o amigos.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce frases con está + adjetivo correctas.",
+      "Distingue esta/está en escritura.",
+      "Mantiene un mini intercambio preguntando por otra persona."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "estar", "emociones", "tercera persona"]
+}

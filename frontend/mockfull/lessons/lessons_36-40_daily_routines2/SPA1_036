@@ -1,0 +1,107 @@
+{
+  "lesson_id": "SPA1_036",
+  "title": "De lunes a viernes: estudiar y trabajar",
+  "level": "A1",
+  "theme": "Daily Routines Part 2",
+  "focus": "Hablar de estudio y trabajo con verbos -ar en presente y de lunes a viernes.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir si estudio o trabajo de lunes a viernes.",
+    "Puedo usar verbos -ar frecuentes en yo/tú.",
+    "Puedo decir a qué hora empiezo y termino."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "estudiar", "translation": "to study", "part_of_speech": "verb", "example": "Estudio español.", "example_translation": "I study Spanish." },
+      { "term": "trabajar", "translation": "to work", "part_of_speech": "verb", "example": "Trabajo en una oficina.", "example_translation": "I work in an office.", "recognition_only": false },
+      { "term": "de lunes a viernes", "translation": "from Monday to Friday", "part_of_speech": "phrase", "example": "Trabajo de lunes a viernes.", "example_translation": "I work from Monday to Friday." },
+      { "term": "empezar (reconocimiento)", "translation": "to start", "part_of_speech": "verb", "example": "Empiezo a las nueve.", "example_translation": "I start at nine." },
+      { "term": "terminar", "translation": "to finish", "part_of_speech": "verb", "example": "Termino a las cinco.", "example_translation": "I finish at five." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_36_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase de hábito laboral.",
+        "options": [
+          "Trabajo de lunes a viernes.",
+          "Trabajo el sábado a veces.",
+          "Trabajas ayer."
+        ],
+        "correct": "Trabajo de lunes a viernes.",
+        "feedback": { "tip": "Hábito con de lunes a viernes." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Trabajo de lunes a viernes.", "translation": "I work from Monday to Friday.", "audio_url": null },
+      { "spanish": "Estudio español por la tarde.", "translation": "I study Spanish in the afternoon.", "audio_url": null },
+      { "spanish": "Empiezo a las nueve y termino a las cinco.", "translation": "I start at nine and finish at five.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_36_1",
+        "type": "controlled_production",
+        "prompt": "Di tu patrón semanal.",
+        "items": ["__ de lunes a viernes.", "Estudio/trabajo __ la tarde."],
+        "expected_example": ["Trabajo de lunes a viernes.", "Estudio por la tarde."],
+        "success_criteria": { "claridad": "Dos frases claras." }
+      },
+      {
+        "id": "SPK_36_2",
+        "type": "request_builder",
+        "prompt": "Explica tu horario básico.",
+        "frames": [
+          "Empiezo a las __.",
+          "Termino a las __."
+        ],
+        "feedback": { "tip": "Usa a las + hora correcta." }
+      },
+      {
+        "id": "SPK_36_3",
+        "type": "micro_dialogue_build",
+        "prompt": "Pregunta a alguien por su semana.",
+        "cards": [
+          "A: ¿Trabajas o estudias de lunes a viernes?",
+          "B: __. Empiezo a las __ y termino a las __."
+        ],
+        "word_bank": ["Trabajo", "Estudio", "nueve", "cinco"],
+        "feedback": { "tip": "Completa con horas reales." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G36_ar_presente",
+        "name": "Presente regular -ar (yo/tú)",
+        "scope": ["trabajo / trabajas", "estudio / estudias", "termino / terminas"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "¿Trabajas los lunes?", "translation": "Do you work on Mondays?" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_36_1",
+        "type": "fill_in_blank",
+        "prompt": "Conjuga en yo/tú.",
+        "items": ["Yo __ (estudiar) español.", "¿Tú __ (trabajar) hoy?"],
+        "solution": ["estudio", "trabajas"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "-o para yo, -as para tú." }
+      }
+    ]
+  },
+  "cultural_note": "La jornada laboral puede incluir pausa larga al mediodía según la ciudad y el sector.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 verbos -ar en yo/tú correctamente.",
+      "Indica su patrón de lunes a viernes.",
+      "Da dos horas con a las claras."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "trabajo", "estudio", "presente -ar"]
+}

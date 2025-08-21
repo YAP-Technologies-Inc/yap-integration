@@ -1,0 +1,107 @@
+{
+  "lesson_id": "SPA1_059",
+  "title": "Dentro de un edificio: baño y salidas",
+  "level": "A1",
+  "theme": "Directions Level 1",
+  "focus": "Pedir por sitios internos: baño, salida; arriba/abajo.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo preguntar: “¿Dónde está el baño/la salida?”",
+    "Puedo entender arriba/abajo.",
+    "Puedo reconocer pisos básicos como primer piso."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "baño", "translation": "bathroom", "part_of_speech": "noun", "gender": "masculine", "example": "¿Dónde está el baño?", "example_translation": "Where is the bathroom?" },
+      { "term": "salida", "translation": "exit", "part_of_speech": "noun", "gender": "feminine", "example": "La salida está allí.", "example_translation": "The exit is there." },
+      { "term": "arriba", "translation": "upstairs/up", "part_of_speech": "adverb", "example": "El baño está arriba.", "example_translation": "The bathroom is upstairs." },
+      { "term": "abajo", "translation": "downstairs/down", "part_of_speech": "adverb", "example": "La salida está abajo.", "example_translation": "The exit is downstairs." },
+      { "term": "primer piso (reconocimiento)", "translation": "first floor", "part_of_speech": "noun", "gender": "masculine", "example": "Está en el primer piso. (reconocimiento)", "example_translation": "It’s on the first floor. (recognition)", "recognition_only": true }
+    ],
+    "practice": [
+      {
+        "id": "VOC_59_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la respuesta correcta a la pregunta.",
+        "options": [
+          "—¿Dónde está el baño? —Está arriba.",
+          "—¿Dónde está el baño? —Hay.",
+          "—¿Dónde está el baño? —Sí."
+        ],
+        "correct": "—¿Dónde está el baño? —Está arriba.",
+        "feedback": { "tip": "Responde con está + lugar/dirección." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Dónde está el baño?", "translation": "Where is the bathroom?", "audio_url": null },
+      { "spanish": "Está abajo, a la derecha.", "translation": "It is downstairs, to the right.", "audio_url": null },
+      { "spanish": "La salida está allí.", "translation": "The exit is there.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_59_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Busca el baño.",
+        "dialogue_template": [
+          "A: __ está el baño?",
+          "B: Está __, a la derecha."
+        ],
+        "word_bank": ["¿Dónde", "abajo"],
+        "solutions": [["¿Dónde", "abajo"]],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Incluye ¿Dónde…? con signos." }
+      },
+      {
+        "id": "SPK_59_2",
+        "type": "controlled_production",
+        "prompt": "Da una instrucción corta sobre la salida.",
+        "items": ["La salida __ __.", "La salida __ __ la izquierda."],
+        "expected_example": ["La salida está arriba.", "La salida está a la izquierda."],
+        "success_criteria": { "verbo": "usar está.", "preposición": "a la correcto." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G59_arriba_abajo",
+        "name": "Estar + arriba/abajo",
+        "scope": ["Está arriba.", "Está abajo."],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "El baño está abajo.", "translation": "The bathroom is downstairs." }],
+        "notes": "Útil en interiores."
+      },
+      {
+        "id": "G59_pisos_ro",
+        "name": "Pisos (reconocimiento)",
+        "scope": ["primer piso, segundo piso…"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Está en el primer piso.", "translation": "It’s on the first floor." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_59_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con arriba/abajo.",
+        "items": ["El baño está __.", "La salida está __."],
+        "solution": ["arriba", "abajo"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Piensa en niveles del edificio." }
+      }
+    ]
+  },
+  "cultural_note": "En edificios públicos suele haber señales: “Baños”, “Salida”. Aun así, preguntar es normal.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula “¿Dónde está el baño/la salida?” correctamente.",
+      "Usa arriba/abajo en 2 frases.",
+      "Da una ubicación con a la derecha/izquierda."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "baño", "salida", "arriba", "abajo", "estar"]
+}

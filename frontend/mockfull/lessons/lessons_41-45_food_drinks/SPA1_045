@@ -1,0 +1,103 @@
+{
+  "lesson_id": "SPA1_045",
+  "title": "Restricciones y hábitos de comida",
+  "level": "A1",
+  "theme": "Food & Drink Basics",
+  "focus": "Decir lo que comes/no comes y reforzar artículos con preferencias.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir que no como o no tomo algo.",
+    "Puedo expresar 2 preferencias de comida.",
+    "Puedo usar artículos correctos con gustos."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "comer", "translation": "to eat", "part_of_speech": "verb", "example": "Como verduras.", "example_translation": "I eat vegetables." },
+      { "term": "tomar", "translation": "to have (food/drink)", "part_of_speech": "verb", "example": "Tomo café.", "example_translation": "I have coffee." },
+      { "term": "no", "translation": "not", "part_of_speech": "adverb", "example": "No como carne.", "example_translation": "I do not eat meat." },
+      { "term": "carne", "translation": "meat", "part_of_speech": "noun", "gender": "feminine", "example": "No como carne.", "example_translation": "I do not eat meat." },
+      { "term": "pescado", "translation": "fish", "part_of_speech": "noun", "gender": "masculine", "example": "Como pescado.", "example_translation": "I eat fish." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_45_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural para preferencia general.",
+        "options": ["Me gusta la carne.", "Me gusta carne."],
+        "correct": "Me gusta la carne.",
+        "feedback": { "tip": "Usa artículo con gustos." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "No tomo leche.", "translation": "I do not have milk.", "audio_url": null },
+      { "spanish": "Me gusta el pescado.", "translation": "I like fish.", "audio_url": null },
+      { "spanish": "No me gusta la carne.", "translation": "I do not like meat.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_45_1",
+        "type": "controlled_production",
+        "prompt": "Di una cosa que comes y otra que no.",
+        "items": ["Como __.", "No como __."],
+        "expected_example": ["Como pescado.", "No como carne."],
+        "success_criteria": { "negación": "no + verbo correcto.", "claridad": "Frases breves." }
+      },
+      {
+        "id": "SPK_45_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Comparte preferencias.",
+        "cards": [
+          "A: ¿Te gusta el pescado?",
+          "B: __.",
+          "A: ¿Y la carne?",
+          "B: __."
+        ],
+        "word_bank": ["Sí, me gusta.", "No, no me gusta."],
+        "feedback": { "tip": "Incluye el artículo en la pregunta." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G45_negacion",
+        "name": "Negación con comida",
+        "scope": ["no + comer/tomar + sustantivo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "No tomo leche.", "translation": "I do not have milk." }]
+      },
+      {
+        "id": "G45_articulos_refuerzo",
+        "name": "Artículos con gustos (repaso)",
+        "scope": ["el/la/los/las tras me gusta/gustan"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "No me gusta la carne.", "translation": "I do not like meat." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_45_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con no + verbo.",
+        "items": ["__ tomo leche.", "__ como carne."],
+        "solution": ["No", "No"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "La negación va antes del verbo." }
+      }
+    ]
+  },
+  "cultural_note": "Para restricciones simples basta con no + verbo: “No tomo leche”, “No como carne”.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 frases con no + verbo.",
+      "Expresa 2 gustos con artículo correcto.",
+      "Responde a 1 pregunta de gusto con sí/no natural."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "gustos", "negación", "artículos"]
+}

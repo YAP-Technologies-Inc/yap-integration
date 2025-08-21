@@ -1,0 +1,113 @@
+{
+  "lesson_id": "SPA1_040",
+  "title": "Mi día laboral/escolar",
+  "level": "A1",
+  "theme": "Daily Routines Part 2",
+  "focus": "Dar un resumen del día con -ar en presente y horas clave.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puedo describir mi día con 4 oraciones sencillas.",
+    "Puedo usar horas para empezar/comer/terminar.",
+    "Puedo añadir un hábito con los + día."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "agenda", "translation": "schedule", "part_of_speech": "noun", "gender": "feminine", "example": "Mi agenda es simple.", "example_translation": "My schedule is simple." },
+      { "term": "reunión", "translation": "meeting", "part_of_speech": "noun", "gender": "feminine", "example": "Tengo reunión a las diez.", "example_translation": "I have a meeting at ten." },
+      { "term": "clase", "translation": "class", "part_of_speech": "noun", "gender": "feminine", "example": "Tengo clase por la tarde.", "example_translation": "I have class in the afternoon." },
+      { "term": "terminar", "translation": "to finish", "part_of_speech": "verb", "example": "Termino a las cinco.", "example_translation": "I finish at five." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_40_1",
+        "type": "match",
+        "prompt": "Empareja actividad y traducción.",
+        "pairs": [
+          ["reunión", "meeting"],
+          ["clase", "class"],
+          ["agenda", "schedule"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Correcto!", "incorrect_pair": "Revisa el léxico del día." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Empiezo a las nueve, como a las dos y termino a las cinco.", "translation": "I start at nine, have lunch at two, and finish at five.", "audio_url": null },
+      { "spanish": "Los martes practico español.", "translation": "On Tuesdays I practice Spanish.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_40_1",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye tu mini resumen del día.",
+        "cards": [
+          "A: ¿A qué hora empiezas?",
+          "B: __.",
+          "A: ¿A qué hora comes?",
+          "B: __.",
+          "A: ¿A qué hora terminas?",
+          "B: __."
+        ],
+        "word_bank": ["Empiezo a las nueve.", "Como a las dos.", "Termino a las cinco."],
+        "feedback": { "tip": "Usa a las + hora y frases cortas." }
+      },
+      {
+        "id": "SPK_40_2",
+        "type": "controlled_production",
+        "prompt": "Añade un hábito semanal.",
+        "items": ["Los __ __ __."],
+        "expected_example": ["Los martes practico español."],
+        "success_criteria": { "estructura": "los + día + verbo en yo." }
+      },
+      {
+        "id": "SPK_40_3",
+        "type": "exit_ticket",
+        "prompt": "Di 3 oraciones sobre tu día.",
+        "expected_example": "Empiezo a las nueve, como a las dos y termino a las cinco.",
+        "rubric": { "claridad": "Frases cortas, horas correctas." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G40_resumen_ar",
+        "name": "Resumen de -ar en presente",
+        "scope": ["trabajo/estudio/practico/preparo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Practico español los martes.", "translation": "I practice Spanish on Tuesdays." }]
+      },
+      {
+        "id": "G40_esqueleto_horas",
+        "name": "Esqueleto de horas del día",
+        "scope": ["Empiezo a las…", "Como a la/las…", "Termino a las…"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Como a las dos.", "translation": "I have lunch at two." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_40_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa las frases modelo.",
+        "items": ["Empiezo __ las nueve.", "Termino __ las cinco.", "Los miércoles __ español."],
+        "solution": ["a", "a", "practico"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "a + las; -o en yo." }
+      }
+    ]
+  },
+  "cultural_note": "Los horarios varían por país y sector; adapta la hora de comer y terminar a tu contexto.",
+  "assessment": {
+    "auto_criteria": [
+      "Incluye 3 horas correctas en su resumen.",
+      "Usa un verbo -ar en yo con los + día.",
+      "Mantiene 3 oraciones claras y breves."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "horario", "resumen", "presente -ar"]
+}

@@ -1,0 +1,119 @@
+{
+  "lesson_id": "SPA1_053",
+  "title": "Este / esta para señalar productos",
+  "level": "A1",
+  "theme": "Shopping Essentials",
+  "focus": "Usar este/esta con objetos y preguntar su precio.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir “este/esta + sustantivo”.",
+    "Puedo preguntar el precio de un producto señalado.",
+    "Puedo decir si quiero ese producto."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "este", "translation": "this (masc.)", "part_of_speech": "adjective", "example": "Este libro", "example_translation": "This book" },
+      { "term": "esta", "translation": "this (fem.)", "part_of_speech": "adjective", "example": "Esta camiseta", "example_translation": "This T-shirt" },
+      { "term": "libro", "translation": "book", "part_of_speech": "noun", "gender": "masculine", "example": "Quiero este libro.", "example_translation": "I want this book." },
+      { "term": "camiseta", "translation": "T-shirt", "part_of_speech": "noun", "gender": "feminine", "example": "¿Cuánto cuesta esta camiseta?", "example_translation": "How much does this T-shirt cost?" },
+      { "term": "bolsa", "translation": "bag", "part_of_speech": "noun", "gender": "feminine", "example": "Quiero esta bolsa.", "example_translation": "I want this bag." },
+      { "term": "teléfono", "translation": "phone", "part_of_speech": "noun", "gender": "masculine", "example": "Este teléfono es nuevo. (reconocimiento)", "example_translation": "This phone is new. (recognition)", "recognition_only": true }
+    ],
+    "practice": [
+      {
+        "id": "VOC_53_1",
+        "type": "multiple_choice",
+        "prompt": "Elige el demostrativo correcto.",
+        "options": [
+          "¿Cuánto cuesta este camiseta?",
+          "¿Cuánto cuesta esta camiseta?",
+          "¿Cuánto cuesta esta libro?"
+        ],
+        "correct": "¿Cuánto cuesta esta camiseta?",
+        "feedback": { "tip": "este + masc.; esta + fem." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cuánto cuesta este libro?", "translation": "How much does this book cost?", "audio_url": null },
+      { "spanish": "¿Cuánto cuesta esta camiseta?", "translation": "How much does this T-shirt cost?", "audio_url": null },
+      { "spanish": "Quiero esta bolsa, por favor.", "translation": "I want this bag, please.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_53_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite con este/esta + sustantivo.",
+        "audio_items": ["Este libro", "Esta camiseta", "Esta bolsa"],
+        "success_criteria": { "acuerdo": "Género correcto con el sustantivo.", "cortesía": "Incluye por favor al pagar." }
+      },
+      {
+        "id": "SPK_53_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Señala y pregunta.",
+        "dialogue_template": [
+          "Cliente: ¿Cuánto cuesta __ libro?",
+          "Dependiente: Cuesta veinte euros.",
+          "Cliente: Gracias. __ esta bolsa, por favor."
+        ],
+        "word_bank": ["este", "Quiero"],
+        "solutions": [["este", "Quiero"]],
+        "feedback_rule": { "ok": "Demostrativo correcto.", "error": "Revisa este/esta según género." }
+      },
+      {
+        "id": "SPK_53_3",
+        "type": "controlled_production",
+        "prompt": "Haz 2 preguntas con este/esta.",
+        "items": ["¿Cuánto cuesta __ __?", "¿Cuánto cuesta __ __?"],
+        "expected_example": ["¿Cuánto cuesta este libro?", "¿Cuánto cuesta esta camiseta?"],
+        "success_criteria": { "demostrativo": "este/esta bien usado.", "artículo": "No es necesario artículo extra." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G53_dem_este_esta",
+        "name": "Demostrativos: este/esta",
+        "scope": ["este + sustantivo masc.", "esta + sustantivo fem."],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Este libro", "translation": "This book" },
+          { "spanish": "Esta camiseta", "translation": "This T-shirt" }
+        ],
+        "notes": "Mantén el demostrativo pegado al sustantivo."
+      },
+      {
+        "id": "G53_dem_plural_ro",
+        "name": "Plurales y otros (reconocimiento)",
+        "scope": ["estos/estas", "ese/esa"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Esos zapatos (reconocimiento).", "translation": "Those shoes (recognition)." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_53_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con este o esta.",
+        "items": ["__ libro cuesta treinta euros.", "__ bolsa cuesta quince euros."],
+        "solution": ["Este", "Esta"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Este = masc.; Esta = fem." }
+      }
+    ]
+  },
+  "cultural_note": "Señalar con “este/esta” y preguntar precio es directo y cortés si añades “por favor” al comprar.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa este/esta correctamente con dos sustantivos.",
+      "Formula una pregunta de precio con demostrativo.",
+      "Realiza una compra corta con “Quiero…, por favor.”"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "demostrativos", "precios", "compra"]
+}

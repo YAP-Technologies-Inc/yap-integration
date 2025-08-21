@@ -1,0 +1,110 @@
+{
+  "lesson_id": "SPA1_032",
+  "title": "Asearse: ducharse y lavarse",
+  "level": "A1",
+  "theme": "Daily Routines Part 1",
+  "focus": "Usar me/te con ducharse y lavarse; vocabulario básico del baño.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir si me ducho o me lavo por la mañana.",
+    "Puedo nombrar 4 objetos del baño.",
+    "Puedo enlazar acciones con después y luego."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "ducharse", "translation": "to shower", "part_of_speech": "verb", "example": "Me ducho por la mañana.", "example_translation": "I shower in the morning." },
+      { "term": "lavarse los dientes", "translation": "to brush one’s teeth", "part_of_speech": "verb", "example": "Me lavo los dientes.", "example_translation": "I brush my teeth." },
+      { "term": "cepillo de dientes", "translation": "toothbrush", "part_of_speech": "noun", "gender": "masculine", "example": "Uso el cepillo de dientes.", "example_translation": "I use the toothbrush." },
+      { "term": "pasta de dientes", "translation": "toothpaste", "part_of_speech": "noun", "gender": "feminine", "example": "Pongo pasta de dientes.", "example_translation": "I put toothpaste on." },
+      { "term": "toalla", "translation": "towel", "part_of_speech": "noun", "gender": "feminine", "example": "La toalla está en el baño.", "example_translation": "The towel is in the bathroom." },
+      { "term": "jabón", "translation": "soap", "part_of_speech": "noun", "gender": "masculine", "example": "Uso jabón en la ducha.", "example_translation": "I use soap in the shower." },
+      { "term": "luego", "translation": "then, later", "part_of_speech": "adverb", "example": "Me ducho y luego desayuno.", "example_translation": "I shower and then have breakfast." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_32_1",
+        "type": "match",
+        "prompt": "Empareja objeto y traducción.",
+        "pairs": [
+          ["cepillo de dientes", "toothbrush"],
+          ["pasta de dientes", "toothpaste"],
+          ["toalla", "towel"],
+          ["jabón", "soap"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Perfecto!", "incorrect_pair": "Revisa el vocabulario del baño." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me ducho y luego me lavo los dientes.", "translation": "I shower and then brush my teeth.", "audio_url": null },
+      { "spanish": "¿Te duchas por la mañana o por la noche?", "translation": "Do you shower in the morning or at night?", "audio_url": null },
+      { "spanish": "Uso una toalla y jabón.", "translation": "I use a towel and soap.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_32_1",
+        "type": "call_and_response",
+        "prompt": "Responde con me/te + verbo.",
+        "pairs": [
+          ["¿Te duchas por la mañana?", "Sí, __ ducho."],
+          ["¿Te lavas los dientes después?", "Sí, __ lavo los dientes."]
+        ],
+        "word_bank": ["me", "me"],
+        "success_criteria": { "pronombres": "me para yo en la respuesta.", "claridad": "Frases cortas." }
+      },
+      {
+        "id": "SPK_32_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa la rutina.",
+        "dialogue_template": [
+          "A: Primero __ ducho.",
+          "B: Y luego __ lavo los dientes."
+        ],
+        "word_bank": ["me", "me"],
+        "solutions": [["me", "me"]],
+        "feedback_rule": { "ok": "Secuencia correcta.", "error": "Pronombre antes del verbo." }
+      },
+      {
+        "id": "SPK_32_3",
+        "type": "micro_reflection",
+        "prompt": "Di 2 acciones del baño en orden.",
+        "expected_example": "Me ducho y luego me lavo los dientes.",
+        "rubric": { "orden": "Usa luego o después.", "pronombres": "me correcto." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G32_reflex_me_te",
+        "name": "me/te con verbos reflexivos",
+        "scope": ["me ducho", "te duchas", "me lavo", "te lavas"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "¿Te lavas los dientes?", "translation": "Do you brush your teeth?" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_32_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con me o te.",
+        "items": ["¿__ duchas por la noche?", "__ lavo los dientes después."],
+        "solution": ["Te", "Me"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Tú → te, yo → me." }
+      }
+    ]
+  },
+  "cultural_note": "“Lavarse los dientes” usa artículo definido los, no posesivo, en español.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 frases con me + verbo reflexivo.",
+      "Usa luego/después para secuenciar.",
+      "Nombra 3 objetos del baño correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "reflexivos", "baño", "rutina"]
+}

@@ -1,0 +1,197 @@
+{
+  "lesson_id": "SPA1_Q002",
+  "title": "Quiz 2, Lecciones 6–10",
+  "level": "A1",
+  "theme": "Repaso: origen, profesiones, calendario, hora y rutina",
+  "focus": "Evaluar frases cortas sobre origen y nacionalidad, profesión, días y fechas, la hora y rutinas básicas",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puede decir su origen y nacionalidad con fórmulas fijas.",
+    "Puede decir su profesión y lugar de trabajo con frases cortas.",
+    "Puede identificar días y meses y decir la fecha.",
+    "Puede preguntar y decir la hora y horarios simples.",
+    "Puede describir 2–3 acciones de su rutina diaria."
+  ],
+
+  "vocabulary": {
+    "items": [
+      { "term": "¿De dónde eres?", "translation": "Where are you from?", "part_of_speech": "question", "example": "¿De dónde eres?", "example_translation": "Where are you from?" },
+      { "term": "Soy de…", "translation": "I am from…", "part_of_speech": "phrase", "example": "Soy de México.", "example_translation": "I am from Mexico." },
+      { "term": "español", "translation": "Spanish (nationality, m.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Él es español.", "example_translation": "He is Spanish." },
+      { "term": "española", "translation": "Spanish (nationality, f.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Ella es española.", "example_translation": "She is Spanish." },
+      { "term": "mexicano", "translation": "Mexican (m.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Soy mexicano.", "example_translation": "I am Mexican." },
+      { "term": "mexicana", "translation": "Mexican (f.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Soy mexicana.", "example_translation": "I am Mexican." },
+      { "term": "profesor", "translation": "teacher (m.)", "part_of_speech": "noun", "gender": "masculine", "example": "Soy profesor.", "example_translation": "I am a teacher." },
+      { "term": "profesora", "translation": "teacher (f.)", "part_of_speech": "noun", "gender": "feminine", "example": "Soy profesora.", "example_translation": "I am a teacher." },
+      { "term": "trabajar", "translation": "to work", "part_of_speech": "verb", "example": "Trabajo en una oficina.", "example_translation": "I work in an office." },
+      { "term": "lunes", "translation": "Monday", "part_of_speech": "noun", "example": "Hoy es lunes.", "example_translation": "Today is Monday." },
+      { "term": "enero", "translation": "January", "part_of_speech": "noun", "example": "Es el 5 de enero.", "example_translation": "It is January 5th." },
+      { "term": "a la / a las", "translation": "at (time)", "part_of_speech": "phrase", "example": "A las ocho tengo clase.", "example_translation": "At eight I have class." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_Q2_1",
+        "type": "match",
+        "prompt": "Une nacionalidad con país.",
+        "pairs": [
+          ["español / española", "España"],
+          ["mexicano / mexicana", "México"],
+          ["francés / francesa", "Francia"],
+          ["estadounidense", "Estados Unidos"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "wrong_pair": "Revisa las nacionalidades y países." }
+      },
+      {
+        "id": "VOC_Q2_2",
+        "type": "categorize",
+        "prompt": "Clasifica en Días o Meses.",
+        "items": ["lunes", "martes", "enero", "marzo"],
+        "solution": ["Días: lunes, martes", "Meses: enero, marzo"],
+        "feedback": { "note": "En español los días y meses van en minúscula." }
+      }
+    ]
+  },
+
+  "speaking": {
+    "models": [
+      { "spanish": "¿De dónde eres? Soy de…", "translation": "Where are you from? I am from…", "audio_url": null },
+      { "spanish": "Soy profesor / Soy profesora.", "translation": "I am a teacher.", "audio_url": null },
+      { "spanish": "Hoy es lunes. Es el 5 de enero.", "translation": "Today is Monday. It is January 5th.", "audio_url": null },
+      { "spanish": "¿Qué hora es? Son las dos y media.", "translation": "What time is it? It is two thirty.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_Q2_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa y di el mini diálogo de presentación.",
+        "dialogue_template": [
+          "A: Hola, ¿de dónde eres?",
+          "B: Soy de ____. ¿Y tú?",
+          "A: Soy de ____."
+        ],
+        "word_bank": ["España", "México", "Perú", "Chile"],
+        "acceptable_variants": ["Soy de [país]."],
+        "success_criteria": ["Usa Soy de + país.", "Incluye la pregunta de vuelta."]
+      },
+      {
+        "id": "SPK_Q2_2",
+        "type": "controlled_production",
+        "prompt": "Di 3 frases: profesión, fecha de hoy y una hora de tu rutina.",
+        "frames": ["Soy [profesión].", "Hoy es [día]. Es el [número] de [mes].", "A las [hora] [acción]."],
+        "expected_example": ["Soy profesora. Hoy es lunes. Es el 3 de marzo. A las siete estudio."],
+        "rubric": ["Pronunciación clara.", "Estructura correcta en cada frase."]
+      }
+    ]
+  },
+
+  "grammar": {
+    "topics": [
+      {
+        "id": "G_Q2_ORIG",
+        "name": "Ser + de para origen",
+        "forms": ["Soy de + país/ciudad", "¿De dónde eres?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Soy de Perú.", "translation": "I am from Peru." },
+          { "spanish": "¿De dónde eres?", "translation": "Where are you from?" }
+        ],
+        "notes": "Usa de para origen."
+      },
+      {
+        "id": "G_Q2_PROF",
+        "name": "Ser + profesión",
+        "forms": ["Soy + profesión (sin artículo)", "Trabajo en/para + lugar"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Soy ingeniera.", "translation": "I am an engineer." },
+          { "spanish": "Trabajo en un hospital.", "translation": "I work in a hospital." }
+        ],
+        "notes": "Normalmente sin artículo con profesiones."
+      },
+      {
+        "id": "G_Q2_TIME",
+        "name": "Fechas y hora",
+        "forms": ["Es el + número + de + mes", "Es la una / Son las…", "A la / A las + hora"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Es el 12 de enero.", "translation": "It is January 12th." },
+          { "spanish": "A las ocho estudio.", "translation": "At eight I study." }
+        ],
+        "notes": "Recuerda Es la solo para la una."
+      },
+      {
+        "id": "G_Q2_ROUT",
+        "name": "Rutina con presente y me/te",
+        "forms": ["me levanto", "me ducho", "estudio", "trabajo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me levanto a las siete.", "translation": "I get up at seven." }
+        ],
+        "notes": "Solo me/te en producción."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_Q2_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con la forma correcta de ser.",
+        "items": [
+          "Yo ___ de Chile.",
+          "Ella ___ profesora.",
+          "___ la una."
+        ],
+        "solution": ["soy", "es", "Es"],
+        "feedback_rule": { "tip": "Recuerda: la una → Es la." }
+      },
+      {
+        "id": "GR_Q2_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": [
+          "Trabajo para una oficina.",
+          "Trabajo en una oficina.",
+          "Trabajo a una oficina."
+        ],
+        "correct": "Trabajo en una oficina.",
+        "feedback_rule": { "note": "Usa en con lugar físico, para con empresa/organización." }
+      },
+      {
+        "id": "GR_Q2_3",
+        "type": "conjugate",
+        "prompt": "Conjuga trabajar en presente (yo, tú, ella).",
+        "items": ["yo", "tú", "ella"],
+        "solution": ["trabajo", "trabajas", "trabaja"]
+      },
+      {
+        "id": "GR_Q2_4",
+        "type": "orthography_check",
+        "prompt": "Corrige mayúsculas y acentos.",
+        "items": [
+          "Hoy es Lunes, es el 3 de Marzo.",
+          "Son las diez y cuarto, de la Manana."
+        ],
+        "solution": [
+          "Hoy es lunes, es el 3 de marzo.",
+          "Son las diez y cuarto, de la mañana."
+        ]
+      }
+    ]
+  },
+
+  "cultural_note": "En contextos informales se usa tú con preguntas breves sobre origen y trabajo. Los días y meses se escriben en minúscula en español.",
+  "assessment": {
+    "auto_criteria": [
+      "Indica correctamente el origen y una nacionalidad con género correcto.",
+      "Expresa profesión y lugar de trabajo con ser/trabajar.",
+      "Dice la fecha y al menos una hora usando la estructura correcta.",
+      "Produce 2 frases de rutina con presente o me/te + verbo."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "quiz", "repaso", "SPA1_006-010"]
+}

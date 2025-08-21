@@ -1,0 +1,98 @@
+{
+  "lesson_id": "SPA1_039",
+  "title": "Pausa y café",
+  "level": "A1",
+  "theme": "Daily Routines Part 2",
+  "focus": "Hablar de pausas de trabajo/estudio y pedir café de forma simple.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir cuándo hago una pausa.",
+    "Puedo pedir un café con cortesía básica.",
+    "Puedo volver a mi horario después de la pausa."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "hacer una pausa", "translation": "to take a break", "part_of_speech": "verb", "example": "Hago una pausa a las once.", "example_translation": "I take a break at eleven." },
+      { "term": "tomar café", "translation": "to have coffee", "part_of_speech": "verb", "example": "Tomo café en la pausa.", "example_translation": "I have coffee on the break." },
+      { "term": "¿Me das… por favor?", "translation": "Can I have… please?", "part_of_speech": "phrase", "example": "¿Me das un café, por favor?", "example_translation": "Can I have a coffee, please?" },
+      { "term": "volver", "translation": "to go back, return", "part_of_speech": "verb", "example": "Vuelvo al trabajo a las doce.", "example_translation": "I go back to work at twelve." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_39_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la petición cortés.",
+        "options": [
+          "Me das un café.",
+          "¿Me das un café, por favor?",
+          "Quiero un café ahora."
+        ],
+        "correct": "¿Me das un café, por favor?",
+        "feedback": { "tip": "Incluye por favor y signo de pregunta." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Hago una pausa a las once.", "translation": "I take a break at eleven.", "audio_url": null },
+      { "spanish": "¿Me das un café, por favor?", "translation": "Can I have a coffee, please?", "audio_url": null },
+      { "spanish": "Vuelvo a las doce.", "translation": "I come back at twelve.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_39_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "En la cafetería de la oficina.",
+        "dialogue_template": [
+          "A: Hola, __ __ un café, por favor.",
+          "B: Claro. Son dos euros.",
+          "A: Gracias. __ a las doce."
+        ],
+        "word_bank": ["¿Me", "das", "Vuelvo"],
+        "solutions": [["¿Me", "das", "Vuelvo"]],
+        "feedback_rule": { "ok": "Cortesía correcta.", "error": "Incluye ¿…? y por favor." }
+      },
+      {
+        "id": "SPK_39_2",
+        "type": "controlled_production",
+        "prompt": "Di tu hora de pausa y regreso.",
+        "items": ["Hago una pausa a las __.", "Vuelvo a las __."],
+        "expected_example": ["Hago una pausa a las once.", "Vuelvo a las doce."],
+        "success_criteria": { "hora": "a las + número.", "claridad": "Frases breves." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G39_presente_var",
+        "name": "Presente: tomar/volver (yo/tú reconocimiento en volver)",
+        "scope": ["tomo / tomas", "vuelvo (reconocimiento) / vuelves (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Tomo café a las once.", "translation": "I have coffee at eleven." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_39_1",
+        "type": "fill_in_blank",
+        "prompt": "Conjuga en yo.",
+        "items": ["Yo __ (tomar) café.", "Yo __ (volver) a las doce."],
+        "solution": ["tomo", "vuelvo"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "vuelvo es irregular, memorización básica." }
+      }
+    ]
+  },
+  "cultural_note": "La pausa de café es común a media mañana, especialmente en oficinas.",
+  "assessment": {
+    "auto_criteria": [
+      "Pide un café con cortesía.",
+      "Da horas de inicio y regreso de la pausa.",
+      "Conjuga tomar en yo correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "pausa", "café", "horarios"]
+}

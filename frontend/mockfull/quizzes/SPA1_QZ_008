@@ -1,0 +1,143 @@
+{
+  "lesson_id": "SPA1_Q008",
+  "title": "Quiz 8, Lecciones 36–40",
+  "level": "A1",
+  "theme": "Daily Routines Part 2",
+  "focus": "Actividades de trabajo/estudio, almuerzo, pausa de café, presente -ar, horas.",
+  "duration_minutes": 10,
+  "register": "tú",
+  "covers": ["SPA1_036", "SPA1_037", "SPA1_038", "SPA1_039", "SPA1_040"],
+  "can_do": [
+    "Conjugo 3 verbos -ar en yo/tú.",
+    "Digo a qué hora empiezo, como y termino.",
+    "Invito a comer con una hora y acepto o propongo otra.",
+    "Uso de lunes a viernes para hábitos."
+  ],
+  "vocabulary": {
+    "items": [],
+    "practice": [
+      {
+        "id": "VOC_Q8_1",
+        "type": "match",
+        "prompt": "Empareja verbo y traducción.",
+        "pairs": [
+          ["practicar", "to practice"],
+          ["preparar", "to prepare"],
+          ["llamar", "to call"],
+          ["terminar", "to finish"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Atiende al significado básico." }
+      },
+      {
+        "id": "VOC_Q8_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción que expresa hábito semanal.",
+        "options": [
+          "Trabajo de lunes a viernes.",
+          "Trabajo a lunes.",
+          "Trabajo los fin de semana."
+        ],
+        "correct": "Trabajo de lunes a viernes.",
+        "feedback": { "tip": "Estructura fija: de lunes a viernes." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Empiezo a las nueve y termino a las cinco.", "translation": "I start at nine and finish at five.", "audio_url": null },
+      { "spanish": "¿Comemos a las dos?", "translation": "Shall we have lunch at two?", "audio_url": null },
+      { "spanish": "Hago una pausa a las once. ¿Me das un café, por favor?", "translation": "I take a break at eleven. Can I have a coffee, please?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_Q8_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Invita y negocia la hora del almuerzo.",
+        "dialogue_template": [
+          "A: ¿__ a las dos?",
+          "B: No puedo a las dos. ¿A las dos y media?",
+          "A: __, a las dos y media."
+        ],
+        "word_bank": ["Comemos", "Perfecto"],
+        "solutions": [["Comemos", "Perfecto"]],
+        "feedback_rule": { "ok": "Interacción natural.", "error": "Usa a las + hora exacta." }
+      },
+      {
+        "id": "SPK_Q8_2",
+        "type": "controlled_production",
+        "prompt": "Di tu esqueleto del día con horas.",
+        "items": ["Empiezo a las __.", "Como a la/las __.", "Termino a las __."],
+        "expected_example": ["Empiezo a las nueve.", "Como a las dos.", "Termino a las cinco."],
+        "success_criteria": { "hora": "a la/las correcto.", "claridad": "Frases cortas." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "GQ8_ar_presente",
+        "name": "Presente -ar (yo/tú)",
+        "scope": ["trabajo / trabajas", "practico / practicas", "preparo / preparas", "termino / terminas"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "¿Practicas español los martes?", "translation": "Do you practice Spanish on Tuesdays?" }]
+      },
+      {
+        "id": "GQ8_comer_pausa",
+        "name": "Comer y hacer una pausa",
+        "scope": ["como / comes", "hago (reconocimiento) una pausa"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Como a las dos.", "translation": "I have lunch at two." }]
+      },
+      {
+        "id": "GQ8_de_lunes_ro",
+        "name": "de lunes a viernes (reconocimiento)",
+        "scope": ["de lunes a viernes = hábito laboral"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Trabajo de lunes a viernes.", "translation": "I work from Monday to Friday." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_Q8_1",
+        "type": "fill_in_blank",
+        "prompt": "Conjuga en yo/tú.",
+        "items": ["Yo __ (trabajar) en oficina.", "¿Tú __ (preparar) la reunión?"],
+        "solution": ["trabajo", "preparas"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "-o para yo; -as para tú." }
+      },
+      {
+        "id": "GR_Q8_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase con hora correcta.",
+        "options": [
+          "Empiezo en las nueve.",
+          "Empiezo a las nueve.",
+          "Empiezo a la nueve."
+        ],
+        "correct": "Empiezo a las nueve.",
+        "feedback": { "tip": "a la una / a las 2–12." }
+      },
+      {
+        "id": "GR_Q8_3",
+        "type": "orthography_check",
+        "prompt": "Añade signos y tildes.",
+        "items": ["A que hora terminas", "Como a las dos y media"],
+        "solution": ["¿A qué hora terminas?", "Como a las dos y media."],
+        "feedback_rule": { "note": "¿…? y tildes: qué." }
+      }
+    ]
+  },
+  "cultural_note": "Comer más tarde y hacer pausa de café a media mañana es habitual en muchos contextos hispanos.",
+  "assessment": {
+    "auto_criteria": [
+      "Conjuga correctamente al menos 3 verbos -ar en yo/tú.",
+      "Da 3 horas con a la/las sin error.",
+      "Completa un mini diálogo de invitación a comer."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "quiz", "presente -ar", "horas", "almuerzo", "pausa"]
+}

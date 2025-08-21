@@ -1,0 +1,94 @@
+{
+  "lesson_id": "SPA1_089",
+  "title": "Gustos 4: deportes y entretenimiento",
+  "level": "A1",
+  "theme": "Likes & Dislikes",
+  "focus": "Hablar de deportes y ocio con me gusta(n).",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Digo si me gustan deportes y juegos.",
+    "Hago 1 pregunta sobre preferencias.",
+    "Conecto ideas con y / pero."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "fútbol", "translation": "soccer", "part_of_speech": "noun", "gender": "masculine", "example": "Me gusta el fútbol.", "example_translation": "I like soccer." },
+      { "term": "baloncesto", "translation": "basketball", "part_of_speech": "noun", "gender": "masculine", "example": "No me gusta el baloncesto.", "example_translation": "I don’t like basketball." },
+      { "term": "tenis", "translation": "tennis", "part_of_speech": "noun", "gender": "masculine", "example": "Me gusta el tenis.", "example_translation": "I like tennis." },
+      { "term": "videojuegos", "translation": "video games", "part_of_speech": "noun", "gender": "masculine", "example": "Me gustan los videojuegos.", "example_translation": "I like video games." },
+      { "term": "películas", "translation": "movies", "part_of_speech": "noun", "gender": "feminine", "example": "Me encantan las películas.", "example_translation": "I love movies." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_89_1",
+        "type": "match",
+        "prompt": "Une deporte/ocio con ejemplo típico.",
+        "pairs": [
+          ["fútbol", "el balón y once jugadores"],
+          ["tenis", "raqueta y pista"],
+          ["videojuegos", "consola"]
+        ],
+        "feedback_rule": { "ok": "Asociaciones correctas.", "error": "Piensa en el objeto clave." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Te gustan los videojuegos?", "translation": "Do you like video games?", "audio_url": null },
+      { "spanish": "Me gusta el tenis, pero no el baloncesto.", "translation": "I like tennis, but not basketball.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_89_1",
+        "type": "request_builder",
+        "prompt": "Formula una pregunta y una respuesta.",
+        "frames": ["¿Te gustan __ __?", "Sí, me gustan __ / No, no me gustan __."],
+        "word_bank": ["los", "videojuegos", "las", "películas", "los", "deportes"],
+        "success_criteria": { "artículo": "los/las correctos", "verbo": "gustan con plural" }
+      },
+      {
+        "id": "SPK_89_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye contraste con pero.",
+        "pairs": [
+          ["A: ¿Te gusta el fútbol?", "B: Me gusta el tenis, pero no el fútbol."]
+        ],
+        "feedback_rule": { "ok": "Uso natural de pero.", "error": "Contrasta una idea positiva con una negativa." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G89_resumen_gustar",
+        "name": "Resumen: me gusta / me gustan",
+        "forms": ["me gusta + sing./inf.", "me gustan + plural", "no me gusta(n)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Me gustan las películas.", "translation": "I like movies." }],
+        "notes": "Mantén el artículo con nombres: el tenis, los videojuegos."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_89_1",
+        "type": "multiple_choice",
+        "prompt": "Completa: __ __ los videojuegos.",
+        "options": ["Me gusta", "Me gustan", "Me encanta"],
+        "correct": "Me gustan",
+        "feedback": { "tip": "Plural → gustan." }
+      }
+    ]
+  },
+  "cultural_note": "En España y América Latina el fútbol es muy popular; el artículo el es común: el fútbol.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula una pregunta sobre preferencias.",
+      "Produce una frase con pero para contrastar.",
+      "Usa me gusta(n) con artículos adecuados."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "gustos", "deportes", "ocio"]
+}

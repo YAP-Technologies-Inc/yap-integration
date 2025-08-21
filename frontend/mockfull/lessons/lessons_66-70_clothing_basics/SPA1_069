@@ -1,0 +1,95 @@
+{
+  "lesson_id": "SPA1_069",
+  "title": "Colores II: rojo/roja y combinaciones",
+  "level": "A1",
+  "theme": "Clothing Basics",
+  "focus": "Ampliar colores y combinar dos prendas en una descripción breve.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Uso rojo/roja con acuerdo.",
+    "Combino dos prendas con y.",
+    "Mantengo el orden sustantivo + color."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "rojo", "translation": "red (masc.)", "part_of_speech": "adjective", "example": "suéter rojo", "example_translation": "red sweater" },
+      { "term": "roja", "translation": "red (fem.)", "part_of_speech": "adjective", "example": "falda roja", "example_translation": "red skirt" },
+      { "term": "calcetines (reconocimiento)", "translation": "socks", "part_of_speech": "noun", "gender": "masculine", "example": "Calcetines rojos.", "example_translation": "Red socks.", "recognition_only": true, "production_required": false }
+    ],
+    "practice": [
+      {
+        "id": "VOC_69_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": [
+          "camisa rojo",
+          "camisa roja",
+          "camisa rojas"
+        ],
+        "correct": "camisa roja",
+        "feedback": { "tip": "rojo/roja concuerda con el sustantivo." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Llevo una camisa roja y pantalones negros.", "translation": "I’m wearing a red shirt and black trousers.", "audio_url": null },
+      { "spanish": "Llevo un vestido blanco y zapatos negros.", "translation": "I’m wearing a white dress and black shoes.", "audio_url": null },
+      { "spanish": "Hoy llevo una chaqueta azul y una falda negra.", "translation": "Today I’m wearing a blue jacket and a black skirt.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_69_1",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena: cada persona añade una prenda y color.",
+        "cards": [
+          "A: Hoy llevo una camisa roja…",
+          "B: …y pantalones negros…",
+          "C: …y zapatos blancos."
+        ],
+        "rubric": { "coherencia": "Usa y para sumar; color tras prenda." }
+      },
+      {
+        "id": "SPK_69_2",
+        "type": "controlled_production",
+        "prompt": "Di dos prendas con colores.",
+        "items": ["Llevo __ __ y __ __."],
+        "expected_example": ["Llevo una falda negra y una chaqueta roja."],
+        "success_criteria": { "acuerdo": "colores con género.", "orden": "sustantivo + color." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G69_dos_prendas",
+        "name": "Coordinar dos prendas con y",
+        "scope": ["Prenda + color + y + prenda + color"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Llevo una camisa blanca y pantalones negros.", "translation": "I wear a white shirt and black trousers." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_69_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con rojo/roja/negro/negra.",
+        "items": ["falda __", "chaqueta __"],
+        "solution": ["roja", "negra"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Concuerda con el sustantivo." }
+      }
+    ]
+  },
+  "cultural_note": "En español no se suele usar of para el color: decimos camisa roja, no camisa de rojo.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce una frase con dos prendas y colores.",
+      "Aplica acuerdo de color correctamente.",
+      "Mantiene el orden correcto en ambas prendas."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "ropa", "colores", "coordinación", "llevar"]
+}

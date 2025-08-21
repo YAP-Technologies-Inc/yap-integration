@@ -1,0 +1,92 @@
+{
+  "lesson_id": "SPA1_091",
+  "title": "Fin de semana 1: actividades básicas",
+  "level": "A1",
+  "theme": "Weekend Activities",
+  "focus": "Hablar de actividades del fin de semana con frecuencia simple.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Digo 2 actividades típicas del fin de semana.",
+    "Uso a veces/siempre/nunca de forma básica.",
+    "Respondo a ¿Qué haces los fines de semana?"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "los fines de semana", "translation": "on weekends", "part_of_speech": "phrase", "example": "Los fines de semana descanso.", "example_translation": "On weekends I rest." },
+      { "term": "siempre", "translation": "always", "part_of_speech": "adverb", "example": "Siempre desayuno tarde.", "example_translation": "I always have a late breakfast." },
+      { "term": "a veces", "translation": "sometimes", "part_of_speech": "adverb", "example": "A veces voy al cine.", "example_translation": "Sometimes I go to the cinema." },
+      { "term": "nunca", "translation": "never", "part_of_speech": "adverb", "example": "Nunca corro.", "example_translation": "I never run." },
+      { "term": "descansar", "translation": "to rest", "part_of_speech": "verb", "example": "Descanso el sábado.", "example_translation": "I rest on Saturday." },
+      { "term": "salir con amigos", "translation": "to go out with friends", "part_of_speech": "verb", "example": "Salgo con amigos.", "example_translation": "I go out with friends." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_91_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frecuencia lógica para fin de semana.",
+        "options": ["siempre", "martes", "ayer"],
+        "correct": "siempre",
+        "feedback": { "tip": "Frecuencia, no día específico." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Los fines de semana descanso y a veces voy al cine.", "translation": "On weekends I rest and sometimes go to the cinema.", "audio_url": null },
+      { "spanish": "Nunca corro, pero salgo con amigos.", "translation": "I never run, but I go out with friends.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_91_1",
+        "type": "call_and_response",
+        "prompt": "Responde: ¿Qué haces los fines de semana?",
+        "pairs": [
+          ["¿Qué haces los fines de semana?", "Siempre descanso. A veces voy al cine."]
+        ],
+        "feedback_rule": { "ok": "Incluye una frecuencia.", "error": "Usa siempre/a veces/nunca." }
+      },
+      {
+        "id": "SPK_91_2",
+        "type": "controlled_production",
+        "prompt": "Di dos actividades con una frecuencia.",
+        "frames": ["Los fines de semana __ __.", "A veces __ __."],
+        "word_bank": ["descanso", "voy al cine", "salgo con amigos"],
+        "success_criteria": { "frecuencia": "presente", "claridad": "frases completas" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G91_frecuencia_basica",
+        "name": "Frecuencia: siempre, a veces, nunca",
+        "forms": ["siempre + verbo", "a veces + verbo", "nunca + verbo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "A veces estudio.", "translation": "Sometimes I study." }],
+        "notes": "Coloca el adverbio antes o después del verbo, mantén claridad."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_91_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase natural.",
+        "options": ["Voy a veces al cine.", "A veces voy al cine.", "Siempre voy a veces al cine."],
+        "correct": "A veces voy al cine.",
+        "feedback": { "tip": "A1: posición inicial es clara y natural." }
+      }
+    ]
+  },
+  "cultural_note": "Ir al cine o quedar para tomar algo es típico del fin de semana en muchas ciudades.",
+  "assessment": {
+    "auto_criteria": [
+      "Menciona 2 actividades de fin de semana.",
+      "Incluye 1 adverbio de frecuencia.",
+      "Responde a la pregunta modelo con claridad."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "fin de semana", "frecuencia", "ocio"]
+}

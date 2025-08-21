@@ -1,0 +1,105 @@
+{
+  "lesson_id": "SPA1_063",
+  "title": "En la cocina y en el baño",
+  "level": "A1",
+  "theme": "Home Spaces",
+  "focus": "Decir lo que hay en la cocina y en el baño con artículos adecuados.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Digo 3 objetos de cocina y 3 del baño.",
+    "Uso En la cocina/En el baño hay…",
+    "Hago una frase con no hay para una ausencia."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "nevera", "translation": "fridge", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una nevera en la cocina.", "example_translation": "There is a fridge in the kitchen." },
+      { "term": "horno", "translation": "oven", "part_of_speech": "noun", "gender": "masculine", "example": "Hay un horno en la cocina.", "example_translation": "There is an oven in the kitchen." },
+      { "term": "microondas (reconocimiento)", "translation": "microwave", "part_of_speech": "noun", "gender": "masculine", "example": "El microondas es nuevo.", "example_translation": "The microwave is new.", "recognition_only": true, "production_required": false },
+      { "term": "fregadero", "translation": "kitchen sink", "part_of_speech": "noun", "gender": "masculine", "example": "Hay un fregadero.", "example_translation": "There is a kitchen sink." },
+      { "term": "ducha", "translation": "shower", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una ducha en el baño.", "example_translation": "There is a shower in the bathroom." },
+      { "term": "lavabo", "translation": "bathroom sink", "part_of_speech": "noun", "gender": "masculine", "example": "Hay un lavabo en el baño.", "example_translation": "There is a sink in the bathroom." },
+      { "term": "inodoro (reconocimiento)", "translation": "toilet", "part_of_speech": "noun", "gender": "masculine", "example": "El inodoro está limpio.", "example_translation": "The toilet is clean.", "recognition_only": true, "production_required": false }
+    ],
+    "practice": [
+      {
+        "id": "VOC_63_1",
+        "type": "categorize",
+        "prompt": "Clasifica por cocina o baño.",
+        "items": ["nevera", "ducha", "horno", "lavabo", "fregadero"],
+        "solution": {
+          "cocina": ["nevera", "horno", "fregadero"],
+          "baño": ["ducha", "lavabo"]
+        },
+        "feedback": { "tip": "Piensa en cocinar vs aseo personal." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "En la cocina hay una nevera y un horno.", "translation": "In the kitchen there is a fridge and an oven.", "audio_url": null },
+      { "spanish": "En el baño hay una ducha y un lavabo.", "translation": "In the bathroom there is a shower and a sink.", "audio_url": null },
+      { "spanish": "En el baño no hay microondas.", "translation": "In the bathroom there isn’t a microwave.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_63_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la habitación.",
+        "items": [
+          { "audio": "Hay una nevera y un horno.", "options": ["cocina", "baño"], "solution": "cocina" },
+          { "audio": "Hay una ducha y un lavabo.", "options": ["cocina", "baño"], "solution": "baño" }
+        ],
+        "feedback_rule": { "ok": "¡Exacto!", "error": "Piensa en la función del objeto." }
+      },
+      {
+        "id": "SPK_63_2",
+        "type": "controlled_production",
+        "prompt": "Habla de tu cocina o baño.",
+        "items": ["En la cocina hay __ y __.", "En el baño no hay __."],
+        "expected_example": ["En la cocina hay una nevera y un horno.", "En el baño no hay microondas."],
+        "success_criteria": { "artículos": "un/una correctos.", "negación": "no hay correcto." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G63_en_la_en_el",
+        "name": "En la / En el + habitación",
+        "scope": ["En la cocina…", "En el baño…"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "En la cocina hay…", "translation": "In the kitchen there is/are…" }]
+      },
+      {
+        "id": "G63_no_hay",
+        "name": "No hay para ausencia",
+        "scope": ["No hay + objeto"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "No hay ducha.", "translation": "There isn’t a shower." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_63_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa la frase correcta.",
+        "items": ["En __ baño hay un lavabo.", "En __ cocina no hay horno."],
+        "solution": ["el", "la"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "el para masculino; la para femenino." }
+      }
+    ]
+  },
+  "cultural_note": "En anuncios de pisos se lee: cocina equipada, baño completo, salón luminoso.",
+  "assessment": {
+    "auto_criteria": [
+      "Clasifica 4 objetos por habitación.",
+      "Produce 2 frases con En la/el… hay…",
+      "Incluye 1 frase con No hay… correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "cocina", "baño", "hay", "casa"]
+}

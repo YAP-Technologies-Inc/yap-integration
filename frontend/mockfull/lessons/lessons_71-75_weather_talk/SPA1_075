@@ -1,0 +1,95 @@
+{
+  "lesson_id": "SPA1_075",
+  "title": "Reporte breve del tiempo y la estación",
+  "level": "A1",
+  "theme": "Weather Talk",
+  "focus": "Hacer un mini reporte: hoy + hace/está + estación.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Digo la estación y el tiempo de hoy.",
+    "Incluyo 2 ideas conectadas con y o pero.",
+    "Cierro con una cortesía simple."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "pero", "translation": "but", "part_of_speech": "conjunction", "example": "Hace sol, pero hace viento.", "example_translation": "It’s sunny, but it’s windy." },
+      { "term": "también", "translation": "also", "part_of_speech": "adverb", "example": "Está nublado y también hace frío.", "example_translation": "It’s cloudy and it’s also cold." },
+      { "term": "gracias", "translation": "thanks", "part_of_speech": "interjection", "example": "Gracias por escuchar.", "example_translation": "Thanks for listening." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_75_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con y o pero.",
+        "items": ["Hoy hace sol __ hace viento.", "Está nublado __ hace frío."],
+        "solution": ["pero", "y"],
+        "feedback_rule": { "tip": "y une ideas similares; pero contrasta." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Estamos en otoño.", "translation": "We are in autumn.", "audio_url": null },
+      { "spanish": "Hoy está nublado y hace viento.", "translation": "Today it’s cloudy and windy.", "audio_url": null },
+      { "spanish": "Gracias.", "translation": "Thanks.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_75_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa y di tu reporte.",
+        "dialogue_template": [
+          "A: ¿Qué tiempo hace hoy?",
+          "B: Estamos en __. Hoy __ __ y __ __.",
+          "B: __."
+        ],
+        "word_bank": ["otoño", "invierno", "hace", "viento", "está", "nublado", "Gracias"],
+        "solutions": [["otoño", "está", "nublado", "hace", "viento", "Gracias"]],
+        "feedback_rule": { "ok": "Orden correcto.", "error": "Recuerda: hace + nombre, está + adjetivo." }
+      },
+      {
+        "id": "SPK_75_2",
+        "type": "micro_reflection",
+        "prompt": "Di 1 cosa igual y 1 cosa diferente entre hoy y ayer.",
+        "expected_example": "Hoy hace frío, pero ayer hizo sol.",
+        "rubric": { "tiempo": "usa hoy/ayer", "conector": "usa y o pero" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G75_resumen",
+        "name": "Resumen: hace vs. está, en + estación",
+        "forms": ["hace + sol/viento/frío/calor", "está + nublado/despejado/soleado", "en + estación"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "En otoño está nublado y hace viento.", "translation": "In autumn it’s cloudy and windy." }
+        ],
+        "notes": "Coordina con y o pero para 2 ideas."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_75_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con hace o está.",
+        "items": ["Hoy __ calor.", "El cielo __ despejado."],
+        "solution": ["hace", "está"],
+        "feedback_rule": { "tip": "Hace + nombre, está + adjetivo." }
+      }
+    ]
+  },
+  "cultural_note": "Los reportes informales pueden ser muy breves, 2–3 ideas bastan.",
+  "assessment": {
+    "auto_criteria": [
+      "Incluye hoy + hace/está correctamente.",
+      "Menciona la estación actual.",
+      "Usa un conector (y, pero) y cierra con cortesía."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "clima", "estaciones", "conectores", "presentación"]
+}

@@ -1,0 +1,104 @@
+{
+  "lesson_id": "SPA1_056",
+  "title": "¿Dónde está…? Lugares en la ciudad",
+  "level": "A1",
+  "theme": "Directions Level 1",
+  "focus": "Preguntar por la ubicación de lugares comunes con estar.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo preguntar: “¿Dónde está…?”",
+    "Puedo entender respuestas simples con está + en/aquí/allí.",
+    "Puedo nombrar 5 lugares básicos."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "banco", "translation": "bank", "part_of_speech": "noun", "gender": "masculine", "example": "El banco está en la plaza.", "example_translation": "The bank is in the square." },
+      { "term": "farmacia", "translation": "pharmacy", "part_of_speech": "noun", "gender": "feminine", "example": "La farmacia está en la calle Sol.", "example_translation": "The pharmacy is on Sol Street." },
+      { "term": "parque", "translation": "park", "part_of_speech": "noun", "gender": "masculine", "example": "El parque está cerca.", "example_translation": "The park is nearby." },
+      { "term": "estación", "translation": "station", "part_of_speech": "noun", "gender": "feminine", "example": "La estación está allí.", "example_translation": "The station is there." },
+      { "term": "plaza", "translation": "square", "part_of_speech": "noun", "gender": "feminine", "example": "La plaza está aquí.", "example_translation": "The square is here." },
+      { "term": "aquí", "translation": "here", "part_of_speech": "adverb", "example": "Está aquí.", "example_translation": "It is here." },
+      { "term": "allí", "translation": "there", "part_of_speech": "adverb", "example": "Está allí.", "example_translation": "It is there." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_56_1",
+        "type": "match",
+        "prompt": "Empareja lugar y traducción.",
+        "pairs": [
+          ["banco", "bank"],
+          ["farmacia", "pharmacy"],
+          ["parque", "park"],
+          ["plaza", "square"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa los falsos amigos." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Dónde está la farmacia?", "translation": "Where is the pharmacy?", "audio_url": null },
+      { "spanish": "La farmacia está aquí.", "translation": "The pharmacy is here.", "audio_url": null },
+      { "spanish": "El banco está allí.", "translation": "The bank is there.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_56_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite la pregunta y dos respuestas.",
+        "audio_items": ["¿Dónde está el banco?", "Está aquí.", "Está allí."],
+        "success_criteria": { "entonación": "Subida final en la pregunta.", "artículo": "el/la correcto con el lugar." }
+      },
+      {
+        "id": "SPK_56_2",
+        "type": "controlled_production",
+        "prompt": "Pregunta por dos lugares.",
+        "items": ["¿Dónde está __ banco?", "¿Dónde está __ estación?"],
+        "expected_example": ["¿Dónde está el banco?", "¿Dónde está la estación?"],
+        "success_criteria": { "artículos": "el/la correctos.", "claridad": "Frases breves." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G56_estar_ubicacion",
+        "name": "Estar para ubicación",
+        "scope": ["¿Dónde está…?", "Está + aquí/allí/en + lugar"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "El parque está en la plaza.", "translation": "The park is in the square." }],
+        "notes": "En singular usa está. Plural están (reconocimiento)."
+      },
+      {
+        "id": "G56_estan_ro",
+        "name": "están (reconocimiento)",
+        "scope": ["¿Dónde están…?", "Están + en…"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "¿Dónde están los bancos?", "translation": "Where are the banks?" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_56_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con está/están.",
+        "items": ["La farmacia __ aquí.", "Los bancos __ allí. (reconocimiento)"],
+        "solution": ["está", "están"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Singular → está; plural → están." }
+      }
+    ]
+  },
+  "cultural_note": "Muchas ciudades tienen una plaza principal donde suele estar el ayuntamiento o puntos de referencia.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula dos preguntas con “¿Dónde está…?”",
+      "Responde con está + aquí/allí correctamente.",
+      "Nombra al menos 5 lugares comunes."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "direcciones", "estar", "lugares"]
+}

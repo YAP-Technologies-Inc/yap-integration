@@ -1,0 +1,212 @@
+{
+  "lesson_id": "SPA1_015",
+  "title": "¿Dónde está…?",
+  "level": "A1",
+  "theme": "Lugares y orientación básica",
+  "focus": "Preguntar por un lugar y entender ubicación simple",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puede preguntar dónde está un lugar.",
+    "Puede entender cerca/lejos y derecha/izquierda.",
+    "Puede decir la ubicación con al lado de y enfrente de."
+  ],
+  "vocabulary": {
+    "items": [
+      {
+        "term": "¿Dónde está…?",
+        "translation": "Where is…?",
+        "part_of_speech": "question",
+        "example": "¿Dónde está el parque?",
+        "example_translation": "Where is the park?"
+      },
+      {
+        "term": "cerca",
+        "translation": "near",
+        "part_of_speech": "adverb",
+        "example": "El banco está cerca.",
+        "example_translation": "The bank is near."
+      },
+      {
+        "term": "lejos",
+        "translation": "far",
+        "part_of_speech": "adverb",
+        "example": "La estación está lejos.",
+        "example_translation": "The station is far."
+      },
+      {
+        "term": "a la derecha",
+        "translation": "to the right",
+        "part_of_speech": "adverb",
+        "example": "Está a la derecha.",
+        "example_translation": "It is to the right."
+      },
+      {
+        "term": "a la izquierda",
+        "translation": "to the left",
+        "part_of_speech": "adverb",
+        "example": "Está a la izquierda.",
+        "example_translation": "It is to the left."
+      },
+      {
+        "term": "al lado de",
+        "translation": "next to",
+        "part_of_speech": "phrase",
+        "example": "Está al lado de la estación.",
+        "example_translation": "It is next to the station."
+      },
+      {
+        "term": "enfrente de",
+        "translation": "opposite/in front of",
+        "part_of_speech": "phrase",
+        "example": "La plaza está enfrente del banco.",
+        "example_translation": "The square is opposite the bank."
+      },
+      {
+        "term": "el banco",
+        "translation": "bank",
+        "part_of_speech": "noun",
+        "gender": "masculine",
+        "example": "El banco está en la plaza.",
+        "example_translation": "The bank is in the square."
+      },
+      {
+        "term": "el supermercado",
+        "translation": "supermarket",
+        "part_of_speech": "noun",
+        "gender": "masculine",
+        "example": "El supermercado está cerca.",
+        "example_translation": "The supermarket is near."
+      },
+      {
+        "term": "la estación (de tren)",
+        "translation": "station (train)",
+        "part_of_speech": "noun",
+        "gender": "feminine",
+        "example": "La estación está a la izquierda.",
+        "example_translation": "The station is to the left."
+      },
+      {
+        "term": "el parque",
+        "translation": "park",
+        "part_of_speech": "noun",
+        "gender": "masculine",
+        "example": "¿Dónde está el parque?",
+        "example_translation": "Where is the park?"
+      },
+      {
+        "term": "la plaza",
+        "translation": "square",
+        "part_of_speech": "noun",
+        "gender": "feminine",
+        "example": "La plaza está enfrente del banco.",
+        "example_translation": "The square is opposite the bank."
+      }
+    ],
+    "practice": [
+      {
+        "id": "VOC_15_1",
+        "type": "match",
+        "prompt": "Une el lugar con la traducción.",
+        "pairs": [
+          ["el banco", "bank"],
+          ["el parque", "park"],
+          ["la estación", "station"],
+          ["el supermercado", "supermarket"],
+          ["la plaza", "square"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Muy bien!", "wrong_pair": "Vuelve a leer los lugares." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Dónde está el parque?", "translation": "Where is the park?", "audio_url": null },
+      { "spanish": "Está al lado de la estación.", "translation": "It is next to the station.", "audio_url": null },
+      { "spanish": "Está a la derecha.", "translation": "It is to the right.", "audio_url": null },
+      { "spanish": "Está cerca.", "translation": "It is near.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_15_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la ubicación.",
+        "options": ["a la derecha", "a la izquierda", "enfrente de"],
+        "solution": "a la derecha",
+        "feedback": { "tip": "Fíjate en derecha/izquierda." }
+      },
+      {
+        "id": "SPK_15_2",
+        "type": "request_builder",
+        "prompt": "Haz la pregunta correcta.",
+        "frames": ["¿Dónde está el __?"],
+        "word_bank": ["banco", "parque", "supermercado"],
+        "success_criteria": ["Incluye ¿Dónde está…?", "Pronuncia el lugar con el artículo correcto."]
+      },
+      {
+        "id": "SPK_15_3",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye el diálogo guía.",
+        "cards": [
+          "A: Disculpa, ¿dónde está el banco?",
+          "B: Está __ __ __ __ la estación.",
+          "A: ¿Está cerca o lejos?",
+          "B: Está __."
+        ],
+        "word_bank": ["al", "lado", "de", "cerca", "lejos"],
+        "acceptable_variants": ["Está al lado de la estación.", "Está lejos."]
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G_ESTAR_LOC",
+        "name": "Estar + preposiciones de lugar",
+        "forms": ["está / están + cerca/lejos", "está a la derecha/izquierda", "está al lado de / enfrente de"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "El parque está cerca.", "translation": "The park is near." },
+          { "spanish": "La plaza está enfrente del banco.", "translation": "The square is opposite the bank." }
+        ],
+        "notes": "Alternativa de reconocimiento: quedar (El banco queda cerca).",
+        "recognition_only": false
+      },
+      {
+        "id": "G_QUEDAR_RO",
+        "name": "Quedar para ubicación (reconocimiento)",
+        "scope": ["El banco queda cerca."],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "El supermercado queda a la derecha.", "translation": "The supermarket is located to the right." }
+        ],
+        "notes": "No se exige producir quedar en esta lección."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_15_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la mejor opción.",
+        "options": [
+          "La estación está al lado de la plaza.",
+          "La estación está por favor de la plaza.",
+          "La estación está gustar de la plaza."
+        ],
+        "correct": "La estación está al lado de la plaza."
+      }
+    ]
+  },
+  "cultural_note": "En muchas ciudades, la plaza es un punto central de orientación. Preguntar con ¿Dónde está…? es directo y común.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula correctamente la pregunta ¿Dónde está…?",
+      "Comprende y usa cerca/lejos y derecha/izquierda.",
+      "Produce una frase con al lado de o enfrente de."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "lugares", "direcciones", "ubicación"]
+}

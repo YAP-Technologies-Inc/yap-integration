@@ -1,0 +1,128 @@
+{
+  "lesson_id": "SPA1_003",
+  "title": "Time-of-Day Greetings and Farewells",
+  "level": "A1",
+  "theme": "First Contact",
+  "focus": "Choose appropriate greetings and leave-takings",
+  "duration_minutes": 8,
+  "register": "tú",
+  "spiral_from": ["SPA1_001", "SPA1_002"],
+  "can_do": [
+    "Use buenos días, buenas tardes, buenas noches correctly",
+    "Say a simple farewell that fits the context"
+  ],
+
+  "vocabulary": {
+    "items": [
+      { "term": "buenos días", "translation": "good morning", "part_of_speech": "phrase", "example": "Buenos días, Ana.", "example_translation": "Good morning, Ana." },
+      { "term": "buenas tardes", "translation": "good afternoon", "part_of_speech": "phrase", "example": "Buenas tardes, Luis.", "example_translation": "Good afternoon, Luis." },
+      { "term": "buenas noches", "translation": "good evening, good night", "part_of_speech": "phrase", "example": "Buenas noches, Marta.", "example_translation": "Good evening, Marta." },
+      { "term": "hasta luego", "translation": "see you later", "part_of_speech": "phrase", "example": "Hasta luego.", "example_translation": "See you later." },
+      { "term": "hasta pronto", "translation": "see you soon", "part_of_speech": "phrase", "example": "Hasta pronto.", "example_translation": "See you soon." },
+      { "term": "nos vemos", "translation": "see you", "part_of_speech": "phrase", "example": "Nos vemos.", "example_translation": "See you." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_3_1",
+        "type": "categorize",
+        "prompt": "Place each greeting under morning, afternoon, or night.",
+        "items": ["buenos días", "buenas tardes", "buenas noches"],
+        "categories": ["mañana", "tarde", "noche"],
+        "solution": {
+          "mañana": ["buenos días"],
+          "tarde": ["buenas tardes"],
+          "noche": ["buenas noches"]
+        }
+      }
+    ]
+  },
+
+  "speaking": {
+    "models": [
+      { "spanish": "Buenos días, Carlos.", "translation": "Good morning, Carlos.", "audio_url": null },
+      { "spanish": "Nos vemos, hasta luego.", "translation": "See you, bye for now.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_3_1",
+        "type": "choice_drill_minimal_pairs",
+        "prompt": "Choose the best greeting for the time shown.",
+        "items": [
+          { "situation": "08:30", "options": ["Buenos días", "Buenas tardes", "Buenas noches"], "correct": "Buenos días" },
+          { "situation": "15:15", "options": ["Buenos días", "Buenas tardes", "Buenas noches"], "correct": "Buenas tardes" },
+          { "situation": "21:45", "options": ["Buenos días", "Buenas tardes", "Buenas noches"], "correct": "Buenas noches" }
+        ]
+      },
+      {
+        "id": "SPK_3_2",
+        "type": "dialogue_completion",
+        "prompt": "Complete with a time-of-day greeting and a natural farewell.",
+        "dialogue_template": "A: ____, me llamo Ana. B: Soy Luis. ____.",
+        "solutions": [
+          ["Buenos días", "Hasta luego"],
+          ["Buenas tardes", "Nos vemos"],
+          ["Buenas noches", "Hasta pronto"]
+        ]
+      },
+      {
+        "id": "SPK_3_3",
+        "type": "micro_reflection",
+        "prompt": "When can you say Buenas noches? Choose all that fit.",
+        "options": ["At night as a greeting", "When leaving late at night", "At noon"],
+        "correct": ["At night as a greeting", "When leaving late at night"]
+      }
+    ]
+  },
+
+  "grammar": {
+    "topics": [
+      {
+        "id": "AGREE_BUEN_01",
+        "name": "Fixed greeting agreement",
+        "scope": ["buenos días", "buenas tardes", "buenas noches"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Buenos días.", "translation": "Good morning." },
+          { "spanish": "Buenas tardes.", "translation": "Good afternoon." }
+        ],
+        "notes": "Teach as fixed phrases. Focus on buenos vs. buenas."
+      },
+      {
+        "id": "PUNCT_VOC_01",
+        "name": "Comma after vocative",
+        "scope": ["greeting + comma + name"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Buenos días, Ana.", "translation": "Good morning, Ana." }
+        ]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_3_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": ["Buenas días", "Buenos días", "Buenas día"],
+        "correct": "Buenos días",
+        "feedback": {
+          "Buenas días": "Use 'Buenos' with 'días'.",
+          "Buenas día": "Días is plural and uses 'Buenos'.",
+          "Buenos días": "Correct."
+        }
+      }
+    ]
+  },
+
+  "cultural_note": "Buenas noches can be a greeting at night and also a goodbye late in the evening.",
+  "assessment": {
+    "auto_criteria": [
+      "Selects correct time-of-day greeting",
+      "Chooses a natural farewell for informal contexts",
+      "Produces one greeting plus a farewell in a short exchange"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "First Contact", "greetings", "farewells"]
+}

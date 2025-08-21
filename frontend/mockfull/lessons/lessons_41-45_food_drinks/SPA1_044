@@ -1,0 +1,100 @@
+{
+  "lesson_id": "SPA1_044",
+  "title": "Platos simples y preferencias",
+  "level": "A1",
+  "theme": "Food & Drink Basics",
+  "focus": "Nombrar platos comunes y expresar me gusta/no me gusta con artículos correctos.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo nombrar 4 platos simples.",
+    "Puedo decir si me gusta o no un plato.",
+    "Puedo elegir el artículo correcto con comida en singular/plural."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "ensalada", "translation": "salad", "part_of_speech": "noun", "gender": "feminine", "example": "La ensalada es fresca.", "example_translation": "The salad is fresh." },
+      { "term": "sándwich/bocadillo (reconocimiento)", "translation": "sandwich", "part_of_speech": "noun", "gender": "masculine", "example": "El bocadillo es de pollo.", "example_translation": "The sandwich is chicken.", "recognition_only": true },
+      { "term": "sopa", "translation": "soup", "part_of_speech": "noun", "gender": "feminine", "example": "La sopa es de tomate.", "example_translation": "The soup is tomato." },
+      { "term": "arroz con pollo", "translation": "rice with chicken", "part_of_speech": "noun", "gender": "masculine", "example": "El arroz con pollo es popular.", "example_translation": "Rice with chicken is popular." },
+      { "term": "verduras", "translation": "vegetables", "part_of_speech": "noun", "gender": "feminine", "example": "Me gustan las verduras.", "example_translation": "I like vegetables." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_44_1",
+        "type": "multiple_choice",
+        "prompt": "Elige el artículo correcto.",
+        "options": ["Me gusta la sopa.", "Me gusta una sopa."],
+        "correct": "Me gusta la sopa.",
+        "feedback": { "tip": "Gusto general → la/el." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me gusta la ensalada.", "translation": "I like salad.", "audio_url": null },
+      { "spanish": "No me gustan las verduras.", "translation": "I do not like vegetables.", "audio_url": null },
+      { "spanish": "¿Te gusta la sopa?", "translation": "Do you like soup?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_44_1",
+        "type": "call_and_response",
+        "prompt": "Responde con me gusta / no me gusta.",
+        "pairs": [
+          ["¿Te gusta la ensalada?", "Sí, __ __ la ensalada."],
+          ["¿Te gustan las verduras?", "No, __ __ __ las verduras."]
+        ],
+        "word_bank": ["me", "gusta", "me", "gustan", "no"],
+        "success_criteria": { "número": "gusta vs gustan correcto.", "artículo": "Incluye la/las." }
+      },
+      {
+        "id": "SPK_44_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Comparte una preferencia.",
+        "cards": [
+          "A: ¿Qué te gusta más, la sopa o la ensalada?",
+          "B: Me gusta más __."
+        ],
+        "word_bank": ["la sopa", "la ensalada"],
+        "feedback": { "tip": "Usa me gusta más + artículo." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G44_def_indef_refuerzo",
+        "name": "Refuerzo de artículos con comida",
+        "scope": ["el/la + gusto general", "un/una + una ración (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me gusta la sopa.", "translation": "I like soup." },
+          { "spanish": "Pido una sopa. (reconocimiento)", "translation": "I order a soup. (recognition)" }
+        ],
+        "notes": "No confundas gusto general con pedido de ración."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_44_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con el artículo adecuado.",
+        "items": ["Me gusta __ ensalada.", "Me gustan __ verduras."],
+        "solution": ["la", "las"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Incluye el artículo tras gusta/gustan." }
+      }
+    ]
+  },
+  "cultural_note": "Para hablar de preferencias en general, el artículo definido es lo natural: “Me gusta la pasta”.",
+  "assessment": {
+    "auto_criteria": [
+      "Distingue la/las con gusta/gustan.",
+      "Produce 2 frases de preferencia con artículos correctos.",
+      "Responde a una pregunta de gusto."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "platos", "artículos", "preferencias"]
+}

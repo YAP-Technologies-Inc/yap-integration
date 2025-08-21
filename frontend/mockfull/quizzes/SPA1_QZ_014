@@ -1,0 +1,79 @@
+{
+  "quiz_id": "SPA1_Q014",
+  "title": "Quiz 66–70: Clothing Basics",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_066", "SPA1_067", "SPA1_068", "SPA1_069", "SPA1_070"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q14_SPK_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Presentación breve de tu ropa de hoy.",
+        "dialogue_template": [
+          "A: ¿Qué llevas hoy?",
+          "B: Hoy llevo __ __ __ y __ __."
+        ],
+        "word_bank": ["una", "camisa", "blanca", "pantalones", "negros", "una", "falda", "negra", "una", "chaqueta", "azul"],
+        "solutions": [
+          ["una", "camisa", "blanca", "pantalones", "negros"],
+          ["una", "falda", "negra", "una", "chaqueta", "azul"]
+        ],
+        "success_criteria": ["Orden sustantivo + color.", "Acuerdo básico de género."]
+      },
+      {
+        "id": "Q14_SPK_2",
+        "type": "controlled_production",
+        "prompt": "Di qué llevas arriba y abajo.",
+        "items": ["Arriba llevo __ __.", "Abajo llevo __ __."],
+        "expected_example": ["Arriba llevo una chaqueta negra.", "Abajo llevo pantalones azules."],
+        "success_criteria": ["Usa Arriba/Abajo + llevo.", "Incluye color correcto."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q14_VOC_1",
+        "type": "match",
+        "prompt": "Empareja prenda y traducción.",
+        "pairs": [
+          ["camiseta", "T-shirt"],
+          ["falda", "skirt"],
+          ["zapatos", "shoes"],
+          ["chaqueta", "jacket"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Repasa prendas básicas." }
+      },
+      {
+        "id": "Q14_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción con acuerdo correcto.",
+        "options": ["camisa negro", "camisa negra", "camisa negras"],
+        "correct": "camisa negra",
+        "feedback": { "tip": "El color concuerda con la prenda." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q14_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con el color adecuado: negro/negra/blanco/blanca/azul.",
+        "items": ["falda __", "camisa __", "chaqueta __"],
+        "solution": ["negra", "blanca", "azul"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Concuerda con el sustantivo." }
+      },
+      {
+        "id": "Q14_GR_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la forma correcta del verbo.",
+        "options": ["Yo lleva una camiseta.", "Yo llevo una camiseta.", "Llevo yo una camiseta negra hoy."],
+        "correct": "Yo llevo una camiseta.",
+        "feedback": { "tip": "Primera persona: llevo." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Responde a ¿Qué llevas hoy? con 2+ prendas y colores.", "Aplica acuerdo de color básico.", "Usa Arriba/Abajo + llevo correctamente."] }
+}

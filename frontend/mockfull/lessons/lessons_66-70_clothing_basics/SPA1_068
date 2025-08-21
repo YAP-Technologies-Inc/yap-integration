@@ -1,0 +1,92 @@
+{
+  "lesson_id": "SPA1_068",
+  "title": "Prendas para arriba y para abajo",
+  "level": "A1",
+  "theme": "Clothing Basics",
+  "focus": "Practicar llevar con prendas de arriba/abajo y colores.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Digo qué llevo arriba y abajo.",
+    "Uso un/una con singular y color adecuado.",
+    "Reconozco chaqueta/suéter como prendas de abrigo."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "chaqueta", "translation": "jacket", "part_of_speech": "noun", "gender": "feminine", "example": "Llevo una chaqueta negra.", "example_translation": "I’m wearing a black jacket." },
+      { "term": "suéter (reconocimiento)", "translation": "sweater/jumper", "part_of_speech": "noun", "gender": "masculine", "example": "El suéter es gris.", "example_translation": "The sweater is grey.", "recognition_only": true, "production_required": false },
+      { "term": "vestido", "translation": "dress", "part_of_speech": "noun", "gender": "masculine", "example": "Llevo un vestido azul.", "example_translation": "I’m wearing a blue dress." },
+      { "term": "cinturón (reconocimiento)", "translation": "belt", "part_of_speech": "noun", "gender": "masculine", "example": "El cinturón es negro.", "example_translation": "The belt is black.", "recognition_only": true, "production_required": false }
+    ],
+    "practice": [
+      {
+        "id": "VOC_68_1",
+        "type": "categorize",
+        "prompt": "Clasifica por parte del cuerpo.",
+        "items": ["chaqueta", "pantalones", "vestido", "camisa"],
+        "solution": {
+          "arriba": ["chaqueta", "camisa"],
+          "abajo": ["pantalones"],
+          "todo_el_cuerpo": ["vestido"]
+        },
+        "feedback": { "tip": "Vestido cubre todo el cuerpo." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Arriba llevo una chaqueta negra.", "translation": "On top I’m wearing a black jacket.", "audio_url": null },
+      { "spanish": "Abajo llevo pantalones azules.", "translation": "Below I’m wearing blue trousers.", "audio_url": null },
+      { "spanish": "Hoy llevo un vestido azul.", "translation": "Today I’m wearing a blue dress.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_68_1",
+        "type": "controlled_production",
+        "prompt": "Completa arriba/abajo.",
+        "items": ["Arriba llevo __ __.", "Abajo llevo __ __."],
+        "expected_example": ["Arriba llevo una chaqueta negra.", "Abajo llevo pantalones azules."],
+        "success_criteria": { "orden": "prenda + color.", "acuerdo": "género correcto." }
+      },
+      {
+        "id": "SPK_68_2",
+        "type": "micro_reflection",
+        "prompt": "Di si hoy llevas prenda de abrigo.",
+        "expected_example": "Sí, llevo una chaqueta negra.",
+        "rubric": { "claridad": "Frase corta con llevo.", "color": "Incluye color si puedes." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G68_arriba_abajo",
+        "name": "Arriba / Abajo + llevar",
+        "scope": ["Arriba/Abajo llevo + prenda + color"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Arriba llevo una camisa blanca.", "translation": "On top I’m wearing a white shirt." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_68_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con arriba/abajo.",
+        "items": ["__ llevo una chaqueta.", "__ llevo pantalones."],
+        "solution": ["Arriba", "Abajo"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Piensa en parte del cuerpo." }
+      }
+    ]
+  },
+  "cultural_note": "Chaqueta puede ser ligera o de abrigo; suéter es común pero también jersey en España.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 frases con Arriba/Abajo llevo…",
+      "Aplica color correcto en 2 prendas.",
+      "Menciona una prenda de abrigo con naturalidad."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "ropa", "llevar", "arriba", "abajo", "colores"]
+}

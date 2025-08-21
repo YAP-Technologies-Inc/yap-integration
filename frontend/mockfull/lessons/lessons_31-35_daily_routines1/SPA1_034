@@ -1,0 +1,115 @@
+{
+  "lesson_id": "SPA1_034",
+  "title": "Desayunar y salir",
+  "level": "A1",
+  "theme": "Daily Routines Part 1",
+  "focus": "Decir qué desayunas y a qué hora sales; repaso a la/las y por la mañana.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir qué desayuno de forma simple.",
+    "Puedo decir a qué hora salgo de casa.",
+    "Puedo unir acciones con luego/después."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "desayunar", "translation": "to have breakfast", "part_of_speech": "verb", "example": "Desayuno pan y café.", "example_translation": "I have bread and coffee for breakfast." },
+      { "term": "salir", "translation": "to leave, to go out", "part_of_speech": "verb", "example": "Salgo a las ocho.", "example_translation": "I leave at eight." },
+      { "term": "pan", "translation": "bread", "part_of_speech": "noun", "gender": "masculine", "example": "Como pan en el desayuno.", "example_translation": "I eat bread for breakfast." },
+      { "term": "fruta", "translation": "fruit", "part_of_speech": "noun", "gender": "feminine", "example": "Como fruta por la mañana.", "example_translation": "I eat fruit in the morning." },
+      { "term": "café", "translation": "coffee", "part_of_speech": "noun", "gender": "masculine", "example": "Tomo café por la mañana.", "example_translation": "I have coffee in the morning." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_34_1",
+        "type": "categorize",
+        "prompt": "Clasifica: comida o acción.",
+        "items": ["desayunar", "salir", "pan", "fruta", "café"],
+        "solution": {
+          "comida": ["pan", "fruta", "café"],
+          "acción": ["desayunar", "salir"]
+        },
+        "feedback": { "tip": "Comida = sustantivo; acción = verbo." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Desayuno café y pan.", "translation": "I have coffee and bread for breakfast.", "audio_url": null },
+      { "spanish": "Salgo a las ocho.", "translation": "I leave at eight.", "audio_url": null },
+      { "spanish": "Primero desayuno, luego salgo.", "translation": "First I have breakfast, then I leave.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_34_1",
+        "type": "listen_and_choose",
+        "prompt": "Elige la hora que escuchas.",
+        "items": [
+          { "audio": "Salgo a las ocho.", "options": ["7:00", "8:00"], "solution": "8:00" }
+        ],
+        "feedback_rule": { "ok": "¡Exacto!", "error": "Repite y escucha a las + hora." }
+      },
+      {
+        "id": "SPK_34_2",
+        "type": "controlled_production",
+        "prompt": "Completa tus frases.",
+        "items": ["Por la mañana desayuno __.", "Salgo __ __ __."],
+        "expected_example": ["Por la mañana desayuno café.", "Salgo a las ocho."],
+        "success_criteria": { "estructura": "a las + hora, por la mañana correcto." }
+      },
+      {
+        "id": "SPK_34_3",
+        "type": "micro_dialogue_build",
+        "prompt": "Pregunta y responde sobre desayuno y salida.",
+        "cards": [
+          "A: ¿Qué desayunas?",
+          "B: __.",
+          "A: ¿A qué hora sales?",
+          "B: __."
+        ],
+        "word_bank": ["Café y pan", "Salgo a las ocho"],
+        "feedback": { "tip": "Respuestas breves y claras." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G34_presente_yo",
+        "name": "Presente en yo con desayunar/salir",
+        "scope": ["desayuno", "salgo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Desayuno fruta.", "translation": "I have fruit for breakfast." }]
+      },
+      {
+        "id": "G34_enlace",
+        "name": "Conectores de secuencia",
+        "scope": ["primero", "luego", "después"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Primero desayuno, después salgo.", "translation": "First I have breakfast, then I leave." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_34_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con primero/luego.",
+        "items": ["__ desayuno, __ salgo."],
+        "solution": ["Primero", "luego"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Orden lógico." }
+      }
+    ]
+  },
+  "cultural_note": "El desayuno puede ser ligero en España: café, tostada o fruta.",
+  "assessment": {
+    "auto_criteria": [
+      "Indica una comida de desayuno correctamente.",
+      "Da una hora con a la/las sin error.",
+      "Enlaza dos acciones con luego/después."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "desayuno", "salir", "hora"]
+}

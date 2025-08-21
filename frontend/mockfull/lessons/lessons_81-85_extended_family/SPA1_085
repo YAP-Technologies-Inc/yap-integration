@@ -1,0 +1,94 @@
+{
+  "lesson_id": "SPA1_085",
+  "title": "Reunión familiar: descripción breve",
+  "level": "A1",
+  "theme": "Extended Family",
+  "focus": "Hacer un mini reporte de una reunión con posesivos plurales.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Digo quiénes asisten a una reunión.",
+    "Uso mis/nuestros/sus con plural.",
+    "Conecto dos ideas con y o también."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "venir", "translation": "to come", "part_of_speech": "verb", "example": "Vienen mis primos.", "example_translation": "My cousins are coming." },
+      { "term": "traer", "translation": "to bring", "part_of_speech": "verb", "example": "Nuestros tíos traen pan.", "example_translation": "Our uncles bring bread." },
+      { "term": "también", "translation": "also", "part_of_speech": "adverb", "example": "También vienen mis abuelos.", "example_translation": "My grandparents are also coming." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_85_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con mis/nuestros/sus.",
+        "items": ["__ primos traen jugo.", "__ tías cantan también."],
+        "solution": ["Mis", "Sus"],
+        "feedback_rule": { "tip": "Observa quién posee y si es plural." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Vienen mis primos y nuestros tíos.", "translation": "My cousins and our uncles are coming.", "audio_url": null },
+      { "spanish": "Sus abuelos también vienen.", "translation": "Their grandparents are also coming.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_85_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa tu reporte de reunión.",
+        "dialogue_template": [
+          "A: ¿Quién viene a la reunión?",
+          "B: Vienen __ __ y __ __.",
+          "B: __ vienen __ __."
+        ],
+        "word_bank": ["mis", "primos", "nuestros", "tíos", "También", "sus", "abuelos"],
+        "solutions": [["mis", "primos", "nuestros", "tíos", "También", "sus", "abuelos"]],
+        "feedback_rule": { "ok": "Orden y posesivos correctos.", "error": "Recuerda plural y género." }
+      },
+      {
+        "id": "SPK_85_2",
+        "type": "exit_ticket",
+        "prompt": "Di 2 frases sobre tu reunión familiar.",
+        "expected_example": "Vienen mis primos y nuestros tíos. Sus abuelos también vienen.",
+        "rubric": { "posesivos": "mis/nuestros/sus adecuados", "conector": "y / también presente" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G85_resumen_posesivos_plurales",
+        "name": "Resumen: mis, tus, sus, nuestros/as",
+        "forms": ["mis", "tus", "sus", "nuestros", "nuestras"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Nuestros primos cantan.", "translation": "Our cousins sing." }
+        ],
+        "notes": "Concuerda con el sustantivo poseído. Evita nuestro/s con sustantivo femenino plural, usa nuestras."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_85_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": ["Nuestras tíos llegan.", "Nuestros tíos llegan.", "Nuestros tías llegan."],
+        "correct": "Nuestros tíos llegan.",
+        "feedback": { "tip": "Concuerda con tíos (masc. pl.)." }
+      }
+    ]
+  },
+  "cultural_note": "Las reuniones suelen ser los domingos al mediodía, con comida compartida.",
+  "assessment": {
+    "auto_criteria": [
+      "Menciona 2 grupos familiares con posesivo plural.",
+      "Usa y o también para conectar.",
+      "Responde claramente a ¿Quién viene?"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "posesivos", "reporte"]
+}

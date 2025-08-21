@@ -1,0 +1,105 @@
+{
+  "lesson_id": "SPA1_050",
+  "title": "Simulación: del pedido al pago",
+  "level": "A1",
+  "theme": "Café & Restaurant Basics",
+  "focus": "Encadenar pedido con querer, confirmar, y pedir la cuenta con cortesía.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puedo hacer un pedido completo de bebida y comida.",
+    "Puedo responder a preguntas básicas del personal.",
+    "Puedo pedir la cuenta y despedirme."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "Quiero…", "translation": "I want…", "part_of_speech": "phrase", "example": "Quiero un té y una tostada, por favor.", "example_translation": "I want a tea and a toast, please." },
+      { "term": "¿Algo más?", "translation": "Anything else?", "part_of_speech": "phrase", "example": "—¿Algo más? —Sí, un agua.", "example_translation": "—Anything else? —Yes, a water." },
+      { "term": "La cuenta, por favor.", "translation": "The bill, please.", "part_of_speech": "phrase", "example": "La cuenta, por favor.", "example_translation": "The bill, please." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_50_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la secuencia lógica.",
+        "options": [
+          "Pedir → Pagar → Confirmar → Despedirse",
+          "Pedir → Confirmar “¿Algo más?” → Comer/Beber → Pedir la cuenta → Pagar → Despedirse",
+          "Pagar → Pedir → Despedirse"
+        ],
+        "correct": "Pedir → Confirmar “¿Algo más?” → Comer/Beber → Pedir la cuenta → Pagar → Despedirse",
+        "feedback": { "tip": "Cierra siempre con gracias/adiós." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Quiero un café y un bocadillo, por favor.", "translation": "I want a coffee and a sandwich, please.", "audio_url": null },
+      { "spanish": "¿Algo más?", "translation": "Anything else?", "audio_url": null },
+      { "spanish": "Nada más, gracias. La cuenta, por favor.", "translation": "Nothing else, thanks. The bill, please.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_50_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Roleplay guiado de principio a fin.",
+        "dialogue_template": [
+          "Cliente: __ un café y una tostada, __ __.",
+          "Dependiente: ¿__ más?",
+          "Cliente: __ __, gracias.",
+          "(Después) Cliente: __ __, __ __."
+        ],
+        "word_bank": ["Quiero", "por", "favor", "Algo", "Nada", "más", "La", "cuenta", "por", "favor"],
+        "solutions": [["Quiero", "por", "favor", "Algo", "Nada", "más", "La", "cuenta", "por", "favor"]],
+        "feedback_rule": { "ok": "Interacción completa y cortés.", "error": "Asegura por favor/ gracias y artículos." }
+      },
+      {
+        "id": "SPK_50_2",
+        "type": "micro_reflection",
+        "prompt": "Di qué pedirías tú hoy.",
+        "expected_example": "Quiero un té y un pastel, por favor.",
+        "rubric": { "cortesía": "Incluye por favor.", "artículos": "un/una correctos." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G50_querer_resumen",
+        "name": "Querer + producto (resumen)",
+        "scope": ["Quiero + un/una + producto", "¿Quieres…? (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Quiero un bocadillo, por favor.", "translation": "I want a sandwich, please." }]
+      },
+      {
+        "id": "G50_cierre_cortesia",
+        "name": "Cierre con cortesía",
+        "scope": ["Nada más, gracias.", "La cuenta, por favor."],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Nada más, gracias.", "translation": "Nothing else, thanks." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_50_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con por favor / gracias.",
+        "items": ["Un café, __ __.", "__ __, la cuenta, __ __."],
+        "solution": ["por, favor", "Nada, más, por, favor"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Incluye las dos palabras de cortesía." }
+      }
+    ]
+  },
+  "cultural_note": "Pedir con frases cortas y por favor es suficiente. No necesitas explicaciones largas.",
+  "assessment": {
+    "auto_criteria": [
+      "Realiza un pedido completo con querer + por favor.",
+      "Responde a “¿Algo más?” correctamente.",
+      "Pide la cuenta con cortesía para cerrar."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "café", "restaurante", "querer", "cuenta"]
+}

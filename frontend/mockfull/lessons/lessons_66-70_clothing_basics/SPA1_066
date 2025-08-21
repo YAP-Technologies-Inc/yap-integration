@@ -1,0 +1,104 @@
+{
+  "lesson_id": "SPA1_066",
+  "title": "Ropa esencial y llevar",
+  "level": "A1",
+  "theme": "Clothing Basics",
+  "focus": "Nombrar ropa común y usar llevo para decir qué llevas.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Nombro 5 prendas básicas.",
+    "Digo: Llevo + prenda.",
+    "Reconozco la pregunta: ¿Qué llevas hoy?"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "llevar", "translation": "to wear", "part_of_speech": "verb", "example": "Llevo camiseta.", "example_translation": "I wear a T-shirt." },
+      { "term": "camiseta", "translation": "T-shirt", "part_of_speech": "noun", "gender": "feminine", "example": "Llevo una camiseta.", "example_translation": "I am wearing a T-shirt." },
+      { "term": "camisa", "translation": "shirt", "part_of_speech": "noun", "gender": "feminine", "example": "Llevo una camisa.", "example_translation": "I am wearing a shirt." },
+      { "term": "pantalones", "translation": "trousers", "part_of_speech": "noun", "gender": "masculine", "example": "Llevo pantalones.", "example_translation": "I am wearing trousers." },
+      { "term": "falda", "translation": "skirt", "part_of_speech": "noun", "gender": "feminine", "example": "Llevo una falda.", "example_translation": "I am wearing a skirt." },
+      { "term": "zapatos", "translation": "shoes", "part_of_speech": "noun", "gender": "masculine", "example": "Llevo zapatos.", "example_translation": "I am wearing shoes." },
+      { "term": "¿Qué llevas hoy? (reconocimiento)", "translation": "What are you wearing today?", "part_of_speech": "question", "example": "¿Qué llevas hoy?", "example_translation": "What are you wearing today?", "recognition_only": true, "production_required": false }
+    ],
+    "practice": [
+      {
+        "id": "VOC_66_1",
+        "type": "match",
+        "prompt": "Empareja prenda y traducción.",
+        "pairs": [
+          ["camiseta", "T-shirt"],
+          ["camisa", "shirt"],
+          ["pantalones", "trousers"],
+          ["falda", "skirt"],
+          ["zapatos", "shoes"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa las prendas." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Llevo una camiseta y pantalones.", "translation": "I’m wearing a T-shirt and trousers.", "audio_url": null },
+      { "spanish": "Hoy llevo zapatos.", "translation": "Today I’m wearing shoes.", "audio_url": null },
+      { "spanish": "¿Qué llevas hoy?", "translation": "What are you wearing today?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_66_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite con llevo.",
+        "audio_items": ["Llevo una camiseta.", "Llevo pantalones.", "Hoy llevo zapatos."],
+        "success_criteria": { "verbo": "Usa llevo + prenda.", "claridad": "Frases simples." }
+      },
+      {
+        "id": "SPK_66_2",
+        "type": "controlled_production",
+        "prompt": "Responde a la pregunta.",
+        "items": ["¿Qué llevas hoy? — __ __ __."],
+        "expected_example": ["Llevo una camisa."],
+        "success_criteria": { "estructura": "Llevo + un/una + prenda.", "fluidez": "Una frase completa." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G66_llevar_yo",
+        "name": "Llevar en yo",
+        "scope": ["yo llevo", "hoy llevo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Llevo una camiseta.", "translation": "I’m wearing a T-shirt." }]
+      },
+      {
+        "id": "G66_llevas_ro",
+        "name": "tú llevas (reconocimiento)",
+        "scope": ["¿Qué llevas…?"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "¿Qué llevas hoy?", "translation": "What are you wearing today?" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_66_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con llevo.",
+        "items": ["__ una falda.", "Hoy __ zapatos."],
+        "solution": ["Llevo", "llevo"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Primera persona: llevo." }
+      }
+    ]
+  },
+  "cultural_note": "Hoy + llevo es una forma natural de hablar de la ropa en el momento.",
+  "assessment": {
+    "auto_criteria": [
+      "Nombra 5 prendas correctamente.",
+      "Produce 2 frases con Llevo + prenda.",
+      "Responde una vez a ¿Qué llevas hoy?"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "ropa", "llevar", "prendas"]
+}

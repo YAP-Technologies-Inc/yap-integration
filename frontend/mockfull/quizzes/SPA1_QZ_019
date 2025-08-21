@@ -1,0 +1,78 @@
+{
+  "quiz_id": "SPA1_Q019",
+  "title": "Quiz 91–95: Weekend Activities",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_091", "SPA1_092", "SPA1_093", "SPA1_094", "SPA1_095"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q19_SPK_1",
+        "type": "controlled_production",
+        "prompt": "Describe tu fin de semana típico en 2 frases con frecuencia.",
+        "items": ["Frase 1:", "Frase 2:"],
+        "expected_example": ["Los sábados voy al parque.", "A veces veo películas por la noche."],
+        "success_criteria": ["Incluye un adverbio de frecuencia.", "Usa los + día para hábitos."]
+      },
+      {
+        "id": "Q19_SPK_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa: sábado y domingo.",
+        "dialogue_template": [
+          "A: ¿Qué haces los fines de semana?",
+          "B: Los sábados __ __. Los domingos __ __."
+        ],
+        "word_bank": ["voy", "al parque", "visito", "a mi familia", "estudio", "en casa"],
+        "solutions": [
+          ["voy", "al parque", "visito", "a mi familia"],
+          ["estudio", "en casa", "visito", "a mi familia"]
+        ],
+        "success_criteria": ["Frases cortas con los + día.", "Orden natural de palabras."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q19_VOC_1",
+        "type": "categorize",
+        "prompt": "Clasifica en frecuencia o tiempo del día.",
+        "items": ["siempre", "a veces", "nunca", "por la mañana", "por la noche", "los fines de semana"],
+        "solution": [
+          { "frecuencia": ["siempre", "a veces", "nunca"] },
+          { "tiempo/momento": ["por la mañana", "por la noche", "los fines de semana"] }
+        ],
+        "feedback_rule": { "ok": "Correcto.", "error": "¿Con qué responde, frecuencia o momento?" }
+      },
+      {
+        "id": "Q19_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase más natural.",
+        "options": ["Domingos los voy parque por la mañana.", "Los domingos por la mañana voy al parque.", "Voy al parque los domingo mañana."],
+        "correct": "Los domingos por la mañana voy al parque.",
+        "feedback": { "tip": "Orden: Los + día + momento + verbo + lugar." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q19_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con siempre / a veces / nunca.",
+        "items": ["Yo __ estudio los sábados.", "Los domingos __ cocino.", "Yo __ voy al cine."],
+        "solution": ["a veces", "siempre", "nunca"],
+        "feedback_rule": { "tip": "Elige según frecuencia indicada por el contexto del ejemplo." }
+      },
+      {
+        "id": "Q19_GR_2",
+        "type": "multiple_choice",
+        "prompt": "Para hábito, completa: __ sábados estudio.",
+        "options": ["El", "Los", "En"],
+        "correct": "Los",
+        "feedback": { "tip": "Hábito semanal: Los + día en plural." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Incluye adverbios de frecuencia correctamente.", "Usa los + día para hábitos.", "Produce 2 frases claras del fin de semana."] }
+}

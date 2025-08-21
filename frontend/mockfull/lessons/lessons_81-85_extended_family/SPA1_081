@@ -1,0 +1,99 @@
+{
+  "lesson_id": "SPA1_081",
+  "title": "Familia extendida 1: tíos y primos",
+  "level": "A1",
+  "theme": "Extended Family",
+  "focus": "Presentar tíos y primos con posesivos en plural.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Digo quiénes son mis tíos y mis primos.",
+    "Uso mis/tus con familia en plural.",
+    "Hablo de una reunión familiar simple."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "tío", "translation": "uncle", "part_of_speech": "noun", "gender": "masculine", "example": "Mi tío vive cerca.", "example_translation": "My uncle lives nearby." },
+      { "term": "tía", "translation": "aunt", "part_of_speech": "noun", "gender": "feminine", "example": "Mi tía cocina muy bien.", "example_translation": "My aunt cooks very well." },
+      { "term": "primo", "translation": "cousin (masc.)", "part_of_speech": "noun", "gender": "masculine", "example": "Mi primo se llama Tomás.", "example_translation": "My cousin is called Tomás." },
+      { "term": "prima", "translation": "cousin (fem.)", "part_of_speech": "noun", "gender": "feminine", "example": "Mi prima es simpática.", "example_translation": "My cousin is nice." },
+      { "term": "reunión familiar", "translation": "family gathering", "part_of_speech": "noun", "gender": "feminine", "example": "Tenemos una reunión familiar el domingo.", "example_translation": "We have a family gathering on Sunday." },
+      { "term": "mis", "translation": "my (plural)", "part_of_speech": "adjective", "example": "Mis tíos viven en Lima.", "example_translation": "My uncles live in Lima." },
+      { "term": "tus", "translation": "your (plural, tú)", "part_of_speech": "adjective", "example": "¿Cómo son tus primos?", "example_translation": "What are your cousins like?" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_81_1",
+        "type": "match",
+        "prompt": "Relaciona la palabra con la traducción.",
+        "pairs": [
+          ["tío", "uncle"],
+          ["tía", "aunt"],
+          ["primo", "cousin (m)"],
+          ["prima", "cousin (f)"]
+        ],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Revisa género y significado." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Mis tíos se llaman Ana y Carlos.", "translation": "My aunt and uncle are called Ana and Carlos.", "audio_url": null },
+      { "spanish": "Tengo dos primos y una prima.", "translation": "I have two male cousins and one female cousin.", "audio_url": null },
+      { "spanish": "Tenemos una reunión familiar el domingo.", "translation": "We have a family gathering on Sunday.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_81_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite las frases con mis/tus.",
+        "audio_items": ["Mis tíos viven cerca.", "¿Cómo son tus primos?"],
+        "success_criteria": { "pronunciación": "clara", "posesivo": "uso correcto de mis/tus" }
+      },
+      {
+        "id": "SPK_81_2",
+        "type": "controlled_production",
+        "prompt": "Presenta a tus tíos y primos en 2 frases.",
+        "frames": ["Mis __ se llaman __.", "Tengo __ __."],
+        "word_bank": ["tíos", "primos", "dos", "tres"],
+        "success_criteria": { "plural": "s final correcta", "claridad": "frases completas" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G81_posesivos_plural_1",
+        "name": "Posesivos en plural: mis, tus",
+        "forms": ["mis + sustantivo plural", "tus + sustantivo plural"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Mis primos viven en Madrid.", "translation": "My cousins live in Madrid." },
+          { "spanish": "¿Cómo son tus tíos?", "translation": "What are your uncles/aunts like?" }
+        ],
+        "notes": "El posesivo concuerda en número con el sustantivo, no con la persona."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_81_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con mis o tus.",
+        "items": ["__ primos son simpáticos.", "¿Dónde viven __ tías?"],
+        "solution": ["Mis", "tus"],
+        "feedback_rule": { "tip": "Piensa en quién posee y en el plural." }
+      }
+    ]
+  },
+  "cultural_note": "En reuniones familiares es común usar diminutivos cariñosos como tía Anita o primo Lucho.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa mis/tus con sustantivos en plural.",
+      "Nombra al menos 2 miembros de la familia extendida.",
+      "Produce 2 frases sobre una reunión familiar."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "posesivos", "reunión"]
+}

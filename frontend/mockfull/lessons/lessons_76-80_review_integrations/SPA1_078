@@ -1,0 +1,98 @@
+{
+  "lesson_id": "SPA1_078",
+  "title": "Mini conversación 3: compras rápidas",
+  "level": "A1",
+  "theme": "First Review & Integration",
+  "focus": "Repasar pedir precio y pagar, con cortesías.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Pregunto precio y entiendo números simples.",
+    "Elijo efectivo o tarjeta.",
+    "Cierro con gracias/adiós."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Cuánto cuesta?", "translation": "How much does it cost?", "part_of_speech": "question", "example": "¿Cuánto cuesta la botella?", "example_translation": "How much does the bottle cost?" },
+      { "term": "cuesta…", "translation": "it costs…", "part_of_speech": "phrase", "example": "Cuesta diez euros.", "example_translation": "It costs ten euros." },
+      { "term": "pago en efectivo", "translation": "I pay in cash", "part_of_speech": "phrase", "example": "Pago en efectivo.", "example_translation": "I pay in cash." },
+      { "term": "con tarjeta", "translation": "by card", "part_of_speech": "phrase", "example": "Pago con tarjeta.", "example_translation": "I pay by card." },
+      { "term": "recibo", "translation": "receipt", "part_of_speech": "noun", "gender": "masculine", "example": "¿Me das el recibo?", "example_translation": "Can you give me the receipt?" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_78_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción de pago.",
+        "options": ["pago en efectivo", "¿De dónde eres?", "hace calor"],
+        "correct": "pago en efectivo",
+        "feedback": { "tip": "Busca vocabulario de compra." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cuánto cuesta?", "translation": "How much does it cost?", "audio_url": null },
+      { "spanish": "Pago con tarjeta. Gracias.", "translation": "I pay by card. Thanks.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_78_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa la compra.",
+        "dialogue_template": [
+          "A: Hola.",
+          "B: Hola. __ __ __?",
+          "A: Cuesta 8 euros.",
+          "B: Pago __ __. Gracias.",
+          "A: Aquí tienes el __."
+        ],
+        "word_bank": ["¿", "Cuánto", "cuesta", "con", "tarjeta", "recibo"],
+        "solutions": [["¿", "Cuánto", "cuesta", "con", "tarjeta", "recibo"]],
+        "feedback_rule": { "ok": "Flujo completo.", "error": "Cuida orden y cortesías." }
+      },
+      {
+        "id": "SPK_78_2",
+        "type": "exit_ticket",
+        "prompt": "Di el precio y tu forma de pago en 1 frase.",
+        "expected_example": "Cuesta diez euros y pago en efectivo.",
+        "rubric": { "precio": "número correcto", "claridad": "frase completa" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G78_integration_compra",
+        "name": "Integración: precio + forma de pago",
+        "scope": ["¿Cuánto cuesta?", "Cuesta + número", "Pago en efectivo / con tarjeta"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Cuánto cuesta? Cuesta cinco euros. Pago con tarjeta.", "translation": "How much is it? It costs five euros. I pay by card." }
+        ],
+        "notes": "Secuencia típica de compra rápida."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_78_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la respuesta lógica.",
+        "options": ["Cuesta gracias.", "Cuesta siete euros.", "Pago cuánto cuesta."],
+        "correct": "Cuesta siete euros.",
+        "feedback": { "tip": "Cuesta + número." }
+      }
+    ]
+  },
+  "cultural_note": "Una compra simple puede hacerse con 2–3 frases y cortesías mínimas.",
+  "assessment": {
+    "auto_criteria": [
+      "Pregunta precio correctamente.",
+      "Indica forma de pago.",
+      "Incluye una cortesía."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "compras", "precio", "pago"]
+}

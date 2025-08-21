@@ -1,0 +1,90 @@
+{
+  "lesson_id": "SPA1_065",
+  "title": "Mi hogar: mini descripción",
+  "level": "A1",
+  "theme": "Home Spaces",
+  "focus": "Unir habitaciones y muebles en una breve descripción con hay.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Hago una mini descripción de mi casa.",
+    "Uso conectores y/también para añadir.",
+    "Mantengo artículos y hay/no hay correctos."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "también", "translation": "also", "part_of_speech": "adverb", "example": "Hay un sofá y también una mesa.", "example_translation": "There is a sofa and also a table." },
+      { "term": "y", "translation": "and", "part_of_speech": "conjunction", "example": "Hay un salón y una cocina.", "example_translation": "There is a living room and a kitchen." },
+      { "term": "piso (reconocimiento)", "translation": "apartment/flat", "part_of_speech": "noun", "gender": "masculine", "example": "Vivo en un piso.", "example_translation": "I live in a flat.", "recognition_only": true, "production_required": false }
+    ],
+    "practice": [
+      {
+        "id": "VOC_65_1",
+        "type": "multiple_choice",
+        "prompt": "Elige el conector correcto.",
+        "options": ["Hay un sofá o una mesa.", "Hay un sofá y una mesa.", "Hay un sofá pero una mesa."],
+        "correct": "Hay un sofá y una mesa.",
+        "feedback": { "tip": "Usa y para sumar." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "En mi casa hay un salón y una cocina.", "translation": "In my home there is a living room and a kitchen.", "audio_url": null },
+      { "spanish": "En el salón hay un sofá y también una lámpara.", "translation": "In the living room there is a sofa and also a lamp.", "audio_url": null },
+      { "spanish": "No hay balcón.", "translation": "There isn’t a balcony.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_65_1",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye tu mini descripción en 3 frases.",
+        "cards": [
+          "Frase 1: En mi casa hay…",
+          "Frase 2: En el/la … hay… y también…",
+          "Frase 3: No hay…"
+        ],
+        "feedback": { "tip": "Mantén un/una con hay; usa y/también para sumar." }
+      },
+      {
+        "id": "SPK_65_2",
+        "type": "exit_ticket",
+        "prompt": "Di una frase con también.",
+        "expected_example": "En la cocina hay una mesa y también una silla.",
+        "rubric": { "conector": "Incluye también correctamente." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G65_resumen_hay",
+        "name": "Resumen hay + artículos",
+        "scope": ["Hay / No hay", "un/una con objetos", "en el/la + habitación"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "En el salón hay un sofá.", "translation": "There is a sofa in the living room." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_65_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con y o también.",
+        "items": ["Hay una cama __ una mesita.", "En la cocina hay una mesa y __ una lámpara."],
+        "solution": ["y", "también"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "y une; también añade información." }
+      }
+    ]
+  },
+  "cultural_note": "Descripciones breves y claras funcionan mejor al hablar de la casa en nivel inicial.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce una mini descripción de 3 frases.",
+      "Usa y/también correctamente una vez cada uno.",
+      "Mantiene hay/no hay y artículos correctos."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "casa", "descripción", "hay"]
+}

@@ -1,0 +1,99 @@
+{
+  "lesson_id": "SPA1_073",
+  "title": "Muy y un poco en el clima",
+  "level": "A1",
+  "theme": "Weather Talk",
+  "focus": "Matizar el clima con muy y un poco.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Uso muy con adjetivos del clima.",
+    "Uso un poco de con viento/lluvia.",
+    "Hago 2 frases sobre el tiempo de hoy."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "muy", "translation": "very", "part_of_speech": "adverb", "example": "Está muy nublado.", "example_translation": "It’s very cloudy." },
+      { "term": "un poco", "translation": "a little", "part_of_speech": "adverb", "example": "Está un poco despejado.", "example_translation": "It’s a little clear." },
+      { "term": "un poco de", "translation": "a little (quantity of)", "part_of_speech": "phrase", "example": "Hay un poco de viento.", "example_translation": "There is a little wind." },
+      { "term": "frío", "translation": "cold (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El día está frío.", "example_translation": "The day is cold." },
+      { "term": "fría", "translation": "cold (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La mañana está fría.", "example_translation": "The morning is cold." },
+      { "term": "ligero", "translation": "light, slight (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Viento ligero.", "example_translation": "Light wind." },
+      { "term": "ligera", "translation": "light, slight (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Lluvia ligera.", "example_translation": "Light rain." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_73_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con muy / un poco / un poco de.",
+        "items": ["Está __ nublado.", "Hay __ viento.", "Está __ frío."],
+        "solution": ["muy", "un poco de", "un poco"],
+        "feedback_rule": { "tip": "muy + adj.; un poco de + nombre." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Está muy nublado.", "translation": "It’s very cloudy.", "audio_url": null },
+      { "spanish": "Hay un poco de viento.", "translation": "There’s a little wind.", "audio_url": null },
+      { "spanish": "Hoy está un poco frío.", "translation": "Today it’s a bit cold.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_73_1",
+        "type": "choice_drill_minimal_pairs",
+        "prompt": "Elige y di la opción correcta.",
+        "items": [
+          ["Está muy/está un poco nublado.", "dos válidas"],
+          ["Hay un poco/un poco de lluvia.", "un poco de"]
+        ],
+        "acceptable_variants": ["Está un poco nublado."],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Recuerda: un poco de + nombre." }
+      },
+      {
+        "id": "SPK_73_2",
+        "type": "controlled_production",
+        "prompt": "Di dos frases sobre hoy con intensificadores.",
+        "frames": ["Hoy está muy __.", "También hay un poco de __."],
+        "word_bank": ["nublado", "despejado", "viento", "lluvia"],
+        "success_criteria": { "intensificador": "usado correctamente", "claridad": "frases completas" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G73_intensificadores",
+        "name": "muy / un poco",
+        "forms": ["muy + adjetivo", "un poco + adjetivo", "un poco de + nombre"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Está muy despejado.", "translation": "It’s very clear." },
+          { "spanish": "Hay un poco de viento.", "translation": "There’s a little wind." }
+        ],
+        "notes": "De se usa con nombres: un poco de + lluvia/viento."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_73_1",
+        "type": "multiple_choice",
+        "prompt": "Selecciona la opción natural.",
+        "options": ["Está un poco de nublado.", "Hay un poco de viento.", "Está muy de frío."],
+        "correct": "Hay un poco de viento.",
+        "feedback": { "tip": "un poco de + nombre; muy + adjetivo." }
+      }
+    ]
+  },
+  "cultural_note": "En el habla diaria se usan marcadores de grado como muy y un poco para sonar natural.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa muy con adjetivos.",
+      "Usa un poco de con nombres climáticos.",
+      "Produce 2 frases sobre el clima de hoy."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "clima", "intensificadores", "muy", "un poco"]
+}

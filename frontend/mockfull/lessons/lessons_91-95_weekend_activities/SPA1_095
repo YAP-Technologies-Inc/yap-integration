@@ -1,0 +1,85 @@
+{
+  "lesson_id": "SPA1_095",
+  "title": "Fin de semana 5: presentación típica",
+  "level": "A1",
+  "theme": "Weekend Activities",
+  "focus": "Describir tu fin de semana típico con frecuencia.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Hago un mini resumen de mi fin de semana.",
+    "Uso 2 adverbios de frecuencia.",
+    "Conecto 2–3 ideas con y/pero."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "normalmente", "translation": "normally", "part_of_speech": "adverb", "example": "Normalmente desayuno tarde.", "example_translation": "Normally I have a late breakfast." },
+      { "term": "a menudo", "translation": "often", "part_of_speech": "adverb", "example": "A menudo salgo con amigos.", "example_translation": "I often go out with friends." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_95_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase clara.",
+        "options": ["A menudo yo salgo.", "Yo salgo a menudo.", "A menudo salgo."],
+        "correct": "A menudo salgo.",
+        "feedback": { "tip": "Inicio con adverbio es muy natural." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Normalmente cocino el sábado y a veces voy al cine.", "translation": "Normally I cook on Saturday and sometimes I go to the cinema.", "audio_url": null },
+      { "spanish": "El domingo descanso, pero visito a mi familia por la tarde.", "translation": "On Sunday I rest, but I visit my family in the afternoon.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_95_1",
+        "type": "micro_dialogue_chain",
+        "prompt": "Presenta tu fin de semana en 5 turnos.",
+        "cards": ["Normalmente __.", "A veces __.", "Los __ por la __ __.", "Pero __.", "Gracias."],
+        "success_criteria": { "frecuencia": "2 adverbios", "conectores": "y/per o usados" }
+      },
+      {
+        "id": "SPK_95_2",
+        "type": "exit_ticket",
+        "prompt": "Di 3 frases con frecuencia y momentos.",
+        "expected_example": "A menudo salgo con amigos. Los sábados por la noche voy al cine. El domingo descanso.",
+        "rubric": { "variedad": "3 ideas", "frecuencia": "2 adverbios presentes" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G95_resumen_frecuencia",
+        "name": "Resumen de adverbios de frecuencia",
+        "forms": ["siempre", "a menudo", "a veces", "nunca", "normalmente"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Normalmente cocino.", "translation": "I normally cook." }],
+        "notes": "Evita mezclar demasiados adverbios en una sola frase."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_95_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con un adverbio lógico.",
+        "items": ["__ voy al parque los domingos.", "__ veo películas el sábado por la noche."],
+        "solution": ["A veces/Normalmente/A menudo", "A veces/Normalmente"],
+        "feedback_rule": { "tip": "Varias respuestas posibles, prioriza claridad." }
+      }
+    ]
+  },
+  "cultural_note": "Las actividades de ocio cambian por ciudad y clima; adapta tu discurso al contexto.",
+  "assessment": {
+    "auto_criteria": [
+      "Incluye 2 adverbios de frecuencia.",
+      "Menciona días y momentos.",
+      "Conecta ideas con y o pero."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "fin de semana", "frecuencia", "presentación"]
+}

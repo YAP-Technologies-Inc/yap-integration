@@ -1,0 +1,78 @@
+{
+  "quiz_id": "SPA1_Q013",
+  "title": "Quiz 61–65: Home Spaces",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_061", "SPA1_062", "SPA1_063", "SPA1_064", "SPA1_065"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q13_SPK_1",
+        "type": "controlled_production",
+        "prompt": "Di 2 frases sobre tu casa: una con hay y otra con no hay.",
+        "expected_example": ["En mi casa hay un salón.", "En mi casa no hay balcón."],
+        "success_criteria": ["Usa un/una con hay.", "Coloca En mi casa al inicio."]
+      },
+      {
+        "id": "Q13_SPK_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Describe el salón o el dormitorio con 2 muebles.",
+        "cards": [
+          "A: En el/la __ hay __ y __.",
+          "B: ¡Gracias!"
+        ],
+        "rubric": { "artículos": "un/una correctos.", "claridad": "Frases breves y naturales." }
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q13_VOC_1",
+        "type": "categorize",
+        "prompt": "Clasifica los objetos por habitación.",
+        "items": ["sofá", "cama", "horno", "lavabo"],
+        "solution": {
+          "salón": ["sofá"],
+          "dormitorio": ["cama"],
+          "cocina": ["horno"],
+          "baño": ["lavabo"]
+        },
+        "feedback": { "tip": "Piensa en la función del objeto." }
+      },
+      {
+        "id": "Q13_VOC_2",
+        "type": "match",
+        "prompt": "Empareja habitación y traducción.",
+        "pairs": [
+          ["salón", "living room"],
+          ["cocina", "kitchen"],
+          ["baño", "bathroom"],
+          ["dormitorio", "bedroom"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa las salas de la casa." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q13_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con en el/en la.",
+        "items": ["__ salón hay una lámpara.", "__ cocina hay una mesa."],
+        "solution": ["En el", "En la"],
+        "feedback_rule": { "ok": "Correcto.", "error": "el para masculino; la para femenino." }
+      },
+      {
+        "id": "Q13_GR_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase natural con hay.",
+        "options": ["En mi dormitorio hay el escritorio.", "En mi dormitorio hay un escritorio.", "En mi dormitorio es un escritorio."],
+        "correct": "En mi dormitorio hay un escritorio.",
+        "feedback": { "tip": "Con hay, usa un/una para presentar." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Produce 2 frases con hay/no hay.", "Clasifica objetos en su habitación correcta.", "Usa en el/en la correctamente."] }
+}

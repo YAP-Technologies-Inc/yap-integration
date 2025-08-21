@@ -1,0 +1,105 @@
+{
+  "lesson_id": "SPA1_062",
+  "title": "Muebles básicos en casa",
+  "level": "A1",
+  "theme": "Home Spaces",
+  "focus": "Nombrar muebles y usarlos con hay en una habitación.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Digo 5 muebles comunes.",
+    "Digo lo que hay en una habitación con hay.",
+    "Combino en el/la + habitación + hay + mueble."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "mesa", "translation": "table", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una mesa en la cocina.", "example_translation": "There is a table in the kitchen." },
+      { "term": "silla", "translation": "chair", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una silla en el salón.", "example_translation": "There is a chair in the living room." },
+      { "term": "sofá", "translation": "sofa", "part_of_speech": "noun", "gender": "masculine", "example": "Hay un sofá en el salón.", "example_translation": "There is a sofa in the living room." },
+      { "term": "cama", "translation": "bed", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una cama en el dormitorio.", "example_translation": "There is a bed in the bedroom." },
+      { "term": "lámpara", "translation": "lamp", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una lámpara en la mesa.", "example_translation": "There is a lamp on the table." },
+      { "term": "estante (reconocimiento)", "translation": "shelf", "part_of_speech": "noun", "gender": "masculine", "example": "El estante es alto.", "example_translation": "The shelf is tall.", "recognition_only": true, "production_required": false }
+    ],
+    "practice": [
+      {
+        "id": "VOC_62_1",
+        "type": "categorize",
+        "prompt": "Clasifica por habitación probable.",
+        "items": ["cama", "sofá", "mesa", "lámpara", "silla"],
+        "solution": {
+          "dormitorio": ["cama"],
+          "salón": ["sofá", "lámpara"],
+          "cocina": ["mesa", "silla"]
+        },
+        "feedback": { "tip": "Algunas piezas pueden estar en varias habitaciones." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "En el salón hay un sofá.", "translation": "In the living room there is a sofa.", "audio_url": null },
+      { "spanish": "En el dormitorio hay una cama y una lámpara.", "translation": "In the bedroom there is a bed and a lamp.", "audio_url": null },
+      { "spanish": "En la cocina no hay sofá.", "translation": "In the kitchen there isn’t a sofa.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_62_1",
+        "type": "controlled_production",
+        "prompt": "Completa las frases.",
+        "items": [
+          "En el salón hay __ __.",
+          "En el dormitorio hay __ __."
+        ],
+        "expected_example": ["En el salón hay un sofá.", "En el dormitorio hay una cama."],
+        "success_criteria": { "artículo": "un/una correcto.", "preposición": "en el/en la correcto." }
+      },
+      {
+        "id": "SPK_62_2",
+        "type": "micro_reflection",
+        "prompt": "Di un mueble real que tienes.",
+        "expected_example": "En mi salón hay una lámpara.",
+        "rubric": { "claridad": "Frase breve con hay.", "realidad": "Algo verdadero si es posible." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G62_hay_en_habitacion",
+        "name": "Hay en + habitación",
+        "scope": ["En el/la + habitación + hay + un/una + mueble", "No hay + mueble"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "En la cocina hay una mesa.", "translation": "In the kitchen there is a table." }]
+      },
+      {
+        "id": "G62_plural_ro",
+        "name": "Plural con hay (reconocimiento)",
+        "scope": ["Hay dos sillas", "Hay muchas sillas"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Hay dos sillas en la cocina.", "translation": "There are two chairs in the kitchen." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_62_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con en el/en la.",
+        "items": ["__ salón hay un sofá.", "__ cocina hay una mesa."],
+        "solution": ["En el", "En la"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "el = masculino; la = femenino." }
+      }
+    ]
+  },
+  "cultural_note": "En muchos pisos pequeños, el salón puede incluir comedor con mesa y sillas.",
+  "assessment": {
+    "auto_criteria": [
+      "Nombra 5 muebles correctamente.",
+      "Produce 2 frases con En el/la… hay…",
+      "Incluye una negación No hay… correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "muebles", "hay", "casa"]
+}

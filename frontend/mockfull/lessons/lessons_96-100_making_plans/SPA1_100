@@ -1,0 +1,96 @@
+{
+  "lesson_id": "SPA1_100",
+  "title": "Plan completo: invitar, fijar y confirmar",
+  "level": "A1",
+  "theme": "Making Plans",
+  "focus": "Hacer y confirmar un plan completo con lugar y hora.",
+  "duration_minutes": 10,
+  "register": "tú",
+  "can_do": [
+    "Inicio con una invitación simple.",
+    "Propongo lugar y hora con en y a las.",
+    "Confirmo y cierro con nos vemos."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Vamos a…?", "translation": "Shall we…?", "part_of_speech": "question", "example": "¿Vamos a estudiar?", "example_translation": "Shall we study?" },
+      { "term": "vamos a…", "translation": "let’s… / we’re going to…", "part_of_speech": "phrase", "example": "Vamos a tomar un café.", "example_translation": "Let’s have a coffee.", "recognition_only": false, "production_required": true },
+      { "term": "en + lugar", "translation": "at/in + place", "part_of_speech": "phrase", "example": "En el café del centro.", "example_translation": "At the downtown café." },
+      { "term": "a las + hora", "translation": "at + time", "part_of_speech": "phrase", "example": "A las seis.", "example_translation": "At six o’clock." },
+      { "term": "Nos vemos…", "translation": "See you…", "part_of_speech": "phrase", "example": "Nos vemos allí.", "example_translation": "See you there." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_100_1",
+        "type": "match",
+        "prompt": "Empareja función y frase.",
+        "pairs": [
+          ["invitar", "¿Vamos a tomar un café?"],
+          ["lugar", "En la plaza"],
+          ["hora", "A las seis"],
+          ["cierre", "Nos vemos allí"]
+        ],
+        "feedback_rule": { "ok": "¡Exacto!", "error": "Piensa en el paso del plan." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Vamos a tomar un café?", "translation": "Shall we have a coffee?", "audio_url": null },
+      { "spanish": "En el café de la esquina, a las seis.", "translation": "At the corner café, at six.", "audio_url": null },
+      { "spanish": "Vale, nos vemos allí.", "translation": "Okay, see you there.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_100_1",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena de 6–8 turnos: invitar → lugar → hora → confirmar → cambio opcional → cierre.",
+        "cards": ["¿Vamos a __?", "En __", "A las __", "Vale", "¿Mejor __?", "Nos vemos __"],
+        "success_criteria": { "secuencia": "sigue el orden", "detalles": "incluye lugar y hora", "cierre": "usa nos vemos" }
+      },
+      {
+        "id": "SPK_100_2",
+        "type": "exit_ticket",
+        "prompt": "Di tu plan completo en 2 frases.",
+        "expected_example": "¿Vamos a caminar en la plaza a las seis? Vale, nos vemos allí.",
+        "rubric": { "claridad": "2 frases completas", "detalles": "lugar y hora incluidos" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G100_resumen_planes",
+        "name": "Resumen de planes",
+        "forms": ["ir a + infinitivo", "¿Vamos a + infinitivo…?", "Quedamos en + lugar", "A las + hora", "Nos vemos + lugar/hora"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Vamos a estudiar en el café a las seis?", "translation": "Shall we study at the café at six?" },
+          { "spanish": "Vale, nos vemos en la plaza.", "translation": "Okay, see you at the square." }
+        ],
+        "notes": "Conecta pasos en 2–3 frases cortas."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_100_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa el plan con en / a las.",
+        "items": ["¿Vamos a cenar __ la estación __ siete?"],
+        "solution": ["en", "a las"],
+        "feedback_rule": { "tip": "en para lugar, a las para hora." }
+      }
+    ]
+  },
+  "cultural_note": "En planes informales, un cierre como “Nos vemos allí” suele ser suficiente.",
+  "assessment": {
+    "auto_criteria": [
+      "Inicia con una invitación correcta.",
+      "Incluye lugar con en y hora con a las.",
+      "Cierra con nos vemos + lugar u hora."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "planes", "invitación", "quedar", "confirmación"]
+}

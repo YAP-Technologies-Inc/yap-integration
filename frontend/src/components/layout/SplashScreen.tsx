@@ -63,13 +63,13 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
       </div>
 
       <div
-        className="w-full px-4 mt-auto flex justify-center *:
-        lg:pb-20  
-      "
+        className="w-full px-4 fixed bottom-0 left-0 flex justify-center pb-2 bg-background-primary z-10
+        lg:pb-2
+        "
       >
         <button
           onClick={() => (isLastSlide ? onFinish() : setIndex(index + 1))}
-          className="bg-secondary text-white py-3 px-6 rounded-full border-b-3 border-r-1 border-black w-full max-w-xs hover:cursor-pointer"
+          className="bg-secondary text-white py-3 px-6 rounded-full border-b-3 border-r-1 border-black w-full max-w-xs hover:cursor-pointer mb-2"
         >
           {isLastSlide ? 'Start' : 'Next'}
         </button>

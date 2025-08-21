@@ -1,0 +1,123 @@
+{
+  "lesson_id": "SPA1_019",
+  "title": "¿Con quién vives?",
+  "level": "A1",
+  "theme": "Family Basics",
+  "focus": "Decir con quién vives usando vivir con, reforzar la negación con no y posesivos.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir con quién vivo: “Vivo con mi __.”",
+    "Puedo negar: “No tengo hermanos.”",
+    "Puedo hacer y responder la pregunta: “¿Con quién vives?”"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "vivir", "translation": "to live", "part_of_speech": "verb", "example": "Vivo en Valencia.", "example_translation": "I live in Valencia." },
+      { "term": "con", "translation": "with", "part_of_speech": "adverb", "example": "Vivo con mis padres.", "example_translation": "I live with my parents." },
+      { "term": "padres", "translation": "parents", "part_of_speech": "noun", "gender": "masculine", "example": "Mis padres trabajan.", "example_translation": "My parents work." },
+      { "term": "solo", "translation": "alone (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Vivo solo.", "example_translation": "I live alone." },
+      { "term": "sola", "translation": "alone (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Vivo sola.", "example_translation": "I live alone." },
+      { "term": "mascota", "translation": "pet", "part_of_speech": "noun", "gender": "feminine", "example": "Tengo una mascota.", "example_translation": "I have a pet." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_19_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con vivir o con.",
+        "items": ["Yo __ con mis padres.", "¿__ quién vives?", "Vivo __ mi hermana."],
+        "solution": ["vivo", "Con", "con"],
+        "feedback_rule": { "ok": "Bien hecho.", "error": "Recuerda: con + persona." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Con quién vives?", "translation": "Who do you live with?", "audio_url": null },
+      { "spanish": "Vivo con mis padres.", "translation": "I live with my parents.", "audio_url": null },
+      { "spanish": "No tengo hermanos.", "translation": "I do not have siblings.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_19_1",
+        "type": "request_builder",
+        "prompt": "Construye respuestas a la pregunta: ¿Con quién vives?",
+        "frames": [
+          "Vivo con mi __.",
+          "Vivo con mis __.",
+          "Vivo solo/sola."
+        ],
+        "solutions": ["madre", "padres", "sola/solo"],
+        "feedback": { "tip": "Elige mi o mis según singular/plural." }
+      },
+      {
+        "id": "SPK_19_2",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena: pregunta y pasa la pregunta a otra persona.",
+        "cards": [
+          "A: ¿Con quién vives?",
+          "B: Vivo con __. ¿Y tú?",
+          "C: Vivo con __."
+        ],
+        "acceptable_variants": ["Vivo con mi madre.", "Vivo con mi hermana.", "Vivo solo.", "Vivo con mis padres."],
+        "rubric": { "claridad": "Respuestas cortas y claras.", "coherencia": "Mantén el turno de palabra." }
+      },
+      {
+        "id": "SPK_19_3",
+        "type": "orthography_check",
+        "prompt": "Coloca la tilde e interrogación correctamente.",
+        "items": ["Con quien vives", "Vivo con mis padres", "Tienes hermanos"],
+        "solution": ["¿Con quién vives?", "Vivo con mis padres.", "¿Tienes hermanos?"],
+        "feedback_rule": { "note": "Usa ¿…? y tildes: quién." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G19_vivir_con",
+        "name": "Vivir con + persona(s)",
+        "forms": ["yo vivo", "tú vives", "él/ella vive (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Vivo con mi madre.", "translation": "I live with my mother." },
+          { "spanish": "¿Vives con tus padres?", "translation": "Do you live with your parents?" }
+        ],
+        "notes": "Preposición fija: con."
+      },
+      {
+        "id": "G19_negacion_no",
+        "name": "Negación con no",
+        "scope": ["no + verbo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "No tengo hermanos.", "translation": "I do not have siblings." },
+          { "spanish": "No vivo solo.", "translation": "I do not live alone." }
+        ],
+        "notes": "No va antes del verbo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_19_1",
+        "type": "fill_in_blank",
+        "prompt": "Forma frases con no cuando sea necesario.",
+        "items": ["__ tengo hermanos.", "Yo __ con mis padres."],
+        "solution": ["No", "vivo"],
+        "feedback_rule": { "ok": "Correcto.", "error": "Coloca no antes del verbo." }
+      }
+    ]
+  },
+  "cultural_note": "Es habitual compartir vivienda con la familia por razones económicas o culturales. Decir “Vivo con mis padres” es común en muchos países.",
+  "assessment": {
+    "auto_criteria": [
+      "Responde a “¿Con quién vives?” con una frase clara.",
+      "Usa no antes del verbo correctamente.",
+      "Mantiene una mini conversación de dos turnos."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "vivir", "negación"]
+}

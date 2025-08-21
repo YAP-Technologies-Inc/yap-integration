@@ -1,0 +1,194 @@
+{
+  "lesson_id": "SPA1_012",
+  "title": "Mi rutina: por la mañana",
+  "level": "A1",
+  "theme": "Rutinas diarias",
+  "focus": "Hablar de acciones básicas de la mañana con la hora",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puede decir a qué hora realiza 2–3 acciones diarias.",
+    "Puede preguntar a otra persona a qué hora hace una acción.",
+    "Puede entender expresiones de tiempo básicas: por la mañana, por la tarde, por la noche."
+  ],
+  "vocabulary": {
+    "items": [
+      {
+        "term": "despertarse",
+        "translation": "to wake up",
+        "part_of_speech": "verb",
+        "example": "Me despierto a las seis.",
+        "example_translation": "I wake up at six."
+      },
+      {
+        "term": "levantarse",
+        "translation": "to get up",
+        "part_of_speech": "verb",
+        "example": "Me levanto a las siete.",
+        "example_translation": "I get up at seven."
+      },
+      {
+        "term": "ducharse",
+        "translation": "to shower",
+        "part_of_speech": "verb",
+        "example": "Me ducho por la mañana.",
+        "example_translation": "I shower in the morning."
+      },
+      {
+        "term": "desayunar",
+        "translation": "to have breakfast",
+        "part_of_speech": "verb",
+        "example": "Desayuno a las siete y media.",
+        "example_translation": "I have breakfast at seven thirty."
+      },
+      {
+        "term": "estudiar",
+        "translation": "to study",
+        "part_of_speech": "verb",
+        "example": "Estudio a las nueve.",
+        "example_translation": "I study at nine."
+      },
+      {
+        "term": "trabajar",
+        "translation": "to work",
+        "part_of_speech": "verb",
+        "example": "Trabajo a las ocho.",
+        "example_translation": "I work at eight."
+      },
+      {
+        "term": "por la mañana",
+        "translation": "in the morning",
+        "part_of_speech": "adverb",
+        "example": "Me ducho por la mañana.",
+        "example_translation": "I shower in the morning."
+      },
+      {
+        "term": "por la tarde",
+        "translation": "in the afternoon",
+        "part_of_speech": "adverb",
+        "example": "Estudio por la tarde.",
+        "example_translation": "I study in the afternoon."
+      },
+      {
+        "term": "por la noche",
+        "translation": "at night / in the evening",
+        "part_of_speech": "adverb",
+        "example": "Ceno por la noche.",
+        "example_translation": "I have dinner at night."
+      },
+      {
+        "term": "cansado",
+        "translation": "tired (masculine)",
+        "part_of_speech": "adjective",
+        "gender": "masculine",
+        "example": "Estoy cansado por la noche.",
+        "example_translation": "I am tired at night."
+      },
+      {
+        "term": "cansada",
+        "translation": "tired (feminine)",
+        "part_of_speech": "adjective",
+        "gender": "feminine",
+        "example": "Estoy cansada por la noche.",
+        "example_translation": "I am tired at night."
+      }
+    ],
+    "practice": [
+      {
+        "id": "VOC_12_1",
+        "type": "categorize",
+        "prompt": "Arrastra cada acción a mañana o tarde.",
+        "items": ["desayunar", "ducharse", "estudiar", "trabajar"],
+        "solution": ["mañana: desayunar, ducharse", "tarde: estudiar, trabajar"],
+        "feedback": {
+          "note": "Algunas acciones pueden variar según la persona. Se acepta equivalente razonable."
+        }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me levanto a las siete.", "translation": "I get up at seven.", "audio_url": null },
+      { "spanish": "Me ducho por la mañana.", "translation": "I shower in the morning.", "audio_url": null },
+      { "spanish": "¿A qué hora te levantas?", "translation": "What time do you get up?", "audio_url": null },
+      { "spanish": "Desayuno a las siete y media.", "translation": "I have breakfast at seven thirty.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_12_1",
+        "type": "request_builder",
+        "prompt": "Completa y di frases sobre tu mañana.",
+        "frames": ["Me despierto a las __.", "Me levanto a las __.", "Desayuno a las __."],
+        "success_criteria": ["Usa a las + hora.", "Pronuncia con claridad."]
+      },
+      {
+        "id": "SPK_12_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye un mini diálogo.",
+        "cards": [
+          "A: Hola, ¿a qué hora te levantas?",
+          "B: Me levanto a las __.",
+          "A: ¿Desayunas por la mañana?",
+          "B: Sí, desayuno a las __."
+        ],
+        "acceptable_variants": ["No, desayuno más tarde."],
+        "feedback_rule": { "reminder": "Incluye por la mañana / por la tarde cuando sea natural." }
+      },
+      {
+        "id": "SPK_12_3",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la hora correcta.",
+        "options": ["A las siete", "A las ocho", "A las nueve"],
+        "solution": "A las siete",
+        "feedback": { "tip": "Fíjate en y media y en punto." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G_REFLEX_1",
+        "name": "Verbros reflexivos en la rutina (me/te)",
+        "forms": ["me levanto", "me ducho", "te levantas"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me levanto a las seis.", "translation": "I get up at six." },
+          { "spanish": "¿A qué hora te levantas?", "translation": "What time do you get up?" }
+        ],
+        "notes": "Solo usamos me y te en presente. Otras formas como se levanta son de reconocimiento.",
+        "recognition_only": false
+      },
+      {
+        "id": "G_REFLEX_RO",
+        "name": "Otras formas con se (reconocimiento)",
+        "scope": ["se levanta", "se ducha"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Él se levanta a las siete.", "translation": "He gets up at seven." }
+        ],
+        "notes": "No se exige producir estas formas en esta lección."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_12_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con me o te.",
+        "items": ["__ levanto a las siete.", "¿A qué hora __ duchas?"],
+        "solution": ["Me", "te"]
+      }
+    ]
+  },
+  "cultural_note": "En muchos países hispanos el almuerzo puede ser más tarde que en otros lugares, y la jornada se organiza diferente.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2–3 frases con me + verbo y hora.",
+      "Formula la pregunta ¿A qué hora…? correctamente.",
+      "Usa por la mañana/tarde/noche adecuadamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "rutina", "tiempo"]
+}

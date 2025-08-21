@@ -1,0 +1,100 @@
+{
+  "lesson_id": "SPA1_098",
+  "title": "Detalles: lugar y hora",
+  "level": "A1",
+  "theme": "Making Plans",
+  "focus": "Decir dónde y a qué hora quedar.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Pregunto y digo ¿Dónde quedamos?",
+    "Propongo un lugar con en + lugar.",
+    "Propongo hora con a las + número."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Dónde quedamos?", "translation": "Where shall we meet?", "part_of_speech": "question", "example": "¿Dónde quedamos mañana?", "example_translation": "Where shall we meet tomorrow?" },
+      { "term": "quedar", "translation": "to meet, to arrange to meet", "part_of_speech": "verb", "example": "Quedamos en el café.", "example_translation": "We’re meeting at the café." },
+      { "term": "en + lugar", "translation": "at/in + place", "part_of_speech": "phrase", "example": "En la plaza.", "example_translation": "At the square." },
+      { "term": "a las + hora", "translation": "at + time", "part_of_speech": "phrase", "example": "A las seis.", "example_translation": "At six o’clock." },
+      { "term": "el café", "translation": "the café", "part_of_speech": "noun", "gender": "masculine", "example": "En el café del centro.", "example_translation": "At the downtown café." },
+      { "term": "la plaza", "translation": "the square", "part_of_speech": "noun", "gender": "feminine", "example": "Quedamos en la plaza.", "example_translation": "We meet at the square." },
+      { "term": "la estación", "translation": "the station", "part_of_speech": "noun", "gender": "feminine", "example": "Quedamos en la estación.", "example_translation": "We meet at the station." },
+      { "term": "por la tarde", "translation": "in the afternoon", "part_of_speech": "phrase", "example": "Quedamos por la tarde.", "example_translation": "We meet in the afternoon." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_98_1",
+        "type": "categorize",
+        "prompt": "Clasifica en tiempo o lugar.",
+        "items": ["a las seis", "en la plaza", "por la tarde", "en el café"],
+        "solution": [
+          { "tiempo": ["a las seis", "por la tarde"] },
+          { "lugar": ["en la plaza", "en el café"] }
+        ],
+        "feedback_rule": { "ok": "Bien clasificado.", "error": "¿Es hora o sitio?" }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Dónde quedamos?", "translation": "Where shall we meet?", "audio_url": null },
+      { "spanish": "Quedamos en el café a las seis.", "translation": "Let’s meet at the café at six.", "audio_url": null },
+      { "spanish": "En la plaza, por la tarde.", "translation": "At the square, in the afternoon.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_98_1",
+        "type": "controlled_production",
+        "prompt": "Propón lugar y hora.",
+        "frames": ["¿Dónde quedamos?", "Quedamos en __ a las __."],
+        "word_bank": ["el café", "la plaza", "la estación", "seis", "siete"],
+        "success_criteria": { "lugar": "en + lugar", "hora": "a las + número" }
+      },
+      {
+        "id": "SPK_98_2",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige el detalle correcto.",
+        "audio_items": ["Quedamos en la plaza a las siete."],
+        "options": ["plaza, siete", "café, seis", "estación, cinco"],
+        "solution": ["plaza, siete"],
+        "feedback_rule": { "ok": "Detalles correctos.", "error": "Atiende a lugar y hora." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G98_quedar_lugar_hora",
+        "name": "Quedar: en + lugar, a las + hora",
+        "forms": ["Quedamos en + lugar", "A las + número", "¿Dónde quedamos?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Quedamos en la estación a las seis.", "translation": "We meet at the station at six." }
+        ],
+        "notes": "Usa en para lugar y a las para hora."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_98_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con en / a las.",
+        "items": ["Quedamos __ el café __ siete."],
+        "solution": ["en", "a las"],
+        "feedback_rule": { "tip": "en + lugar, a las + hora." }
+      }
+    ]
+  },
+  "cultural_note": "En encuentros informales bastan un lugar claro y una hora aproximada.",
+  "assessment": {
+    "auto_criteria": [
+      "Pregunta con ¿Dónde quedamos?",
+      "Da un lugar correcto con en + lugar.",
+      "Da una hora con a las + número."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "planes", "quedar", "hora", "lugar"]
+}

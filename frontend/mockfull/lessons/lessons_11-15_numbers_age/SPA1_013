@@ -1,0 +1,224 @@
+{
+  "lesson_id": "SPA1_013",
+  "title": "En la cafetería",
+  "level": "A1",
+  "theme": "Comida y bebidas",
+  "focus": "Pedir comida y bebida de manera sencilla y pagar",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puede pedir un producto con una frase corta y cortés.",
+    "Puede responder a ¿Algo más? con sí/no y un ítem.",
+    "Puede pedir la cuenta."
+  ],
+  "vocabulary": {
+    "items": [
+      {
+        "term": "¿Me das… por favor?",
+        "translation": "Can you give me… please?",
+        "part_of_speech": "phrase",
+        "example": "¿Me das un café, por favor?",
+        "example_translation": "Can I have a coffee, please?"
+      },
+      {
+        "term": "Para mí…",
+        "translation": "For me…",
+        "part_of_speech": "phrase",
+        "example": "Para mí, una tostada.",
+        "example_translation": "For me, a piece of toast."
+      },
+      {
+        "term": "¿Algo más?",
+        "translation": "Anything else?",
+        "part_of_speech": "question",
+        "example": "—¿Algo más? —No, gracias.",
+        "example_translation": "—Anything else? —No, thanks."
+      },
+      {
+        "term": "La cuenta, por favor.",
+        "translation": "The bill, please.",
+        "part_of_speech": "phrase",
+        "example": "La cuenta, por favor.",
+        "example_translation": "The bill, please."
+      },
+      {
+        "term": "el café",
+        "translation": "coffee",
+        "part_of_speech": "noun",
+        "gender": "masculine",
+        "example": "Quiero un café.",
+        "example_translation": "I want a coffee."
+      },
+      {
+        "term": "el té",
+        "translation": "tea",
+        "part_of_speech": "noun",
+        "gender": "masculine",
+        "example": "¿Me das un té?",
+        "example_translation": "Can I have a tea?"
+      },
+      {
+        "term": "el agua",
+        "translation": "water",
+        "part_of_speech": "noun",
+        "gender": "feminine",
+        "example": "Para mí, un agua.",
+        "example_translation": "For me, a water."
+      },
+      {
+        "term": "el jugo / el zumo",
+        "translation": "juice",
+        "part_of_speech": "noun",
+        "gender": "masculine",
+        "example": "¿Tienen jugo de naranja?",
+        "example_translation": "Do you have orange juice?"
+      },
+      {
+        "term": "la tostada",
+        "translation": "toast",
+        "part_of_speech": "noun",
+        "gender": "feminine",
+        "example": "Para mí, una tostada.",
+        "example_translation": "For me, a toast."
+      },
+      {
+        "term": "el bocadillo",
+        "translation": "sandwich",
+        "part_of_speech": "noun",
+        "gender": "masculine",
+        "example": "¿Me das un bocadillo de queso?",
+        "example_translation": "Can I have a cheese sandwich?"
+      },
+      {
+        "term": "la ensalada",
+        "translation": "salad",
+        "part_of_speech": "noun",
+        "gender": "feminine",
+        "example": "Quiero una ensalada pequeña.",
+        "example_translation": "I want a small salad."
+      },
+      {
+        "term": "por favor",
+        "translation": "please",
+        "part_of_speech": "adverb",
+        "example": "¿Me das un té, por favor?",
+        "example_translation": "Can I have a tea, please?"
+      },
+      {
+        "term": "gracias",
+        "translation": "thank you",
+        "part_of_speech": "interjection",
+        "example": "—Aquí tienes. —Gracias.",
+        "example_translation": "—Here you go. —Thanks."
+      }
+    ],
+    "practice": [
+      {
+        "id": "VOC_13_1",
+        "type": "match",
+        "prompt": "Une el producto con su traducción.",
+        "pairs": [
+          ["el café", "coffee"],
+          ["el té", "tea"],
+          ["el agua", "water"],
+          ["la tostada", "toast"],
+          ["el bocadillo", "sandwich"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Correcto!", "wrong_pair": "Revisa las bebidas y comidas." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Me das un café, por favor?", "translation": "Can I have a coffee, please?", "audio_url": null },
+      { "spanish": "Para mí, una tostada.", "translation": "For me, a toast.", "audio_url": null },
+      { "spanish": "¿Algo más?", "translation": "Anything else?", "audio_url": null },
+      { "spanish": "La cuenta, por favor.", "translation": "The bill, please.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_13_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa el pedido.",
+        "dialogue_template": [
+          "Cliente: ____ un té, ____.",
+          "Camarero: ¿Algo más?",
+          "Cliente: Sí, ____ ____. La ____ , ____."
+        ],
+        "word_bank": ["¿Me das", "por favor", "para mí", "bocadillo", "cuenta", "por favor"],
+        "solutions": [
+          "¿Me das un té, por favor?",
+          "Para mí, un bocadillo.",
+          "La cuenta, por favor."
+        ],
+        "feedback_rule": { "reminder": "Incluye por favor y un artículo (un/una)." }
+      },
+      {
+        "id": "SPK_13_2",
+        "type": "controlled_production",
+        "prompt": "Haz dos pedidos diferentes.",
+        "frames": ["¿Me das ____, por favor?", "Para mí, ____."],
+        "success_criteria": ["Usa por favor.", "Pronuncia el producto claramente."]
+      },
+      {
+        "id": "SPK_13_3",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige lo que pide el cliente.",
+        "options": ["un café", "un té", "un agua"],
+        "solution": "un café"
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G_REQUEST_1",
+        "name": "Pedir con ¿Me das…? y Para mí…",
+        "forms": ["¿Me das + sustantivo + por favor?", "Para mí + sustantivo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Me das un jugo, por favor?", "translation": "Can I have a juice, please?" },
+          { "spanish": "Para mí, una ensalada.", "translation": "For me, a salad." }
+        ],
+        "notes": "Alternativa de reconocimiento: ¿Me pone…? (usted).",
+        "recognition_only": false
+      },
+      {
+        "id": "G_REQUEST_RO",
+        "name": "Usted en pedidos (reconocimiento)",
+        "scope": ["¿Me pone + sustantivo…?"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "¿Me pone un café, por favor?", "translation": "Could I have a coffee, please?" }
+        ],
+        "notes": "No se exige producir usted en A1."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_13_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción más natural para pedir.",
+        "options": [
+          "Dame un café.",
+          "¿Me das un café, por favor?",
+          "Yo café ahora."
+        ],
+        "correct": "¿Me das un café, por favor?",
+        "feedback_rule": { "tip": "Evita el imperativo en A1. Usa ¿Me das…?" }
+      }
+    ]
+  },
+  "cultural_note": "Al entrar, es común saludar con “Hola” o “Buenos días”. Es habitual decir por favor al pedir y gracias al recibir.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula al menos un pedido correcto con ¿Me das…?",
+      "Responde a ¿Algo más? con sí/no y un producto.",
+      "Pide la cuenta con una frase corta."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "café", "comida", "funcional"]
+}

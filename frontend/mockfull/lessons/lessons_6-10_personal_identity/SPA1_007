@@ -1,0 +1,101 @@
+{
+  "lesson_id": "SPA1_007",
+  "level": "A1",
+  "title": "Jobs and Workplaces",
+  "duration_minutes": 8,
+  "topic_tags": ["professions", "work", "identity"],
+  "learning_objectives": [
+    "Ask and answer about jobs",
+    "Use ser to state professions",
+    "Use trabajar en/para to describe workplace"
+  ],
+  "key_phrases": [
+    {"target": "¿A qué te dedicas?", "translation": "What do you do?"},
+    {"target": "Soy profesor / Soy profesora.", "translation": "I am a teacher (m/f)."},
+    {"target": "Trabajo en una oficina.", "translation": "I work in an office."},
+    {"target": "Trabajo para una empresa de tecnología.", "translation": "I work for a tech company."}
+  ],
+  "vocabulary": {
+    "items": [
+      {"term": "profesor", "translation": "teacher (m.)", "part_of_speech": "noun", "gender": "m", "example": "Él es profesor."},
+      {"term": "profesora", "translation": "teacher (f.)", "part_of_speech": "noun", "gender": "f", "example": "Ella es profesora."},
+      {"term": "médico", "translation": "doctor (m.)", "part_of_speech": "noun", "gender": "m", "example": "Mi padre es médico."},
+      {"term": "médica", "translation": "doctor (f.)", "part_of_speech": "noun", "gender": "f", "example": "Mi madre es médica."},
+      {"term": "ingeniero", "translation": "engineer (m.)", "part_of_speech": "noun", "gender": "m", "example": "Él es ingeniero."},
+      {"term": "ingeniera", "translation": "engineer (f.)", "part_of_speech": "noun", "gender": "f", "example": "Ella es ingeniera."},
+      {"term": "camarero", "translation": "waiter (m.)", "part_of_speech": "noun", "gender": "m", "example": "Trabajo de camarero."},
+      {"term": "camarera", "translation": "waitress (f.)", "part_of_speech": "noun", "gender": "f", "example": "Ella es camarera."},
+      {"term": "estudiante", "translation": "student (m/f)", "part_of_speech": "noun", "gender": "invariable", "example": "Soy estudiante."},
+      {"term": "trabajar", "translation": "to work", "part_of_speech": "verb", "example": "Trabajo en casa."},
+      {"term": "oficina", "translation": "office", "part_of_speech": "noun", "gender": "f", "example": "La oficina es grande."},
+      {"term": "empresa", "translation": "company", "part_of_speech": "noun", "gender": "f", "example": "Trabajo para una empresa pequeña."}
+    ],
+    "exercises": [
+      {"type": "match", "prompt": "Match job to place.", "pairs": [
+        {"left": "profesor / profesora", "right": "escuela"},
+        {"left": "médico / médica", "right": "hospital"},
+        {"left": "camarero / camarera", "right": "restaurante"}
+      ]},
+      {"type": "select", "prompt": "Choose the correct article when needed.", "items": [
+        {"question": "Soy ___ profesor.", "options": ["un", "(sin artículo)"], "answer": "(sin artículo)"},
+        {"question": "Trabajo en ___ oficina.", "options": ["una", "un"], "answer": "una"}
+      ]},
+      {"type": "fill_in_the_blank", "prompt": "Complete with ser or trabajar (presente).", "items": [
+        {"text": "Yo ___ ingeniera.", "answer": "soy"},
+        {"text": "Nosotros ___ en una empresa grande.", "answer": "trabajamos"}
+      ]},
+      {"type": "sort", "prompt": "Order the words.", "items": [
+        {"jumbled": "dedicas te qué ¿ a ?", "answer": "¿A qué te dedicas?"},
+        {"jumbled": "profesora soy", "answer": "Soy profesora."}
+      ]},
+      {"type": "classification", "prompt": "Sort into jobs or places.", "groups": [
+        {"name": "Jobs", "answers": ["profesor", "médica", "ingeniero", "camarera"]},
+        {"name": "Places", "answers": ["oficina", "hospital", "escuela", "restaurante"]}
+      ]}
+    ]
+  },
+  "grammar": {
+    "topics": ["Ser + profesión (sin artículo)", "Trabajar en/para + lugar/empresa", "Presente regular de -ar (trabajar)"],
+    "explanations": [
+      "Con profesiones, normalmente no usamos artículo: Soy médico.",
+      "Trabajar en + lugar; trabajar para + empresa/organización.",
+      "Trabajar: trabajo, trabajas, trabaja, trabajamos, trabajáis, trabajan."
+    ],
+    "examples": [
+      {"target": "¿A qué te dedicas? Soy ingeniero.", "translation": "What do you do? I am an engineer."},
+      {"target": "Trabajo en un hospital.", "translation": "I work in a hospital."}
+    ],
+    "exercises": [
+      {"type": "conjugation", "prompt": "Conjugate trabajar for the subject.", "items": [
+        {"subject": "yo", "answer": "trabajo"},
+        {"subject": "tú", "answer": "trabajas"},
+        {"subject": "ella", "answer": "trabaja"}
+      ]},
+      {"type": "transform", "prompt": "Change to first person.", "items": [
+        {"input": "Ella es profesora.", "answer": "Soy profesora."},
+        {"input": "Él trabaja en una oficina.", "answer": "Trabajo en una oficina."}
+      ]},
+      {"type": "error_correction", "prompt": "Fix the mistake.", "items": [
+        {"text": "Soy un profesor.", "answer": "Soy profesor."},
+        {"text": "Trabajo para un hospital público.", "answer": "Trabajo en un hospital público."}
+      ]},
+      {"type": "fill_in_the_blank", "prompt": "Complete.", "items": [
+        {"text": "Nosotros ___ médicos.", "answer": "somos"},
+        {"text": "Ustedes ___ para una empresa internacional.", "answer": "trabajan"}
+      ]},
+      {"type": "select", "prompt": "Choose en or para.", "items": [
+        {"question": "Trabajo ___ Google.", "options": ["en", "para"], "answer": "para"},
+        {"question": "Trabajamos ___ oficina.", "options": ["en", "para"], "answer": "en"}
+      ]}
+    ]
+  },
+  "speaking": {
+    "exercises": [
+      {"type": "listen_and_repeat", "content": "¿A qué te dedicas? Soy [profesión].", "variations": 3},
+      {"type": "role_play", "scenario": "Conocer a un colega", "roles": ["A: pregunta profesión y lugar", "B: responde y pregunta de vuelta"]},
+      {"type": "prompted_response", "prompt": "Describe tu trabajo y lugar de trabajo en 2 frases.", "expected_output_pattern": "Soy [profesión]. Trabajo en/para [lugar/empresa]."},
+      {"type": "guided_interview", "prompt": "Haz 3 preguntas sobre profesión, horario y lugar.", "model": "¿A qué te dedicas? ¿Dónde trabajas? ¿Tienes horario fijo?"},
+      {"type": "personal_statement", "prompt": "Presenta tu profesión y un detalle de tu trabajo.", "sentence_frames": ["Soy...", "Trabajo en/para...", "Me gusta..."]}
+    ]
+  }
+}

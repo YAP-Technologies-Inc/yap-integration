@@ -1,0 +1,98 @@
+{
+  "lesson_id": "SPA1_079",
+  "title": "Mini conversación 4: restaurante básico",
+  "level": "A1",
+  "theme": "First Review & Integration",
+  "focus": "Pedir comida y bebida con fórmulas simples.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Pido 1 bebida y 1 comida.",
+    "Uso por favor y gracias.",
+    "Respondo ¿Algo más?"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Me das… por favor?", "translation": "Can you give me… please?", "part_of_speech": "phrase", "example": "¿Me das un café, por favor?", "example_translation": "Can I have a coffee, please?" },
+      { "term": "para mí…", "translation": "for me…", "part_of_speech": "phrase", "example": "Para mí, una sopa.", "example_translation": "For me, a soup." },
+      { "term": "¿Algo más?", "translation": "Anything else?", "part_of_speech": "question", "example": "¿Algo más?", "example_translation": "Anything else?" },
+      { "term": "la cuenta", "translation": "the bill", "part_of_speech": "noun", "gender": "feminine", "example": "La cuenta, por favor.", "example_translation": "The bill, please." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_79_1",
+        "type": "match",
+        "prompt": "Relaciona la fórmula con su uso.",
+        "pairs": [
+          ["¿Me das… por favor?", "Pedir algo"],
+          ["¿Algo más?", "Oferta del camarero"],
+          ["La cuenta, por favor.", "Terminar la comida"]
+        ],
+        "feedback_rule": { "ok": "Correcto.", "error": "Piensa en el momento del servicio." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Me das un agua, por favor?", "translation": "Can I have a water, please?", "audio_url": null },
+      { "spanish": "Para mí, una ensalada. Gracias.", "translation": "For me, a salad. Thanks.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_79_1",
+        "type": "request_builder",
+        "prompt": "Pide 1 bebida y 1 comida.",
+        "frames": ["¿Me das __, por favor?", "Para mí, __.", "Gracias."],
+        "word_bank": ["un agua", "un café", "una sopa", "una ensalada"],
+        "success_criteria": { "cortesía": "incluye por favor/gracias", "claridad": "pedido claro" }
+      },
+      {
+        "id": "SPK_79_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa el cierre.",
+        "dialogue_template": [
+          "A: ¿Algo más?",
+          "B: No, __. __."
+        ],
+        "word_bank": ["gracias", "La cuenta, por favor"],
+        "solutions": [["La cuenta, por favor", "gracias"]],
+        "feedback_rule": { "ok": "Cierre natural.", "error": "Pide la cuenta con por favor." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G79_formulas_cortesia",
+        "name": "Fórmulas de cortesía en pedidos",
+        "scope": ["¿Me das… por favor?", "Para mí…", "Gracias."],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Me das un café, por favor?", "translation": "Can I have a coffee, please?" }
+        ],
+        "notes": "Evita el imperativo en A1. Usa marcos fijos."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_79_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción cortés.",
+        "options": ["Dame un café.", "¿Me das un café, por favor?", "Quiero café ya."],
+        "correct": "¿Me das un café, por favor?",
+        "feedback": { "tip": "Fórmulas fijas con por favor." }
+      }
+    ]
+  },
+  "cultural_note": "Un por favor y un gracias mejoran mucho la interacción en restaurantes.",
+  "assessment": {
+    "auto_criteria": [
+      "Pide 1 comida y 1 bebida con cortesía.",
+      "Responde a ¿Algo más?",
+      "Solicita la cuenta correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "restaurante", "cortesía", "pedidos"]
+}

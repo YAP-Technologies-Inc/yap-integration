@@ -1,0 +1,92 @@
+{
+  "lesson_id": "SPA1_087",
+  "title": "Gustos 2: me gustan y plural",
+  "level": "A1",
+  "theme": "Likes & Dislikes",
+  "focus": "Usar me gustan con plurales y negación básica.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Digo me gustan + plural.",
+    "Hago negación con no me gustan.",
+    "Pregunto ¿Te gustan…?"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "me gustan", "translation": "I like (plural)", "part_of_speech": "phrase", "example": "Me gustan las series.", "example_translation": "I like TV shows.", "gender": "invariable" },
+      { "term": "¿Te gustan…?", "translation": "Do you like…? (plural)", "part_of_speech": "question", "example": "¿Te gustan los deportes?", "example_translation": "Do you like sports?" },
+      { "term": "series", "translation": "TV shows", "part_of_speech": "noun", "gender": "feminine", "example": "Me gustan las series cortas.", "example_translation": "I like short TV shows." },
+      { "term": "videojuegos", "translation": "video games", "part_of_speech": "noun", "gender": "masculine", "example": "¿Te gustan los videojuegos?", "example_translation": "Do you like video games?" },
+      { "term": "deportes", "translation": "sports", "part_of_speech": "noun", "gender": "masculine", "example": "No me gustan los deportes.", "example_translation": "I don't like sports." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_87_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta para plural.",
+        "options": ["Me gusta los deportes.", "Me gustan los deportes.", "Me gusta las series."],
+        "correct": "Me gustan los deportes.",
+        "feedback": { "tip": "Plural → gustan + artículo plural." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Te gustan las series?", "translation": "Do you like TV shows?", "audio_url": null },
+      { "spanish": "Me gustan los videojuegos.", "translation": "I like video games.", "audio_url": null },
+      { "spanish": "No me gustan los deportes.", "translation": "I don't like sports.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_87_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y decide: singular o plural.",
+        "audio_items": ["Me gustan las series.", "Me gusta el cine."],
+        "options": ["plural", "singular"],
+        "solution": ["plural", "singular"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Atiende a gustan/gusta y artículo." }
+      },
+      {
+        "id": "SPK_87_2",
+        "type": "controlled_production",
+        "prompt": "Haz 2 frases: una afirmativa y una negativa.",
+        "frames": ["Me gustan __ __.", "No me gustan __ __."],
+        "word_bank": ["los", "videojuegos", "las", "series", "los", "deportes"],
+        "success_criteria": { "verbo": "gusta/gustan correcto", "artículo": "los/las correctos" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G87_gustan_plural",
+        "name": "Me gustan + plural",
+        "forms": ["me gustan + sustantivo plural", "¿Te gustan + plural?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Me gustan las series.", "translation": "I like TV shows." }],
+        "notes": "Con plural se usa gustan; con singular, gusta."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_87_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con gusta/gustan.",
+        "items": ["Me __ el tenis.", "Me __ los conciertos."],
+        "solution": ["gusta", "gustan"],
+        "feedback_rule": { "tip": "Mira si es singular o plural." }
+      }
+    ]
+  },
+  "cultural_note": "Para gustos fuertes se usa me encanta, veremos pronto esa forma.",
+  "assessment": {
+    "auto_criteria": [
+      "Forma una pregunta con ¿Te gustan…?",
+      "Produce 1 afirmación y 1 negación con plural.",
+      "Elige correctamente gusta/gustan."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "gustar", "plural", "preferencias"]
+}

@@ -1,0 +1,126 @@
+{
+  "lesson_id": "SPA1_029",
+  "title": "A la(s) + hora: mi agenda",
+  "level": "A1",
+  "theme": "Time Concepts",
+  "focus": "Decir cuándo ocurre algo con a la(s) + hora y de la mañana/tarde/noche.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir a qué hora hago una actividad.",
+    "Puedo preguntar: “¿A qué hora…?”",
+    "Puedo enlazar dos horas simples de un plan."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿A qué hora…?", "translation": "At what time…?", "part_of_speech": "question", "example": "¿A qué hora trabajas?", "example_translation": "What time do you work?" },
+      { "term": "a la una", "translation": "at one o’clock", "part_of_speech": "phrase", "example": "Tengo clase a la una.", "example_translation": "I have class at one." },
+      { "term": "a las + 2–12", "translation": "at + hour", "part_of_speech": "phrase", "example": "Ceno a las ocho.", "example_translation": "I have dinner at eight." },
+      { "term": "de … a … (reconocimiento)", "translation": "from … to …", "part_of_speech": "phrase", "example": "Trabajo de 9 a 5.", "example_translation": "I work from 9 to 5." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_29_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": [
+          "Tengo clase a las una.",
+          "Tengo clase a la una.",
+          "Tengo clase a la uno."
+        ],
+        "correct": "Tengo clase a la una.",
+        "feedback": { "tip": "Una es singular: a la una." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿A qué hora empiezas?", "translation": "What time do you start?", "audio_url": null },
+      { "spanish": "Empiezo a las nueve de la mañana.", "translation": "I start at nine in the morning.", "audio_url": null },
+      { "spanish": "Termino a las cinco de la tarde.", "translation": "I finish at five in the afternoon.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_29_1",
+        "type": "request_builder",
+        "prompt": "Haz preguntas con “¿A qué hora…?” y responde.",
+        "frames": [
+          "¿A qué hora __?",
+          "A las __ de la __."
+        ],
+        "word_bank": ["trabajas", "estudias", "comes", "nueve", "una", "mañana", "tarde", "noche"],
+        "solutions": [
+          "¿A qué hora estudias? A las nueve de la mañana.",
+          "¿A qué hora comes? A la una de la tarde."
+        ],
+        "feedback": { "tip": "Con la una usa a la; con 2–12 usa a las." }
+      },
+      {
+        "id": "SPK_29_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa un mini plan.",
+        "dialogue_template": [
+          "A: ¿A qué hora terminas?",
+          "B: __ __ cinco de la tarde.",
+          "A: Perfecto, nos vemos __ __ seis."
+        ],
+        "word_bank": ["A", "las", "a", "las"],
+        "solutions": [["A", "las", "a", "las"]],
+        "feedback_rule": { "ok": "Agenda clara.", "error": "Revisa a la/las + hora." }
+      },
+      {
+        "id": "SPK_29_3",
+        "type": "micro_reflection",
+        "prompt": "Di dos actividades con hora exacta.",
+        "expected_example": "Estudio a las ocho. Ceno a las nueve.",
+        "rubric": { "claridad": "Horas correctas y breves." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G29_a_las",
+        "name": "a la/las + hora",
+        "scope": ["a la una", "a las 2–12", "de la mañana/tarde/noche"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Trabajo a las nueve de la mañana.", "translation": "I work at nine a.m." }
+        ],
+        "notes": "Usa de la + parte del día para aclarar a. m./p. m."
+      },
+      {
+        "id": "G29_de_a_ro",
+        "name": "de … a … (reconocimiento)",
+        "scope": ["de + hora + a + hora"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Clase de 10 a 11.", "translation": "Class from 10 to 11." }
+        ],
+        "notes": "Solo comprensión."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_29_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con a la/las.",
+        "items": ["Ceno __ una.", "Trabajo __ seis."],
+        "solution": ["a la", "a las"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Una → la; 2–12 → las." }
+      }
+    ]
+  },
+  "cultural_note": "Los horarios pueden ser más tardíos en países hispanohablantes; cenar a las nueve es normal.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula 2 preguntas con “¿A qué hora…?”",
+      "Da 2 respuestas con a la/las correctas.",
+      "Usa de la mañana/tarde/noche cuando sea útil."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "hora", "a las", "agenda"]
+}

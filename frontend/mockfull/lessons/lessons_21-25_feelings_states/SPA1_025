@@ -1,0 +1,127 @@
+{
+  "lesson_id": "SPA1_025",
+  "title": "¿Qué tal? Genial, regular o fatal",
+  "level": "A1",
+  "theme": "Feelings & States",
+  "focus": "Responder a ¿Qué tal? con adverbios y expresiones fijas de estado.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo entender y usar ¿Qué tal? para preguntar por el estado.",
+    "Puedo responder con bien, regular, fatal, genial y una frase corta.",
+    "Puedo cerrar el intercambio con cortesía simple."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Qué tal?", "translation": "How’s it going?", "part_of_speech": "question", "example": "Hola, ¿qué tal?", "example_translation": "Hi, how’s it going?" },
+      { "term": "genial", "translation": "great", "part_of_speech": "adjective", "gender": "invariable", "example": "Estoy genial.", "example_translation": "I’m great." },
+      { "term": "regular", "translation": "so-so", "part_of_speech": "adjective", "gender": "invariable", "example": "Estoy regular.", "example_translation": "I’m so-so." },
+      { "term": "fatal", "translation": "terrible", "part_of_speech": "adjective", "gender": "invariable", "example": "Estoy fatal.", "example_translation": "I’m terrible." },
+      { "term": "más o menos", "translation": "so-so, more or less", "part_of_speech": "adverb", "example": "Estoy más o menos.", "example_translation": "I’m so-so." },
+      { "term": "¿Y tú?", "translation": "And you?", "part_of_speech": "phrase", "example": "Estoy bien, ¿y tú?", "example_translation": "I’m well, and you?" },
+      { "term": "¿Cómo está usted?", "translation": "How are you? (formal)", "part_of_speech": "question", "example": "Buenas tardes, ¿cómo está usted?", "example_translation": "Good afternoon, how are you? (formal)", "recognition_only": true, "production_required": false }
+    ],
+    "practice": [
+      {
+        "id": "VOC_25_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la respuesta natural a “¿Qué tal?”",
+        "options": [
+          "Soy estudiante.",
+          "Genial, gracias. ¿Y tú?",
+          "Tengo años."
+        ],
+        "correct": "Genial, gracias. ¿Y tú?",
+        "feedback": { "tip": "Responde con estado actual, no con identidad." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Qué tal?", "translation": "How’s it going?", "audio_url": null },
+      { "spanish": "Genial, gracias. ¿Y tú?", "translation": "Great, thanks. And you?", "audio_url": null },
+      { "spanish": "Regular, un poco cansado.", "translation": "So-so, a little tired.", "audio_url": null },
+      { "spanish": "Fatal, estoy enferma.", "translation": "Terrible, I’m sick. (fem.)", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_25_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite las respuestas cortas y fluidas.",
+        "audio_items": ["Genial, gracias.", "Regular, ¿y tú?", "Fatal, estoy enfermo/enferma."],
+        "success_criteria": { "fluidez": "Respuesta rápida de 3–5 palabras.", "entonación": "Entonación descendente en la respuesta." }
+      },
+      {
+        "id": "SPK_25_2",
+        "type": "micro_reflection",
+        "prompt": "Di cómo estás ahora y una razón.",
+        "expected_example": "Estoy regular, un poco ocupado.",
+        "acceptable_variants": ["Estoy genial, porque estoy libre.", "Estoy fatal, tengo sueño."],
+        "rubric": { "claridad": "Frase clara.", "relevancia": "Razón breve y apropiada." }
+      },
+      {
+        "id": "SPK_25_3",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena rápida de saludos con ¿Qué tal? y cierre cortés.",
+        "cards": [
+          "A: Hola, ¿qué tal?",
+          "B: __, gracias. ¿Y tú?",
+          "C: __. ¡Hasta luego!"
+        ],
+        "word_bank": ["Genial", "Regular", "Más o menos", "Fatal", "Bien"],
+        "feedback": { "tip": "Añade “gracias” y “¿Y tú?” para sonar natural." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G25_que_tal",
+        "name": "¿Qué tal? + respuestas",
+        "scope": ["bien", "regular", "fatal", "genial", "más o menos"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "—¿Qué tal? —Genial, gracias.", "translation": "—How’s it going? —Great, thanks." },
+          { "spanish": "—¿Qué tal? —Regular, un poco cansado.", "translation": "—How’s it going? —So-so, a little tired." }
+        ],
+        "notes": "Puedes añadir ¿Y tú? para continuar."
+      },
+      {
+        "id": "G25_usted_ro",
+        "name": "Formal: ¿Cómo está usted? (reconocimiento)",
+        "scope": ["¿Cómo está usted?", "Estoy bien, gracias."],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Buenas tardes, ¿cómo está usted?", "translation": "Good afternoon, how are you? (formal)" }
+        ],
+        "notes": "Solo comprender la forma formal."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_25_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la respuesta adecuada.",
+        "options": [
+          "—¿Qué tal? —Soy bien.",
+          "—¿Qué tal? —Bien, ¿y tú?",
+          "—¿Qué tal? —Tengo calor, y tú."
+        ],
+        "correct": "—¿Qué tal? —Bien, ¿y tú?",
+        "feedback": { "tip": "Usa respuestas cortas con bien/regular/fatal/genial." }
+      }
+    ]
+  },
+  "cultural_note": "“¿Qué tal?” es muy común en España y se usa incluso como saludo rápido. Respuestas cortas con “gracias” suenan naturales.",
+  "assessment": {
+    "auto_criteria": [
+      "Responde a “¿Qué tal?” con una frase corta y natural.",
+      "Incluye una repregunta “¿Y tú?” en al menos un intercambio.",
+      "Usa estar + adjetivo cuando amplía la respuesta."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "saludos", "estados", "cortesía"]
+}

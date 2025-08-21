@@ -1,0 +1,117 @@
+{
+  "lesson_id": "SPA1_054",
+  "title": "Pagar: efectivo o tarjeta",
+  "level": "A1",
+  "theme": "Shopping Essentials",
+  "focus": "Cerrar compras con medios de pago y totales sencillos.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir si pago en efectivo o con tarjeta.",
+    "Puedo entender un total y responder.",
+    "Puedo reconocer centenas hasta 1000 en precios."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "pagar", "translation": "to pay", "part_of_speech": "verb", "example": "Pago con tarjeta.", "example_translation": "I pay by card." },
+      { "term": "efectivo", "translation": "cash", "part_of_speech": "noun", "gender": "masculine", "example": "Pago en efectivo.", "example_translation": "I pay in cash." },
+      { "term": "tarjeta", "translation": "card", "part_of_speech": "noun", "gender": "feminine", "example": "Pago con tarjeta.", "example_translation": "I pay by card." },
+      { "term": "cien", "translation": "one hundred", "part_of_speech": "noun", "gender": "masculine", "example": "Cien euros. (reconocimiento)", "example_translation": "One hundred euros. (recognition)", "recognition_only": true },
+      { "term": "doscientos", "translation": "two hundred", "part_of_speech": "noun", "gender": "masculine", "example": "Doscientos euros. (reconocimiento)", "example_translation": "Two hundred euros. (recognition)", "recognition_only": true },
+      { "term": "quinientos", "translation": "five hundred", "part_of_speech": "noun", "gender": "masculine", "example": "Quinientos euros. (reconocimiento)", "example_translation": "Five hundred euros. (recognition)", "recognition_only": true },
+      { "term": "mil", "translation": "one thousand", "part_of_speech": "noun", "gender": "masculine", "example": "Mil euros. (reconocimiento)", "example_translation": "One thousand euros. (recognition)", "recognition_only": true }
+    ],
+    "practice": [
+      {
+        "id": "VOC_54_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase natural de pago.",
+        "options": [
+          "Pago en tarjeta.",
+          "Pago con tarjeta.",
+          "Pago con efectivo."
+        ],
+        "correct": "Pago con tarjeta.",
+        "feedback": { "tip": "Usa en efectivo / con tarjeta." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cuánto es? — Son cuarenta euros.", "translation": "How much is it? — It’s forty euros.", "audio_url": null },
+      { "spanish": "Pago en efectivo.", "translation": "I pay in cash.", "audio_url": null },
+      { "spanish": "Pago con tarjeta.", "translation": "I pay by card.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_54_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Cierra el pago.",
+        "dialogue_template": [
+          "Cliente: ¿__ __?",
+          "Dependiente: Son treinta euros.",
+          "Cliente: __ __ efectivo. Gracias."
+        ],
+        "word_bank": ["Cuánto", "es", "Pago", "en"],
+        "solutions": [["Cuánto", "es", "Pago", "en"]],
+        "feedback_rule": { "ok": "Cierre correcto.", "error": "Recuerda ¿Cuánto es? y en efectivo / con tarjeta." }
+      },
+      {
+        "id": "SPK_54_2",
+        "type": "controlled_production",
+        "prompt": "Indica tu medio de pago.",
+        "items": ["__ __ efectivo.", "__ __ tarjeta."],
+        "expected_example": ["Pago en efectivo.", "Pago con tarjeta."],
+        "success_criteria": { "preposición": "en / con correctas.", "cortesía": "Añade gracias si procede." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G54_pago_preposiciones",
+        "name": "Pagar: preposiciones",
+        "scope": ["pagar en efectivo", "pagar con tarjeta"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Pago en efectivo.", "translation": "I pay in cash." },
+          { "spanish": "Pago con tarjeta.", "translation": "I pay by card." }
+        ],
+        "notes": "Fija las combinaciones en/con."
+      },
+      {
+        "id": "G54_centenas_ro",
+        "name": "Centenas 100–1000 (reconocimiento)",
+        "scope": ["cien, doscientos, trescientos, cuatrocientos, quinientos, seiscientos, setecientos, ochocientos, novecientos, mil"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Son cien euros.", "translation": "It’s one hundred euros." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_54_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la respuesta adecuada.",
+        "options": [
+          "—¿Cuánto es? —Es cuarenta euros.",
+          "—¿Cuánto es? —Son cuarenta euros.",
+          "—¿Cuánto es? —Cuarenta."
+        ],
+        "correct": "—¿Cuánto es? —Son cuarenta euros.",
+        "feedback": { "tip": "Con totales plural: Son + euros." }
+      }
+    ]
+  },
+  "cultural_note": "En tiendas suelen preguntar si pagas con tarjeta o en efectivo. Respuestas cortas y claras funcionan bien.",
+  "assessment": {
+    "auto_criteria": [
+      "Indica medio de pago correctamente dos veces.",
+      "Responde a un total con naturalidad.",
+      "Reconoce al menos 3 centenas al oír el total."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "pago", "tarjeta", "efectivo", "precios"]
+}

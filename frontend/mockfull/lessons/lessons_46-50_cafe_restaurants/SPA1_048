@@ -1,0 +1,107 @@
+{
+  "lesson_id": "SPA1_048",
+  "title": "En el restaurante: mesa y la carta",
+  "level": "A1",
+  "theme": "Café & Restaurant Basics",
+  "focus": "Pedir mesa y la carta, hacer un pedido simple con querer.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puedo pedir una mesa sencilla.",
+    "Puedo pedir la carta/menú y hacer un pedido simple.",
+    "Puedo usar por favor de forma natural."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "mesa", "translation": "table", "part_of_speech": "noun", "gender": "feminine", "example": "Una mesa para dos, por favor.", "example_translation": "A table for two, please." },
+      { "term": "carta", "translation": "menu (list of dishes)", "part_of_speech": "noun", "gender": "feminine", "example": "La carta, por favor.", "example_translation": "The menu, please." },
+      { "term": "menú del día", "translation": "set menu", "part_of_speech": "noun", "gender": "masculine", "example": "¿Tienen menú del día?", "example_translation": "Do you have a set menu?" },
+      { "term": "camarero", "translation": "waiter (masc.)", "part_of_speech": "noun", "gender": "masculine", "example": "Camarero, la carta, por favor.", "example_translation": "Waiter, the menu, please." },
+      { "term": "camarera", "translation": "waitress (fem.)", "part_of_speech": "noun", "gender": "feminine", "example": "Camarera, una mesa para dos, por favor.", "example_translation": "Waitress, a table for two, please." },
+      { "term": "Quiero… de primero (reconocimiento)", "translation": "I want… as a starter (recognition)", "part_of_speech": "phrase", "example": "Quiero sopa de primero.", "example_translation": "I want soup as a starter.", "recognition_only": true }
+    ],
+    "practice": [
+      {
+        "id": "VOC_48_1",
+        "type": "match",
+        "prompt": "Empareja la frase con su función.",
+        "pairs": [
+          ["Una mesa para dos, por favor.", "Pedir mesa"],
+          ["La carta, por favor.", "Pedir el menú"],
+          ["¿Tienen menú del día?", "Preguntar por set"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Exacto!", "incorrect_pair": "Piensa en la intención de la frase." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Una mesa para dos, por favor.", "translation": "A table for two, please.", "audio_url": null },
+      { "spanish": "La carta, por favor.", "translation": "The menu, please.", "audio_url": null },
+      { "spanish": "Quiero una sopa y agua, por favor.", "translation": "I want a soup and water, please.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_48_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "A la entrada del restaurante.",
+        "dialogue_template": [
+          "Cliente: __ mesa para dos, __ __.",
+          "Camarero/a: Claro. Aquí tienen la __.",
+          "Cliente: Gracias. __ una sopa, __ __."
+        ],
+        "word_bank": ["Una", "por", "favor", "carta", "Quiero", "por", "favor"],
+        "solutions": [["Una", "por", "favor", "carta", "Quiero", "por", "favor"]],
+        "feedback_rule": { "ok": "Flujo correcto.", "error": "Incluye por favor y artículos." }
+      },
+      {
+        "id": "SPK_48_2",
+        "type": "controlled_production",
+        "prompt": "Pide mesa y la carta.",
+        "items": ["__ mesa para __, __ __.", "La __, __ __."],
+        "expected_example": ["Una mesa para dos, por favor.", "La carta, por favor."],
+        "success_criteria": { "cortesía": "por favor presente.", "claridad": "Peticiones separadas y claras." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G48_querer_pedido",
+        "name": "Querer para pedir platos",
+        "scope": ["Quiero + un/una + plato/bebida", "¿Quieres…? (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Quiero una sopa, por favor.", "translation": "I want a soup, please." }]
+      },
+      {
+        "id": "G48_cortesia_por_favor",
+        "name": "Cortesía con por favor",
+        "scope": ["Frase + por favor"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "La cuenta, por favor.", "translation": "The bill, please." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_48_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa el pedido.",
+        "items": ["__ una ensalada, __ __.", "__ carta, __ __."],
+        "solution": ["Quiero, por, favor", "La, por, favor"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Falta por favor o artículo." }
+      }
+    ]
+  },
+  "cultural_note": "“La carta, por favor” es una petición estándar y suficiente. Evita frases largas.",
+  "assessment": {
+    "auto_criteria": [
+      "Pide mesa y carta correctamente.",
+      "Hace un pedido simple con querer + por favor.",
+      "Mantiene cortesía en 2–3 intervenciones."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "restaurante", "querer", "carta", "mesa"]
+}

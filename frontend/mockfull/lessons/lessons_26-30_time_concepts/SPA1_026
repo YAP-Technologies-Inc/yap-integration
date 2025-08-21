@@ -1,0 +1,150 @@
+{
+  "lesson_id": "SPA1_026",
+  "title": "Mi casa y habitaciones",
+  "level": "A1",
+  "theme": "Home & Housing",
+  "focus": "Decir qué hay en casa con hay y nombrar habitaciones básicas.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo nombrar 4–6 habitaciones de una casa.",
+    "Puedo decir qué hay en mi casa usando hay/no hay.",
+    "Puedo hacer una mini descripción: En mi casa hay…"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "casa", "translation": "house", "part_of_speech": "noun", "gender": "feminine", "example": "Mi casa es pequeña.", "example_translation": "My house is small." },
+      { "term": "apartamento", "translation": "apartment", "part_of_speech": "noun", "gender": "masculine", "example": "Vivo en un apartamento.", "example_translation": "I live in an apartment." },
+      { "term": "sala", "translation": "living room", "part_of_speech": "noun", "gender": "feminine", "example": "La sala es cómoda.", "example_translation": "The living room is comfortable." },
+      { "term": "salón", "translation": "living room (Spain)", "part_of_speech": "noun", "gender": "masculine", "example": "El salón tiene una ventana.", "example_translation": "The living room has a window." },
+      { "term": "cocina", "translation": "kitchen", "part_of_speech": "noun", "gender": "feminine", "example": "La cocina es grande.", "example_translation": "The kitchen is big." },
+      { "term": "baño", "translation": "bathroom", "part_of_speech": "noun", "gender": "masculine", "example": "El baño está limpio.", "example_translation": "The bathroom is clean." },
+      { "term": "dormitorio", "translation": "bedroom", "part_of_speech": "noun", "gender": "masculine", "example": "El dormitorio tiene una cama.", "example_translation": "The bedroom has a bed." },
+      { "term": "cama", "translation": "bed", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una cama en el dormitorio.", "example_translation": "There is a bed in the bedroom." },
+      { "term": "mesa", "translation": "table", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una mesa en la cocina.", "example_translation": "There is a table in the kitchen." },
+      { "term": "silla", "translation": "chair", "part_of_speech": "noun", "gender": "feminine", "example": "No hay sillas en la sala.", "example_translation": "There are no chairs in the living room." },
+      { "term": "puerta", "translation": "door", "part_of_speech": "noun", "gender": "feminine", "example": "La puerta está abierta.", "example_translation": "The door is open." },
+      { "term": "ventana", "translation": "window", "part_of_speech": "noun", "gender": "feminine", "example": "La ventana es grande.", "example_translation": "The window is big." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_26_1",
+        "type": "match",
+        "prompt": "Relaciona la habitación con su traducción.",
+        "pairs": [
+          ["cocina", "kitchen"],
+          ["baño", "bathroom"],
+          ["dormitorio", "bedroom"],
+          ["sala/salón", "living room"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa el vocabulario de la casa." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "En mi casa hay una cocina y un baño.", "translation": "In my house there is a kitchen and a bathroom.", "audio_url": null },
+      { "spanish": "Hay una cama en el dormitorio.", "translation": "There is a bed in the bedroom.", "audio_url": null },
+      { "spanish": "No hay mesa en la sala.", "translation": "There is no table in the living room.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_26_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite las frases con hay/no hay.",
+        "audio_items": ["En mi casa hay una cocina.", "Hay una cama en el dormitorio.", "No hay sillas en la sala."],
+        "success_criteria": { "claridad": "Pronuncia hay como [ai].", "estructura": "Mantén hay + artículo + sustantivo." }
+      },
+      {
+        "id": "SPK_26_2",
+        "type": "controlled_production",
+        "prompt": "Di 2 cosas que hay en tu casa.",
+        "items": ["En mi casa hay __.", "En la __ hay __."],
+        "expected_example": ["En mi casa hay una cocina.", "En la cocina hay una mesa."],
+        "success_criteria": { "cantidad": "Dos frases correctas.", "artículos": "Usa un/una correctamente." }
+      },
+      {
+        "id": "SPK_26_3",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa el mini diálogo sobre la casa.",
+        "dialogue_template": [
+          "A: ¿Qué hay en tu apartamento?",
+          "B: __ una sala y __ dormitorio."
+        ],
+        "word_bank": ["Hay", "un"],
+        "solutions": [["Hay", "un"]],
+        "feedback_rule": { "ok": "Diálogo natural.", "error": "Recuerda: Hay + artículo." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G26_hay",
+        "name": "Hay / No hay",
+        "scope": ["hay + un/una", "no hay + sustantivo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Hay una mesa.", "translation": "There is a table." },
+          { "spanish": "No hay sillas.", "translation": "There are no chairs." }
+        ],
+        "notes": "Hay se usa para existencia, no para ubicación específica."
+      },
+      {
+        "id": "G26_art_indef",
+        "name": "Artículos indefinidos",
+        "scope": ["un/una", "unos/unas (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Hay un baño.", "translation": "There is a bathroom." }
+        ],
+        "notes": "Un masculino, una femenino; plural en reconocimiento."
+      },
+      {
+        "id": "G26_art_def_ro",
+        "name": "Artículos definidos (reconocimiento)",
+        "scope": ["el/la/los/las"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "La cocina es grande.", "translation": "The kitchen is big." }
+        ],
+        "notes": "Solo comprensión por ahora."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_26_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con hay o no hay.",
+        "items": ["__ una cama en el dormitorio.", "__ sillas en la sala."],
+        "solution": ["Hay", "No hay"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Recuerda la negación: no hay." }
+      },
+      {
+        "id": "GR_26_2",
+        "type": "multiple_choice",
+        "prompt": "Elige el artículo correcto.",
+        "options": [
+          "Hay una dormitorio.",
+          "Hay un dormitorio.",
+          "Hay un cocina."
+        ],
+        "correct": "Hay un dormitorio.",
+        "feedback": { "tip": "un + masculino, una + femenino." }
+      }
+    ]
+  },
+  "cultural_note": "En anuncios de vivienda es común ver “Se alquila apartamento de 2 dormitorios” o “Se vende casa con salón y cocina amplia”.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 frases con hay/no hay correctamente.",
+      "Identifica 4 habitaciones por su nombre.",
+      "Usa un/una con el género apropiado."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "casa", "hay", "habitaciones"]
+}

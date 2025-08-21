@@ -1,0 +1,110 @@
+{
+  "lesson_id": "SPA1_060",
+  "title": "Ruta corta: preguntar y seguir indicaciones",
+  "level": "A1",
+  "theme": "Directions Level 1",
+  "focus": "Encadenar pregunta de ubicación y dos pasos de indicación básica.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puedo preguntar dónde está un lugar.",
+    "Puedo entender dos pasos con derecha/izquierda/recto.",
+    "Puedo confirmar con gracias y repetir una parte."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "perdón", "translation": "excuse me", "part_of_speech": "interjection", "example": "Perdón, ¿dónde está…?", "example_translation": "Excuse me, where is…?" },
+      { "term": "sigue recto (reconocimiento)", "translation": "go straight", "part_of_speech": "phrase", "example": "Sigue recto y gira a la izquierda. (reconocimiento)", "example_translation": "Go straight and turn left. (recognition)", "recognition_only": true },
+      { "term": "gracias", "translation": "thanks", "part_of_speech": "interjection", "example": "Gracias, a la derecha y luego recto.", "example_translation": "Thanks, to the right and then straight." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_60_1",
+        "type": "categorize",
+        "prompt": "Clasifica como útil para iniciar, seguir o cerrar.",
+        "items": ["Perdón…", "Está a la derecha.", "Gracias."],
+        "solution": {
+          "iniciar": ["Perdón…"],
+          "seguir": ["Está a la derecha."],
+          "cerrar": ["Gracias."]
+        },
+        "feedback": { "tip": "Inicio → pedir; seguir → ubicación; cierre → cortesía." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Perdón, ¿dónde está la plaza?", "translation": "Excuse me, where is the square?", "audio_url": null },
+      { "spanish": "Está a la izquierda y luego recto.", "translation": "It’s to the left and then straight.", "audio_url": null },
+      { "spanish": "Gracias, a la izquierda y recto.", "translation": "Thanks, to the left and straight.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_60_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Simulación de ruta de 2 pasos.",
+        "dialogue_template": [
+          "A: __, ¿dónde está el parque?",
+          "B: Está __ la derecha y luego __.",
+          "A: __, a la derecha y recto."
+        ],
+        "word_bank": ["Perdón", "a", "recto", "Gracias"],
+        "solutions": [["Perdón", "a", "recto", "Gracias"]],
+        "feedback_rule": { "ok": "Interacción fluida.", "error": "Mantén frases cortas y ordenadas." }
+      },
+      {
+        "id": "SPK_60_2",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena en grupo: cada persona añade un paso de dirección.",
+        "cards": [
+          "A: Perdón, ¿dónde está la estación?",
+          "B: Está a la derecha.",
+          "C: Luego recto.",
+          "D: Gracias."
+        ],
+        "rubric": { "coherencia": "Usa conectores simples: y luego…" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G60_ruta_estatica",
+        "name": "Frases estáticas con estar",
+        "scope": ["Está a la derecha/izquierda/recto", "Luego + recto (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "La plaza está a la izquierda.", "translation": "The square is to the left." }],
+        "notes": "Evita imperativos en producción; usa frases de ubicación."
+      },
+      {
+        "id": "G60_confirmacion",
+        "name": "Confirmar repitiendo",
+        "scope": ["Gracias, a la derecha y luego recto."],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Gracias, a la izquierda y recto.", "translation": "Thanks, to the left and straight." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_60_1",
+        "type": "orthography_check",
+        "prompt": "Añade signos de interrogación y acentos.",
+        "items": ["Perdon donde esta la plaza"],
+        "solution": ["Perdón, ¿dónde está la plaza?"],
+        "feedback_rule": { "note": "Incluye tilde en perdón y ¿…?" }
+      }
+    ]
+  },
+  "cultural_note": "Decir “Perdón” antes de preguntar y repetir la ruta es amable y evita confusiones.",
+  "assessment": {
+    "auto_criteria": [
+      "Inicia con una fórmula de cortesía adecuada.",
+      "Comprende y repite dos pasos de indicación.",
+      "Cierra con gracias correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "direcciones", "estar", "ruta", "cortesía"]
+}

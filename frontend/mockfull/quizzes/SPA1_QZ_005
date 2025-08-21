@@ -1,0 +1,167 @@
+{
+  "lesson_id": "SPA1_Q005",
+  "title": "Quiz 5, Lecciones 21–25",
+  "level": "A1",
+  "theme": "Feelings & States",
+  "focus": "Estados con estar, intensificadores muy/un poco, tener hambre/sed/sueño, ¿Qué tal?, ortografía está/esta.",
+  "duration_minutes": 10,
+  "register": "tú",
+  "covers": ["SPA1_021", "SPA1_022", "SPA1_023", "SPA1_024", "SPA1_025"],
+  "can_do": [
+    "Respondo a “¿Qué tal?” de forma natural.",
+    "Elijo entre estar y tener para estados comunes.",
+    "Uso muy/un poco con adjetivos de estado."
+  ],
+  "vocabulary": {
+    "items": [],
+    "practice": [
+      {
+        "id": "VOC_Q5_1",
+        "type": "match",
+        "prompt": "Empareja la emoción/estado con su traducción.",
+        "pairs": [
+          ["contento", "happy (masc.)"],
+          ["contenta", "happy (fem.)"],
+          ["nerviosa", "nervous (fem.)"],
+          ["tranquilo", "calm (masc.)"],
+          ["fatal", "terrible"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Atiende al género y significado." }
+      },
+      {
+        "id": "VOC_Q5_2",
+        "type": "categorize",
+        "prompt": "Clasifica en intensificador o adjetivo.",
+        "items": ["muy", "un poco", "ocupada", "libre", "feliz"],
+        "solution": {
+          "intensificador": ["muy", "un poco"],
+          "adjetivo": ["ocupada", "libre", "feliz"]
+        },
+        "feedback": { "tip": "muy/un poco van antes del adjetivo." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Qué tal?", "translation": "How’s it going?", "audio_url": null },
+      { "spanish": "Estoy un poco cansado, ¿y tú?", "translation": "I’m a little tired, and you?", "audio_url": null },
+      { "spanish": "Tengo sed, ¿me das agua, por favor?", "translation": "I’m thirsty, can I have water, please?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_Q5_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la respuesta más natural a “¿Qué tal?”.",
+        "items": [
+          { "audio": "¿Qué tal?", "options": ["Genial, gracias. ¿Y tú?", "Soy estudiante."], "solution": "Genial, gracias. ¿Y tú?" },
+          { "audio": "¿Qué tal?", "options": ["Tengo 20 años.", "Regular, un poco enferma."], "solution": "Regular, un poco enferma." }
+        ],
+        "feedback_rule": { "ok": "¡Exacto!", "error": "Responde con estado actual, no con identidad/edad." }
+      },
+      {
+        "id": "SPK_Q5_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye un intercambio corto con intensificador.",
+        "cards": [
+          "A: Hola, ¿qué tal?",
+          "B: Estoy __ __, gracias. ¿Y tú?",
+          "A: __, un poco __."
+        ],
+        "word_bank": ["muy", "ocupado/ocupada", "Bien", "cansado/cansada"],
+        "acceptable_variants": ["Estoy muy ocupada, gracias. ¿Y tú?", "Bien, un poco cansado."],
+        "rubric": { "orden": "muy/un poco antes del adjetivo.", "claridad": "Frases cortas y fluidas." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "GQ5_estar",
+        "name": "Estar + adjetivo",
+        "forms": ["estoy", "estás", "está"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Estoy contento.", "translation": "I am happy." },
+          { "spanish": "¿Estás libre ahora?", "translation": "Are you free now?" }
+        ],
+        "notes": "Estados temporales."
+      },
+      {
+        "id": "GQ5_tener",
+        "name": "Tener + estados físicos",
+        "scope": ["tener hambre/sed/sueño/frío/calor"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Tengo hambre.", "translation": "I am hungry." }
+        ],
+        "notes": "No uses estar con estos sustantivos."
+      },
+      {
+        "id": "GQ5_muy_mucho_ro",
+        "name": "Muy vs mucho (reconocimiento)",
+        "scope": ["muy + adj/adv", "mucho + sustantivo / verbo"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Estoy muy cansada.", "translation": "I am very tired." },
+          { "spanish": "Trabajo mucho.", "translation": "I work a lot." }
+        ],
+        "notes": "Solo distinguir."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_Q5_1",
+        "type": "orthography_check",
+        "prompt": "Elige la opción correcta.",
+        "options": [
+          "Mi amiga esta feliz.",
+          "Mi amiga está feliz.",
+          "Mi amiga esta? feliz"
+        ],
+        "correct": "Mi amiga está feliz.",
+        "feedback": { "tip": "Lleva tilde: está." }
+      },
+      {
+        "id": "GR_Q5_2",
+        "type": "fill_in_blank",
+        "prompt": "Completa con estar + adjetivo.",
+        "items": ["Hoy __ __ (yo, tranquilo/tranquila).", "Mi hermano __ __ (él, enfermo)."],
+        "solution": ["estoy tranquilo / estoy tranquila", "está enfermo"],
+        "feedback_rule": { "ok": "Bien.", "error": "Recuerda la forma de estar y el género." }
+      },
+      {
+        "id": "GR_Q5_3",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural.",
+        "options": [
+          "Estoy sed.",
+          "Tengo sed.",
+          "Soy sed."
+        ],
+        "correct": "Tengo sed.",
+        "feedback": { "tip": "hambre/sed/sueño/frío/calor → tener." }
+      },
+      {
+        "id": "GR_Q5_4",
+        "type": "fill_in_blank",
+        "prompt": "Coloca muy o un poco.",
+        "items": ["Estoy __ cansado.", "Mi amiga está __ nerviosa."],
+        "solution": ["muy / un poco", "muy / un poco"],
+        "feedback_rule": { "note": "Ambos van antes del adjetivo." }
+      }
+    ]
+  },
+  "cultural_note": "“¿Qué tal?” funciona como saludo breve en España. Respuestas cortas con “gracias” y “¿y tú?” suenan amables.",
+  "assessment": {
+    "auto_criteria": [
+      "Responde a “¿Qué tal?” con una frase natural.",
+      "Selecciona correctamente entre tener/estar en 3 de 4 ítems.",
+      "Coloca muy/un poco en 2 frases sin error."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "quiz", "estar", "tener", "intensificadores", "saludos"]
+}

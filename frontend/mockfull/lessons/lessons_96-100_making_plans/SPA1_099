@@ -1,0 +1,97 @@
+{
+  "lesson_id": "SPA1_099",
+  "title": "Confirmar o cambiar el plan",
+  "level": "A1",
+  "theme": "Making Plans",
+  "focus": "Confirmar con vale/perfecto y proponer cambio simple.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Confirmo un plan con una frase corta.",
+    "Pido cambiar la hora o el día de forma simple.",
+    "Cierro con nos vemos + lugar/hora."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "vale", "translation": "okay", "part_of_speech": "interjection", "example": "Vale, a las seis.", "example_translation": "Okay, at six." },
+      { "term": "perfecto", "translation": "perfect, great", "part_of_speech": "adjective", "gender": "masculine", "example": "Perfecto, en la plaza.", "example_translation": "Great, at the square." },
+      { "term": "perfecta", "translation": "perfect, great (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Idea perfecta.", "example_translation": "Perfect idea.", "recognition_only": true, "production_required": false },
+      { "term": "mejor", "translation": "better", "part_of_speech": "adverb", "example": "¿Mejor mañana?", "example_translation": "Better tomorrow?" },
+      { "term": "otro día", "translation": "another day", "part_of_speech": "phrase", "example": "¿Quedamos otro día?", "example_translation": "Shall we meet another day?" },
+      { "term": "nos vemos", "translation": "see you", "part_of_speech": "phrase", "example": "Nos vemos en el café.", "example_translation": "See you at the café." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_99_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la mejor confirmación.",
+        "options": ["No puedo nunca.", "Vale, nos vemos a las seis.", "¿Cuánto cuesta?"],
+        "correct": "Vale, nos vemos a las seis.",
+        "feedback": { "tip": "Confirma con vale/perfecto y añade detalle." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Vale, en el café a las seis.", "translation": "Okay, at the café at six.", "audio_url": null },
+      { "spanish": "No puedo hoy, ¿mejor mañana?", "translation": "I can’t today, better tomorrow?", "audio_url": null },
+      { "spanish": "Nos vemos en la plaza.", "translation": "See you at the square.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_99_1",
+        "type": "micro_dialogue_build",
+        "prompt": "Confirma o cambia el plan.",
+        "pairs": [
+          ["A: Quedamos en la estación a las cinco.", "B: Vale, nos vemos allí."],
+          ["A: Hoy no puedo.", "B: ¿Mejor mañana a las seis?"]
+        ],
+        "feedback_rule": { "ok": "Cierre natural.", "error": "Incluye confirmación o propuesta simple." }
+      },
+      {
+        "id": "SPK_99_2",
+        "type": "controlled_production",
+        "prompt": "Di una confirmación y un cierre.",
+        "frames": ["__ , en __ a las __.", "Nos vemos __ __."],
+        "word_bank": ["Vale", "perfecto", "el café", "la plaza", "seis", "allí"],
+        "success_criteria": { "claridad": "detalles mínimos", "cierre": "usa nos vemos" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G99_confirmar_cambiar",
+        "name": "Confirmar y cambiar planes",
+        "forms": ["Vale / Perfecto", "¿Mejor + día/hora?", "Nos vemos + lugar/hora"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Perfecto, nos vemos en la plaza.", "translation": "Great, see you at the square." },
+          { "spanish": "No puedo hoy, ¿mejor mañana?", "translation": "I can’t today, better tomorrow?" }
+        ],
+        "notes": "Frases cortas, tono amable. Evita oraciones largas."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_99_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural para proponer cambio.",
+        "options": ["¿Mejor mañana?", "¿Cuánto cuesta mañana?", "Perfecto nunca."],
+        "correct": "¿Mejor mañana?",
+        "feedback": { "tip": "Propuesta breve con mejor + tiempo." }
+      }
+    ]
+  },
+  "cultural_note": "Muchos hispanohablantes cierran con “Nos vemos” o “Hasta luego” sin repetir todos los detalles.",
+  "assessment": {
+    "auto_criteria": [
+      "Confirma un plan con vale o perfecto.",
+      "Propone un cambio simple de día u hora.",
+      "Cierra con nos vemos + lugar u hora."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "planes", "confirmar", "cambiar", "cierre"]
+}

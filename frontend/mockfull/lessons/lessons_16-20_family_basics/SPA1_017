@@ -1,0 +1,142 @@
+{
+  "lesson_id": "SPA1_017",
+  "title": "Describir a mi familia",
+  "level": "A1",
+  "theme": "Family Basics",
+  "focus": "Usar ser + adjetivos básicos para describir a familiares y decir nombres con se llama.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo describir a un familiar con 1–2 adjetivos simples.",
+    "Puedo decir el nombre de un familiar: se llama __.",
+    "Puedo preguntar: “¿Cómo es tu …?”"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "alto", "translation": "tall (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Mi padre es alto.", "example_translation": "My father is tall." },
+      { "term": "alta", "translation": "tall (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Mi hermana es alta.", "example_translation": "My sister is tall." },
+      { "term": "bajo", "translation": "short (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Mi tío es bajo.", "example_translation": "My uncle is short." },
+      { "term": "baja", "translation": "short (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Mi tía es baja.", "example_translation": "My aunt is short." },
+      { "term": "simpático", "translation": "nice, friendly (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Mi abuelo es simpático.", "example_translation": "My grandfather is friendly." },
+      { "term": "simpática", "translation": "nice, friendly (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Mi abuela es simpática.", "example_translation": "My grandmother is friendly." },
+      { "term": "trabajador", "translation": "hard-working (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Mi hermano es trabajador.", "example_translation": "My brother is hard-working." },
+      { "term": "trabajadora", "translation": "hard-working (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Mi madre es trabajadora.", "example_translation": "My mother is hard-working." },
+      { "term": "mayor", "translation": "older", "part_of_speech": "adjective", "gender": "invariable", "example": "Mi hermana mayor vive lejos.", "example_translation": "My older sister lives far away." },
+      { "term": "menor", "translation": "younger", "part_of_speech": "adjective", "gender": "invariable", "example": "Mi hermano menor estudia.", "example_translation": "My younger brother studies." },
+      { "term": "se llama", "translation": "his/her name is", "part_of_speech": "phrase", "example": "Mi madre se llama Laura.", "example_translation": "My mother’s name is Laura." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_17_1",
+        "type": "categorize",
+        "prompt": "Clasifica los adjetivos por género.",
+        "items": ["alto", "alta", "simpático", "simpática", "trabajador", "trabajadora"],
+        "solution": {
+          "masculino": ["alto", "simpático", "trabajador"],
+          "femenino": ["alta", "simpática", "trabajadora"]
+        },
+        "feedback": { "tip": "Las formas femeninas suelen terminar en -a." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Mi madre es simpática.", "translation": "My mother is friendly.", "audio_url": null },
+      { "spanish": "Mi padre es alto.", "translation": "My father is tall.", "audio_url": null },
+      { "spanish": "Se llama Marta.", "translation": "Her name is Marta.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_17_1",
+        "type": "call_and_response",
+        "prompt": "Escucha la pregunta y responde con ser + adjetivo.",
+        "pairs": [
+          ["¿Cómo es tu madre?", "Mi madre es __."],
+          ["¿Cómo es tu padre?", "Mi padre es __."],
+          ["¿Cómo es tu abuelo?", "Mi abuelo es __."]
+        ],
+        "word_bank": ["alto/alta", "simpático/simpática", "trabajador/trabajadora"],
+        "success_criteria": { "acuerdo": "Género correcto con el sustantivo.", "fluidez": "Respuesta de 4–6 palabras." }
+      },
+      {
+        "id": "SPK_17_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye un microdiálogo con nombre y descripción.",
+        "cards": [
+          "A: ¿Cómo se llama tu __?",
+          "B: Se llama __.",
+          "A: ¿Cómo es?",
+          "B: Es __ y __."
+        ],
+        "acceptable_variants": ["Es alta y simpática.", "Es bajo y trabajador."],
+        "feedback": { "tip": "Usa dos adjetivos conectados con y." }
+      },
+      {
+        "id": "SPK_17_3",
+        "type": "pronunciation_focus",
+        "prompt": "Practica la sílaba tónica en -dor/-dora y -tico/-tica.",
+        "items": ["trabajador", "trabajadora", "simpático", "simpática"],
+        "feedback_rule": { "correct": "Acento en la sílaba marcada.", "incorrect": "Repite despacio: sim-PÁ-ti-co, tra-ba-ja-DOR." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G17_ser_adj",
+        "name": "Ser + adjetivos básicos",
+        "scope": ["ser + alto/alta", "ser + simpático/simpática", "ser + trabajador/trabajadora"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Mi hermana es alta.", "translation": "My sister is tall." },
+          { "spanish": "Mi abuelo es simpático.", "translation": "My grandfather is friendly." }
+        ],
+        "notes": "Concordancia de género con el sustantivo."
+      },
+      {
+        "id": "G17_llamarse3",
+        "name": "Llamarse para nombres de familiares",
+        "forms": ["se llama"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Mi madre se llama Ana.", "translation": "My mother’s name is Ana." }
+        ],
+        "notes": "Usa se llama como fórmula fija."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_17_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con es + adjetivo.",
+        "items": ["Mi padre __ alto.", "Mi tía __ simpática."],
+        "solution": ["es", "es"],
+        "feedback_rule": { "note": "No plural en esta actividad." }
+      },
+      {
+        "id": "GR_17_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": [
+          "Mi abuela es trabajador.",
+          "Mi abuela es trabajadora.",
+          "Mi abuela es alto."
+        ],
+        "correct": "Mi abuela es trabajadora.",
+        "feedback": { "tip": "Género femenino termina en -a." }
+      }
+    ]
+  },
+  "cultural_note": "En contextos informales es común usar adjetivos afectivos como “mi abuela es muy cariñosa”. Evita adjetivos físicos sensibles con desconocidos.",
+  "assessment": {
+    "auto_criteria": [
+      "Aplica ser + adjetivo con concordancia correcta.",
+      "Produce la fórmula “Se llama __”.",
+      "Mantiene una descripción de 2 frases sobre un familiar."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "descripción", "ser"]
+}

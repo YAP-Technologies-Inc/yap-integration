@@ -1,0 +1,90 @@
+{
+  "lesson_id": "SPA1_090",
+  "title": "Gustos 5: mini presentación de gustos",
+  "level": "A1",
+  "theme": "Likes & Dislikes",
+  "focus": "Hacer un discurso breve con me gusta(n) y me encanta.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Hago 3–4 frases de preferencias.",
+    "Incluyo me gusta(n) y me encanta.",
+    "Uso conectores simples."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "porque", "translation": "because", "part_of_speech": "conjunction", "example": "Me gusta leer porque es tranquilo.", "example_translation": "I like reading because it’s calm." },
+      { "term": "también", "translation": "also", "part_of_speech": "adverb", "example": "También me gustan las series.", "example_translation": "I also like TV shows." },
+      { "term": "pero", "translation": "but", "part_of_speech": "conjunction", "example": "Me gusta el cine, pero no los videojuegos.", "example_translation": "I like the cinema, but not video games." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_90_1",
+        "type": "categorize",
+        "prompt": "Clasifica conectores por uso.",
+        "items": ["porque", "también", "pero"],
+        "solution": [
+          { "contraste": ["pero"] },
+          { "suma": ["también"] },
+          { "causa": ["porque"] }
+        ],
+        "feedback_rule": { "ok": "Bien clasificado.", "error": "Fíjate en la función del conector." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me encanta la música. Me gustan las películas.", "translation": "I love music. I like movies.", "audio_url": null },
+      { "spanish": "También me gusta leer, pero no me gustan los videojuegos.", "translation": "I also like reading, but I don’t like video games.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_90_1",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena de 6 turnos con gustos y conectores.",
+        "cards": ["Me encanta __.", "Me gustan __.", "También me gusta __.", "Pero no me gusta __.", "Porque __.", "Gracias."],
+        "success_criteria": { "variedad": "incluye encanta y gustan", "cohesión": "2 conectores usados" }
+      },
+      {
+        "id": "SPK_90_2",
+        "type": "exit_ticket",
+        "prompt": "Di 3 frases de gustos con 1 conector.",
+        "expected_example": "Me encanta bailar. Me gustan las películas, pero no los videojuegos.",
+        "rubric": { "formas": "gusta/gustan/encanta correctos", "conector": "1 presente" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G90_resumen_gustos",
+        "name": "Resumen: gusta/gustan/encanta",
+        "forms": ["me gusta", "me gustan", "me encanta / me encantan"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Me encanta el cine.", "translation": "I love the cinema." }],
+        "notes": "Evita mezclar plural con encanta singular."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_90_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con gusta/gustan/encanta/encantan.",
+        "items": ["Me __ la música.", "Me __ las series."],
+        "solution": ["gusta o encanta", "gustan o encantan"],
+        "feedback_rule": { "tip": "Ambas valen si expresas gusto fuerte con encanta." }
+      }
+    ]
+  },
+  "cultural_note": "Preferencias culturales varían por región; pregunta primero y comparte después.",
+  "assessment": {
+    "auto_criteria": [
+      "Incluye me gusta(n) y me encanta.",
+      "Usa al menos 1 conector.",
+      "Pronuncia con entonación natural."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "gustos", "presentación", "conectores"]
+}

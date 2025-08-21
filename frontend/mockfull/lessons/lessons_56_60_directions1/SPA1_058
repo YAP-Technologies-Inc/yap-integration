@@ -1,0 +1,95 @@
+{
+  "lesson_id": "SPA1_058",
+  "title": "A la derecha / a la izquierda / recto",
+  "level": "A1",
+  "theme": "Directions Level 1",
+  "focus": "Comprender y dar indicaciones muy básicas sin imperativos.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo entender a la derecha / a la izquierda / recto.",
+    "Puedo decir: “Está a la derecha/izquierda.”",
+    "Puedo usar al lado de / enfrente de para ubicar."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "a la derecha", "translation": "to the right", "part_of_speech": "adverb", "example": "Está a la derecha.", "example_translation": "It is to the right." },
+      { "term": "a la izquierda", "translation": "to the left", "part_of_speech": "adverb", "example": "Está a la izquierda.", "example_translation": "It is to the left." },
+      { "term": "recto", "translation": "straight ahead", "part_of_speech": "adverb", "example": "Está recto.", "example_translation": "It is straight ahead." },
+      { "term": "al lado de", "translation": "next to", "part_of_speech": "adverb", "example": "Está al lado del banco.", "example_translation": "It is next to the bank." },
+      { "term": "enfrente de", "translation": "opposite/in front of", "part_of_speech": "adverb", "example": "Está enfrente de la plaza.", "example_translation": "It is opposite the square." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_58_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción para “opposite”.",
+        "options": ["al lado de", "enfrente de", "a la izquierda"],
+        "correct": "enfrente de",
+        "feedback": { "tip": "al lado de = next to; enfrente de = opposite." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "El banco está a la derecha.", "translation": "The bank is to the right.", "audio_url": null },
+      { "spanish": "La farmacia está al lado del parque.", "translation": "The pharmacy is next to the park.", "audio_url": null },
+      { "spanish": "La estación está enfrente de la plaza.", "translation": "The station is opposite the square.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_58_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige el mapa mental correcto.",
+        "items": [
+          { "audio": "Está a la derecha.", "options": ["→", "←", "↑"], "solution": "→" },
+          { "audio": "Está a la izquierda.", "options": ["→", "←", "↑"], "solution": "←" }
+        ],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Piensa en flechas: derecha →, izquierda ←, recto ↑." }
+      },
+      {
+        "id": "SPK_58_2",
+        "type": "controlled_production",
+        "prompt": "Ubica un lugar con una frase.",
+        "items": ["El banco __ __ __ parque.", "La farmacia está __ __ __."],
+        "expected_example": ["El banco está al lado del parque.", "La farmacia está a la izquierda."],
+        "success_criteria": { "preposición": "del/de la correctos.", "claridad": "Una frase por lugar." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G58_estar_con_preps",
+        "name": "Estar + preposiciones de lugar",
+        "scope": ["está a la derecha/izquierda/recto", "está al lado de / enfrente de + artículo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Está al lado del banco.", "translation": "It is next to the bank." }
+        ],
+        "notes": "Contrae de + el → del."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_58_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con la preposición adecuada.",
+        "items": ["Está __ lado __ banco.", "Está __ la derecha."],
+        "solution": ["al, del", "a"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Recuerda al = a + el; del = de + el." }
+      }
+    ]
+  },
+  "cultural_note": "Las indicaciones orales suelen ser muy breves: “a la derecha”, “al lado de…”.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 frases con está + a la derecha/izquierda/recto.",
+      "Ubica un lugar con al lado de / enfrente de.",
+      "Reconoce del/de la correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "direcciones", "preposiciones", "estar"]
+}

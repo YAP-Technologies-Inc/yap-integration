@@ -1,0 +1,108 @@
+{
+  "lesson_id": "SPA1_067",
+  "title": "Colores I: negro, negra; blanco, blanca; azul",
+  "level": "A1",
+  "theme": "Clothing Basics",
+  "focus": "Usar colores básicos con ropa y acuerdo de género singular.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Digo 3 colores comunes.",
+    "Combino prenda + color con acuerdo en singular.",
+    "Digo lo que llevo hoy con color."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "negro", "translation": "black (masc.)", "part_of_speech": "adjective", "example": "pantalón negro", "example_translation": "black trousers" },
+      { "term": "negra", "translation": "black (fem.)", "part_of_speech": "adjective", "example": "camisa negra", "example_translation": "black shirt" },
+      { "term": "blanco", "translation": "white (masc.)", "part_of_speech": "adjective", "example": "zapato blanco", "example_translation": "white shoe" },
+      { "term": "blanca", "translation": "white (fem.)", "part_of_speech": "adjective", "example": "falda blanca", "example_translation": "white skirt" },
+      { "term": "azul", "translation": "blue (invariable)", "part_of_speech": "adjective", "example": "camiseta azul", "example_translation": "blue T-shirt" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_67_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción con acuerdo correcto.",
+        "options": [
+          "camiseta negro",
+          "camiseta negra",
+          "camiseta blanca azul"
+        ],
+        "correct": "camiseta negra",
+        "feedback": { "tip": "El adjetivo va después y concuerda en género." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Llevo una camiseta blanca.", "translation": "I’m wearing a white T-shirt.", "audio_url": null },
+      { "spanish": "Llevo una falda negra.", "translation": "I’m wearing a black skirt.", "audio_url": null },
+      { "spanish": "Llevo pantalones azules. (reconocimiento de plural)", "translation": "I’m wearing blue trousers. (recognition)", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_67_1",
+        "type": "choice_drill_minimal_pairs",
+        "prompt": "Escoge el color correcto.",
+        "items": [
+          { "pairs": ["falda negro", "falda negra"], "solution": "falda negra" },
+          { "pairs": ["camisa blanco", "camisa blanca"], "solution": "camisa blanca" }
+        ],
+        "feedback_rule": { "ok": "¡Exacto!", "error": "Negro/Blanco concuerdan con el sustantivo." }
+      },
+      {
+        "id": "SPK_67_2",
+        "type": "controlled_production",
+        "prompt": "Di tu prenda con color.",
+        "items": ["Llevo una __ __.", "Llevo un/una __ __."],
+        "expected_example": ["Llevo una camiseta blanca.", "Llevo una falda negra."],
+        "success_criteria": { "orden": "sustantivo + adjetivo.", "acuerdo": "género singular correcto." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G67_acuerdo_color",
+        "name": "Acuerdo de color en singular",
+        "scope": ["fem.: negra/blanca", "masc.: negro/blanco", "invariable: azul"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "camisa blanca", "translation": "white shirt" },
+          { "spanish": "pantalón negro", "translation": "black trousers" }
+        ],
+        "notes": "El color va después del sustantivo."
+      },
+      {
+        "id": "G67_plural_ro",
+        "name": "Plural de colores (reconocimiento)",
+        "scope": ["negros/negras, blancos/blancas, azules"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "zapatos negros", "translation": "black shoes" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_67_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con negro/negra/blanco/blanca/azul.",
+        "items": ["falda __", "camisa __", "camiseta __"],
+        "solution": ["negra", "blanca", "azul"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Concuerda con la prenda." }
+      }
+    ]
+  },
+  "cultural_note": "En español el color suele ir después de la prenda: camiseta blanca, no blanca camiseta.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa 3 colores en frases con Llevo.",
+      "Aplica acuerdo de género en 2 ejemplos.",
+      "Mantiene el orden sustantivo + color."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "ropa", "colores", "acuerdo", "llevar"]
+}

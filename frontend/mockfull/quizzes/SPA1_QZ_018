@@ -1,0 +1,74 @@
+{
+  "quiz_id": "SPA1_Q018",
+  "title": "Quiz 86–90: Likes & Dislikes",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_086", "SPA1_087", "SPA1_088", "SPA1_089", "SPA1_090"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q18_SPK_1",
+        "type": "request_builder",
+        "prompt": "Di 3 preferencias: me gusta / no me gusta / me encanta.",
+        "frames": ["Me gusta __.", "No me gusta __.", "Me encanta __."],
+        "word_bank": ["leer", "correr", "el fútbol", "las películas", "bailar"],
+        "success_criteria": ["Singular/plural correctos con gusta/gustan.", "Incluye al menos 1 no me gusta."]
+      },
+      {
+        "id": "Q18_SPK_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Pregunta y responde sobre gustos.",
+        "pairs": [
+          ["A: ¿Te gusta __?", "B: Sí, me gusta __ / No, no me gusta __."],
+          ["A: ¿Y a ti?", "B: Me encantan __."]
+        ],
+        "feedback_rule": { "ok": "Intercambio claro.", "error": "Ajusta gusta/gustan según singular/plural." }
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q18_VOC_1",
+        "type": "match",
+        "prompt": "Empareja actividad y traducción.",
+        "pairs": [
+          ["leer", "to read"],
+          ["correr", "to run"],
+          ["ver películas", "to watch movies"],
+          ["escuchar música", "to listen to music"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa los infinitivos." }
+      },
+      {
+        "id": "Q18_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": ["Me gusta las películas.", "Me gustan las películas.", "Me encanta las películas."],
+        "correct": "Me gustan las películas.",
+        "feedback": { "tip": "Plural → gustan; singular o infinitivo → gusta." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q18_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con gusta o gustan.",
+        "items": ["Me __ el fútbol.", "Me __ las series.", "Me __ bailar."],
+        "solution": ["gusta", "gustan", "gusta"],
+        "feedback_rule": { "tip": "Nombre singular/infinitivo → gusta; plural → gustan." }
+      },
+      {
+        "id": "Q18_GR_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural.",
+        "options": ["Me encantan el café.", "Me encanta el café.", "No me encantan café."],
+        "correct": "Me encanta el café.",
+        "feedback": { "tip": "Con nombre singular, me encanta + singular." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Produce 3 preferencias con me gusta/no me gusta/me encanta.", "Aplica gusta/gustan correctamente.", "Comprende vocabulario de hobbies."] }
+}

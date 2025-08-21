@@ -1,0 +1,95 @@
+{
+  "lesson_id": "SPA1_092",
+  "title": "Fin de semana 2: días y momentos",
+  "level": "A1",
+  "theme": "Weekend Activities",
+  "focus": "Usar los sábados/los domingos y por la mañana/tarde.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Digo qué hago los sábados o los domingos.",
+    "Uso por la mañana/tarde/noche.",
+    "Entiendo y respondo a ¿Cuándo?"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "los sábados", "translation": "on Saturdays", "part_of_speech": "phrase", "example": "Los sábados juego al fútbol.", "example_translation": "On Saturdays I play soccer." },
+      { "term": "los domingos", "translation": "on Sundays", "part_of_speech": "phrase", "example": "Los domingos visito a mi familia.", "example_translation": "On Sundays I visit my family." },
+      { "term": "por la mañana", "translation": "in the morning", "part_of_speech": "adverb", "example": "Corro por la mañana.", "example_translation": "I run in the morning." },
+      { "term": "por la tarde", "translation": "in the afternoon", "part_of_speech": "adverb", "example": "Leo por la tarde.", "example_translation": "I read in the afternoon." },
+      { "term": "por la noche", "translation": "at night/in the evening", "part_of_speech": "adverb", "example": "Veo series por la noche.", "example_translation": "I watch shows at night." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_92_1",
+        "type": "match",
+        "prompt": "Relaciona momento del día con ejemplo.",
+        "pairs": [
+          ["por la mañana", "café y ejercicio"],
+          ["por la tarde", "lectura"],
+          ["por la noche", "series/películas"]
+        ],
+        "feedback_rule": { "ok": "Conexiones comunes.", "error": "Mira las rutinas típicas." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Los sábados juego al fútbol por la mañana.", "translation": "On Saturdays I play soccer in the morning.", "audio_url": null },
+      { "spanish": "Los domingos descanso por la tarde.", "translation": "On Sundays I rest in the afternoon.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_92_1",
+        "type": "call_and_response",
+        "prompt": "Pregunta y responde ¿Cuándo?",
+        "pairs": [
+          ["¿Cuándo juegas al fútbol?", "Los sábados por la mañana."],
+          ["¿Cuándo descansas?", "Los domingos por la tarde."]
+        ],
+        "feedback_rule": { "ok": "Incluye día + momento.", "error": "Usa los + día y por la + momento." }
+      },
+      {
+        "id": "SPK_92_2",
+        "type": "controlled_production",
+        "prompt": "Di 2 frases con día y momento.",
+        "frames": ["Los __ __ __.", "Los __ __ __."],
+        "word_bank": ["sábados", "domingos", "por la mañana", "por la noche"],
+        "success_criteria": { "estructura": "los + día + por la + momento", "claridad": "frases completas" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G92_dias_momentos",
+        "name": "Los + día y por la + momento",
+        "forms": ["los + día de la semana", "por la mañana/tarde/noche"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Los sábados por la mañana entreno.", "translation": "On Saturdays in the morning I train." }],
+        "notes": "En plural, los + día indica hábito."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_92_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta.",
+        "options": ["El sábados por la mañana leo.", "Los sábados por la mañana leo.", "Los sábado por la mañanas leo."],
+        "correct": "Los sábados por la mañana leo.",
+        "feedback": { "tip": "Día en plural con los; momento singular." }
+      }
+    ]
+  },
+  "cultural_note": "Los horarios de comida pueden influir en actividades: comidas tardías los fines de semana en España.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa los + día correctamente.",
+      "Incluye por la + momento en 1 frase.",
+      "Responde claramente a ¿Cuándo?"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "fin de semana", "tiempo", "hábitos"]
+}

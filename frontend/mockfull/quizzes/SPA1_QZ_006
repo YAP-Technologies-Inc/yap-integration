@@ -1,0 +1,144 @@
+{
+  "lesson_id": "SPA1_Q006",
+  "title": "Quiz 6, Lecciones 26–30",
+  "level": "A1",
+  "theme": "Time Concepts",
+  "focus": "Días de la semana, partes del día, decir la hora, a la/las, proponer horarios.",
+  "duration_minutes": 10,
+  "register": "tú",
+  "covers": ["SPA1_026", "SPA1_027", "SPA1_028", "SPA1_029", "SPA1_030"],
+  "can_do": [
+    "Reconozco y nombro los días de la semana.",
+    "Digo la hora con en punto, y media, y cuarto y menos cuarto.",
+    "Uso a la/las + hora para decir cuándo pasa algo.",
+    "Propongo y acepto una hora simple para quedar."
+  ],
+  "vocabulary": {
+    "items": [],
+    "practice": [
+      {
+        "id": "VOC_Q6_1",
+        "type": "match",
+        "prompt": "Empareja día y traducción.",
+        "pairs": [
+          ["lunes", "Monday"],
+          ["miércoles", "Wednesday"],
+          ["sábado", "Saturday"],
+          ["domingo", "Sunday"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Correcto!", "incorrect_pair": "Ojo con tildes: miércoles, sábado." }
+      },
+      {
+        "id": "VOC_Q6_2",
+        "type": "categorize",
+        "prompt": "Clasifica las expresiones según su uso.",
+        "items": ["por la mañana", "de la tarde", "por la noche", "de la mañana"],
+        "solution": {
+          "con_hora": ["de la mañana", "de la tarde"],
+          "sin_hora": ["por la mañana", "por la noche"]
+        },
+        "feedback": { "tip": "Con horas usa de + parte del día." }
+      },
+      {
+        "id": "VOC_Q6_3",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta con la una.",
+        "options": ["a las una", "a la una", "a la uno"],
+        "correct": "a la una",
+        "feedback": { "tip": "Una es singular: a la una." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Son las cinco y media.", "translation": "It is five thirty.", "audio_url": null },
+      { "spanish": "¿A qué hora quedamos?", "translation": "What time shall we meet?", "audio_url": null },
+      { "spanish": "¿Te va bien a las seis?", "translation": "Does six work for you?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_Q6_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la hora correcta.",
+        "items": [
+          { "audio": "Son las ocho menos cuarto.", "options": ["7:45", "8:15"], "solution": "7:45" },
+          { "audio": "Es la una en punto.", "options": ["1:00", "11:00"], "solution": "1:00" }
+        ],
+        "feedback_rule": { "ok": "¡Bien oído!", "error": "Recuerda: menos cuarto = :45." }
+      },
+      {
+        "id": "SPK_Q6_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Propón una hora y negocia otra si no se puede.",
+        "cards": [
+          "A: ¿Quedamos a las __?",
+          "B: No puedo a las __. ¿A las __?",
+          "A: Perfecto."
+        ],
+        "word_bank": ["seis", "siete", "ocho"],
+        "feedback": { "tip": "Usa a las + 2–12; a la + una." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "GQ6_hora_formas",
+        "name": "Formas para la hora",
+        "scope": ["Es la una", "Son las 2–12", "y cuarto", "y media", "menos cuarto"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Son las cuatro y media.", "translation": "It’s four thirty." }],
+        "notes": "Singular solo con la una."
+      },
+      {
+        "id": "GQ6_a_las",
+        "name": "a la/las + hora",
+        "scope": ["a la una", "a las 2–12", "de la mañana/tarde/noche"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Cenamos a las nueve de la noche.", "translation": "We have dinner at 9 p.m." }]
+      },
+      {
+        "id": "GQ6_por_de_ro",
+        "name": "por vs de + parte del día (reconocimiento)",
+        "scope": ["por la… (sin hora)", "de la… (con hora)"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "A las ocho de la mañana.", "translation": "At eight in the morning." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_Q6_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con es la / son las.",
+        "items": ["__ una y cuarto.", "__ siete menos cuarto."],
+        "solution": ["Es la", "Son las"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Solo la una va con es la." }
+      },
+      {
+        "id": "GR_Q6_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase natural.",
+        "options": [
+          "Nos vemos a las seis de la tarde.",
+          "Nos vemos por las seis de la tarde.",
+          "Nos vemos a la seis."
+        ],
+        "correct": "Nos vemos a las seis de la tarde.",
+        "feedback": { "tip": "a las + hora; de la + parte del día con hora." }
+      }
+    ]
+  },
+  "cultural_note": "Proponer otra hora es habitual: “A las seis no puedo, ¿a las siete?”.",
+  "assessment": {
+    "auto_criteria": [
+      "Dice 2 horas correctamente con y media / menos cuarto.",
+      "Usa a la/las en 2 respuestas.",
+      "Completa un mini diálogo de cita con cortesía básica."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "quiz", "hora", "días", "a las"]
+}

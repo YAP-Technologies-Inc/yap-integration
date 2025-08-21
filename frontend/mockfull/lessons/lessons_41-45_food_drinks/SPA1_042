@@ -1,0 +1,116 @@
+{
+  "lesson_id": "SPA1_042",
+  "title": "Frutas y verduras: gustos simples",
+  "level": "A1",
+  "theme": "Food & Drink Basics",
+  "focus": "Nombrar frutas y verduras comunes y expresar preferencia básica.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo nombrar 6 frutas y verduras.",
+    "Puedo decir me gusta / no me gusta + el/la/los/las.",
+    "Puedo hacer y responder “¿Te gusta…?”"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "manzana", "translation": "apple", "part_of_speech": "noun", "gender": "feminine", "example": "La manzana es roja.", "example_translation": "The apple is red." },
+      { "term": "naranja", "translation": "orange (fruit)", "part_of_speech": "noun", "gender": "feminine", "example": "Me gusta la naranja.", "example_translation": "I like orange." },
+      { "term": "plátano/banana (reconocimiento)", "translation": "banana", "part_of_speech": "noun", "gender": "masculine", "example": "El plátano es dulce.", "example_translation": "The banana is sweet.", "recognition_only": true },
+      { "term": "tomate", "translation": "tomato", "part_of_speech": "noun", "gender": "masculine", "example": "El tomate es fresco.", "example_translation": "The tomato is fresh." },
+      { "term": "lechuga", "translation": "lettuce", "part_of_speech": "noun", "gender": "feminine", "example": "La lechuga es verde.", "example_translation": "Lettuce is green." },
+      { "term": "patata/papa (reconocimiento)", "translation": "potato", "part_of_speech": "noun", "gender": "feminine", "example": "La patata es popular.", "example_translation": "The potato is popular.", "recognition_only": true }
+    ],
+    "practice": [
+      {
+        "id": "VOC_42_1",
+        "type": "match",
+        "prompt": "Empareja el alimento con su traducción.",
+        "pairs": [
+          ["tomate", "tomato"],
+          ["lechuga", "lettuce"],
+          ["manzana", "apple"],
+          ["naranja", "orange"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Vuelve a mirar las imágenes mentales de cada alimento." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Te gusta la manzana?", "translation": "Do you like apple?", "audio_url": null },
+      { "spanish": "Me gustan los tomates.", "translation": "I like tomatoes.", "audio_url": null },
+      { "spanish": "No me gusta la lechuga.", "translation": "I do not like lettuce.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_42_1",
+        "type": "choice_drill_minimal_pairs",
+        "prompt": "Elige me gusta / me gustan.",
+        "items": [
+          { "pairs": ["Me gusta la manzana.", "Me gustan la manzana."], "solution": "Me gusta la manzana." },
+          { "pairs": ["Me gustan los tomates.", "Me gusta los tomates."], "solution": "Me gustan los tomates." }
+        ],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Singular → gusta; plural → gustan." }
+      },
+      {
+        "id": "SPK_42_2",
+        "type": "request_builder",
+        "prompt": "Pregunta y responde sobre gustos.",
+        "frames": [
+          "¿Te gusta __ __?",
+          "Sí, me gusta / No, no me gusta."
+        ],
+        "word_bank": ["la manzana", "el tomate", "la lechuga", "los tomates"],
+        "feedback": { "tip": "Incluye el/la/los/las tras gusta(n)." }
+      },
+      {
+        "id": "SPK_42_3",
+        "type": "exit_ticket",
+        "prompt": "Di una fruta que te gusta y una que no.",
+        "expected_example": "Me gusta la naranja, pero no me gusta la lechuga.",
+        "rubric": { "artículo": "Artículo correcto tras gusta/gustan." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G42_art_plural",
+        "name": "Artículos y número con alimentos",
+        "scope": ["el/la + singular", "los/las + plural"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Me gustan los tomates.", "translation": "I like tomatoes." }],
+        "notes": "Con me gusta/gustan el artículo es obligatorio."
+      },
+      {
+        "id": "G42_gustar_ro",
+        "name": "me gusta vs me gustan (repaso, reconocimiento)",
+        "scope": ["gusta + singular", "gustan + plural"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "¿Te gustan las naranjas?", "translation": "Do you like oranges?" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_42_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con el artículo y número correctos.",
+        "items": ["Me gusta __ naranja.", "Me gustan __ tomates."],
+        "solution": ["la", "los"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Elige el/la o los/las según singular/plural." }
+      }
+    ]
+  },
+  "cultural_note": "En gustos generales se usa el artículo: “Me gusta el pan”, no “Me gusta pan”.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa artículo correcto tras me gusta/gustan.",
+      "Formula y responde una pregunta con “¿Te gusta…?”",
+      "Nombra 4 alimentos correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "frutas", "verduras", "artículos", "gustos"]
+}

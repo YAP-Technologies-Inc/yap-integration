@@ -1,0 +1,124 @@
+{
+  "lesson_id": "SPA1_052",
+  "title": "Números 11–100 y objetos básicos",
+  "level": "A1",
+  "theme": "Shopping Essentials",
+  "focus": "Hablar de precios con 11–100 y objetos comunes.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir precios con 11–20 y decenas 20–90.",
+    "Puedo preguntar el precio de un objeto común.",
+    "Puedo reconocer totales con “¿Cuánto es?” / “Son… euros.”"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "once", "translation": "eleven", "part_of_speech": "noun", "gender": "masculine", "example": "Once euros.", "example_translation": "Eleven euros." },
+      { "term": "doce", "translation": "twelve", "part_of_speech": "noun", "gender": "masculine", "example": "Doce euros.", "example_translation": "Twelve euros." },
+      { "term": "quince", "translation": "fifteen", "part_of_speech": "noun", "gender": "masculine", "example": "Quince euros.", "example_translation": "Fifteen euros." },
+      { "term": "veinte", "translation": "twenty", "part_of_speech": "noun", "gender": "masculine", "example": "Veinte euros.", "example_translation": "Twenty euros." },
+      { "term": "treinta", "translation": "thirty", "part_of_speech": "noun", "gender": "masculine", "example": "Treinta euros.", "example_translation": "Thirty euros." },
+      { "term": "cuarenta", "translation": "forty", "part_of_speech": "noun", "gender": "masculine", "example": "Cuarenta euros.", "example_translation": "Forty euros." },
+      { "term": "cincuenta", "translation": "fifty", "part_of_speech": "noun", "gender": "masculine", "example": "Cincuenta euros.", "example_translation": "Fifty euros." },
+      { "term": "sesenta", "translation": "sixty", "part_of_speech": "noun", "gender": "masculine", "example": "Sesenta euros.", "example_translation": "Sixty euros." },
+      { "term": "setenta", "translation": "seventy", "part_of_speech": "noun", "gender": "masculine", "example": "Setenta euros.", "example_translation": "Seventy euros." },
+      { "term": "ochenta", "translation": "eighty", "part_of_speech": "noun", "gender": "masculine", "example": "Ochenta euros.", "example_translation": "Eighty euros." },
+      { "term": "noventa", "translation": "ninety", "part_of_speech": "noun", "gender": "masculine", "example": "Noventa euros.", "example_translation": "Ninety euros." },
+      { "term": "libro", "translation": "book", "part_of_speech": "noun", "gender": "masculine", "example": "¿Cuánto cuesta el libro?", "example_translation": "How much does the book cost?" },
+      { "term": "camiseta", "translation": "T-shirt", "part_of_speech": "noun", "gender": "feminine", "example": "La camiseta cuesta veinte euros.", "example_translation": "The T-shirt costs twenty euros." },
+      { "term": "botella de agua", "translation": "bottle of water", "part_of_speech": "noun", "gender": "feminine", "example": "La botella de agua cuesta un euro.", "example_translation": "The bottle of water costs one euro." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_52_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la lectura correcta de 30€.",
+        "options": ["treinta euros", "trece euros", "treinta euro"],
+        "correct": "treinta euros",
+        "feedback": { "tip": "Decenas: veinte, treinta, cuarenta…" }
+      },
+      {
+        "id": "VOC_52_2",
+        "type": "match",
+        "prompt": "Relaciona objeto y artículo.",
+        "pairs": [
+          ["el libro", "book"],
+          ["la camiseta", "T-shirt"],
+          ["la botella de agua", "bottle of water"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa el/la del sustantivo." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cuánto cuesta la camiseta?", "translation": "How much does the T-shirt cost?", "audio_url": null },
+      { "spanish": "Cuesta treinta euros.", "translation": "It costs thirty euros.", "audio_url": null },
+      { "spanish": "¿Cuánto es? — Son treinta euros. (reconocimiento de respuesta)", "translation": "How much is it? — It’s thirty euros. (recognition)", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_52_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha el precio y elige.",
+        "items": [
+          { "audio": "Cuesta veinte euros.", "options": ["15€", "20€"], "solution": "20€" },
+          { "audio": "Son cincuenta euros.", "options": ["50€", "15€"], "solution": "50€" }
+        ],
+        "feedback_rule": { "ok": "¡Exacto!", "error": "Atiende a las decenas." }
+      },
+      {
+        "id": "SPK_52_2",
+        "type": "request_builder",
+        "prompt": "Pregunta el precio y responde.",
+        "frames": [
+          "¿Cuánto cuesta el/la __?",
+          "Cuesta __ euros."
+        ],
+        "word_bank": ["libro", "camiseta", "veinte", "treinta", "noventa"],
+        "feedback": { "tip": "Incluye artículo el/la y número claro." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G52_numeros_11_100",
+        "name": "Números 11–100 para precios",
+        "scope": ["once, doce, quince", "veinte, treinta… noventa", "patrón: treinta y cinco (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Cuesta noventa euros.", "translation": "It costs ninety euros." }],
+        "notes": "Permite producción libre con decenas; 31–99 con y (reconocimiento)."
+      },
+      {
+        "id": "G52_totales_ro",
+        "name": "Totales con es/son (reconocimiento)",
+        "scope": ["¿Cuánto es?", "Son + número + euros"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Son cuarenta euros.", "translation": "It’s forty euros." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_52_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con el número correcto.",
+        "items": ["Cuesta __ euros. (20)", "Cuesta __ euros. (90)"],
+        "solution": ["veinte", "noventa"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Escribe la decena correcta." }
+      }
+    ]
+  },
+  "cultural_note": "En precios hablados se usan decenas completas. Para 35€ se dice “treinta y cinco euros”.",
+  "assessment": {
+    "auto_criteria": [
+      "Pregunta por el precio de un objeto con artículo correcto.",
+      "Dice dos precios con decenas correctas.",
+      "Reconoce respuesta con “Son… euros”."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "números", "precios", "objetos"]
+}

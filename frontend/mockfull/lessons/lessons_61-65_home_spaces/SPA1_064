@@ -1,0 +1,97 @@
+{
+  "lesson_id": "SPA1_064",
+  "title": "Mi dormitorio: detalles",
+  "level": "A1",
+  "theme": "Home Spaces",
+  "focus": "Describir el dormitorio con hay y vocabulario clave.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Digo 4 objetos del dormitorio.",
+    "Hago 2 frases con hay/no hay en mi dormitorio.",
+    "Uso en mi dormitorio para situar."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "escritorio", "translation": "desk", "part_of_speech": "noun", "gender": "masculine", "example": "Hay un escritorio en mi dormitorio.", "example_translation": "There is a desk in my bedroom." },
+      { "term": "armario", "translation": "wardrobe/closet", "part_of_speech": "noun", "gender": "masculine", "example": "Hay un armario grande.", "example_translation": "There is a big wardrobe." },
+      { "term": "ventana", "translation": "window", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una ventana grande.", "example_translation": "There is a big window." },
+      { "term": "alfombra (reconocimiento)", "translation": "rug", "part_of_speech": "noun", "gender": "feminine", "example": "La alfombra es roja.", "example_translation": "The rug is red.", "recognition_only": true, "production_required": false },
+      { "term": "mesita", "translation": "bedside table", "part_of_speech": "noun", "gender": "feminine", "example": "Hay una mesita al lado de la cama.", "example_translation": "There is a bedside table next to the bed." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_64_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase natural.",
+        "options": [
+          "En mi dormitorio hay una escritorio.",
+          "En mi dormitorio hay un escritorio.",
+          "En mi dormitorio hay el escritorio."
+        ],
+        "correct": "En mi dormitorio hay un escritorio.",
+        "feedback": { "tip": "Con hay, usa un/una, no el/la." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "En mi dormitorio hay una cama y un armario.", "translation": "In my bedroom there is a bed and a wardrobe.", "audio_url": null },
+      { "spanish": "No hay alfombra.", "translation": "There is no rug.", "audio_url": null },
+      { "spanish": "Hay una ventana grande.", "translation": "There is a big window.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_64_1",
+        "type": "request_builder",
+        "prompt": "Completa tus frases del dormitorio.",
+        "frames": [
+          "En mi dormitorio hay __ y __.",
+          "En mi dormitorio no hay __."
+        ],
+        "word_bank": ["un escritorio", "un armario", "una mesita", "alfombra"],
+        "feedback": { "tip": "Recuerda un/una + objeto." }
+      },
+      {
+        "id": "SPK_64_2",
+        "type": "exit_ticket",
+        "prompt": "Di 1 cosa que hay y 1 que no hay.",
+        "expected_example": "Hay una ventana. No hay alfombra.",
+        "rubric": { "estructura": "hay/no hay correctos." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G64_en_mi",
+        "name": "En mi + habitación",
+        "scope": ["En mi dormitorio…", "En mi habitación… (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "En mi dormitorio hay un armario.", "translation": "In my bedroom there is a wardrobe." }],
+        "notes": "Mi no cambia por género en singular."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_64_1",
+        "type": "orthography_check",
+        "prompt": "Añade tildes y signos si falta.",
+        "items": ["En mi dormitorio hay una mesita"],
+        "solution": ["En mi dormitorio hay una mesita."],
+        "feedback_rule": { "note": "Termina en punto." }
+      }
+    ]
+  },
+  "cultural_note": "En muchos pisos europeos, el armario es un mueble, no empotrado.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 frases con En mi dormitorio hay…",
+      "Incluye 1 negación No hay…",
+      "Nombra 4 objetos del dormitorio."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "dormitorio", "muebles", "hay"]
+}

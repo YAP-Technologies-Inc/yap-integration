@@ -1,0 +1,169 @@
+{
+  "lesson_id": "SPA1_016",
+  "title": "Mi familia: quiénes son",
+  "level": "A1",
+  "theme": "Family Basics",
+  "focus": "Nombrar familiares cercanos y decir si tienes hermanos usando tener y posesivos mi/mis, tu/tus.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir quiénes son las personas de mi familia.",
+    "Puedo decir si tengo hermanos o hijos con tener.",
+    "Puedo usar mi/mis y tu/tus con sustantivos de familia.",
+    "Puedo preguntar: “¿Tienes hermanos?” y responder de forma breve."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "familia", "translation": "family", "part_of_speech": "noun", "gender": "feminine", "example": "Mi familia es pequeña.", "example_translation": "My family is small." },
+      { "term": "padre", "translation": "father", "part_of_speech": "noun", "gender": "masculine", "example": "Mi padre se llama Luis.", "example_translation": "My father is named Luis." },
+      { "term": "madre", "translation": "mother", "part_of_speech": "noun", "gender": "feminine", "example": "Tu madre es muy simpática.", "example_translation": "Your mother is very nice." },
+      { "term": "hermano", "translation": "brother", "part_of_speech": "noun", "gender": "masculine", "example": "Tengo un hermano.", "example_translation": "I have one brother." },
+      { "term": "hermana", "translation": "sister", "part_of_speech": "noun", "gender": "feminine", "example": "¿Tienes hermana?", "example_translation": "Do you have a sister?" },
+      { "term": "hijo", "translation": "son", "part_of_speech": "noun", "gender": "masculine", "example": "Mi hijo vive conmigo.", "example_translation": "My son lives with me." },
+      { "term": "hija", "translation": "daughter", "part_of_speech": "noun", "gender": "feminine", "example": "Su hija se llama Ana.", "example_translation": "His/Her daughter is named Ana." },
+      { "term": "abuelo", "translation": "grandfather", "part_of_speech": "noun", "gender": "masculine", "example": "Mi abuelo es de México.", "example_translation": "My grandfather is from Mexico." },
+      { "term": "abuela", "translation": "grandmother", "part_of_speech": "noun", "gender": "feminine", "example": "Visito a mi abuela.", "example_translation": "I visit my grandmother." },
+      { "term": "tío", "translation": "uncle", "part_of_speech": "noun", "gender": "masculine", "example": "Tu tío trabaja aquí.", "example_translation": "Your uncle works here." },
+      { "term": "tía", "translation": "aunt", "part_of_speech": "noun", "gender": "feminine", "example": "Mi tía es doctora.", "example_translation": "My aunt is a doctor." },
+      { "term": "tener", "translation": "to have", "part_of_speech": "verb", "example": "Tengo dos hermanos.", "example_translation": "I have two siblings." },
+      { "term": "mi", "translation": "my (singular noun)", "part_of_speech": "adjective", "gender": "invariable", "example": "Mi madre es Ana.", "example_translation": "My mother is Ana." },
+      { "term": "mis", "translation": "my (plural noun)", "part_of_speech": "adjective", "gender": "invariable", "example": "Mis abuelos viven cerca.", "example_translation": "My grandparents live nearby." },
+      { "term": "tu", "translation": "your (singular noun, tú)", "part_of_speech": "adjective", "gender": "invariable", "example": "¿Cómo se llama tu padre?", "example_translation": "What is your father’s name?" },
+      { "term": "tus", "translation": "your (plural noun, tú)", "part_of_speech": "adjective", "gender": "invariable", "example": "¿Dónde viven tus tíos?", "example_translation": "Where do your uncles live?" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_16_1",
+        "type": "match",
+        "prompt": "Relaciona el familiar con su traducción.",
+        "pairs": [
+          ["padre", "father"],
+          ["abuela", "grandmother"],
+          ["hermana", "sister"],
+          ["tío", "uncle"],
+          ["hijo", "son"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa el significado." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Tengo un hermano.", "translation": "I have one brother.", "audio_url": null },
+      { "spanish": "¿Tienes hermanos?", "translation": "Do you have siblings?", "audio_url": null },
+      { "spanish": "Mi madre se llama Ana.", "translation": "My mother’s name is Ana.", "audio_url": null },
+      { "spanish": "Estos son mis abuelos.", "translation": "These are my grandparents.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_16_1",
+        "type": "listen_and_repeat",
+        "prompt": "Escucha y repite las frases del modelo.",
+        "audio_items": ["Tengo un hermano.", "¿Tienes hermanos?", "Mi madre se llama Ana."],
+        "success_criteria": { "claridad": "Pronuncia las palabras completas.", "entonación": "Sube la entonación en las preguntas." }
+      },
+      {
+        "id": "SPK_16_2",
+        "type": "guided_interview",
+        "prompt": "Haz y responde preguntas sobre la familia con un compañero.",
+        "frames": [
+          "¿Tienes hermanos?",
+          "Tengo __ hermano(s).",
+          "¿Cómo se llama tu madre/padre?",
+          "Mi __ se llama __."
+        ],
+        "acceptable_variants": ["No tengo hermanos.", "Tengo una hermana."],
+        "feedback": { "tip": "Usa mi/mis y tu/tus correctamente según singular o plural." }
+      },
+      {
+        "id": "SPK_16_3",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa y practica el mini diálogo.",
+        "dialogue_template": [
+          "A: ¿Tienes __?",
+          "B: Sí, tengo __ __.",
+          "A: ¿Cómo se llama tu __?",
+          "B: Se llama __."
+        ],
+        "word_bank": ["hermanos", "un", "dos", "madre", "padre", "Ana", "Luis"],
+        "solutions": [
+          ["hermanos", "dos", "madre", "Ana"],
+          ["hermano", "un", "padre", "Luis"]
+        ],
+        "feedback_rule": { "ok": "Diálogo natural.", "error": "Cuida singular/plural: mi vs mis." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G16_pos_1",
+        "name": "Adjetivos posesivos I",
+        "scope": ["mi/mis", "tu/tus"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Mi hermano vive en Madrid.", "translation": "My brother lives in Madrid." },
+          { "spanish": "Tus tíos trabajan aquí.", "translation": "Your uncles work here." }
+        ],
+        "notes": "Concordancia con número: mi + singular, mis + plural; tu + singular, tus + plural."
+      },
+      {
+        "id": "G16_tener_1",
+        "name": "Tener para hablar de familia",
+        "forms": ["yo tengo", "tú tienes"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Tengo una hermana.", "translation": "I have a sister." },
+          { "spanish": "¿Tienes hijos?", "translation": "Do you have children?" }
+        ],
+        "notes": "Él/Ella tiene, reconocimiento útil."
+      },
+      {
+        "id": "G16_pos_2",
+        "name": "Adjetivos posesivos II (reconocimiento)",
+        "scope": ["su/sus"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Su hija vive lejos.", "translation": "His/Her daughter lives far away." }
+        ],
+        "notes": "No se exige producción en esta lección."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_16_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con mi/mis o tu/tus.",
+        "items": ["__ madre es Ana.", "__ abuelos viven en Lima.", "__ tío es médico.", "__ hermanas estudian."],
+        "solution": ["Mi", "Mis", "Tu", "Tus"],
+        "feedback_rule": { "correct": "¡Bien!", "incorrect": "Recuerda: plural con -s." }
+      },
+      {
+        "id": "GR_16_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción correcta con tener.",
+        "options": [
+          "Tengo dos hermano.",
+          "Tienes dos hermanos.",
+          "Tienes dos hermana."
+        ],
+        "correct": "Tienes dos hermanos.",
+        "feedback": { "tip": "Concordancia en plural con -s." }
+      }
+    ]
+  },
+  "cultural_note": "En muchos países hispanohablantes la familia extensa es muy cercana. Escucharás “tía” o “tío” también como trato cariñoso.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa mi/mis y tu/tus correctamente.",
+      "Produce “tengo/tienes” de forma comprensible.",
+      "Nombra 6 familiares sin dudar.",
+      "Mantiene un mini diálogo de 3 turnos sobre la familia."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "posesivos", "tener"]
+}

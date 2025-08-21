@@ -1,0 +1,239 @@
+{
+  "quiz_id": "SPA1_Q001",
+  "title": "First Contact Cumulative Quiz (Lessons 1–5)",
+  "level": "A1",
+  "theme": "First Contact",
+  "focus": "Check greetings, introductions, courtesies, requests, and clarification",
+  "duration_minutes": 10,
+  "register": "tú",
+  "covers": ["SPA1_001", "SPA1_002", "SPA1_003", "SPA1_004", "SPA1_005"],
+  "can_do": [
+    "Greet appropriately and exchange names",
+    "Use basic courtesies to open and close interactions",
+    "Choose time-of-day greetings and informal farewells",
+    "Make very simple requests with por favor",
+    "Signal non-understanding and ask to repeat or slow down"
+  ],
+
+  "vocabulary": {
+    "items": [
+      { "term": "hola", "translation": "hello", "part_of_speech": "interjection", "example": "Hola, me llamo Ana.", "example_translation": "Hello, my name is Ana." },
+      { "term": "adiós", "translation": "goodbye", "part_of_speech": "interjection", "example": "Adiós, hasta luego.", "example_translation": "Goodbye, see you later." },
+      { "term": "mucho gusto", "translation": "nice to meet you", "part_of_speech": "phrase", "example": "Mucho gusto.", "example_translation": "Nice to meet you." },
+      { "term": "encantado", "translation": "pleased to meet you", "part_of_speech": "adjective", "gender": "masculine", "example": "Encantado.", "example_translation": "Pleased to meet you." },
+      { "term": "encantada", "translation": "pleased to meet you", "part_of_speech": "adjective", "gender": "feminine", "example": "Encantada.", "example_translation": "Pleased to meet you." },
+      { "term": "buenos días", "translation": "good morning", "part_of_speech": "phrase", "example": "Buenos días, Carlos.", "example_translation": "Good morning, Carlos." },
+      { "term": "buenas tardes", "translation": "good afternoon", "part_of_speech": "phrase", "example": "Buenas tardes, Marta.", "example_translation": "Good afternoon, Marta." },
+      { "term": "buenas noches", "translation": "good evening, good night", "part_of_speech": "phrase", "example": "Buenas noches, Ana.", "example_translation": "Good evening, Ana." },
+      { "term": "hasta luego", "translation": "see you later", "part_of_speech": "phrase", "example": "Hasta luego.", "example_translation": "See you later." },
+      { "term": "nos vemos", "translation": "see you", "part_of_speech": "phrase", "example": "Nos vemos.", "example_translation": "See you." },
+      { "term": "por favor", "translation": "please", "part_of_speech": "phrase", "example": "¿Me das agua, por favor?", "example_translation": "Can you give me water, please?" },
+      { "term": "gracias", "translation": "thank you", "part_of_speech": "interjection", "example": "Gracias.", "example_translation": "Thank you." },
+      { "term": "de nada", "translation": "you are welcome", "part_of_speech": "phrase", "example": "— Gracias. — De nada.", "example_translation": "— Thanks. — You are welcome." },
+      { "term": "no entiendo", "translation": "I do not understand", "part_of_speech": "phrase", "example": "Perdón, no entiendo.", "example_translation": "Excuse me, I do not understand." },
+      { "term": "más despacio, por favor", "translation": "more slowly, please", "part_of_speech": "phrase", "example": "Más despacio, por favor.", "example_translation": "More slowly, please." },
+      { "term": "¿Puedes repetir, por favor?", "translation": "can you repeat, please?", "part_of_speech": "phrase", "example": "¿Puedes repetir, por favor?", "example_translation": "Can you repeat, please?" }
+    ],
+    "practice": [
+      {
+        "id": "QUIZ_VOC_1",
+        "type": "match",
+        "prompt": "Match each Spanish item to its meaning.",
+        "pairs": [
+          { "spanish": "mucho gusto", "english": "nice to meet you" },
+          { "spanish": "encantado", "english": "pleased to meet you (masculine)" },
+          { "spanish": "encantada", "english": "pleased to meet you (feminine)" },
+          { "spanish": "de nada", "english": "you are welcome" },
+          { "spanish": "nos vemos", "english": "see you" }
+        ]
+      },
+      {
+        "id": "QUIZ_VOC_2",
+        "type": "categorize",
+        "prompt": "Place each greeting under morning, afternoon, or night.",
+        "items": ["buenos días", "buenas tardes", "buenas noches"],
+        "categories": ["mañana", "tarde", "noche"],
+        "solution": {
+          "mañana": ["buenos días"],
+          "tarde": ["buenas tardes"],
+          "noche": ["buenas noches"]
+        }
+      },
+      {
+        "id": "QUIZ_VOC_3",
+        "type": "multiple_choice",
+        "prompt": "Choose the best phrase for the situation.",
+        "items": [
+          {
+            "situation": "You meet someone at 08:15.",
+            "options": ["Buenas tardes", "Buenas noches", "Buenos días"],
+            "correct": "Buenos días"
+          },
+          {
+            "situation": "You need someone to repeat.",
+            "options": ["¿Puedes repetir, por favor?", "Nos vemos.", "Encantado."],
+            "correct": "¿Puedes repetir, por favor?"
+          }
+        ]
+      }
+    ]
+  },
+
+  "speaking": {
+    "models": [
+      { "spanish": "Hola, me llamo ____. ¿Cómo te llamas?", "translation": "Hi, my name is ____. What is your name?", "audio_url": null },
+      { "spanish": "¿Me das un bolígrafo, por favor?", "translation": "Can you give me a pen, please?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "QUIZ_SPK_1",
+        "type": "controlled_production",
+        "prompt": "Record a short introduction and close politely.",
+        "expected_example": "Hola, me llamo ____. ¿Cómo te llamas? Mucho gusto.",
+        "acceptable_variants": [
+          "Hola, soy ____. ¿Cómo te llamas? Encantado.",
+          "Hola, soy ____. ¿Cómo te llamas? Encantada."
+        ],
+        "rubric": {
+          "accuracy": "Correct frames for name and question. Courtesy included.",
+          "range": "2 to 3 fixed phrases.",
+          "pronunciation": "Understandable with rising intonation in the question."
+        }
+      },
+      {
+        "id": "QUIZ_SPK_2",
+        "type": "role_play",
+        "prompt": "You did not understand. Ask to repeat slowly, then acknowledge.",
+        "scenario": "A classmate speaks quickly and gives instructions.",
+        "expected_example": "Perdón, no entiendo. ¿Puedes repetir más despacio, por favor? — Gracias.",
+        "acceptable_variants": [
+          "Más despacio, por favor. ¿Puedes repetir?",
+          "¿Puedes repetir, por favor? — Gracias. — De nada."
+        ],
+        "rubric": {
+          "accuracy": "Uses no entiendo or a repeat/slow request with por favor.",
+          "pragmatics": "Polite tone, short acknowledgment at the end (Gracias).",
+          "pronunciation": "Understandable vowels and syllable timing."
+        }
+      }
+    ]
+  },
+
+  "grammar": {
+    "topics": [
+      {
+        "id": "ORTHO_Q_01",
+        "name": "Inverted question marks and accents",
+        "scope": ["¿…?", "Cómo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Cómo te llamas?", "translation": "What is your name?" }
+        ]
+      },
+      {
+        "id": "INTRO_FRAMES_01",
+        "name": "Introductions: ser vs. llamarse",
+        "scope": ["me llamo", "soy"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me llamo Ana.", "translation": "My name is Ana." },
+          { "spanish": "Soy Carlos.", "translation": "I am Carlos." }
+        ],
+        "notes": "Accept both for self-introduction."
+      },
+      {
+        "id": "REQ_FRAMES_01",
+        "name": "Request frames",
+        "scope": ["¿Me das + objeto + , por favor?", "¿Puedes + infinitivo + , por favor?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Me das agua, por favor?", "translation": "Can you give me water, please?" },
+          { "spanish": "¿Puedes repetir, por favor?", "translation": "Can you repeat, please?" }
+        ],
+        "notes": "Do not use imperatives yet."
+      },
+      {
+        "id": "NEG_NO_01",
+        "name": "Basic negation with no",
+        "scope": ["no + verb"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "No entiendo.", "translation": "I do not understand." }
+        ]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "QUIZ_GR_1",
+        "type": "orthography_check",
+        "prompt": "Choose the correctly written question.",
+        "options": ["Como te llamas?", "¿Como te llamas?", "¿Cómo te llamas?"],
+        "correct": "¿Cómo te llamas?",
+        "feedback": {
+          "Como te llamas?": "Needs inverted question mark and accent on 'Cómo'.",
+          "¿Como te llamas?": "Add the accent on 'Cómo'.",
+          "¿Cómo te llamas?": "Correct."
+        }
+      },
+      {
+        "id": "QUIZ_GR_2",
+        "type": "fill_in_blank",
+        "prompt": "Completa con 'me llamo' o 'soy'.",
+        "items": [
+          { "text": "Hola, ____ Ana." },
+          { "text": "Hola, ____ Luis." }
+        ],
+        "solution": ["me llamo", "soy"]
+      },
+      {
+        "id": "QUIZ_GR_3",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción más cortés para pedir un bolígrafo.",
+        "options": [
+          "Dame un bolígrafo.",
+          "¿Me das un bolígrafo, por favor?",
+          "Bolígrafo, por favor."
+        ],
+        "correct": "¿Me das un bolígrafo, por favor?",
+        "feedback": {
+          "Dame un bolígrafo.": "Avoid imperatives at this level. Use a polite frame.",
+          "Bolígrafo, por favor.": "Too short. Use a full polite request."
+        }
+      },
+      {
+        "id": "QUIZ_GR_4",
+        "type": "fill_in_blank",
+        "prompt": "Completa con 'No' o 'Sí'.",
+        "items": [
+          { "text": "__ entiendo." },
+          { "text": "__, puedo repetir." }
+        ],
+        "solution": ["No", "Sí"]
+      }
+    ]
+  },
+
+  "cultural_note": "Short courtesies like Mucho gusto or Encantado, Encantada, and brief requests with por favor support smooth first encounters.",
+  "assessment": {
+    "auto_criteria": [
+      "Greets and exchanges names appropriately",
+      "Chooses correct time-of-day greeting and an informal farewell",
+      "Builds one polite request with por favor",
+      "Signals non-understanding and asks to repeat or slow down",
+      "Uses correct orthography for ¿Cómo te llamas?"
+    ],
+    "scoring_guide": {
+      "vocabulary": 4,
+      "speaking": 6,
+      "grammar": 5,
+      "total_points": 15,
+      "passing_threshold_points": 11
+    }
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "First Contact", "quiz", "introductions", "requests", "clarification"]
+}

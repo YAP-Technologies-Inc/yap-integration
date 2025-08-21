@@ -1,0 +1,146 @@
+{
+  "lesson_id": "SPA1_020",
+  "title": "Planes con la familia",
+  "level": "A1",
+  "theme": "Family Basics",
+  "focus": "Hablar de hábitos y planes sencillos con la familia usando el presente y los + día.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir actividades simples con mi familia.",
+    "Puedo decir con qué frecuencia lo hacemos: los sábados, los domingos.",
+    "Puedo proponer un plan corto y responder."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "visitar", "translation": "to visit", "part_of_speech": "verb", "example": "Visitamos a mis abuelos.", "example_translation": "We visit my grandparents." },
+      { "term": "cocinar", "translation": "to cook", "part_of_speech": "verb", "example": "Cocinamos juntos.", "example_translation": "We cook together." },
+      { "term": "comer", "translation": "to eat", "part_of_speech": "verb", "example": "Comemos en casa.", "example_translation": "We eat at home." },
+      { "term": "los fines de semana", "translation": "on weekends", "part_of_speech": "phrase", "example": "Salimos los fines de semana.", "example_translation": "We go out on weekends." },
+      { "term": "los sábados", "translation": "on Saturdays", "part_of_speech": "phrase", "example": "Jugamos juntos los sábados.", "example_translation": "We play together on Saturdays." },
+      { "term": "en casa", "translation": "at home", "part_of_speech": "phrase", "example": "Estamos en casa.", "example_translation": "We are at home." },
+      { "term": "juntos", "translation": "together", "part_of_speech": "adverb", "example": "Vemos una película juntos.", "example_translation": "We watch a movie together." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_20_1",
+        "type": "match",
+        "prompt": "Relaciona la actividad con la traducción.",
+        "pairs": [
+          ["visitar", "to visit"],
+          ["cocinar", "to cook"],
+          ["comer", "to eat"],
+          ["los sábados", "on Saturdays"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Muy bien!", "incorrect_pair": "Intenta de nuevo." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Los domingos visitamos a mis abuelos.", "translation": "On Sundays we visit my grandparents.", "audio_url": null },
+      { "spanish": "¿Quieres comer con mi familia el sábado?", "translation": "Do you want to eat with my family on Saturday?", "audio_url": null },
+      { "spanish": "Cocinamos juntos en casa.", "translation": "We cook together at home.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_20_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Rellena y practica el diálogo de plan familiar.",
+        "dialogue_template": [
+          "A: __ visitamos a mis abuelos.",
+          "B: ¡Qué bien! ¿__ comer con tu familia el sábado?",
+          "A: Sí, __ en casa."
+        ],
+        "word_bank": ["Los domingos", "Quieres", "comemos", "Cocinamos"],
+        "solutions": [
+          ["Los domingos", "Quieres", "comemos"],
+          ["Los domingos", "Quieres", "Cocinamos"]
+        ],
+        "feedback_rule": { "ok": "Plan claro.", "error": "Revisa los + día para hábitos." }
+      },
+      {
+        "id": "SPK_20_2",
+        "type": "controlled_production",
+        "prompt": "Di una frase sobre lo que haces con tu familia.",
+        "items": [
+          "Los __ __ a mis abuelos.",
+          "Los __ __ juntos.",
+          "Los fines de semana __ en casa."
+        ],
+        "expected_example": ["Los domingos visitamos a mis abuelos.", "Los sábados cocinamos juntos.", "Los fines de semana comemos en casa."],
+        "success_criteria": { "estructura": "Incluye los + día.", "claridad": "Actividad comprensible." }
+      },
+      {
+        "id": "SPK_20_3",
+        "type": "exit_ticket",
+        "prompt": "Di 1 plan con tu familia para este fin de semana.",
+        "expected_example": "Este sábado comemos en casa con mis padres.",
+        "feedback": { "tip": "Mantén la frase corta y natural." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G20_habito_dias",
+        "name": "Hábitos con los + día",
+        "scope": ["los + lunes/martes/…", "los fines de semana"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Los sábados cocinamos juntos.", "translation": "On Saturdays we cook together." },
+          { "spanish": "Los domingos visitamos a mis abuelos.", "translation": "On Sundays we visit my grandparents." }
+        ],
+        "notes": "Días y meses en minúscula."
+      },
+      {
+        "id": "G20_presente_plural",
+        "name": "Presente 1.ª persona plural",
+        "forms": ["visitamos", "comemos", "cocinamos"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Visitamos a mis abuelos.", "translation": "We visit my grandparents." },
+          { "spanish": "Comemos en casa.", "translation": "We eat at home." }
+        ],
+        "notes": "Verbos regulares -ar/-er en presente."
+      },
+      {
+        "id": "G20_personal_a",
+        "name": "A personal (reconocimiento)",
+        "scope": ["visitar a + persona"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Visitamos a mis abuelos.", "translation": "We visit my grandparents." }
+        ],
+        "notes": "No se exige producción, solo comprensión."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_20_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción con hábito.",
+        "options": [
+          "El sábado cocino con mi familia.",
+          "Los sábados cocinamos con mi familia.",
+          "Cocinar con mi familia sábado."
+        ],
+        "correct": "Los sábados cocinamos con mi familia.",
+        "feedback": { "tip": "Hábito: los + día." }
+      }
+    ]
+  },
+  "cultural_note": "Las comidas familiares de fin de semana son frecuentes en muchos países hispanohablantes. Decir “comemos juntos” suena cercano y natural.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa los + día correctamente.",
+      "Produce 1–2 frases en 1.ª plural sobre hábitos familiares.",
+      "Completa un mini plan familiar con léxico del tema."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "hábitos", "presente"]
+}

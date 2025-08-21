@@ -1,0 +1,152 @@
+{
+  "lesson_id": "SPA1_004",
+  "title": "Polite Requests and Courtesies",
+  "level": "A1",
+  "theme": "First Contact",
+  "focus": "Make very simple requests and respond politely",
+  "duration_minutes": 9,
+  "register": "tú",
+  "spiral_from": ["SPA1_001", "SPA1_002", "SPA1_003"],
+  "can_do": [
+    "Request simple things for immediate needs",
+    "Use gracias and de nada in short exchanges",
+    "Use perdón or disculpa appropriately"
+  ],
+
+  "vocabulary": {
+    "items": [
+      { "term": "por favor", "translation": "please", "part_of_speech": "phrase", "example": "¿Me ayudas, por favor?", "example_translation": "Can you help me, please?" },
+      { "term": "gracias", "translation": "thank you", "part_of_speech": "interjection", "example": "Gracias.", "example_translation": "Thank you." },
+      { "term": "de nada", "translation": "you are welcome", "part_of_speech": "phrase", "example": "— Gracias. — De nada.", "example_translation": "— Thanks. — You are welcome." },
+      { "term": "perdón", "translation": "excuse me, sorry", "part_of_speech": "interjection", "example": "Perdón, no entiendo.", "example_translation": "Excuse me, I do not understand." },
+      { "term": "disculpa", "translation": "excuse me", "part_of_speech": "verb form, address", "example": "Disculpa, ¿puedes repetir?", "example_translation": "Excuse me, can you repeat?" },
+      { "term": "lo siento", "translation": "I am sorry", "part_of_speech": "phrase", "example": "Lo siento, llego tarde.", "example_translation": "I am sorry, I am late." },
+      { "term": "¿Me das ...?", "translation": "can you give me ...?", "part_of_speech": "phrase", "example": "¿Me das agua, por favor?", "example_translation": "Can you give me water, please?" },
+      { "term": "¿Puedes + infinitivo ...?", "translation": "can you + infinitive ...?", "part_of_speech": "phrase", "example": "¿Puedes ayudar, por favor?", "example_translation": "Can you help, please?" },
+      { "term": "repetir", "translation": "to repeat", "part_of_speech": "verb", "example": "¿Puedes repetir, por favor?", "example_translation": "Can you repeat, please?" },
+      { "term": "ayudar", "translation": "to help", "part_of_speech": "verb", "example": "¿Puedes ayudar, por favor?", "example_translation": "Can you help, please?" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_4_1",
+        "type": "choice_drill_minimal_pairs",
+        "prompt": "Choose the best option for the situation.",
+        "items": [
+          { "situation": "You lightly bump into someone.", "options": ["Perdón", "Gracias", "De nada"], "correct": "Perdón" },
+          { "situation": "A friend hands you a pen.", "options": ["Lo siento", "Gracias", "Disculpa"], "correct": "Gracias" },
+          { "situation": "Someone thanks you.", "options": ["De nada", "Por favor", "Perdón"], "correct": "De nada" }
+        ]
+      }
+    ]
+  },
+
+  "speaking": {
+    "models": [
+      { "spanish": "¿Me das un bolígrafo, por favor?", "translation": "Can you give me a pen, please?", "audio_url": null },
+      { "spanish": "¿Puedes repetir, por favor?", "translation": "Can you repeat, please?", "audio_url": null },
+      { "spanish": "Gracias. — De nada.", "translation": "Thanks. — You are welcome.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_4_1",
+        "type": "request_builder",
+        "prompt": "Build requests using the frames.",
+        "frames": [
+          { "frame": "¿Me das + objeto + , por favor?", "target_objects": ["agua", "un bolígrafo"] },
+          { "frame": "¿Puedes + infinitivo + , por favor?", "target_infinitives": ["repetir", "ayudar"] }
+        ],
+        "solutions": [
+          "¿Me das agua, por favor?",
+          "¿Me das un bolígrafo, por favor?",
+          "¿Puedes repetir, por favor?",
+          "¿Puedes ayudar, por favor?"
+        ]
+      },
+      {
+        "id": "SPK_4_2",
+        "type": "micro_dialogue_chain",
+        "prompt": "Link a request and a courtesy response.",
+        "chain_template": ["A: __REQUEST__", "B: Aquí tienes.", "A: __THANKS__", "B: __WELCOME__"],
+        "lexicon_slots": {
+          "REQUEST": ["¿Me das agua, por favor?", "¿Puedes repetir, por favor?"],
+          "THANKS": ["Gracias", "Muchas gracias"],
+          "WELCOME": ["De nada", "No hay de qué"]
+        }
+      },
+      {
+        "id": "SPK_4_3",
+        "type": "pronunciation_focus",
+        "prompt": "Practice target words.",
+        "items": ["perdón", "disculpa", "gracias"],
+        "tips": [
+          "Stress the last syllable in perdón.",
+          "In gracias, the c sounds like s in most dialects."
+        ]
+      },
+      {
+        "id": "SPK_4_4",
+        "type": "exit_ticket",
+        "prompt": "Choose the most polite option to ask for the Wi-Fi password from a classmate.",
+        "options": [
+          "¿Me das la contraseña del wifi, por favor?",
+          "Dame la contraseña del wifi.",
+          "Contraseña, por favor."
+        ],
+        "correct": "¿Me das la contraseña del wifi, por favor?"
+      }
+    ]
+  },
+
+  "grammar": {
+    "topics": [
+      {
+        "id": "REQ_FRAMES_01",
+        "name": "Request frames",
+        "scope": ["¿Me das + objeto + , por favor?", "¿Puedes + infinitivo + , por favor?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Me das agua, por favor?", "translation": "Can you give me water, please?" },
+          { "spanish": "¿Puedes repetir, por favor?", "translation": "Can you repeat, please?" }
+        ],
+        "notes": "Do not teach imperatives yet."
+      },
+      {
+        "id": "PRAG_APOL_01",
+        "name": "Perdón, disculpa, lo siento",
+        "scope": ["perdón", "disculpa", "lo siento"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Perdón, ¿puedes ayudar?", "translation": "Excuse me, can you help?" },
+          { "spanish": "Lo siento.", "translation": "I am sorry." }
+        ],
+        "notes": "Perdón or disculpa for small interruptions or to get attention. Lo siento for apologies."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_4_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con la mejor opción: perdón, disculpa, lo siento.",
+        "items": [
+          { "text": "____, no entiendo." },
+          { "text": "____, ¿puedes repetir?" },
+          { "text": "____, llego tarde." }
+        ],
+        "solution": ["Perdón", "Disculpa", "Lo siento"]
+      }
+    ]
+  },
+
+  "cultural_note": "Perdón and disculpa are common for small interruptions or to get attention. Lo siento is for an apology.",
+  "assessment": {
+    "auto_criteria": [
+      "Builds one request with por favor",
+      "Responds to thanks with De nada",
+      "Uses appropriate apology or attention getter"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "First Contact", "politeness", "requests"]
+}

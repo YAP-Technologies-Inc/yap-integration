@@ -1,0 +1,114 @@
+{
+  "lesson_id": "SPA1_033",
+  "title": "Vestirse y peinarse",
+  "level": "A1",
+  "theme": "Daily Routines Part 1",
+  "focus": "Describir vestirse y peinarse con me/te y prendas básicas.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir que me visto y me peino por la mañana.",
+    "Puedo nombrar 3 prendas básicas.",
+    "Puedo enlazar con antes de / después de + infinitivo (reconocimiento)."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "vestirse (reconocimiento de irregular)", "translation": "to get dressed", "part_of_speech": "verb", "example": "Me visto rápido.", "example_translation": "I get dressed quickly." },
+      { "term": "peinarse", "translation": "to comb one’s hair", "part_of_speech": "verb", "example": "Me peino en el baño.", "example_translation": "I comb my hair in the bathroom." },
+      { "term": "camisa", "translation": "shirt", "part_of_speech": "noun", "gender": "feminine", "example": "Me pongo una camisa.", "example_translation": "I put on a shirt." },
+      { "term": "pantalón", "translation": "pants", "part_of_speech": "noun", "gender": "masculine", "example": "El pantalón es negro.", "example_translation": "The pants are black." },
+      { "term": "zapatos", "translation": "shoes", "part_of_speech": "noun", "gender": "masculine", "example": "Me pongo los zapatos.", "example_translation": "I put on my shoes." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_33_1",
+        "type": "match",
+        "prompt": "Empareja la prenda con su traducción.",
+        "pairs": [
+          ["camisa", "shirt"],
+          ["pantalón", "pants"],
+          ["zapatos", "shoes"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa el léxico de ropa." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me visto y me peino por la mañana.", "translation": "I get dressed and comb my hair in the morning.", "audio_url": null },
+      { "spanish": "¿Te peinas antes de salir?", "translation": "Do you comb your hair before going out?", "audio_url": null },
+      { "spanish": "Me pongo una camisa y zapatos.", "translation": "I put on a shirt and shoes.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_33_1",
+        "type": "controlled_production",
+        "prompt": "Completa con me + verbo.",
+        "items": ["__ visto y __ peino.", "Por la mañana __ pongo una camisa."],
+        "expected_example": ["Me visto y me peino.", "Por la mañana me pongo una camisa."],
+        "success_criteria": { "pronombres": "me correcto en cada verbo." }
+      },
+      {
+        "id": "SPK_33_2",
+        "type": "listen_and_choose",
+        "prompt": "Elige la opción natural.",
+        "items": [
+          { "audio": "Me visto antes de desayunar.", "options": ["Me visto antes de desayunar.", "Me visto antes desayuno."], "solution": "Me visto antes de desayunar." }
+        ],
+        "feedback_rule": { "ok": "¡Perfecto!", "error": "Usa antes de + infinitivo." }
+      },
+      {
+        "id": "SPK_33_3",
+        "type": "micro_dialogue_build",
+        "prompt": "Habla de ropa básica al vestirte.",
+        "cards": [
+          "A: ¿Qué te pones por la mañana?",
+          "B: Me pongo __ y __."
+        ],
+        "word_bank": ["una camisa", "zapatos", "un pantalón"],
+        "feedback": { "tip": "Artículo indefinido con prendas contables." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G33_reflex_continua",
+        "name": "Reflexivos: me/te con vestirse/peinarse",
+        "scope": ["me visto", "te vistes (reconocimiento de cambio vocálico)", "me peino/te peinas"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "¿Te peinas?", "translation": "Do you comb your hair?" }],
+        "notes": "Para vestirse, acepta producción en me visto; te vistes solo reconocimiento si es difícil."
+      },
+      {
+        "id": "G33_antes_despues_ro",
+        "name": "antes de / después de + infinitivo (reconocimiento)",
+        "scope": ["antes de + inf.", "después de + inf."],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Después de ducharme, me visto.", "translation": "After showering, I get dressed." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_33_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con me/te + forma correcta.",
+        "items": ["Yo __ peino.", "¿Tú __ vistes rápido?"],
+        "solution": ["me", "te"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Pronombre antes del verbo." }
+      }
+    ]
+  },
+  "cultural_note": "El uso de artículos con prendas es común: “los zapatos”, “la camisa”, incluso cuando se refieren a uno mismo.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 2 frases con me visto / me peino.",
+      "Nombra 3 prendas con artículo correcto.",
+      "Reconoce antes de/después de + infinitivo."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "reflexivos", "ropa", "rutina"]
+}

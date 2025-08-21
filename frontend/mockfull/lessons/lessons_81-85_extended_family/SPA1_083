@@ -1,0 +1,100 @@
+{
+  "lesson_id": "SPA1_083",
+  "title": "Familia extendida 3: sobrinos y abuelos",
+  "level": "A1",
+  "theme": "Extended Family",
+  "focus": "Ampliar familia y usar sus (plural).",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Nombro sobrino/sobrina y abuelos.",
+    "Uso sus con nombres en plural.",
+    "Digo quién celebra un evento familiar."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "sobrino", "translation": "nephew", "part_of_speech": "noun", "gender": "masculine", "example": "Mi sobrino tiene 8 años.", "example_translation": "My nephew is 8." },
+      { "term": "sobrina", "translation": "niece", "part_of_speech": "noun", "gender": "feminine", "example": "Mi sobrina es pequeña.", "example_translation": "My niece is little." },
+      { "term": "abuelo", "translation": "grandfather", "part_of_speech": "noun", "gender": "masculine", "example": "Mi abuelo cocina sopa.", "example_translation": "My grandfather cooks soup." },
+      { "term": "abuela", "translation": "grandmother", "part_of_speech": "noun", "gender": "feminine", "example": "Mi abuela canta.", "example_translation": "My grandmother sings." },
+      { "term": "abuelos", "translation": "grandparents", "part_of_speech": "noun", "gender": "masculine", "example": "Mis abuelos viven en un pueblo.", "example_translation": "My grandparents live in a small town." },
+      { "term": "cumpleaños", "translation": "birthday", "part_of_speech": "noun", "gender": "masculine", "example": "Hoy es el cumpleaños de mi tía.", "example_translation": "Today is my aunt’s birthday." },
+      { "term": "sus", "translation": "his/her/their/your (ustedes) (plural)", "part_of_speech": "adjective", "example": "Sus primos llegan tarde.", "example_translation": "Their cousins arrive late." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_83_1",
+        "type": "categorize",
+        "prompt": "Clasifica por grupo.",
+        "items": ["abuelo", "abuela", "sobrino", "sobrina"],
+        "solution": [
+          { "abuelos": ["abuelo", "abuela"] },
+          { "sobrinos": ["sobrino", "sobrina"] }
+        ],
+        "feedback_rule": { "ok": "Bien organizado.", "error": "Mira el parentesco." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Sus abuelos celebran el cumpleaños.", "translation": "Their grandparents celebrate the birthday.", "audio_url": null },
+      { "spanish": "Mis sobrinos juegan en el parque.", "translation": "My nephews/nieces play in the park.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_83_1",
+        "type": "call_and_response",
+        "prompt": "Pregunta y responde sobre el evento.",
+        "pairs": [
+          ["¿Quién celebra hoy?", "Sus abuelos."],
+          ["¿Quiénes juegan?", "Mis sobrinos."]
+        ],
+        "feedback_rule": { "ok": "Respuesta breve y clara.", "error": "Recuerda usar sus/mis en plural." }
+      },
+      {
+        "id": "SPK_83_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye mini diálogo con sus.",
+        "pairs": [
+          ["A: ¿Vienen sus primos?", "B: Sí, vienen a la reunión."]
+        ],
+        "feedback_rule": { "ok": "Uso correcto de sus.", "error": "sus va con sustantivo plural." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G83_posesivos_sus",
+        "name": "Posesivo plural: sus",
+        "forms": ["sus + sustantivo plural"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Sus tías llegan a las cinco.", "translation": "Their aunts arrive at five." }
+        ],
+        "notes": "sus puede significar de él/ella/ellos/ustedes. El contexto aclara."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_83_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural.",
+        "options": ["Sus primo llegan tarde.", "Sus primos llegan tarde.", "Su primos llegan tarde."],
+        "correct": "Sus primos llegan tarde.",
+        "feedback": { "tip": "Concordancia en plural." }
+      }
+    ]
+  },
+  "cultural_note": "En muchas familias hispanas, abuelos y tíos participan activamente en reuniones y celebraciones.",
+  "assessment": {
+    "auto_criteria": [
+      "Reconoce y produce sobrino/sobrina y abuelos.",
+      "Usa sus con sustantivo plural correctamente.",
+      "Menciona un evento familiar simple."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "posesivos", "eventos"]
+}

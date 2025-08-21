@@ -1,0 +1,117 @@
+{
+  "lesson_id": "SPA1_030",
+  "title": "Citas y disponibilidad",
+  "level": "A1",
+  "theme": "Time Concepts",
+  "focus": "Proponer y aceptar una hora simple, decir si puedes o no a una hora.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puedo proponer una hora para quedar.",
+    "Puedo aceptar o decir que no puedo a una hora.",
+    "Puedo reformular con otra hora."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Quedamos a…?", "translation": "Shall we meet at…?", "part_of_speech": "phrase", "example": "¿Quedamos a las seis?", "example_translation": "Shall we meet at six?", "recognition_only": false },
+      { "term": "puedo", "translation": "I can", "part_of_speech": "verb", "example": "Puedo a las siete.", "example_translation": "I can at seven." },
+      { "term": "no puedo", "translation": "I cannot", "part_of_speech": "phrase", "example": "No puedo a las seis.", "example_translation": "I cannot at six." },
+      { "term": "me va bien", "translation": "works for me", "part_of_speech": "phrase", "example": "A las ocho me va bien.", "example_translation": "Eight works for me." },
+      { "term": "¿Te va bien…?", "translation": "Does … work for you?", "part_of_speech": "question", "example": "¿Te va bien a las cinco?", "example_translation": "Does five work for you?" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_30_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural para aceptar.",
+        "options": [
+          "A las seis no puedo.",
+          "A las seis me va bien.",
+          "A las seis soy estudiante."
+        ],
+        "correct": "A las seis me va bien.",
+        "feedback": { "tip": "Para aceptar, usa me va bien o puedo." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Quedamos a las seis?", "translation": "Shall we meet at six?", "audio_url": null },
+      { "spanish": "A las seis no puedo. ¿A las siete?", "translation": "I can’t at six. At seven?", "audio_url": null },
+      { "spanish": "Sí, a las siete me va bien.", "translation": "Yes, seven works for me.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_30_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa y practica la cita.",
+        "dialogue_template": [
+          "A: ¿Quedamos __ las cinco?",
+          "B: __ puedo. ¿__ las seis?",
+          "A: Sí, __ va bien."
+        ],
+        "word_bank": ["a", "No", "A", "me"],
+        "solutions": [["a", "No", "A", "me"]],
+        "feedback_rule": { "ok": "Diálogo claro.", "error": "Usa a + las + hora." }
+      },
+      {
+        "id": "SPK_30_2",
+        "type": "guided_interview",
+        "prompt": "Ofrece una hora y negocia otra si no se puede.",
+        "frames": [
+          "¿Te va bien a las __?",
+          "No puedo a las __. ¿A las __?",
+          "Perfecto, __ __ __."
+        ],
+        "word_bank": ["cinco", "seis", "siete", "me", "va", "bien"],
+        "feedback": { "tip": "Mantén respuestas cortas y educadas." }
+      },
+      {
+        "id": "SPK_30_3",
+        "type": "exit_ticket",
+        "prompt": "Propón una hora final para “tomar un café”.",
+        "expected_example": "¿Quedamos a las seis?",
+        "feedback": { "tip": "Incluye a las + hora." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G30_propuesta_hora",
+        "name": "Proponer/aceptar horas",
+        "scope": ["¿Quedamos a las + hora?", "¿Te va bien a las + hora?", "No puedo / Puedo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Te va bien a las siete?", "translation": "Does seven work for you?" }
+        ],
+        "notes": "Refuerza a la/las + hora de la lección anterior."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_30_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la pregunta correcta.",
+        "options": [
+          "¿Te va bien las siete?",
+          "¿Te va bien a las siete?",
+          "¿Te va bien a la siete?"
+        ],
+        "correct": "¿Te va bien a las siete?",
+        "feedback": { "tip": "Con 2–12, usa a las." }
+      }
+    ]
+  },
+  "cultural_note": "Es común ofrecer otra hora si no puedes, por ejemplo: “A las seis no puedo, ¿a las siete?”",
+  "assessment": {
+    "auto_criteria": [
+      "Propone una hora con a la/las correcta.",
+      "Negocia una nueva hora usando puedo/no puedo.",
+      "Cierra con me va bien o equivalente natural."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "agenda", "quedar", "a las"]
+}

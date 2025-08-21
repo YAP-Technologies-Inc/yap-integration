@@ -1,0 +1,101 @@
+{
+  "lesson_id": "SPA1_074",
+  "title": "Lluvia, viento y más",
+  "level": "A1",
+  "theme": "Weather Talk",
+  "focus": "Ampliar vocabulario de lluvia y viento, reconocer hay + fenómenos.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Digo si llueve o hay viento.",
+    "Entiendo hay + niebla/tormenta (reconocimiento).",
+    "Hago 1–2 frases sobre el clima local."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "lluvia", "translation": "rain", "part_of_speech": "noun", "gender": "feminine", "example": "Hay lluvia por la mañana.", "example_translation": "There is rain in the morning." },
+      { "term": "niebla", "translation": "fog", "part_of_speech": "noun", "gender": "feminine", "example": "Hay niebla en la ciudad.", "example_translation": "There is fog in the city." },
+      { "term": "tormenta", "translation": "storm", "part_of_speech": "noun", "gender": "feminine", "example": "Hay tormenta esta noche.", "example_translation": "There is a storm tonight." },
+      { "term": "llueve", "translation": "it rains", "part_of_speech": "phrase", "example": "Hoy llueve.", "example_translation": "It’s raining today." },
+      { "term": "viento fuerte", "translation": "strong wind", "part_of_speech": "phrase", "example": "Hay viento fuerte.", "example_translation": "There is strong wind." },
+      { "term": "ventoso", "translation": "windy (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El día está ventoso.", "example_translation": "The day is windy." },
+      { "term": "ventosa", "translation": "windy (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La tarde está ventosa.", "example_translation": "The afternoon is windy." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_74_1",
+        "type": "match",
+        "prompt": "Une fenómeno y frase.",
+        "pairs": [
+          ["lluvia", "Hay lluvia."],
+          ["niebla", "Hay niebla."],
+          ["tormenta", "Hay tormenta."]
+        ],
+        "feedback_rule": { "ok": "Correcto.", "error": "Usa hay + fenómeno." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Hoy llueve.", "translation": "It’s raining today.", "audio_url": null },
+      { "spanish": "Hay niebla por la mañana.", "translation": "There’s fog in the morning.", "audio_url": null },
+      { "spanish": "Hay viento fuerte.", "translation": "There is strong wind.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_74_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la imagen mental: lluvia, niebla o viento.",
+        "audio_items": ["Hoy llueve.", "Hay niebla.", "Hay viento fuerte."],
+        "options": ["lluvia", "niebla", "viento"],
+        "solution": ["lluvia", "niebla", "viento"],
+        "feedback_rule": { "ok": "Bien identificado.", "error": "Fíjate en la palabra clave." }
+      },
+      {
+        "id": "SPK_74_2",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye un mini diálogo.",
+        "pairs": [
+          ["A: ¿Qué tiempo hace?", "B: Hoy llueve un poco."],
+          ["A: ¿Hay viento?", "B: Sí, hay viento fuerte."]
+        ],
+        "feedback_rule": { "ok": "Diálogo claro.", "error": "Responde con hay/llueve." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G74_hay_fenomenos",
+        "name": "Hay + fenómenos del tiempo",
+        "forms": ["Hay lluvia", "Hay niebla", "Hay tormenta"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Hay niebla.", "translation": "There is fog." }
+        ],
+        "notes": "Reconoce hay + sustantivo. Producción no requerida en este punto."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_74_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural para describir la foto de lluvia.",
+        "options": ["Está lluvia.", "Hay lluvia.", "Hace lluvia."],
+        "correct": "Hay lluvia.",
+        "feedback": { "tip": "Con fenómenos, usa hay + sustantivo." }
+      }
+    ]
+  },
+  "cultural_note": "Para hablar de fenómenos como niebla o tormenta, se usa hay con mucha frecuencia.",
+  "assessment": {
+    "auto_criteria": [
+      "Identifica correctamente lluvia/niebla/viento en audio.",
+      "Produce 1 frase con llueve o hay + fenómeno.",
+      "Mantiene respuestas breves y claras."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "clima", "lluvia", "viento", "hay"]
+}

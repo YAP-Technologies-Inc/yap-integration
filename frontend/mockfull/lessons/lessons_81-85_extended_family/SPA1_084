@@ -1,0 +1,99 @@
+{
+  "lesson_id": "SPA1_084",
+  "title": "Familia extendida 4: yerno, nuera y más",
+  "level": "A1",
+  "theme": "Extended Family",
+  "focus": "Ampliar parentescos y reconocer vuestros/vuestras.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Identifico yerno/nuera y nieto/nieta.",
+    "Entiendo vuestros/vuestras (reconocimiento).",
+    "Describo quién asiste a una boda o comida."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "yerno", "translation": "son-in-law", "part_of_speech": "noun", "gender": "masculine", "example": "Mi yerno toca la guitarra.", "example_translation": "My son-in-law plays the guitar." },
+      { "term": "nuera", "translation": "daughter-in-law", "part_of_speech": "noun", "gender": "feminine", "example": "Mi nuera estudia medicina.", "example_translation": "My daughter-in-law studies medicine." },
+      { "term": "nieto", "translation": "grandson", "part_of_speech": "noun", "gender": "masculine", "example": "Mi nieto tiene dos años.", "example_translation": "My grandson is two years old." },
+      { "term": "nieta", "translation": "granddaughter", "part_of_speech": "noun", "gender": "feminine", "example": "Mi nieta baila.", "example_translation": "My granddaughter dances." },
+      { "term": "boda", "translation": "wedding", "part_of_speech": "noun", "gender": "feminine", "example": "La boda es el sábado.", "example_translation": "The wedding is on Saturday." },
+      { "term": "vuestros", "translation": "your (plural, vosotros, masc. pl.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Vuestros primos viven aquí.", "example_translation": "Your cousins live here." },
+      { "term": "vuestras", "translation": "your (plural, vosotros, fem. pl.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Vuestras tías cocinan rico.", "example_translation": "Your aunts cook well." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_84_1",
+        "type": "match",
+        "prompt": "Relaciona parentesco y traducción.",
+        "pairs": [
+          ["yerno", "son-in-law"],
+          ["nuera", "daughter-in-law"],
+          ["nieto", "grandson"],
+          ["nieta", "granddaughter"]
+        ],
+        "feedback_rule": { "ok": "¡Perfecto!", "error": "Revisa género y significado." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Mi yerno y mi nuera vienen a la boda.", "translation": "My son-in-law and daughter-in-law are coming to the wedding.", "audio_url": null },
+      { "spanish": "Mis nietos están contentos.", "translation": "My grandchildren are happy.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_84_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige quiénes asisten.",
+        "audio_items": ["Vienen mi yerno y mi nuera."],
+        "options": ["nietos", "yerno y nuera", "primos"],
+        "solution": ["yerno y nuera"],
+        "feedback_rule": { "ok": "Correcto.", "error": "Escucha y/ni para parejas." }
+      },
+      {
+        "id": "SPK_84_2",
+        "type": "controlled_production",
+        "prompt": "Di quiénes van a la boda.",
+        "frames": ["Vienen __ __.", "También vienen __ __."],
+        "word_bank": ["mis", "nietos", "mi", "yerno", "mi", "nuera"],
+        "success_criteria": { "posesivo": "uso de mis/mi correcto", "claridad": "dos frases" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G84_vuestros_reconocimiento",
+        "name": "Posesivos: vuestros/vuestras",
+        "forms": ["vuestros + masc. pl.", "vuestras + fem. pl."],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Vuestras primas son altas.", "translation": "Your (plural, vosotros) female cousins are tall." }
+        ],
+        "notes": "Forma usada en España. Reconocimiento suficiente en A1."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_84_1",
+        "type": "orthography_check",
+        "prompt": "Añade signos y tildes.",
+        "items": ["Quienes van a la boda"],
+        "solution": ["¿Quiénes van a la boda?"],
+        "feedback_rule": { "note": "Interrogativos con tilde y signos ¿…?." }
+      }
+    ]
+  },
+  "cultural_note": "En España se usa mucho vosotros/vuestras, en América Latina se usa ustedes/sus.",
+  "assessment": {
+    "auto_criteria": [
+      "Identifica yerno/nuera, nieto/nieta.",
+      "Reconoce vuestros/vuestras en contexto.",
+      "Produce 2 frases sobre asistentes a un evento."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "posesivos", "eventos"]
+}

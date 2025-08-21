@@ -1,0 +1,135 @@
+{
+  "lesson_id": "SPA1_024",
+  "title": "Tengo hambre y sed",
+  "level": "A1",
+  "theme": "Feelings & States",
+  "focus": "Expresar estados físicos con tener + hambre/sed/sueño/frío/calor y negar cuando no.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir: “Tengo hambre/sed/sueño”.",
+    "Puedo preguntar y responder sobre estos estados.",
+    "Puedo negar: “No tengo frío/calor”."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "hambre", "translation": "hunger", "part_of_speech": "noun", "gender": "feminine", "example": "Tengo hambre.", "example_translation": "I am hungry." },
+      { "term": "sed", "translation": "thirst", "part_of_speech": "noun", "gender": "feminine", "example": "Tengo sed.", "example_translation": "I am thirsty." },
+      { "term": "sueño", "translation": "sleepiness", "part_of_speech": "noun", "gender": "masculine", "example": "Tengo sueño.", "example_translation": "I am sleepy." },
+      { "term": "frío", "translation": "cold", "part_of_speech": "noun", "gender": "masculine", "example": "Tengo frío.", "example_translation": "I am cold." },
+      { "term": "calor", "translation": "heat, hot (feeling)", "part_of_speech": "noun", "gender": "masculine", "example": "Tengo calor.", "example_translation": "I am hot." },
+      { "term": "¿Tienes…?", "translation": "Do you have…?", "part_of_speech": "question", "example": "¿Tienes hambre?", "example_translation": "Are you hungry?" },
+      { "term": "no", "translation": "not", "part_of_speech": "adverb", "example": "No tengo sed.", "example_translation": "I am not thirsty." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_24_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase natural.",
+        "options": [
+          "Estoy hambre.",
+          "Tengo hambre.",
+          "Soy sed."
+        ],
+        "correct": "Tengo hambre.",
+        "feedback": { "tip": "Estos estados usan tener, no estar/ser." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Tienes hambre?", "translation": "Are you hungry?", "audio_url": null },
+      { "spanish": "Tengo sed. ¿Me das agua, por favor?", "translation": "I’m thirsty. Can I have water, please?", "audio_url": null },
+      { "spanish": "No tengo frío.", "translation": "I am not cold.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_24_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa el diálogo en la cafetería.",
+        "dialogue_template": [
+          "A: Hola, ¿__ hambre?",
+          "B: Sí, __ __ y __ sed.",
+          "A: Entonces, ¿__ un bocadillo y un agua?"
+        ],
+        "word_bank": ["tienes", "tengo", "mucha", "tengo", "quieres"],
+        "solutions": [
+          ["tienes", "tengo", "mucha", "tengo", "quieres"]
+        ],
+        "feedback_rule": { "ok": "Diálogo natural.", "error": "Recuerda: tener + hambre/sed." }
+      },
+      {
+        "id": "SPK_24_2",
+        "type": "controlled_production",
+        "prompt": "Di cómo te sientes con tener.",
+        "items": [
+          "Ahora __ __.",
+          "Hoy __ __.",
+          "No __ __."
+        ],
+        "expected_example": ["Ahora tengo sed.", "Hoy tengo sueño.", "No tengo frío."],
+        "success_criteria": { "estructura": "Tener + sustantivo.", "claridad": "Frase corta y clara." }
+      },
+      {
+        "id": "SPK_24_3",
+        "type": "micro_dialogue_build",
+        "prompt": "Pregunta y responde con negación si aplica.",
+        "cards": [
+          "A: ¿Tienes frío?",
+          "B: No, no tengo frío. Tengo calor.",
+          "A: ¿Tienes sed?",
+          "B: Sí, tengo sed."
+        ],
+        "feedback": { "tip": "Usa no dos veces si es necesario: No, no tengo…" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G24_tener_estados",
+        "name": "Tener + estados físicos",
+        "forms": ["tener hambre/sed/sueño/frío/calor", "¿Tienes…? / Tengo…"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Tengo hambre.", "translation": "I am hungry." },
+          { "spanish": "¿Tienes sed?", "translation": "Are you thirsty?" }
+        ],
+        "notes": "Negación: no + tener + estado."
+      },
+      {
+        "id": "G24_estar_vs_tener_ro",
+        "name": "Estar vs tener para estados (reconocimiento)",
+        "scope": ["estar + cansado/triste", "tener + hambre/sed"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Estoy cansada.", "translation": "I am tired." },
+          { "spanish": "Tengo sed.", "translation": "I am thirsty." }
+        ],
+        "notes": "Reconocer qué va con cada verbo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_24_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con tener o estar.",
+        "items": ["Hoy __ sueño.", "No __ sed.", "Yo __ triste."],
+        "solution": ["tengo", "tengo", "estoy"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "¿Es estado con sustantivo o adjetivo?" }
+      }
+    ]
+  },
+  "cultural_note": "En cafeterías es común pedir agua con “¿Me das un agua, por favor?” después de decir “Tengo sed”.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa tener + hambre/sed/sueño correctamente en 2 frases.",
+      "Aplica la negación con no + tener.",
+      "Diferencia cuándo usar estar vs tener en reconocimiento."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "tener", "estados físicos", "cafetería"]
+}

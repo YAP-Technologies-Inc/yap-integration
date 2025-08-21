@@ -1,0 +1,96 @@
+{
+  "lesson_id": "SPA1_086",
+  "title": "Gustos 1: me gusta + actividades",
+  "level": "A1",
+  "theme": "Likes & Dislikes",
+  "focus": "Hablar de gustos con me gusta + infinitivo o singular.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Digo me gusta + actividad/comida singular.",
+    "Pregunto ¿Te gusta…?",
+    "Respondo sí/no de forma natural."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "me gusta", "translation": "I like", "part_of_speech": "phrase", "example": "Me gusta leer.", "example_translation": "I like to read." },
+      { "term": "¿Te gusta…?", "translation": "Do you like…?", "part_of_speech": "question", "example": "¿Te gusta el cine?", "example_translation": "Do you like the cinema/movies?" },
+      { "term": "leer", "translation": "to read", "part_of_speech": "verb", "example": "Me gusta leer por la tarde.", "example_translation": "I like to read in the afternoon." },
+      { "term": "bailar", "translation": "to dance", "part_of_speech": "verb", "example": "Me gusta bailar.", "example_translation": "I like to dance." },
+      { "term": "ver películas", "translation": "to watch movies", "part_of_speech": "verb", "example": "Me gusta ver películas.", "example_translation": "I like to watch movies." },
+      { "term": "escuchar música", "translation": "to listen to music", "part_of_speech": "verb", "example": "Me gusta escuchar música.", "example_translation": "I like to listen to music." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_86_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la pregunta correcta.",
+        "options": ["¿Te gusta leer?", "¿Me gusta leer?", "¿Te gusta leer yo?"],
+        "correct": "¿Te gusta leer?",
+        "feedback": { "tip": "Pregunta con te y verbo gusta." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Te gusta bailar?", "translation": "Do you like to dance?", "audio_url": null },
+      { "spanish": "Sí, me gusta bailar.", "translation": "Yes, I like to dance.", "audio_url": null },
+      { "spanish": "No, no me gusta el cine.", "translation": "No, I don’t like the cinema.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_86_1",
+        "type": "call_and_response",
+        "prompt": "Pregunta y responde con me gusta / no me gusta.",
+        "pairs": [
+          ["¿Te gusta leer?", "Sí, me gusta."],
+          ["¿Te gusta el cine?", "No, no me gusta."]
+        ],
+        "feedback_rule": { "ok": "Turnos claros.", "error": "Incluye me gusta/no me gusta." }
+      },
+      {
+        "id": "SPK_86_2",
+        "type": "pronunciation_focus",
+        "prompt": "Entonación ascendente en ¿Te gusta…?",
+        "items": ["¿Te gusta bailar?", "¿Te gusta el café?"],
+        "feedback_rule": { "entonación": "sube al final", "negación": "no, no me gusta..." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G86_gustar_basico",
+        "name": "Gustar: me/te + gusta",
+        "forms": ["me gusta + infinitivo/singular", "¿Te gusta + infinitivo/singular?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me gusta leer.", "translation": "I like to read." },
+            { "spanish": "¿Te gusta la música?", "translation": "Do you like music?" }
+        ],
+        "notes": "Con nombres singulares, gusta; con actividades, infinitivo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_86_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con me/te gusta.",
+        "items": ["__ __ bailar.", "¿__ __ el té?"],
+        "solution": ["Me gusta", "Te gusta"],
+        "feedback_rule": { "tip": "Sujeto lógico: yo → me, tú → te." }
+      }
+    ]
+  },
+  "cultural_note": "Decir me gusta mucho / un poco añade matiz de forma natural.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula 1 pregunta con ¿Te gusta…?",
+      "Responde con me gusta / no me gusta.",
+      "Produce 1 frase con me gusta + infinitivo o singular."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "gustos", "gustar", "actividades"]
+}

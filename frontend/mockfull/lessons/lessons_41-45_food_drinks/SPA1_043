@@ -1,0 +1,106 @@
+{
+  "lesson_id": "SPA1_043",
+  "title": "Bebidas y cantidades básicas",
+  "level": "A1",
+  "theme": "Food & Drink Basics",
+  "focus": "Nombrar bebidas comunes y usar un/una con porciones simples.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo nombrar 5 bebidas comunes.",
+    "Puedo pedir o mencionar una porción con un/una.",
+    "Puedo decir si me gusta una bebida."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "agua", "translation": "water", "part_of_speech": "noun", "gender": "feminine", "example": "El agua está fría.", "example_translation": "The water is cold.", "notes": "Femenino; usa el en singular por sonido." },
+      { "term": "café", "translation": "coffee", "part_of_speech": "noun", "gender": "masculine", "example": "Me gusta el café.", "example_translation": "I like coffee." },
+      { "term": "té", "translation": "tea", "part_of_speech": "noun", "gender": "masculine", "example": "¿Te gusta el té?", "example_translation": "Do you like tea?" },
+      { "term": "leche", "translation": "milk", "part_of_speech": "noun", "gender": "feminine", "example": "La leche es blanca.", "example_translation": "Milk is white." },
+      { "term": "jugo/zumo (reconocimiento)", "translation": "juice", "part_of_speech": "noun", "gender": "masculine", "example": "El jugo es de naranja.", "example_translation": "The juice is orange.", "recognition_only": true },
+      { "term": "un vaso de", "translation": "a glass of", "part_of_speech": "phrase", "example": "Un vaso de agua, por favor.", "example_translation": "A glass of water, please." },
+      { "term": "una taza de", "translation": "a cup of", "part_of_speech": "phrase", "example": "Una taza de café.", "example_translation": "A cup of coffee." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_43_1",
+        "type": "match",
+        "prompt": "Relaciona porción y bebida.",
+        "pairs": [
+          ["un vaso de", "agua"],
+          ["una taza de", "café"],
+          ["un vaso de", "leche"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Correcto!", "incorrect_pair": "Piensa en recipiente + de + bebida." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me gusta el té.", "translation": "I like tea.", "audio_url": null },
+      { "spanish": "Quiero una taza de café. (reconocimiento)", "translation": "I want a cup of coffee. (recognition)", "audio_url": null },
+      { "spanish": "Un vaso de agua, por favor.", "translation": "A glass of water, please.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_43_1",
+        "type": "listen_and_choose",
+        "prompt": "Elige la bebida correcta según lo oído.",
+        "items": [
+          { "audio": "Un vaso de agua, por favor.", "options": ["café", "agua"], "solution": "agua" },
+          { "audio": "Una taza de café.", "options": ["té", "café"], "solution": "café" }
+        ],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Atiende a vaso/taza." }
+      },
+      {
+        "id": "SPK_43_2",
+        "type": "controlled_production",
+        "prompt": "Di qué bebes.",
+        "items": ["__ vaso de agua.", "__ taza de café."],
+        "expected_example": ["Un vaso de agua.", "Una taza de café."],
+        "success_criteria": { "estructura": "un/una + recipiente + de + bebida." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G43_indef_porcion",
+        "name": "un/una + porción + de + bebida",
+        "scope": ["un vaso de + bebida", "una taza de + bebida"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Una taza de té.", "translation": "A cup of tea." }],
+        "notes": "Con bebidas, usa de entre el recipiente y la bebida."
+      },
+      {
+        "id": "G43_art_bebidas_ro",
+        "name": "Artículo con bebidas (reconocimiento)",
+        "scope": ["el café", "el té", "la leche", "el agua (fem.)"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Me gusta el café.", "translation": "I like coffee." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_43_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa la porción.",
+        "items": ["__ vaso __ agua", "__ taza __ té"],
+        "solution": ["Un, de", "Una, de"],
+        "feedback_rule": { "ok": "¡Perfecto!", "error": "Recuerda un/una y de." }
+      }
+    ]
+  },
+  "cultural_note": "En cafeterías se pide por tamaño o recipiente: “una taza de café”, “un vaso de leche”.",
+  "assessment": {
+    "auto_criteria": [
+      "Nombra 3 bebidas con artículo correcto.",
+      "Forma 2 porciones con un/una + de.",
+      "Responde si te gusta una bebida."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "bebidas", "porciones", "artículos"]
+}

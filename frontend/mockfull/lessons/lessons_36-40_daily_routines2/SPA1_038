@@ -1,0 +1,107 @@
+{
+  "lesson_id": "SPA1_038",
+  "title": "La comida del mediodía",
+  "level": "A1",
+  "theme": "Daily Routines Part 2",
+  "focus": "Hablar de comer/almozar al mediodía y planes simples de comida.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir a qué hora como.",
+    "Puedo decir qué como de forma simple.",
+    "Puedo invitar con “¿Comemos a las…?” y aceptar/rechazar."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "comer", "translation": "to have lunch (Spain), to eat", "part_of_speech": "verb", "example": "Como a las dos.", "example_translation": "I have lunch at two." },
+      { "term": "almorzar (reconocimiento)", "translation": "to have lunch", "part_of_speech": "verb", "example": "Almuerzo a la una.", "example_translation": "I have lunch at one." },
+      { "term": "menú", "translation": "set lunch menu", "part_of_speech": "noun", "gender": "masculine", "example": "Tomamos el menú.", "example_translation": "We take the set menu." },
+      { "term": "ensalada", "translation": "salad", "part_of_speech": "noun", "gender": "feminine", "example": "Como ensalada.", "example_translation": "I eat salad." },
+      { "term": "bocadillo", "translation": "sandwich (baguette)", "part_of_speech": "noun", "gender": "masculine", "example": "Como un bocadillo.", "example_translation": "I eat a sandwich." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_38_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la invitación natural.",
+        "options": [
+          "¿Comes a las dos conmigo?",
+          "¿Comemos a las dos?",
+          "¿Comemos a las dos yo?"
+        ],
+        "correct": "¿Comemos a las dos?",
+        "feedback": { "tip": "Primera persona plural para invitar." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Comemos a las dos?", "translation": "Shall we have lunch at two?", "audio_url": null },
+      { "spanish": "Lo siento, no puedo a las dos. ¿A las dos y media?", "translation": "Sorry, I can’t at two. At two-thirty?", "audio_url": null },
+      { "spanish": "Perfecto, a las dos y media.", "translation": "Perfect, at two-thirty.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_38_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Negocia la hora de comer.",
+        "dialogue_template": [
+          "A: ¿__ a las dos?",
+          "B: No puedo a las dos. ¿__ las dos y media?",
+          "A: Perfecto."
+        ],
+        "word_bank": ["Comemos", "A"],
+        "solutions": [["Comemos", "A"]],
+        "feedback_rule": { "ok": "Bien negociado.", "error": "Usa a + las + hora." }
+      },
+      {
+        "id": "SPK_38_2",
+        "type": "controlled_production",
+        "prompt": "Di qué comes.",
+        "items": ["Hoy como __.", "A la una como __."],
+        "expected_example": ["Hoy como ensalada.", "A la una como un bocadillo."],
+        "success_criteria": { "artículos": "un/una correctos.", "hora": "a la/las correcta." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G38_presente_comer",
+        "name": "Comer en presente (yo/tú)",
+        "scope": ["como / comes"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "¿Comes a la una?", "translation": "Do you have lunch at one?" }]
+      },
+      {
+        "id": "G38_invitar_ro",
+        "name": "Invitar con 1.ª plural (reconocimiento)",
+        "scope": ["¿Comemos…? = propuesta"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "¿Comemos a las dos?", "translation": "Shall we have lunch at two?" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_38_1",
+        "type": "fill_in_blank",
+        "prompt": "Conjuga comer en yo/tú.",
+        "items": ["Yo __ (comer) a las dos.", "¿Tú __ (comer) a la una?"],
+        "solution": ["como", "comes"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "-o en yo; -es en tú." }
+      }
+    ]
+  },
+  "cultural_note": "En España se come tarde, a menudo entre las 14:00 y 15:30.",
+  "assessment": {
+    "auto_criteria": [
+      "Invita con una hora usando a la/las.",
+      "Conjuga comer en yo/tú correctamente.",
+      "Nombra 2 opciones de comida."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "comer", "almuerzo", "horario"]
+}

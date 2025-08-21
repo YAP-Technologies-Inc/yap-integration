@@ -1,0 +1,95 @@
+{
+  "lesson_id": "SPA1_080",
+  "title": "Mini conversación 5: presentación de 2 minutos",
+  "level": "A1",
+  "theme": "First Review & Integration",
+  "focus": "Hacer una conversación integrada de 2 minutos.",
+  "duration_minutes": 10,
+  "register": "tú",
+  "can_do": [
+    "Mantengo una charla básica de 2 minutos.",
+    "Conecto 4–6 ideas con y / pero / también.",
+    "Hablo de mí, compras simples y clima."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "porque", "translation": "because", "part_of_speech": "conjunction", "example": "Me gusta el café porque hace frío.", "example_translation": "I like coffee because it’s cold." },
+      { "term": "también", "translation": "also", "part_of_speech": "adverb", "example": "También me gusta el té.", "example_translation": "I also like tea." },
+      { "term": "pero", "translation": "but", "part_of_speech": "conjunction", "example": "Hace sol, pero está ventoso.", "example_translation": "It’s sunny, but it’s windy." },
+      { "term": "encantado", "translation": "pleased to meet you (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Encantado, soy Luis.", "example_translation": "Pleased to meet you, I’m Luis." },
+      { "term": "encantada", "translation": "pleased to meet you (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Encantada, soy Ana.", "example_translation": "Pleased to meet you, I’m Ana." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_80_1",
+        "type": "categorize",
+        "prompt": "Clasifica conectores por uso.",
+        "items": ["y", "pero", "también", "porque"],
+        "solution": [
+          { "suma": ["y", "también"] },
+          { "contraste": ["pero"] },
+          { "causa": ["porque"] }
+        ],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Repasa el uso típico." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Hola, me llamo Alex, soy de Perú.", "translation": "Hi, my name is Alex, I’m from Peru.", "audio_url": null },
+      { "spanish": "Hoy hace frío, pero me gusta el café.", "translation": "Today it’s cold, but I like coffee.", "audio_url": null },
+      { "spanish": "Compro agua y pago con tarjeta.", "translation": "I buy water and pay by card.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_80_1",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena de 10 turnos para 2 minutos. Incluye: saludo, nombre, origen, clima, ropa o compras, comida/bebida, pago, dirección simple, cierre.",
+        "cards": ["Hola", "Me llamo __", "Soy de __", "Hoy hace/está __", "Para mí __", "Pago en __", "¿Dónde está __?", "Sigue __", "Gracias", "¡Adiós!"],
+        "success_criteria": { "turnos": "8–10 turnos", "conectores": "usa y/per o/también", "claridad": "frases cortas" }
+      },
+      {
+        "id": "SPK_80_2",
+        "type": "exit_ticket",
+        "prompt": "Graba 30–45 segundos con 4 ideas conectadas.",
+        "expected_example": "Hola, me llamo __, soy de __. Hoy está nublado y hace frío. Pido un té y pago con tarjeta. Gracias.",
+        "rubric": { "ideas": "4–6 ideas", "conectores": "2 conectores usados", "fluidez": "sin pausas largas" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G80_conectores_basicos",
+        "name": "Conectores básicos",
+        "forms": ["y", "pero", "también", "porque"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me gusta el té porque hace frío.", "translation": "I like tea because it’s cold." }
+        ],
+        "notes": "Evita oraciones largas. Conecta ideas cortas."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_80_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con y, pero o porque.",
+        "items": ["Me llamo Ana __ soy de Chile.", "Hace calor __ bebo agua.", "Está nublado __ hace viento."],
+        "solution": ["y", "porque", "pero"],
+        "feedback_rule": { "tip": "y suma, pero contrasta, porque da causa." }
+      }
+    ]
+  },
+  "cultural_note": "Una charla básica incluye 4–6 ideas, no hace falta extenderse más en A1.",
+  "assessment": {
+    "auto_criteria": [
+      "Mantiene 8–10 turnos con frases cortas.",
+      "Usa al menos 2 conectores correctamente.",
+      "Incluye clima y una acción cotidiana."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "integración", "conectores", "conversación"]
+}

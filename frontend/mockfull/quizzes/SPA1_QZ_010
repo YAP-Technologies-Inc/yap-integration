@@ -1,0 +1,77 @@
+{
+  "quiz_id": "SPA1_Q010",
+  "title": "Quiz 46–50: Café & Restaurant Basics",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_046", "SPA1_047", "SPA1_048", "SPA1_049", "SPA1_050"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q10_SPK_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Roleplay: pide y responde “¿Algo más?”",
+        "dialogue_template": [
+          "Dependiente: ¿Qué quieres?",
+          "Tú: __ un té, __ __.",
+          "Dependiente: ¿__ más?",
+          "Tú: __ __, gracias."
+        ],
+        "word_bank": ["Quiero", "por", "favor", "Algo", "Nada", "más"],
+        "solutions": [["Quiero", "por", "favor", "Algo", "Nada", "más"]],
+        "success_criteria": ["Incluye por favor/ gracias.", "Secuencia natural de pedido."]
+      },
+      {
+        "id": "Q10_SPK_2",
+        "type": "controlled_production",
+        "prompt": "Pide mesa y la carta en dos frases cortas.",
+        "expected_example": ["Una mesa para dos, por favor.", "La carta, por favor."],
+        "acceptable_variants": ["¿Tienen mesa para dos? La carta, por favor."],
+        "success_criteria": ["Frases breves.", "Incluye por favor."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q10_VOC_1",
+        "type": "match",
+        "prompt": "Empareja expresión y función.",
+        "pairs": [
+          ["La cuenta, por favor.", "Pedir la cuenta"],
+          ["¿Algo más?", "Ofrecer más productos"],
+          ["La carta, por favor.", "Pedir el menú"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Exacto!", "incorrect_pair": "Piensa en la intención de la frase." }
+      },
+      {
+        "id": "Q10_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Elige el cierre más natural.",
+        "options": ["Ya está.", "Nada más, gracias.", "No gracias cuenta."],
+        "correct": "Nada más, gracias.",
+        "feedback": { "tip": "Cierra con cortesía." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q10_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con quiero/quieres.",
+        "items": ["¿Qué __ tomar?", "__ un café, por favor."],
+        "solution": ["quieres", "Quiero"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "yo → quiero; tú → quieres." }
+      },
+      {
+        "id": "Q10_GR_2",
+        "type": "orthography_check",
+        "prompt": "Corrige signos y coma.",
+        "items": ["La cuenta por favor"],
+        "solution": ["La cuenta, por favor."],
+        "feedback_rule": { "note": "Añade coma tras cuenta." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Pide 1 bebida y responde a “¿Algo más?”", "Pide mesa y carta correctamente.", "Cierra con Nada más, gracias."] }
+}

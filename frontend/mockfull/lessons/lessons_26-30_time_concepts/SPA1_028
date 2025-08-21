@@ -1,0 +1,104 @@
+{
+  "lesson_id": "SPA1_028",
+  "title": "¿Qué hora es? Repaso y cuarto/medio",
+  "level": "A1",
+  "theme": "Time Concepts",
+  "focus": "Decir la hora con en punto, y cuarto, y media, menos cuarto.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo preguntar y decir la hora.",
+    "Puedo entender y usar y cuarto, y media, menos cuarto.",
+    "Puedo asociar horas con partes del día."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Qué hora es?", "translation": "What time is it?", "part_of_speech": "question", "example": "Perdón, ¿qué hora es?", "example_translation": "Excuse me, what time is it?" },
+      { "term": "en punto", "translation": "o'clock", "part_of_speech": "adverb", "example": "Son las tres en punto.", "example_translation": "It is three o’clock." },
+      { "term": "y cuarto", "translation": "quarter past", "part_of_speech": "adverb", "example": "Son las dos y cuarto.", "example_translation": "It is two fifteen." },
+      { "term": "y media", "translation": "half past", "part_of_speech": "adverb", "example": "Son las cinco y media.", "example_translation": "It is five thirty." },
+      { "term": "menos cuarto", "translation": "quarter to", "part_of_speech": "adverb", "example": "Son las ocho menos cuarto.", "example_translation": "It is seven forty-five." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_28_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la equivalencia correcta.",
+        "options": [
+          "y media = :15 / :30",
+          "y cuarto = :15",
+          "menos cuarto = :30"
+        ],
+        "correct": "y cuarto = :15",
+        "feedback": { "tip": "y media es :30; menos cuarto es :45." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Es la una en punto.", "translation": "It is one o’clock.", "audio_url": null },
+      { "spanish": "Son las cuatro y media.", "translation": "It is four thirty.", "audio_url": null },
+      { "spanish": "Son las siete menos cuarto.", "translation": "It is six forty-five.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_28_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite y marca la entonación.",
+        "audio_items": ["Es la una en punto.", "Son las dos y cuarto.", "Son las ocho menos cuarto."],
+        "success_criteria": { "acuerdo": "Es la una / Son las 2–12.", "claridad": "Pronuncia cuarto/media." }
+      },
+      {
+        "id": "SPK_28_2",
+        "type": "orthography_check",
+        "prompt": "Escribe con la forma correcta: es la / son las.",
+        "items": ["__ una y cuarto.", "__ cinco en punto."],
+        "solution": ["Es la", "Son las"],
+        "feedback_rule": { "note": "Solo la una va en singular." }
+      },
+      {
+        "id": "SPK_28_3",
+        "type": "controlled_production",
+        "prompt": "Di la hora que ves en tarjetas imaginarias.",
+        "items": ["1:00", "3:30", "7:45"],
+        "expected_example": ["Es la una en punto.", "Son las tres y media.", "Son las ocho menos cuarto."],
+        "success_criteria": { "exactitud": "Expresión correcta de cada hora." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G28_hora_formas",
+        "name": "Formas para la hora",
+        "scope": ["Es la una…", "Son las + 2–12…", "y cuarto", "y media", "menos cuarto"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Son las cinco y media.", "translation": "It is five thirty." }
+        ],
+        "notes": "Evita *es las*. Singular solo con la una."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_28_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con la forma adecuada.",
+        "items": ["__ una en punto.", "__ nueve y cuarto."],
+        "solution": ["Es la", "Son las"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Recuerda singular/plural." }
+      }
+    ]
+  },
+  "cultural_note": "En contextos informales también se usa 24 h al hablar de horarios escritos, pero se dice con 12 h al hablar.",
+  "assessment": {
+    "auto_criteria": [
+      "Dice 3 horas correctamente.",
+      "Distingue y media / y cuarto / menos cuarto.",
+      "Usa es la / son las sin error."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "hora", "y media", "menos cuarto"]
+}

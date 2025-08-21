@@ -1,0 +1,101 @@
+{
+  "lesson_id": "SPA1_057",
+  "title": "¿Hay…? Existencia y cerca/lejos",
+  "level": "A1",
+  "theme": "Directions Level 1",
+  "focus": "Usar hay para preguntar si existe un lugar cerca.",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo preguntar si hay un lugar cerca.",
+    "Puedo responder sí/no con hay/no hay.",
+    "Puedo usar cerca/lejos de forma básica."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "hay", "translation": "there is/are", "part_of_speech": "verb", "example": "Hay un banco aquí.", "example_translation": "There is a bank here." },
+      { "term": "no hay", "translation": "there isn’t/aren’t", "part_of_speech": "verb", "example": "No hay farmacia.", "example_translation": "There is no pharmacy." },
+      { "term": "cerca", "translation": "near", "part_of_speech": "adverb", "example": "¿Hay un banco cerca?", "example_translation": "Is there a bank nearby?" },
+      { "term": "lejos", "translation": "far", "part_of_speech": "adverb", "example": "El parque está lejos.", "example_translation": "The park is far." },
+      { "term": "supermercado", "translation": "supermarket", "part_of_speech": "noun", "gender": "masculine", "example": "¿Hay un supermercado cerca?", "example_translation": "Is there a supermarket nearby?" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_57_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la pregunta con hay.",
+        "options": [
+          "¿Está un banco cerca?",
+          "¿Hay un banco cerca?",
+          "¿Es un banco cerca?"
+        ],
+        "correct": "¿Hay un banco cerca?",
+        "feedback": { "tip": "Para existencia usa hay." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Hay una farmacia cerca?", "translation": "Is there a pharmacy nearby?", "audio_url": null },
+      { "spanish": "Sí, hay una farmacia aquí.", "translation": "Yes, there is a pharmacy here.", "audio_url": null },
+      { "spanish": "No, no hay. Está lejos.", "translation": "No, there isn’t. It’s far.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_57_1",
+        "type": "call_and_response",
+        "prompt": "Responde sí/no con hay/no hay.",
+        "pairs": [
+          ["¿Hay un supermercado cerca?", "Sí, __ __."],
+          ["¿Hay una farmacia aquí?", "No, __ __ __."]
+        ],
+        "word_bank": ["hay", "No", "no", "hay"],
+        "success_criteria": { "forma": "Incluye un/una con lugares singulares." }
+      },
+      {
+        "id": "SPK_57_2",
+        "type": "controlled_production",
+        "prompt": "Haz dos preguntas con hay.",
+        "items": ["¿Hay __ banco cerca?", "¿Hay __ farmacia aquí?"],
+        "expected_example": ["¿Hay un banco cerca?", "¿Hay una farmacia aquí?"],
+        "success_criteria": { "artículo": "un/una correcto.", "claridad": "Pregunta breve." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G57_hay_existencia",
+        "name": "Hay / No hay",
+        "scope": ["¿Hay + un/una + lugar?", "Sí, hay… / No, no hay…"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Hay un banco cerca?", "translation": "Is there a bank nearby?" },
+          { "spanish": "No, no hay.", "translation": "No, there isn’t." }
+        ],
+        "notes": "No uses artículo definido con hay para presentar lugares."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_57_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con hay / no hay.",
+        "items": ["¿__ una plaza aquí?", "__ una farmacia cerca."],
+        "solution": ["Hay", "Hay"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Atención a mayúscula inicial al empezar." }
+      }
+    ]
+  },
+  "cultural_note": "Para pedir ayuda en la calle, una pregunta breve con hay y un gracias al final es suficiente.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula dos preguntas con hay correctamente.",
+      "Responde sí/no con hay/no hay.",
+      "Usa cerca/lejos apropiadamente en 1 respuesta."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "hay", "direcciones", "cerca", "lejos"]
+}

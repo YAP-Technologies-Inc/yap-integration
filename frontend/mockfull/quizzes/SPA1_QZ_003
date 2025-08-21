@@ -1,0 +1,199 @@
+{
+  "lesson_id": "SPA1_Q003",
+  "title": "Quiz 3, Lecciones 11–15",
+  "level": "A1",
+  "theme": "Repaso: hora avanzada, rutina, cafetería, gustos y ubicación",
+  "focus": "Evaluar comprensión y producción corta sobre hora, pedidos básicos, gustos con gustar y ubicación con estar",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puede preguntar y decir la hora con y media y y cuarto.",
+    "Puede pedir comida o bebida con fórmulas corteses.",
+    "Puede expresar gustos con me gusta / me gustan y matizar con mucho / un poco.",
+    "Puede preguntar por un lugar y entender indicaciones básicas."
+  ],
+
+  "vocabulary": {
+    "items": [
+      { "term": "¿Qué hora es?", "translation": "What time is it?", "part_of_speech": "question", "example": "¿Qué hora es?", "example_translation": "What time is it?" },
+      { "term": "y media", "translation": "half past", "part_of_speech": "adverb", "example": "Son las cuatro y media.", "example_translation": "It is four thirty." },
+      { "term": "y cuarto", "translation": "quarter past", "part_of_speech": "adverb", "example": "Son las cinco y cuarto.", "example_translation": "It is five fifteen." },
+      { "term": "¿Me das… por favor?", "translation": "Can I have… please?", "part_of_speech": "phrase", "example": "¿Me das un café, por favor?", "example_translation": "Can I have a coffee, please?" },
+      { "term": "Para mí…", "translation": "For me…", "part_of_speech": "phrase", "example": "Para mí, una tostada.", "example_translation": "For me, a toast." },
+      { "term": "me gusta", "translation": "I like", "part_of_speech": "phrase", "example": "Me gusta el café.", "example_translation": "I like coffee." },
+      { "term": "me gustan", "translation": "I like (plural)", "part_of_speech": "phrase", "example": "Me gustan las ensaladas.", "example_translation": "I like salads." },
+      { "term": "mucho", "translation": "a lot", "part_of_speech": "adverb", "example": "Me gusta mucho leer.", "example_translation": "I like reading a lot." },
+      { "term": "un poco", "translation": "a little", "part_of_speech": "adverb", "example": "Me gusta un poco el té.", "example_translation": "I like tea a little." },
+      { "term": "al lado de", "translation": "next to", "part_of_speech": "phrase", "example": "Está al lado del banco.", "example_translation": "It is next to the bank." },
+      { "term": "enfrente de", "translation": "opposite / in front of", "part_of_speech": "phrase", "example": "La plaza está enfrente del banco.", "example_translation": "The square is opposite the bank." },
+      { "term": "a la derecha / a la izquierda", "translation": "to the right / to the left", "part_of_speech": "phrase", "example": "Está a la derecha.", "example_translation": "It is to the right." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_Q3_1",
+        "type": "match",
+        "prompt": "Une la frase con su función.",
+        "pairs": [
+          ["¿Me das un té, por favor?", "Pedir"],
+          ["¿Te gusta bailar?", "Gusto / Preguntar"],
+          ["¿Dónde está el banco?", "Ubicación"],
+          ["Son las siete y cuarto.", "La hora"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Correcto!", "wrong_pair": "Piensa en la intención de cada frase." }
+      }
+    ]
+  },
+
+  "speaking": {
+    "models": [
+      { "spanish": "Son las dos y media.", "translation": "It is two thirty.", "audio_url": null },
+      { "spanish": "¿Me das un café, por favor?", "translation": "Can I have a coffee, please?", "audio_url": null },
+      { "spanish": "Me gustan las frutas.", "translation": "I like fruits.", "audio_url": null },
+      { "spanish": "¿Dónde está el supermercado?", "translation": "Where is the supermarket?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_Q3_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la hora correcta.",
+        "options": ["Son las dos y cuarto.", "Son las dos y media.", "Son las tres en punto."],
+        "solution": "Son las dos y media",
+        "feedback": { "tip": "Atención a y cuarto vs. y media." }
+      },
+      {
+        "id": "SPK_Q3_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa un pedido y una pregunta de gustos.",
+        "dialogue_template": [
+          "A: ____ un agua, _____.",
+          "B: Claro. ¿____ gusta el té?",
+          "A: Sí, me gusta ____."
+        ],
+        "word_bank": ["¿Me das", "por favor", "Te", "mucho", "un poco"],
+        "solutions": [
+          "¿Me das un agua, por favor?",
+          "¿Te gusta el té?",
+          "Sí, me gusta mucho."
+        ],
+        "feedback_rule": { "reminder": "Incluye por favor y ajusta mucho / un poco según sentido." }
+      },
+      {
+        "id": "SPK_Q3_3",
+        "type": "request_builder",
+        "prompt": "Pregunta por un lugar y recibe una indicación.",
+        "frames": ["¿Dónde está el/la ____?", "Está al lado de __ / enfrente de __ / a la derecha / a la izquierda."],
+        "success_criteria": ["Usa ¿Dónde está…?", "Incluye una preposición de lugar correcta."]
+      }
+    ]
+  },
+
+  "grammar": {
+    "topics": [
+      {
+        "id": "G_Q3_TIME",
+        "name": "La hora: y media / y cuarto",
+        "forms": ["Son las + hora + y media / y cuarto", "Es la una"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Son las siete y cuarto.", "translation": "It is seven fifteen." }
+        ],
+        "notes": "Recuerda Es la solo para la una."
+      },
+      {
+        "id": "G_Q3_REQUEST",
+        "name": "Pedir con ¿Me das…? y Para mí…",
+        "forms": ["¿Me das + sustantivo + por favor?", "Para mí + sustantivo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Para mí, una ensalada.", "translation": "For me, a salad." }
+        ],
+        "notes": "Evita el imperativo en A1."
+      },
+      {
+        "id": "G_Q3_GUSTAR",
+        "name": "Gustar con me/te",
+        "forms": ["me gusta + singular/infinitivo", "me gustan + plural", "¿Te gusta + X?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me gustan las frutas.", "translation": "I like fruits." }
+        ],
+        "notes": "Añade mucho / un poco para matizar."
+      },
+      {
+        "id": "G_Q3_LOC",
+        "name": "Estar + preposiciones de lugar",
+        "forms": ["está al lado de", "está enfrente de", "está a la derecha/izquierda"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "El banco está enfrente de la plaza.", "translation": "The bank is opposite the square." }
+        ],
+        "notes": "Contrae a + el → al."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_Q3_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con gusta o gustan.",
+        "items": [
+          "Me __ el café.",
+          "Me __ las ensaladas.",
+          "¿Te __ bailar?"
+        ],
+        "solution": ["gusta", "gustan", "gusta"],
+        "feedback_rule": { "tip": "Plural del sustantivo → gustan. Con infinitivo → gusta." }
+      },
+      {
+        "id": "GR_Q3_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción más natural para pedir.",
+        "options": [
+          "¿Me das un café, por favor?",
+          "Dame un café.",
+          "Yo café ahora."
+        ],
+        "correct": "¿Me das un café, por favor?",
+        "feedback_rule": { "note": "Usa fórmulas corteses en A1." }
+      },
+      {
+        "id": "GR_Q3_3",
+        "type": "orthography_check",
+        "prompt": "Corrige preposiciones y contracciones.",
+        "items": [
+          "Está a el lado de la estación.",
+          "La plaza está en frente de el banco."
+        ],
+        "solution": [
+          "Está al lado de la estación.",
+          "La plaza está enfrente del banco."
+        ]
+      },
+      {
+        "id": "GR_Q3_4",
+        "type": "fill_in_blank",
+        "prompt": "Completa con la hora correcta.",
+        "items": [
+          "Son las dos __ __.",
+          "Son las cinco __ __."
+        ],
+        "solution": ["y media", "y cuarto"]
+      }
+    ]
+  },
+
+  "cultural_note": "En cafeterías es común usar por favor y gracias. Para indicar lugares en la ciudad, las preposiciones al lado de y enfrente de son muy frecuentes.",
+  "assessment": {
+    "auto_criteria": [
+      "Identifica y produce horas con y media/y cuarto.",
+      "Formula un pedido cortés correctamente.",
+      "Expresa gustos con me gusta/me gustan y usa mucho/un poco.",
+      "Pregunta por un lugar y usa una preposición de ubicación adecuada."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "quiz", "repaso", "SPA1_011-015"]
+}

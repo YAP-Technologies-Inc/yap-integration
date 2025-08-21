@@ -1,0 +1,128 @@
+{
+  "lesson_id": "SPA1_022",
+  "title": "Muy vs un poco: matizar estados",
+  "level": "A1",
+  "theme": "Feelings & States",
+  "focus": "Ampliar estados físicos con estar + muy / un poco y adjetivos frecuentes.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir cómo me siento con intensificadores (muy, un poco).",
+    "Puedo entender y usar 4–6 adjetivos de estado físico.",
+    "Puedo mantener un mini intercambio sobre hoy y ahora."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "enfermo", "translation": "sick (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy enfermo.", "example_translation": "I am sick." },
+      { "term": "enferma", "translation": "sick (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy enferma.", "example_translation": "I am sick." },
+      { "term": "ocupado", "translation": "busy (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy ocupado.", "example_translation": "I am busy." },
+      { "term": "ocupada", "translation": "busy (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy ocupada.", "example_translation": "I am busy." },
+      { "term": "libre", "translation": "free, available", "part_of_speech": "adjective", "gender": "invariable", "example": "Estoy libre ahora.", "example_translation": "I am free now." },
+      { "term": "relajado", "translation": "relaxed (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy relajado.", "example_translation": "I am relaxed." },
+      { "term": "relajada", "translation": "relaxed (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy relajada.", "example_translation": "I am relaxed." },
+      { "term": "hoy", "translation": "today", "part_of_speech": "adverb", "example": "Hoy estoy un poco ocupado.", "example_translation": "Today I am a little busy." },
+      { "term": "ahora", "translation": "now", "part_of_speech": "adverb", "example": "Ahora estoy libre.", "example_translation": "I am free now." },
+      { "term": "muy", "translation": "very", "part_of_speech": "adverb", "example": "Estoy muy relajada.", "example_translation": "I am very relaxed." },
+      { "term": "un poco", "translation": "a little", "part_of_speech": "adverb", "example": "Estoy un poco enfermo.", "example_translation": "I am a little sick." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_22_1",
+        "type": "categorize",
+        "prompt": "Clasifica: intensificador o adjetivo.",
+        "items": ["muy", "un poco", "ocupado", "libre", "relajada", "enfermo"],
+        "solution": {
+          "intensificador": ["muy", "un poco"],
+          "adjetivo": ["ocupado", "libre", "relajada", "enfermo"]
+        },
+        "feedback": { "tip": "muy/un poco se colocan antes del adjetivo." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Hoy estoy muy ocupado.", "translation": "Today I am very busy.", "audio_url": null },
+      { "spanish": "Ahora estoy libre.", "translation": "Now I am free.", "audio_url": null },
+      { "spanish": "Estoy un poco enferma.", "translation": "I am a little sick. (fem.)", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_22_1",
+        "type": "call_and_response",
+        "prompt": "Responde con estar + muy/un poco + adjetivo.",
+        "pairs": [
+          ["¿Cómo estás hoy?", "Estoy __ __."],
+          ["¿Estás libre ahora?", "Sí, __ __."],
+          ["¿Cómo está tu amigo?", "Está __ __."]
+        ],
+        "word_bank": ["muy", "un poco", "ocupado/ocupada", "enfermo/enferma", "relajado/relajada", "libre"],
+        "success_criteria": { "orden": "Intensificador antes del adjetivo.", "acuerdo": "Género correcto." }
+      },
+      {
+        "id": "SPK_22_2",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la frase correcta.",
+        "items": [
+          { "audio": "Estoy muy libre ahora.", "options": ["Estoy muy libre ahora.", "Estoy un poco libre muy."], "solution": "Estoy muy libre ahora." },
+          { "audio": "Hoy estoy un poco ocupada.", "options": ["Hoy estoy un poco ocupada.", "Estoy ocupada un poco hoy estoy."], "solution": "Hoy estoy un poco ocupada." }
+        ],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Revisa el orden: estar + muy/un poco + adjetivo." }
+      },
+      {
+        "id": "SPK_22_3",
+        "type": "pronunciation_focus",
+        "prompt": "Pronuncia claramente muy / un poco y la jota en relajado/a.",
+        "items": ["muy", "un poco", "relajado", "relajada"],
+        "feedback_rule": { "correct": "Sonido claro.", "incorrect": "La j es fuerte: re-la-JA-do." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G22_muy_unpoco",
+        "name": "Muy y un poco con estar",
+        "scope": ["estar + muy + adjetivo", "estar + un poco + adjetivo"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Estoy muy ocupado.", "translation": "I am very busy." },
+          { "spanish": "Estoy un poco enferma.", "translation": "I am a little sick." }
+        ],
+        "notes": "Intensificadores antes del adjetivo."
+      },
+      {
+        "id": "G22_muy_mucho",
+        "name": "Muy vs mucho (reconocimiento)",
+        "scope": ["muy + adjetivo/adverbio", "mucho + sustantivo / verbo"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Estoy muy cansado.", "translation": "I am very tired." },
+          { "spanish": "Trabajo mucho.", "translation": "I work a lot." }
+        ],
+        "notes": "Solo reconocer la diferencia."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_22_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con muy o un poco.",
+        "items": ["Estoy __ ocupado hoy.", "Mi amiga está __ relajada."],
+        "solution": ["muy", "muy / un poco"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Ambos antes del adjetivo." }
+      }
+    ]
+  },
+  "cultural_note": "En muchas conversaciones informales se comenta el estado actual, por ejemplo “Ahora estoy libre” para coordinar planes.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa muy/un poco correctamente.",
+      "Selecciona 4 adjetivos de estado y los usa con estar.",
+      "Mantiene un turno de 2 frases sobre hoy y ahora."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "estar", "muy", "un poco", "estados"]
+}

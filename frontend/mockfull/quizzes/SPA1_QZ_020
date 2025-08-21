@@ -1,0 +1,48 @@
+{
+  "quiz_id": "SPA1_Q020",
+  "title": "Quiz 96–100: Making Plans",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_096", "SPA1_097", "SPA1_098", "SPA1_099", "SPA1_100"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q20_SPK_1",
+        "type": "micro_dialogue_chain",
+        "prompt": "Crea un plan completo en 6–7 turnos: invitar → lugar → hora → aceptar/rechazar → cambio opcional → confirmar → cierre.",
+        "cards": ["¿Vamos a __?", "En __", "A las __", "Vale / Lo siento, no puedo", "¿Mejor __?", "Confirmo: __", "Nos vemos __"],
+        "success_criteria": ["Incluye lugar y hora.", "Si rechazas, propone alternativa.", "Cierra con nos vemos."]
+      },
+      {
+        "id": "Q20_SPK_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Ir a + infinitivo con hoy/mañana.",
+        "dialogue_template": [
+          "A: ¿Vas a __ hoy?",
+          "B: Sí, __ __ estudiar. Mañana __ __ caminar."
+        ],
+        "word_bank": ["caminar", "voy", "a", "voy", "a"],
+        "solutions": [["caminar", "voy", "a", "voy", "a"]],
+        "success_criteria": ["Usa voy a + infinitivo dos veces.", "Incluye hoy y mañana."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q20_VOC_1",
+        "type": "match",
+        "prompt": "Empareja función y frase.",
+        "pairs": [
+          ["invitar", "¿Vamos a estudiar?"],
+          ["lugar", "En la plaza"],
+          ["hora", "A las seis"],
+          ["cierre", "Nos vemos allí"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Exacto!", "incorrect_pair": "Piensa en cada paso del plan." }
+      },
+      {
+        "id": "Q20_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural para fijar detalles.",
+        "options": ["¿Dónde quedamos? En la plaza a las seis.",]()

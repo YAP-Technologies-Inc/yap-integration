@@ -1,0 +1,133 @@
+{
+  "lesson_id": "SPA1_Q007",
+  "title": "Quiz 7, Lecciones 31–35",
+  "level": "A1",
+  "theme": "Daily Routines Part 1",
+  "focus": "Rutina de la mañana con reflexivos me/te, objetos del baño, secuencia y horas.",
+  "duration_minutes": 10,
+  "register": "tú",
+  "covers": ["SPA1_031", "SPA1_032", "SPA1_033", "SPA1_034", "SPA1_035"],
+  "can_do": [
+    "Uso me/te con 3 verbos de la mañana.",
+    "Nombró 3 objetos del baño.",
+    "Ordeno acciones con primero/luego/después y doy una hora."
+  ],
+  "vocabulary": {
+    "items": [],
+    "practice": [
+      {
+        "id": "VOC_Q7_1",
+        "type": "match",
+        "prompt": "Empareja objeto del baño y traducción.",
+        "pairs": [
+          ["cepillo de dientes", "toothbrush"],
+          ["pasta de dientes", "toothpaste"],
+          ["toalla", "towel"],
+          ["jabón", "soap"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Muy bien!", "incorrect_pair": "Revisa el vocabulario del baño." }
+      },
+      {
+        "id": "VOC_Q7_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural con reflexivo.",
+        "options": [
+          "Me lavo los dientes.",
+          "Lavo los dientes me.",
+          "Lavo mis dientes yo."
+        ],
+        "correct": "Me lavo los dientes.",
+        "feedback": { "tip": "Pronombre antes del verbo y artículo definido los." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me despierto a las siete y después me levanto.", "translation": "I wake up at seven and then get up.", "audio_url": null },
+      { "spanish": "¿A qué hora te duchas?", "translation": "What time do you shower?", "audio_url": null },
+      { "spanish": "Me visto y luego desayuno.", "translation": "I get dressed and then have breakfast.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_Q7_1",
+        "type": "controlled_production",
+        "prompt": "Completa tu secuencia con me/te.",
+        "items": [
+          "Primero __ despierto a las __.",
+          "Después __ ducho y __ visto."
+        ],
+        "expected_example": ["Primero me despierto a las siete.", "Después me ducho y me visto."],
+        "success_criteria": { "pronombres": "me en yo; te en preguntas.", "hora": "a la/las correcta." }
+      },
+      {
+        "id": "SPK_Q7_2",
+        "type": "request_builder",
+        "prompt": "Pregunta y responde sobre levantarse.",
+        "frames": [
+          "¿A qué hora te levantas?",
+          "Me levanto a las __."
+        ],
+        "feedback": { "tip": "Asegura la tilde en ¿A qué…?" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "GQ7_reflex_me_te",
+        "name": "Reflexivos me/te en presente",
+        "scope": ["me despierto", "te despiertas", "me ducho", "te duchas", "me visto (producción)", "te vistes (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "¿Te duchas por la mañana?", "translation": "Do you shower in the morning?" }]
+      },
+      {
+        "id": "GQ7_secuencia",
+        "name": "Secuencia: primero/luego/después",
+        "scope": ["primero", "luego", "después"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Primero me ducho, luego desayuno.", "translation": "First I shower, then I have breakfast." }]
+      },
+      {
+        "id": "GQ7_antes_despues_ro",
+        "name": "antes de / después de + infinitivo (reconocimiento)",
+        "scope": ["antes de + inf.", "después de + inf."],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Después de ducharme, me visto.", "translation": "After showering, I get dressed." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_Q7_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con me o te.",
+        "items": ["¿__ levantas temprano?", "Yo __ lavo los dientes."],
+        "solution": ["Te", "me"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Tú → te; yo → me." }
+      },
+      {
+        "id": "GR_Q7_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase con orden lógico.",
+        "options": [
+          "Me visto y luego me ducho.",
+          "Primero me ducho y después me visto."
+        ],
+        "correct": "Primero me ducho y después me visto.",
+        "feedback": { "tip": "Ducha antes de vestirse." }
+      }
+    ]
+  },
+  "cultural_note": "En español se usa artículo con partes del cuerpo: “me lavo las manos / los dientes”.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa me/te correctamente en 3 de 4 casos.",
+      "Incluye un conector de secuencia en su respuesta oral.",
+      "Da al menos una hora con a la/las sin error."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "quiz", "reflexivos", "rutina", "mañana"]
+}

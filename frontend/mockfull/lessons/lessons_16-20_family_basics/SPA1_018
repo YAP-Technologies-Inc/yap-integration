@@ -1,0 +1,133 @@
+{
+  "lesson_id": "SPA1_018",
+  "title": "Edades y hermanos",
+  "level": "A1",
+  "theme": "Family Basics",
+  "focus": "Preguntar y decir la edad y cuántos hermanos tienes con tener y ¿Cuántos…?",
+  "duration_minutes": 7,
+  "register": "tú",
+  "can_do": [
+    "Puedo preguntar la edad: “¿Cuántos años tienes/tiene…?”",
+    "Puedo decir la edad con tener: “Tengo __ años.”",
+    "Puedo decir cuántos hermanos tengo."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "años", "translation": "years (of age)", "part_of_speech": "noun", "gender": "masculine", "example": "Tengo 20 años.", "example_translation": "I am 20 years old." },
+      { "term": "¿Cuántos…?", "translation": "How many…? (masc. plural)", "part_of_speech": "question", "example": "¿Cuántos hermanos tienes?", "example_translation": "How many brothers/siblings do you have?" },
+      { "term": "¿Cuántas…?", "translation": "How many…? (fem. plural)", "part_of_speech": "question", "example": "¿Cuántas hijas tiene?", "example_translation": "How many daughters does he/she have?" },
+      { "term": "mayor", "translation": "older", "part_of_speech": "adjective", "gender": "invariable", "example": "Mi hermano mayor trabaja.", "example_translation": "My older brother works." },
+      { "term": "menor", "translation": "younger", "part_of_speech": "adjective", "gender": "invariable", "example": "Mi hermana menor estudia.", "example_translation": "My younger sister studies." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_18_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la pregunta adecuada.",
+        "options": [
+          "¿Cuántos años tienes?",
+          "¿Cuánto años tienes?",
+          "¿Cuántas año tienes?"
+        ],
+        "correct": "¿Cuántos años tienes?",
+        "feedback": { "tip": "Plural: años → ¿Cuántos años…?" }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cuántos años tienes?", "translation": "How old are you?", "audio_url": null },
+      { "spanish": "Tengo 18 años.", "translation": "I am 18 years old.", "audio_url": null },
+      { "spanish": "¿Cuántos hermanos tienes?", "translation": "How many siblings do you have?", "audio_url": null },
+      { "spanish": "Tengo dos hermanos.", "translation": "I have two siblings.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_18_1",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la respuesta correcta.",
+        "items": [
+          { "audio": "¿Cuántos años tiene tu madre?", "options": ["Tiene 40 años.", "Es a la una."], "solution": "Tiene 40 años." },
+          { "audio": "¿Cuántos hermanos tienes?", "options": ["Tengo dos.", "Me gusta leer."], "solution": "Tengo dos." }
+        ],
+        "feedback_rule": { "ok": "¡Exacto!", "error": "Fíjate en tener + años / número." }
+      },
+      {
+        "id": "SPK_18_2",
+        "type": "controlled_production",
+        "prompt": "Completa y di la frase.",
+        "items": [
+          "Tengo __ años.",
+          "Mi hermana __ tiene __ años.",
+          "Tengo __ hermanos."
+        ],
+        "expected_example": ["Tengo 19 años.", "Mi hermana mayor tiene 15 años.", "Tengo dos hermanos."],
+        "success_criteria": { "claridad": "Número comprensible.", "estructura": "Usa tener + años." }
+      },
+      {
+        "id": "SPK_18_3",
+        "type": "request_builder",
+        "prompt": "Forma preguntas con ¿Cuántos…? y respóndelas.",
+        "frames": [
+          "¿Cuántos años tiene tu padre?",
+          "¿Cuántos hermanos tienes?",
+          "¿Cuántas hijas tiene tu tía?"
+        ],
+        "solutions": [
+          "Tiene __ años.",
+          "Tengo __ hermanos.",
+          "Tiene __ hijas."
+        ],
+        "feedback": { "tip": "Cuántos para masculino plural, cuántas para femenino plural." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G18_tener_edad",
+        "name": "Tener + edad",
+        "forms": ["tener + número + años", "¿Cuántos años tienes/tiene…?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Tengo 20 años.", "translation": "I am 20 years old." },
+          { "spanish": "¿Cuántos años tiene tu madre?", "translation": "How old is your mother?" }
+        ],
+        "notes": "Usa números aprendidos. Si no recuerdas, di un número aproximado."
+      },
+      {
+        "id": "G18_cuantos",
+        "name": "¿Cuántos/cuántas? para cantidad",
+        "scope": ["¿Cuántos + masc. pl.?", "¿Cuántas + fem. pl.?"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "¿Cuántos hermanos tienes?", "translation": "How many siblings do you have?" },
+          { "spanish": "¿Cuántas hijas tiene?", "translation": "How many daughters does he/she have?" }
+        ],
+        "notes": "Concordancia con el sustantivo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_18_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con tener + años.",
+        "items": ["Mi abuelo __ 70 __.", "Yo __ 18 __."],
+        "solution": ["tiene, años", "tengo, años"],
+        "feedback_rule": { "note": "Recuerda: tengo/tienes/tiene." }
+      }
+    ]
+  },
+  "cultural_note": "En algunos países se evita preguntar la edad a adultos que no conoces bien. Con familia y amigos es normal.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula preguntas con ¿Cuántos/cuántas…? correctamente.",
+      "Responde con tener + años sin errores graves.",
+      "Indica cantidad de hermanos de forma clara."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "familia", "edad", "tener", "cantidad"]
+}

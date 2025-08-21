@@ -1,0 +1,108 @@
+{
+  "lesson_id": "SPA1_046",
+  "title": "En el café: bebidas con querer",
+  "level": "A1",
+  "theme": "Café & Restaurant Basics",
+  "focus": "Pedir bebidas usando querer y por favor.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo pedir una bebida en un café.",
+    "Puedo usar quiero + un/una + bebida + por favor.",
+    "Puedo responder a “¿Qué quieres?”"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "Quiero…", "translation": "I want…", "part_of_speech": "phrase", "example": "Quiero un café, por favor.", "example_translation": "I want a coffee, please." },
+      { "term": "¿Qué quieres?", "translation": "What do you want?", "part_of_speech": "question", "example": "¿Qué quieres tomar?", "example_translation": "What do you want to have?" },
+      { "term": "por favor", "translation": "please", "part_of_speech": "adverb", "example": "Un té, por favor.", "example_translation": "A tea, please." },
+      { "term": "café solo", "translation": "black coffee", "part_of_speech": "noun", "gender": "masculine", "example": "Quiero un café solo.", "example_translation": "I want a black coffee." },
+      { "term": "café con leche", "translation": "coffee with milk", "part_of_speech": "noun", "gender": "masculine", "example": "Quiero un café con leche.", "example_translation": "I want a coffee with milk." },
+      { "term": "té", "translation": "tea", "part_of_speech": "noun", "gender": "masculine", "example": "¿Quieres té?", "example_translation": "Do you want tea?" },
+      { "term": "agua", "translation": "water", "part_of_speech": "noun", "gender": "feminine", "example": "Quiero un vaso de agua.", "example_translation": "I want a glass of water." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_46_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la orden cortés.",
+        "options": [
+          "Quiero un café.",
+          "Quiero un café, por favor.",
+          "Quiero café el."
+        ],
+        "correct": "Quiero un café, por favor.",
+        "feedback": { "tip": "Añade por favor al final." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Quiero un café con leche, por favor.", "translation": "I want a coffee with milk, please.", "audio_url": null },
+      { "spanish": "¿Qué quieres tomar?", "translation": "What do you want to have?", "audio_url": null },
+      { "spanish": "Un té, por favor.", "translation": "A tea, please.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_46_1",
+        "type": "slot_fill_dialogue",
+        "prompt": "Completa el pedido.",
+        "dialogue_template": [
+          "Dependiente: Hola, ¿qué __?",
+          "Cliente: __ un café, __ __."
+        ],
+        "word_bank": ["quieres", "Quiero", "por", "favor"],
+        "solutions": [["quieres", "Quiero", "por", "favor"]],
+        "feedback_rule": { "ok": "Pedido natural.", "error": "Incluye por favor al final." }
+      },
+      {
+        "id": "SPK_46_2",
+        "type": "listen_and_repeat",
+        "prompt": "Repite con buena entonación cortés.",
+        "audio_items": ["Quiero un té, por favor.", "Quiero un café con leche, por favor."],
+        "success_criteria": { "cortesía": "Por favor presente.", "artículo": "un/una correcto." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G46_querer",
+        "name": "Querer para pedir",
+        "scope": ["yo quiero", "tú quieres (reconocimiento)", "Quiero + un/una + producto"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Quiero un té, por favor.", "translation": "I want a tea, please." }],
+        "notes": "Usa por favor para suavizar."
+      },
+      {
+        "id": "G46_cortesia_ro",
+        "name": "Cortesía básica (reconocimiento)",
+        "scope": ["¿Qué quieres?", "¿Algo más?"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "¿Algo más?", "translation": "Anything else?" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_46_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con quiero/quieres.",
+        "items": ["¿Qué __ tomar?", "__ un café, por favor."],
+        "solution": ["quieres", "Quiero"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Yo → quiero; tú → quieres." }
+      }
+    ]
+  },
+  "cultural_note": "En muchos cafés basta con decir “Un café, por favor”. “Quiero…” también es común y claro.",
+  "assessment": {
+    "auto_criteria": [
+      "Pide una bebida con quiero + por favor.",
+      "Responde a “¿Qué quieres?” de forma natural.",
+      "Usa artículo indefinido apropiado."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "café", "querer", "cortesía"]
+}

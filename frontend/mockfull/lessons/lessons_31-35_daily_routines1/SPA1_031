@@ -1,0 +1,114 @@
+{
+  "lesson_id": "SPA1_031",
+  "title": "Despertar y levantarse",
+  "level": "A1",
+  "theme": "Daily Routines Part 1",
+  "focus": "Introducir reflexivos me/te con despertarse y levantarse; secuenciar primero/después.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo decir a qué hora me despierto y me levanto.",
+    "Puedo usar primero y después para ordenar mi mañana.",
+    "Puedo preguntar: “¿A qué hora te levantas?”"
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "despertarse", "translation": "to wake up", "part_of_speech": "verb", "example": "Me despierto a las siete.", "example_translation": "I wake up at seven." },
+      { "term": "levantarse", "translation": "to get up", "part_of_speech": "verb", "example": "Me levanto a las siete y media.", "example_translation": "I get up at seven thirty." },
+      { "term": "primero", "translation": "first", "part_of_speech": "adverb", "example": "Primero me despierto.", "example_translation": "First I wake up." },
+      { "term": "después", "translation": "after, then", "part_of_speech": "adverb", "example": "Después me levanto.", "example_translation": "Then I get up." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_31_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la secuencia natural.",
+        "options": [
+          "Me levanto y después me despierto.",
+          "Primero me despierto y después me levanto."
+        ],
+        "correct": "Primero me despierto y después me levanto.",
+        "feedback": { "tip": "Despertarse → levantarse." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me despierto a las siete.", "translation": "I wake up at seven.", "audio_url": null },
+      { "spanish": "¿A qué hora te levantas?", "translation": "What time do you get up?", "audio_url": null },
+      { "spanish": "Primero me despierto, después me levanto.", "translation": "First I wake up, then I get up.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_31_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite con buena unión me/te + verbo.",
+        "audio_items": ["Me despierto a las siete.", "Te levantas a las ocho."],
+        "success_criteria": { "pronombres": "Me/te antes del verbo.", "ritmo": "Pausa natural." }
+      },
+      {
+        "id": "SPK_31_2",
+        "type": "controlled_production",
+        "prompt": "Completa tu secuencia.",
+        "items": ["Primero __ __ a las __.", "Después __ __ a las __."],
+        "expected_example": ["Primero me despierto a las seis.", "Después me levanto a las seis y media."],
+        "success_criteria": { "forma": "me/te correcto.", "hora": "a la/las correcta." }
+      },
+      {
+        "id": "SPK_31_3",
+        "type": "request_builder",
+        "prompt": "Pregunta a un compañero por la hora de levantarse.",
+        "frames": [
+          "¿A qué hora te levantas?",
+          "Me levanto a las __."
+        ],
+        "feedback": { "tip": "Usa te para preguntar a otra persona." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G31_reflexivos_intro",
+        "name": "Pronombres reflexivos me/te",
+        "scope": ["me despierto", "te despiertas", "me levanto", "te levantas"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Me levanto a las siete.", "translation": "I get up at seven." },
+          { "spanish": "¿Te levantas temprano?", "translation": "Do you get up early?" }
+        ],
+        "notes": "Solo formas yo/tú para producción. Él/ella se, solo reconocimiento."
+      },
+      {
+        "id": "G31_se_ro",
+        "name": "Forma se (reconocimiento)",
+        "scope": ["él/ella se levanta"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [{ "spanish": "Se levanta a las ocho.", "translation": "He/She gets up at eight." }],
+        "notes": "No exigir producción."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_31_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con me o te.",
+        "items": ["__ despierto a las siete.", "¿__ levantas tarde?"],
+        "solution": ["Me", "Te"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Yo → me; tú → te." }
+      }
+    ]
+  },
+  "cultural_note": "En muchos países hispanos la jornada empieza más tarde que en otros lugares, pero depende de la ciudad.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa me/te correctamente en dos frases.",
+      "Indica dos horas con a la/las.",
+      "Produce una pregunta con “¿A qué hora te…?”"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "rutina", "reflexivos", "mañana"]
+}

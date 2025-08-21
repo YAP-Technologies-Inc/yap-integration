@@ -1,0 +1,100 @@
+{
+  "lesson_id": "SPA1_010",
+  "level": "A1",
+  "title": "Daily Routines (Present & Reflexives)",
+  "duration_minutes": 8,
+  "topic_tags": ["routines", "present_tense", "frequency"],
+  "learning_objectives": [
+    "Describe a simple daily routine",
+    "Use present tense of regular verbs",
+    "Use basic reflexive verbs with me/te/se",
+    "Use frequency adverbs (siempre, a veces, nunca)"
+  ],
+  "key_phrases": [
+    {"target": "Me levanto a las siete.", "translation": "I get up at seven."},
+    {"target": "Desayuno a las ocho.", "translation": "I have breakfast at eight."},
+    {"target": "A veces ceno tarde.", "translation": "Sometimes I eat dinner late."}
+  ],
+  "vocabulary": {
+    "items": [
+      {"term": "levantarse", "translation": "to get up", "part_of_speech": "verb", "example": "Me levanto temprano."},
+      {"term": "ducharse", "translation": "to take a shower", "part_of_speech": "verb", "example": "Se ducha por la mañana."},
+      {"term": "desayunar", "translation": "to have breakfast", "part_of_speech": "verb", "example": "Desayuno café y pan."},
+      {"term": "almorzar", "translation": "to have lunch", "part_of_speech": "verb", "example": "Almuerzo a las dos."},
+      {"term": "cenar", "translation": "to have dinner", "part_of_speech": "verb", "example": "Ceno a las nueve."},
+      {"term": "estudiar", "translation": "to study", "part_of_speech": "verb", "example": "Estudio español."},
+      {"term": "trabajar", "translation": "to work", "part_of_speech": "verb", "example": "Trabajo de lunes a viernes."},
+      {"term": "siempre", "translation": "always", "part_of_speech": "adv"},
+      {"term": "a veces", "translation": "sometimes", "part_of_speech": "adv_phrase"},
+      {"term": "nunca", "translation": "never", "part_of_speech": "adv"},
+      {"term": "primero", "translation": "first", "part_of_speech": "sequencer"},
+      {"term": "después", "translation": "afterwards", "part_of_speech": "sequencer"}
+    ],
+    "exercises": [
+      {"type": "match", "prompt": "Match verb to picture of action.", "pairs": [
+        {"left": "levantarse", "right": "get up"},
+        {"left": "ducharse", "right": "shower"},
+        {"left": "desayunar", "right": "breakfast"}
+      ]},
+      {"type": "select", "prompt": "Choose the best frequency word.", "items": [
+        {"question": "___ estudio por la noche. (always/never/sometimes)", "options": ["siempre", "nunca", "a veces"], "answer": "a veces"},
+        {"question": "___ trabajo los lunes. (always/never)", "options": ["siempre", "nunca"], "answer": "siempre"}
+      ]},
+      {"type": "fill_in_the_blank", "prompt": "Complete with present tense.", "items": [
+        {"text": "Yo ___ (estudiar) español.", "answer": "estudio"},
+        {"text": "Nosotros ___ (trabajar) en casa.", "answer": "trabajamos"}
+      ]},
+      {"type": "classification", "prompt": "Sort into reflexive vs. non-reflexive.", "groups": [
+        {"name": "Reflexivos", "answers": ["levantarse", "ducharse"]},
+        {"name": "No reflexivos", "answers": ["estudiar", "cenar", "trabajar"]}
+      ]},
+      {"type": "sort", "prompt": "Order your morning routine with sequencers.", "items": [
+        {"jumbled": ["después me visto", "primero me levanto", "luego desayuno"], "answer": ["primero me levanto", "luego desayuno", "después me visto"]}
+      ]}
+    ]
+  },
+  "grammar": {
+    "topics": ["Presente regular (-ar/-er/-ir)", "Pronombres reflexivos (me, te, se)", "Adverbios de frecuencia"],
+    "explanations": [
+      "Modelos: estudiar (estudio, estudias...), comer (como, comes...), vivir (vivo, vives...).",
+      "Reflexivos: me levanto, te duchas, se acuesta (solo reconocimiento).",
+      "Frecuencia antes del verbo: siempre estudio; a veces estudio; nunca estudio."
+    ],
+    "examples": [
+      {"target": "Me levanto a las siete y desayuno a las ocho.", "translation": "I get up at seven and have breakfast at eight."},
+      {"target": "A veces estudio por la noche.", "translation": "Sometimes I study at night."}
+    ],
+    "exercises": [
+      {"type": "conjugation", "prompt": "Conjugate estudiar/comer/vivir (yo, tú, él/ella).", "items": [
+        {"verb": "estudiar", "answers": {"yo": "estudio", "tú": "estudias", "él/ella": "estudia"}},
+        {"verb": "comer", "answers": {"yo": "como", "tú": "comes", "él/ella": "come"}},
+        {"verb": "vivir", "answers": {"yo": "vivo", "tú": "vives", "él/ella": "vive"}}
+      ]},
+      {"type": "fill_in_the_blank", "prompt": "Add the correct reflexive pronoun.", "items": [
+        {"text": "Yo ___ levanto a las siete.", "answer": "me"},
+        {"text": "Tú ___ duchas por la mañana.", "answer": "te"}
+      ]},
+      {"type": "transform", "prompt": "Make the sentence negative with nunca.", "items": [
+        {"input": "Desayuno a las ocho.", "answer": "Nunca desayuno a las ocho."},
+        {"input": "Trabajo los domingos.", "answer": "Nunca trabajo los domingos."}
+      ]},
+      {"type": "error_correction", "prompt": "Fix the mistake.", "items": [
+        {"text": "Me levanto a las siete y me desayuno a las ocho.", "answer": "Me levanto a las siete y desayuno a las ocho."},
+        {"text": "Se estudia español todos los días. (yo)", "answer": "Estudio español todos los días."}
+      ]},
+      {"type": "sentence_build", "prompt": "Build a routine sentence from pieces.", "items": [
+        {"pieces": ["siempre", "me levanto", "a las siete"], "answer": "Siempre me levanto a las siete."},
+        {"pieces": ["a veces", "cenamos", "a las nueve"], "answer": "A veces cenamos a las nueve."}
+      ]}
+    ]
+  },
+  "speaking": {
+    "exercises": [
+      {"type": "listen_and_repeat", "content": "Me levanto, desayuno, trabajo...", "variations": 3},
+      {"type": "prompted_response", "prompt": "Di 3 acciones de tu mañana con horas.", "expected_output_pattern": "[A las X] me levanto / desayuno / estudio."},
+      {"type": "role_play", "scenario": "Comparar rutinas", "roles": ["A: pregunta horas y acciones", "B: responde con frecuencia"]},
+      {"type": "guided_interview", "prompt": "Haz 4 preguntas sobre rutina (hora de levantarse, desayuno, estudio, cena).", "model": "¿A qué hora te levantas? ¿Desayunas?"},
+      {"type": "personal_statement", "prompt": "Describe tu día en 4 frases usando siempre/a veces/nunca.", "sentence_frames": ["Siempre...", "A veces...", "Nunca..."]}
+    ]
+  }
+}

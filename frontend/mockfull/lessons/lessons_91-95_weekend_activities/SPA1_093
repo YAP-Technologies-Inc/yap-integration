@@ -1,0 +1,91 @@
+{
+  "lesson_id": "SPA1_093",
+  "title": "Fin de semana 3: ocio y frecuencia",
+  "level": "A1",
+  "theme": "Weekend Activities",
+  "focus": "Combinar actividades de ocio con frecuencias.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Nombrar 3 actividades de ocio.",
+    "Usar siempre/a veces/nunca con ellas.",
+    "Responder con una frase completa."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "ir al cine", "translation": "to go to the cinema", "part_of_speech": "verb", "example": "Voy al cine los sábados.", "example_translation": "I go to the cinema on Saturdays." },
+      { "term": "hacer deporte", "translation": "to do sports", "part_of_speech": "verb", "example": "Hago deporte el domingo.", "example_translation": "I do sports on Sunday." },
+      { "term": "cocinar", "translation": "to cook", "part_of_speech": "verb", "example": "Cocino los fines de semana.", "example_translation": "I cook on weekends." },
+      { "term": "visitar a la familia", "translation": "to visit family", "part_of_speech": "verb", "example": "Visito a la familia a veces.", "example_translation": "I visit my family sometimes." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_93_1",
+        "type": "categorize",
+        "prompt": "Clasifica actividad como en casa o fuera.",
+        "items": ["cocinar", "ir al cine", "hacer deporte", "visitar a la familia"],
+        "solution": [
+          { "en casa": ["cocinar"] },
+          { "fuera": ["ir al cine", "hacer deporte", "visitar a la familia"] }
+        ],
+        "feedback_rule": { "ok": "Lógico.", "error": "Piensa dónde se hace." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "A veces voy al cine.", "translation": "Sometimes I go to the cinema.", "audio_url": null },
+      { "spanish": "Siempre cocino el domingo.", "translation": "I always cook on Sunday.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_93_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite con frecuencia.",
+        "audio_items": ["Nunca hago deporte.", "Siempre visito a mi familia."],
+        "success_criteria": { "pronunciación": "clara", "frecuencia": "bien colocada" }
+      },
+      {
+        "id": "SPK_93_2",
+        "type": "controlled_production",
+        "prompt": "Di 3 frases con 3 actividades y 3 frecuencias.",
+        "frames": ["Siempre __ __.", "A veces __ __.", "Nunca __ __."],
+        "word_bank": ["voy al cine", "cocino", "hago deporte", "visito a la familia"],
+        "success_criteria": { "variedad": "3 actividades", "claridad": "frases completas" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G93_posicion_frecuencia",
+        "name": "Posición de adverbios de frecuencia",
+        "forms": ["siempre/a veces/nunca + verbo", "Verbo + a veces (opcional)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Voy al cine a veces.", "translation": "I go to the cinema sometimes." }],
+        "notes": "En A1, colocar al inicio facilita la claridad."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_93_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase clara.",
+        "options": ["A veces voy al cine.", "Voy al a veces cine.", "A veces al voy cine."],
+        "correct": "A veces voy al cine.",
+        "feedback": { "tip": "Orden natural: adverbio + verbo + complemento." }
+      }
+    ]
+  },
+  "cultural_note": "Los domingos suelen ser familiares en muchos países hispanos, con comidas largas.",
+  "assessment": {
+    "auto_criteria": [
+      "Produce 3 frases con frecuencias variadas.",
+      "Usa estructuras claras y A1.",
+      "Pronuncia nunca/siempre correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "fin de semana", "frecuencia", "ocio"]
+}

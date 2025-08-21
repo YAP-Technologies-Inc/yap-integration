@@ -1,0 +1,103 @@
+{
+  "lesson_id": "SPA1_072",
+  "title": "Las estaciones y el clima típico",
+  "level": "A1",
+  "theme": "Weather Talk",
+  "focus": "Decir la estación y asociar clima básico.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Digo la estación actual.",
+    "Relaciono estación con hace/está.",
+    "Hago una frase con en + estación."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "primavera", "translation": "spring", "part_of_speech": "noun", "gender": "feminine", "example": "En primavera llueve un poco.", "example_translation": "In spring it rains a little." },
+      { "term": "verano", "translation": "summer", "part_of_speech": "noun", "gender": "masculine", "example": "En verano hace calor.", "example_translation": "In summer it’s hot." },
+      { "term": "otoño", "translation": "autumn, fall", "part_of_speech": "noun", "gender": "masculine", "example": "En otoño hace viento.", "example_translation": "In autumn it’s windy." },
+      { "term": "invierno", "translation": "winter", "part_of_speech": "noun", "gender": "masculine", "example": "En invierno hace frío.", "example_translation": "In winter it’s cold." },
+      { "term": "lluvia", "translation": "rain", "part_of_speech": "noun", "gender": "feminine", "example": "Hay lluvia por la tarde.", "example_translation": "There is rain in the afternoon." },
+      { "term": "templado", "translation": "mild (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "El clima está templado.", "example_translation": "The weather is mild." },
+      { "term": "templada", "translation": "mild (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "La mañana está templada.", "example_translation": "The morning is mild." },
+      { "term": "en + estación", "translation": "in + season", "part_of_speech": "phrase", "example": "En verano hace calor.", "example_translation": "In summer it’s hot." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_72_1",
+        "type": "categorize",
+        "prompt": "Arrastra cada palabra a su estación típica.",
+        "items": ["hace calor", "hace frío", "lluvia", "hace viento"],
+        "solution": [
+          { "verano": ["hace calor"] },
+          { "invierno": ["hace frío"] },
+          { "primavera": ["lluvia"] },
+          { "otoño": ["hace viento"] }
+        ],
+        "feedback_rule": { "ok": "Asociación común, no única.", "note": "Hay variación por región." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Estamos en verano.", "translation": "We are in summer.", "audio_url": null },
+      { "spanish": "En verano hace calor.", "translation": "In summer it’s hot.", "audio_url": null },
+      { "spanish": "En otoño está nublado.", "translation": "In autumn it’s cloudy.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_72_1",
+        "type": "controlled_production",
+        "prompt": "Di la estación y el clima típico.",
+        "frames": ["Estamos en __.", "En __ hace/está __."],
+        "word_bank": ["primavera", "verano", "otoño", "invierno", "calor", "frío", "nublado", "viento"],
+        "acceptable_variants": ["Ahora estamos en __."],
+        "feedback_rule": { "estructura": "en + estación", "verbo": "hace/está correcto" }
+      },
+      {
+        "id": "SPK_72_2",
+        "type": "listen_and_choose",
+        "prompt": "Escucha y elige la estación.",
+        "audio_items": ["En invierno hace frío.", "En primavera llueve."],
+        "options": ["invierno", "primavera", "verano"],
+        "solution": ["invierno", "primavera"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Fíjate en hace/llueve." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G72_en_estacion",
+        "name": "en + estación",
+        "forms": ["En verano…", "En invierno…", "En primavera…", "En otoño…"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "En verano hace calor.", "translation": "In summer it’s hot." }
+        ],
+        "notes": "Usa en para hablar de estaciones."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_72_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural.",
+        "options": ["En verano está calor.", "En verano hace calor.", "En verano hace nublado."],
+        "correct": "En verano hace calor.",
+        "feedback": { "tip": "Hace + calor/frío/viento/sol." }
+      }
+    ]
+  },
+  "cultural_note": "Las estaciones cambian según el hemisferio. Verifica el contexto geográfico.",
+  "assessment": {
+    "auto_criteria": [
+      "Nombra la estación actual.",
+      "Produce 1 frase con en + estación.",
+      "Relaciona una estación con un clima típico."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "clima", "estaciones", "hacer", "estar"]
+}

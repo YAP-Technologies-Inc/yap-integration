@@ -1,0 +1,111 @@
+{
+  "lesson_id": "SPA1_061",
+  "title": "Mi casa: habitaciones",
+  "level": "A1",
+  "theme": "Home Spaces",
+  "focus": "Nombrar habitaciones y decir qué hay en casa con hay.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Digo 4–5 habitaciones de la casa.",
+    "Uso hay/no hay para decir lo que existe en casa.",
+    "Uso en + el/la con habitaciones."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "casa", "translation": "house/home", "part_of_speech": "noun", "gender": "feminine", "example": "Mi casa es pequeña.", "example_translation": "My home is small." },
+      { "term": "salón", "translation": "living room", "part_of_speech": "noun", "gender": "masculine", "example": "El salón es grande.", "example_translation": "The living room is big." },
+      { "term": "cocina", "translation": "kitchen", "part_of_speech": "noun", "gender": "feminine", "example": "La cocina está aquí.", "example_translation": "The kitchen is here." },
+      { "term": "dormitorio", "translation": "bedroom", "part_of_speech": "noun", "gender": "masculine", "example": "El dormitorio es tranquilo.", "example_translation": "The bedroom is quiet." },
+      { "term": "habitación (reconocimiento)", "translation": "room/bedroom", "part_of_speech": "noun", "gender": "feminine", "example": "La habitación es luminosa.", "example_translation": "The room is bright.", "recognition_only": true, "production_required": false },
+      { "term": "baño", "translation": "bathroom", "part_of_speech": "noun", "gender": "masculine", "example": "El baño está allí.", "example_translation": "The bathroom is there." },
+      { "term": "balcón", "translation": "balcony", "part_of_speech": "noun", "gender": "masculine", "example": "El balcón es pequeño.", "example_translation": "The balcony is small." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_61_1",
+        "type": "match",
+        "prompt": "Empareja la habitación con su traducción.",
+        "pairs": [
+          ["salón", "living room"],
+          ["cocina", "kitchen"],
+          ["dormitorio", "bedroom"],
+          ["baño", "bathroom"],
+          ["balcón", "balcony"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa el género y la sala." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "En mi casa hay un salón y una cocina.", "translation": "In my home there is a living room and a kitchen.", "audio_url": null },
+      { "spanish": "¿En tu casa hay balcón?", "translation": "Is there a balcony in your home?", "audio_url": null },
+      { "spanish": "No hay balcón.", "translation": "There isn’t a balcony.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_61_1",
+        "type": "listen_and_repeat",
+        "prompt": "Repite usando hay/no hay.",
+        "audio_items": ["En mi casa hay un salón.", "En mi casa no hay balcón."],
+        "success_criteria": { "estructura": "Empieza con En mi casa + hay/no hay.", "artículos": "un/una correctos." }
+      },
+      {
+        "id": "SPK_61_2",
+        "type": "request_builder",
+        "prompt": "Di qué hay en tu casa.",
+        "frames": [
+          "En mi casa hay __.",
+          "En mi casa no hay __."
+        ],
+        "word_bank": ["un salón", "una cocina", "un baño", "balcón"],
+        "feedback": { "tip": "Con hay, usa un/una para presentar cosas singulares." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G61_hay_basico",
+        "name": "Hay / No hay para existencia",
+        "scope": ["Hay + un/una + lugar", "No hay + lugar"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "En mi casa hay un salón.", "translation": "In my home there is a living room." },
+          { "spanish": "En mi casa no hay balcón.", "translation": "In my home there isn’t a balcony." }
+        ],
+        "notes": "Con hay no uses el/la para presentar por primera vez."
+      },
+      {
+        "id": "G61_en_articulos",
+        "name": "en + el/la con habitaciones",
+        "scope": ["en el + masc.", "en la + fem."],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "En el salón… / En la cocina…", "translation": "In the living room… / In the kitchen…" }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_61_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con hay o no hay.",
+        "items": ["En mi casa __ un baño.", "En mi casa __ balcón."],
+        "solution": ["hay", "no hay"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Piensa: existencia sí/no." }
+      }
+    ]
+  },
+  "cultural_note": "En España, salón es la sala principal. Habitación puede significar dormitorio o cualquier cuarto según contexto.",
+  "assessment": {
+    "auto_criteria": [
+      "Nombra 4 habitaciones correctamente.",
+      "Produce 2 frases con hay/no hay.",
+      "Usa en el/en la de forma correcta una vez."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "casa", "habitaciones", "hay"]
+}

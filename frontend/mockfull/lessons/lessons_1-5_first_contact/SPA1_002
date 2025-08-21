@@ -1,0 +1,158 @@
+{
+  "lesson_id": "SPA1_002",
+  "title": "Exchanging Names",
+  "level": "A1",
+  "theme": "First Contact",
+  "focus": "Say your name, ask for someone’s name, respond with a courtesy",
+  "duration_minutes": 8,
+  "register": "tú",
+  "spiral_from": ["SPA1_001"],
+  "can_do": [
+    "Say your name with a fixed phrase",
+    "Ask for someone’s name",
+    "Close a first meeting with a courtesy phrase"
+  ],
+
+  "vocabulary": {
+    "items": [
+      { "term": "me llamo …", "translation": "my name is …", "part_of_speech": "phrase", "example": "Me llamo Ana.", "example_translation": "My name is Ana." },
+      { "term": "¿Cómo te llamas?", "translation": "what is your name?", "part_of_speech": "question", "example": "¿Cómo te llamas?", "example_translation": "What is your name?" },
+      { "term": "soy …", "translation": "I am …", "part_of_speech": "verb phrase", "example": "Soy Carlos.", "example_translation": "I am Carlos." },
+      { "term": "mucho gusto", "translation": "nice to meet you", "part_of_speech": "phrase", "example": "Mucho gusto.", "example_translation": "Nice to meet you." },
+      { "term": "encantado", "translation": "pleased to meet you", "part_of_speech": "adjective", "gender": "masculine", "example": "Encantado.", "example_translation": "Pleased to meet you." },
+      { "term": "encantada", "translation": "pleased to meet you", "part_of_speech": "adjective", "gender": "feminine", "example": "Encantada.", "example_translation": "Pleased to meet you." },
+      { "term": "hola", "translation": "hello", "part_of_speech": "interjection", "example": "Hola, me llamo Ana.", "example_translation": "Hello, my name is Ana." },
+      { "term": "adiós", "translation": "goodbye", "part_of_speech": "interjection", "example": "Adiós, nos vemos.", "example_translation": "Goodbye, see you." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_2_1",
+        "type": "match",
+        "prompt": "Match each Spanish item to its meaning.",
+        "pairs": [
+          { "spanish": "me llamo", "english": "my name is" },
+          { "spanish": "¿Cómo te llamas?", "english": "what is your name?" },
+          { "spanish": "soy", "english": "I am" }
+        ]
+      }
+    ]
+  },
+
+  "speaking": {
+    "models": [
+      { "spanish": "Hola, me llamo ____. ¿Cómo te llamas?", "translation": "Hi, my name is ____. What is your name?", "audio_url": null },
+      { "spanish": "Soy ____. Mucho gusto.", "translation": "I am ____. Nice to meet you.", "audio_url": null },
+      { "spanish": "Mucho gusto. Encantado.", "translation": "Nice to meet you. Pleased to meet you.", "audio_url": null },
+      { "spanish": "Mucho gusto. Encantada.", "translation": "Nice to meet you. Pleased to meet you.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_2_1",
+        "type": "listen_and_choose",
+        "prompt": "Listen or read the cue and choose the best response.",
+        "audio_items": [
+          { "cue_text": "Hola, me llamo Luis.", "options": ["Mucho gusto.", "Adiós."], "correct": "Mucho gusto." },
+          { "cue_text": "Soy Ana. ¿Cómo te llamas?", "options": ["Me llamo ____.", "Encantado."], "correct": "Me llamo ____." }
+        ]
+      },
+      {
+        "id": "SPK_2_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Complete the dialogue with the correct expressions.",
+        "dialogue_template": "A: Hola, ____ ____. ¿Cómo te llamas? B: ____ ____. ____ ____.",
+        "solutions": [
+          ["me llamo", "____", "Me llamo", "____", "Mucho gusto"],
+          ["soy", "____", "Soy", "____", "Encantado"],
+          ["soy", "____", "Soy", "____", "Encantada"]
+        ]
+      },
+      {
+        "id": "SPK_2_3",
+        "type": "micro_dialogue_chain",
+        "prompt": "Create a two-turn exchange using the cards.",
+        "chain_template": ["A: __OPEN__", "B: __NAME__", "A: __COURTESY__", "B: __FAREWELL__"],
+        "lexicon_slots": {
+          "OPEN": ["Hola, me llamo ____.", "Hola, soy ____."],
+          "NAME": ["Me llamo ____.", "Soy ____."],
+          "COURTESY": ["Mucho gusto.", "Encantado.", "Encantada."],
+          "FAREWELL": ["Adiós.", "Hasta luego."]
+        }
+      },
+      {
+        "id": "SPK_2_4",
+        "type": "controlled_production",
+        "prompt": "Record an introduction and ask for the other person’s name.",
+        "expected_example": "Hola, me llamo ____. ¿Cómo te llamas?",
+        "acceptable_variants": ["Hola, soy ____. ¿Cómo te llamas?"],
+        "rubric": {
+          "accuracy": "Correct use of me llamo or soy and the question form.",
+          "range": "2 to 3 fixed phrases.",
+          "pronunciation": "Clear syllables, rising intonation in the question."
+        }
+      }
+    ]
+  },
+
+  "grammar": {
+    "topics": [
+      {
+        "id": "PRON_SUBJ_01",
+        "name": "Subject pronouns",
+        "scope": ["yo", "tú"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Yo soy Ana.", "translation": "I am Ana." },
+          { "spanish": "Tú eres Luis.", "translation": "You are Luis." }
+        ]
+      },
+      {
+        "id": "VERB_SER_01",
+        "name": "Ser, present",
+        "forms": [
+          { "person": "yo", "form": "soy", "recognition_only": false },
+          { "person": "tú", "form": "eres", "recognition_only": false }
+        ],
+        "examples": [
+          { "spanish": "Soy Carlos.", "translation": "I am Carlos." }
+        ]
+      },
+      {
+        "id": "VERB_LLAMARSE_01",
+        "name": "Llamarse, fixed introductions",
+        "forms": [
+          { "person": "yo", "form": "me llamo" },
+          { "person": "tú", "form": "te llamas" }
+        ],
+        "examples": [
+          { "spanish": "Me llamo Ana.", "translation": "My name is Ana." },
+          { "spanish": "¿Cómo te llamas?", "translation": "What is your name?" }
+        ],
+        "notes": "Accept both Me llamo and Soy for self-introduction."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_2_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con 'me llamo' o 'soy'.",
+        "items": [
+          { "text": "Hola, ____ Ana." },
+          { "text": "Hola, ____ Luis." }
+        ],
+        "solution": ["me llamo", "soy"]
+      }
+    ]
+  },
+
+  "cultural_note": "Mucho gusto is used widely. Encantado is typically used by men, encantada by women.",
+  "assessment": {
+    "auto_criteria": [
+      "States name with me llamo or soy",
+      "Asks ¿Cómo te llamas? correctly",
+      "Uses one courtesy phrase to close"
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "First Contact", "introductions", "courtesy"]
+}

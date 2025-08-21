@@ -1,0 +1,98 @@
+{
+  "lesson_id": "SPA1_077",
+  "title": "Mini conversación 2: lugar, dirección y tiempo",
+  "level": "A1",
+  "theme": "First Review & Integration",
+  "focus": "Combinar ¿de dónde eres?, orientación básica y clima.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Digo de dónde soy.",
+    "Pido orientación corta de 1 paso.",
+    "Conecto con una frase del clima."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿De dónde eres?", "translation": "Where are you from?", "part_of_speech": "question", "example": "¿De dónde eres?", "example_translation": "Where are you from?" },
+      { "term": "Soy de…", "translation": "I’m from…", "part_of_speech": "phrase", "example": "Soy de México.", "example_translation": "I’m from Mexico." },
+      { "term": "a la derecha", "translation": "to the right", "part_of_speech": "phrase", "example": "Gira a la derecha.", "example_translation": "Turn right." },
+      { "term": "a la izquierda", "translation": "to the left", "part_of_speech": "phrase", "example": "Sigue a la izquierda.", "example_translation": "Go left." },
+      { "term": "recto", "translation": "straight (ahead)", "part_of_speech": "adverb", "example": "Sigue recto.", "example_translation": "Go straight." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_77_1",
+        "type": "match",
+        "prompt": "Une español e inglés.",
+        "pairs": [
+          ["a la derecha", "to the right"],
+          ["a la izquierda", "to the left"],
+          ["recto", "straight ahead"]
+        ],
+        "feedback_rule": { "ok": "Correcto.", "error": "Revisa las direcciones." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿De dónde eres?", "translation": "Where are you from?", "audio_url": null },
+      { "spanish": "Soy de Perú. Sigue recto y a la derecha.", "translation": "I’m from Peru. Go straight and to the right.", "audio_url": null },
+      { "spanish": "Hoy hace un poco de viento.", "translation": "Today there’s a little wind.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_77_1",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye 2 mini diálogos: origen y orientación.",
+        "pairs": [
+          ["A: ¿De dónde eres?", "B: Soy de __."],
+          ["A: ¿Dónde está el café?", "B: Sigue recto y gira a la derecha."]
+        ],
+        "feedback_rule": { "ok": "Frases claras.", "error": "Usa frames fijos." }
+      },
+      {
+        "id": "SPK_77_2",
+        "type": "controlled_production",
+        "prompt": "Añade una línea de clima al final.",
+        "frames": ["Hoy __ __."],
+        "word_bank": ["hace", "frío", "está", "nublado", "hace", "sol"],
+        "success_criteria": { "verbo": "hace/está correcto" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G77_integracion_ubicacion",
+        "name": "Integración: origen + orientación + clima",
+        "scope": ["¿De dónde eres?", "Soy de…", "Sigue recto / a la derecha / a la izquierda", "hoy + hace/está"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Soy de Chile. El café está a la derecha. Hoy está nublado.", "translation": "I’m from Chile. The café is to the right. Today it’s cloudy." }
+        ],
+        "notes": "Usa frases cortas, 1 idea por frase."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_77_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con de / a la / recto.",
+        "items": ["Soy __ Perú.", "Gira __ derecha.", "Sigue __."],
+        "solution": ["de", "a la", "recto"],
+        "feedback_rule": { "tip": "de para origen; a la + derecha/izquierda." }
+      }
+    ]
+  },
+  "cultural_note": "Decir el país primero es común: “Soy de España.”",
+  "assessment": {
+    "auto_criteria": [
+      "Responde a ¿De dónde eres?",
+      "Da una instrucción de orientación.",
+      "Incluye 1 línea sobre el clima de hoy."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "integración", "origen", "direcciones", "clima"]
+}

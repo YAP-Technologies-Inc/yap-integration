@@ -1,0 +1,146 @@
+{
+  "lesson_id": "SPA1_021",
+  "title": "¿Cómo estás? Estados básicos",
+  "level": "A1",
+  "theme": "Feelings & States",
+  "focus": "Preguntar y decir cómo estás usando estar con bien, mal y adjetivos simples.",
+  "duration_minutes": 8,
+  "register": "tú",
+  "can_do": [
+    "Puedo preguntar: “¿Cómo estás?”",
+    "Puedo responder con estar + bien/mal o un adjetivo simple.",
+    "Puedo usar un poco y muy para matizar."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "¿Cómo estás?", "translation": "How are you?", "part_of_speech": "question", "example": "Hola, ¿cómo estás?", "example_translation": "Hi, how are you?" },
+      { "term": "bien", "translation": "well", "part_of_speech": "adverb", "example": "Estoy bien, gracias.", "example_translation": "I am well, thanks." },
+      { "term": "mal", "translation": "bad, not well", "part_of_speech": "adverb", "example": "Estoy mal hoy.", "example_translation": "I am not well today." },
+      { "term": "cansado", "translation": "tired (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy cansado.", "example_translation": "I am tired." },
+      { "term": "cansada", "translation": "tired (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy cansada.", "example_translation": "I am tired." },
+      { "term": "contento", "translation": "happy, glad (masc.)", "part_of_speech": "adjective", "gender": "masculine", "example": "Estoy contento.", "example_translation": "I am happy." },
+      { "term": "contenta", "translation": "happy, glad (fem.)", "part_of_speech": "adjective", "gender": "feminine", "example": "Estoy contenta.", "example_translation": "I am happy." },
+      { "term": "triste", "translation": "sad", "part_of_speech": "adjective", "gender": "invariable", "example": "Estoy triste.", "example_translation": "I am sad." },
+      { "term": "un poco", "translation": "a little", "part_of_speech": "adverb", "example": "Estoy un poco cansado.", "example_translation": "I am a little tired." },
+      { "term": "muy", "translation": "very", "part_of_speech": "adverb", "example": "Estoy muy bien.", "example_translation": "I am very well." },
+      { "term": "gracias", "translation": "thanks", "part_of_speech": "interjection", "example": "Estoy bien, gracias.", "example_translation": "I’m well, thanks." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_21_1",
+        "type": "match",
+        "prompt": "Relaciona el estado con su traducción.",
+        "pairs": [
+          ["bien", "well"],
+          ["mal", "not well"],
+          ["cansado", "tired (masc.)"],
+          ["contenta", "happy (fem.)"],
+          ["triste", "sad"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Correcto!", "incorrect_pair": "Fíjate en el género y el significado." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "¿Cómo estás?", "translation": "How are you?", "audio_url": null },
+      { "spanish": "Estoy bien, gracias.", "translation": "I am well, thanks.", "audio_url": null },
+      { "spanish": "Estoy un poco cansado.", "translation": "I am a little tired.", "audio_url": null },
+      { "spanish": "Estoy contenta.", "translation": "I am happy. (fem.)", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_21_1",
+        "type": "listen_and_repeat",
+        "prompt": "Escucha y repite. Cuida la entonación de la pregunta.",
+        "audio_items": ["¿Cómo estás?", "Estoy bien.", "Estoy muy bien.", "Estoy un poco cansado/cansada."],
+        "success_criteria": { "entonación": "Sube al final en la pregunta.", "claridad": "Pronuncia bien bien/mal." }
+      },
+      {
+        "id": "SPK_21_2",
+        "type": "choice_drill_minimal_pairs",
+        "prompt": "Elige y di la opción correcta: bien o mal.",
+        "items": [
+          "Hoy estoy __.",
+          "Mi amigo está __.",
+          "Después de dormir estoy __."
+        ],
+        "solutions": ["bien/mal válidas según contexto", "bien/mal válidas", "bien"],
+        "feedback": { "tip": "Usa estar + bien/mal, no ser." }
+      },
+      {
+        "id": "SPK_21_3",
+        "type": "micro_dialogue_build",
+        "prompt": "Construye un mini diálogo: saludo + estado + respuesta.",
+        "cards": [
+          "A: Hola, ¿cómo estás?",
+          "B: Estoy __, gracias. ¿Y tú?",
+          "A: Estoy __."
+        ],
+        "word_bank": ["bien", "mal", "un poco cansado/cansada", "contento/contenta"],
+        "acceptable_variants": ["Estoy muy bien.", "Estoy un poco mal."],
+        "feedback": { "tip": "Añade muy o un poco para matizar." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G21_estar_basico",
+        "name": "Estar para estados",
+        "forms": ["yo estoy", "tú estás", "él/ella está (reconocimiento)"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Estoy bien.", "translation": "I am well." },
+          { "spanish": "¿Estás cansado?", "translation": "Are you tired?" }
+        ],
+        "notes": "Usa estar con bien, mal y adjetivos de estado."
+      },
+      {
+        "id": "G21_ser_estar_intro",
+        "name": "Ser vs estar (introducción)",
+        "scope": ["ser para identidad/origen", "estar para estados"],
+        "recognition_only": true,
+        "production_required": false,
+        "examples": [
+          { "spanish": "Soy estudiante.", "translation": "I am a student." },
+          { "spanish": "Estoy cansado.", "translation": "I am tired." }
+        ],
+        "notes": "Solo reconocimiento en esta lección."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_21_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural.",
+        "options": [
+          "Soy bien.",
+          "Estoy bien.",
+          "Soy cansado."
+        ],
+        "correct": "Estoy bien.",
+        "feedback": { "tip": "Estados → estar." }
+      },
+      {
+        "id": "GR_21_2",
+        "type": "fill_in_blank",
+        "prompt": "Completa con estoy/estás y un adjetivo.",
+        "items": ["Hoy __ __ (bien).", "¿__ __ (cansado) o __ __ (contenta)?"],
+        "solution": ["estoy bien", "Estás cansado / estás contenta"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Recuerda el acento en estás." }
+      }
+    ]
+  },
+  "cultural_note": "En saludos informales es común preguntar “¿Qué tal?” o “¿Cómo estás?” y responder corto: “Bien, ¿y tú?”.",
+  "assessment": {
+    "auto_criteria": [
+      "Formula “¿Cómo estás?” correctamente.",
+      "Responde con estar + bien/mal o adjetivo con buen acuerdo de género.",
+      "Usa muy o un poco para matizar al menos una vez."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "estar", "estados", "saludos"]
+}

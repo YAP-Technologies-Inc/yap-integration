@@ -1,0 +1,105 @@
+{
+  "lesson_id": "SPA1_035",
+  "title": "Mi rutina de mañana completa",
+  "level": "A1",
+  "theme": "Daily Routines Part 1",
+  "focus": "Encadenar 3–4 acciones de la mañana con me/te y horas básicas.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Puedo describir 3–4 pasos de mi mañana.",
+    "Puedo usar me para mis acciones y te para preguntar.",
+    "Puedo decir al menos una hora de mi rutina."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "prepararse (reconocimiento)", "translation": "to get ready", "part_of_speech": "verb", "example": "Me preparo rápido.", "example_translation": "I get ready quickly." },
+      { "term": "rápido", "translation": "fast (adv.)", "part_of_speech": "adverb", "example": "Me visto rápido.", "example_translation": "I get dressed quickly." },
+      { "term": "temprano", "translation": "early", "part_of_speech": "adverb", "example": "Salgo temprano.", "example_translation": "I leave early." }
+    ],
+    "practice": [
+      {
+        "id": "VOC_35_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la frase natural.",
+        "options": [
+          "Me ducho, me visto y desayuno.",
+          "Me ducho, me visto y desayuno me."
+        ],
+        "correct": "Me ducho, me visto y desayuno.",
+        "feedback": { "tip": "Solo verbos reflexivos llevan me." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Me despierto a las siete, me ducho y desayuno.", "translation": "I wake up at seven, shower, and have breakfast.", "audio_url": null },
+      { "spanish": "¿A qué hora te vistes?", "translation": "What time do you get dressed?", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_35_1",
+        "type": "controlled_production",
+        "prompt": "Completa tu cadena de mañana.",
+        "items": [
+          "A las __ me despierto, luego __ y __.",
+          "Después __ a las __."
+        ],
+        "expected_example": ["A las siete me despierto, luego me ducho y desayuno.", "Después salgo a las ocho."],
+        "success_criteria": { "pronombres": "me en reflexivos.", "hora": "a la/las correcta." }
+      },
+      {
+        "id": "SPK_35_2",
+        "type": "micro_dialogue_chain",
+        "prompt": "Cadena: pregunta por una acción y hora.",
+        "cards": [
+          "A: ¿A qué hora te levantas?",
+          "B: __. ¿Y tú?",
+          "C: __."
+        ],
+        "word_bank": ["A las siete", "A las ocho"],
+        "rubric": { "turnos": "Mantén el intercambio fluido." }
+      },
+      {
+        "id": "SPK_35_3",
+        "type": "orthography_check",
+        "prompt": "Coloca acentos e interrogación.",
+        "items": ["A que hora te vistes", "Despues salgo a las ocho"],
+        "solution": ["¿A qué hora te vistes?", "Después salgo a las ocho."],
+        "feedback_rule": { "note": "¿…? y tildes: qué, después." }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G35_resumen_reflex",
+        "name": "Resumen reflexivos de mañana",
+        "scope": ["me despierto", "me levanto", "me ducho", "me visto"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [{ "spanish": "Me ducho y me visto.", "translation": "I shower and get dressed." }]
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_35_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con me.",
+        "items": ["__ levanto y __ visto.", "Después desayuno."],
+        "solution": ["Me", "me"],
+        "feedback_rule": { "ok": "¡Bien!", "error": "Añade me en verbos reflexivos." }
+      }
+    ]
+  },
+  "cultural_note": "Muchos desayunan fuera en cafeterías, especialmente los días laborales.",
+  "assessment": {
+    "auto_criteria": [
+      "Incluye 3 verbos de rutina con me.",
+      "Da al menos una hora correcta.",
+      "Escribe una pregunta con “¿A qué hora te…?” correctamente."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "rutina", "reflexivos", "mañana"]
+}

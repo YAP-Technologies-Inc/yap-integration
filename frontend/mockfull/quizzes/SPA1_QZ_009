@@ -1,0 +1,84 @@
+{
+  "quiz_id": "SPA1_Q009",
+  "title": "Quiz 41–45: Food & Drink Basics",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_041", "SPA1_042", "SPA1_043", "SPA1_044", "SPA1_045"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q9_SPK_1",
+        "type": "controlled_production",
+        "prompt": "Di si te gusta o no: la sopa y las verduras.",
+        "expected_example": ["Me gusta la sopa.", "No me gustan las verduras."],
+        "acceptable_variants": ["Me gusta mucho la sopa.", "No me gustan las verduras nada."],
+        "success_criteria": ["Artículo correcto tras gusta/gustan.", "Concordancia singular/plural correcta."]
+      },
+      {
+        "id": "Q9_SPK_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "Haz un pedido cortés de una bebida.",
+        "dialogue_template": [
+          "Dependiente: ¿Qué quieres?",
+          "Tú: __ un/una __, __ __."
+        ],
+        "word_bank": ["Quiero", "té", "café", "agua", "por", "favor"],
+        "solutions": [["Quiero", "un", "café", "por", "favor"], ["Quiero", "un", "té", "por", "favor"], ["Quiero", "un", "agua", "por", "favor"]],
+        "success_criteria": ["Incluye por favor al final.", "Usa artículo un/una correcto."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q9_VOC_1",
+        "type": "match",
+        "prompt": "Empareja alimento y traducción.",
+        "pairs": [
+          ["manzana", "apple"],
+          ["sopa", "soup"],
+          ["arroz", "rice"],
+          ["ensalada", "salad"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Revisa las palabras de comida." }
+      },
+      {
+        "id": "Q9_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Elige la opción natural para gusto general.",
+        "options": ["Me gusta pan.", "Me gusta el pan.", "Me gustan el pan."],
+        "correct": "Me gusta el pan.",
+        "feedback": { "tip": "Con gustos generales se usa el/la/los/las." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q9_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con gusta o gustan.",
+        "items": ["Me __ la ensalada.", "Me __ las naranjas."],
+        "solution": ["gusta", "gustan"],
+        "feedback_rule": { "ok": "¡Correcto!", "error": "Singular → gusta; plural → gustan." }
+      },
+      {
+        "id": "Q9_GR_2",
+        "type": "multiple_choice",
+        "prompt": "Completa: “__ vaso de agua, por favor.”",
+        "options": ["Una", "Un", "La"],
+        "correct": "Un",
+        "feedback": { "tip": "vaso es masculino." }
+      },
+      {
+        "id": "Q9_GR_3",
+        "type": "orthography_check",
+        "prompt": "Añade signos/acentos.",
+        "items": ["La cuenta por favor", "Cuanto es"],
+        "solution": ["La cuenta, por favor.", "¿Cuánto es?"],
+        "feedback_rule": { "note": "Coma tras cuenta y tilde en cuánto." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Pide 1 bebida con cortesía completa.", "Usa artículo con me gusta/gustan.", "Diferencia un/una vs el/la en contexto."] }
+}

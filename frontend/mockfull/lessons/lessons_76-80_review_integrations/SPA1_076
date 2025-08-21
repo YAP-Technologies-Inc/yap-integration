@@ -1,0 +1,89 @@
+{
+  "lesson_id": "SPA1_076",
+  "title": "Mini conversación 1: saludo, nombre y clima",
+  "level": "A1",
+  "theme": "First Review & Integration",
+  "focus": "Integrar saludo, nombre y clima en 5–6 turnos.",
+  "duration_minutes": 9,
+  "register": "tú",
+  "can_do": [
+    "Inicio una conversación corta.",
+    "Digo mi nombre y pregunto el de la otra persona.",
+    "Comento el clima de hoy con hace/está."
+  ],
+  "vocabulary": {
+    "items": [
+      { "term": "hola", "translation": "hi", "part_of_speech": "interjection", "example": "Hola, ¿cómo te llamas?", "example_translation": "Hi, what’s your name?" },
+      { "term": "me llamo…", "translation": "my name is…", "part_of_speech": "phrase", "example": "Me llamo Alex.", "example_translation": "My name is Alex." },
+      { "term": "mucho gusto", "translation": "nice to meet you", "part_of_speech": "interjection", "example": "Mucho gusto.", "example_translation": "Nice to meet you." },
+      { "term": "¿y tú?", "translation": "and you?", "part_of_speech": "phrase", "example": "Me llamo Ana, ¿y tú?", "example_translation": "My name is Ana, and you?" }
+    ],
+    "practice": [
+      {
+        "id": "VOC_76_1",
+        "type": "multiple_choice",
+        "prompt": "Elige la respuesta natural para: “¿Cómo te llamas?”",
+        "options": ["Tengo 20 años.", "Me llamo Luis.", "Hace sol."],
+        "correct": "Me llamo Luis.",
+        "feedback": { "tip": "Responde con me llamo + nombre." }
+      }
+    ]
+  },
+  "speaking": {
+    "models": [
+      { "spanish": "Hola, me llamo Ana. ¿Cómo te llamas?", "translation": "Hi, my name is Ana. What’s your name?", "audio_url": null },
+      { "spanish": "Mucho gusto. Hoy hace sol.", "translation": "Nice to meet you. It’s sunny today.", "audio_url": null }
+    ],
+    "activities": [
+      {
+        "id": "SPK_76_1",
+        "type": "micro_dialogue_chain",
+        "prompt": "Haz una cadena de 6 turnos: saludo → nombre → ¿y tú? → gusto → clima → cierre.",
+        "cards": ["Hola", "Me llamo __", "¿Y tú?", "Mucho gusto", "Hoy hace/está __", "Gracias"],
+        "success_criteria": { "fluidez": "sin pausas largas", "claridad": "frases cortas y correctas" }
+      },
+      {
+        "id": "SPK_76_2",
+        "type": "pronunciation_focus",
+        "prompt": "Enfócate en ¿Cómo te llamas? y hace.",
+        "items": ["¿Cómo te llamas?", "Hace sol."],
+        "feedback_rule": { "acento": "tildes en cómo", "h": "h de hace es muda" }
+      }
+    ]
+  },
+  "grammar": {
+    "topics": [
+      {
+        "id": "G76_integracion_basica",
+        "name": "Integración: saludo + nombre + clima",
+        "scope": ["hola", "me llamo", "¿cómo te llamas?", "hace/está + clima"],
+        "recognition_only": false,
+        "production_required": true,
+        "examples": [
+          { "spanish": "Hola, me llamo Leo. Hoy está nublado.", "translation": "Hi, my name is Leo. Today it’s cloudy." }
+        ],
+        "notes": "Secuencia típica para iniciar conversación."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "GR_76_1",
+        "type": "orthography_check",
+        "prompt": "Añade signos y tildes.",
+        "items": ["Como te llamas"],
+        "solution": ["¿Cómo te llamas?"],
+        "feedback_rule": { "note": "Interrogativos con tilde." }
+      }
+    ]
+  },
+  "cultural_note": "Un saludo breve seguido de nombre es suficiente antes de hablar del clima.",
+  "assessment": {
+    "auto_criteria": [
+      "Usa saludo + nombre correctamente.",
+      "Incluye una línea sobre el clima.",
+      "Cierra con una cortesía breve."
+    ]
+  },
+  "content_policy": { "gendered_forms_split": true },
+  "tags": ["A1", "integración", "saludos", "clima"]
+}

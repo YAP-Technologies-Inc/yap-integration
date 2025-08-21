@@ -1,0 +1,81 @@
+{
+  "quiz_id": "SPA1_Q017",
+  "title": "Quiz 81–85: Extended Family",
+  "level": "A1",
+  "register": "tú",
+  "covers": ["SPA1_081", "SPA1_082", "SPA1_083", "SPA1_084", "SPA1_085"],
+  "speaking": {
+    "items": [
+      {
+        "id": "Q17_SPK_1",
+        "type": "controlled_production",
+        "prompt": "Describe una reunión familiar en 2 frases usando posesivos en plural.",
+        "items": ["Frase 1:", "Frase 2:"],
+        "expected_example": ["Vienen mis primos y mis tíos.", "Comemos con nuestros abuelos."],
+        "success_criteria": ["Usa mis/tus/sus/nuestros/vuestros con sustantivos en plural.", "Frases cortas y claras."]
+      },
+      {
+        "id": "Q17_SPK_2",
+        "type": "slot_fill_dialogue",
+        "prompt": "¿Quién viene a la fiesta?",
+        "dialogue_template": [
+          "A: ¿Quién viene a la fiesta?",
+          "B: Vienen __ __ y __ __."
+        ],
+        "word_bank": ["mis", "tíos", "mis", "primos", "nuestros", "abuelos"],
+        "solutions": [
+          ["mis", "tíos", "mis", "primos"],
+          ["nuestros", "abuelos", "mis", "primos"]
+        ],
+        "success_criteria": ["Concordancia plural en artículo posesivo.", "Vocabulario de familia extendida."]
+      }
+    ]
+  },
+  "vocabulary": {
+    "items": [
+      {
+        "id": "Q17_VOC_1",
+        "type": "match",
+        "prompt": "Empareja pariente y traducción.",
+        "pairs": [
+          ["tía", "aunt"],
+          ["tío", "uncle"],
+          ["primo", "male cousin"],
+          ["prima", "female cousin"],
+          ["suegro", "father-in-law"],
+          ["suegra", "mother-in-law"]
+        ],
+        "feedback_rule": { "correct_pair": "¡Bien!", "incorrect_pair": "Atiende a género: -o/-a." }
+      },
+      {
+        "id": "Q17_VOC_2",
+        "type": "multiple_choice",
+        "prompt": "Completa: Yo hablo de mi familia. ___ primos vienen.",
+        "options": ["Mi", "Mis", "Nuestro", "Su"],
+        "correct": "Mis",
+        "feedback": { "tip": "Con plural se usa mis/tus/sus/nuestros/vuestros." }
+      }
+    ]
+  },
+  "grammar": {
+    "items": [
+      {
+        "id": "Q17_GR_1",
+        "type": "fill_in_blank",
+        "prompt": "Completa con el posesivo plural correcto.",
+        "items": ["Yo: __ abuelos.", "Tú: __ primas.", "Nosotros: __ tíos.", "Ellos: __ suegros."],
+        "solution": ["mis", "tus", "nuestros", "sus"],
+        "feedback_rule": { "tip": "Concuerda con la persona y el número del sustantivo." }
+      },
+      {
+        "id": "Q17_GR_2",
+        "type": "orthography_check",
+        "prompt": "Corrige signos y tildes.",
+        "items": ["Quienes vienen a la reunion"],
+        "solution": ["¿Quiénes vienen a la reunión?"],
+        "feedback_rule": { "note": "¿…?; tilde en quiénes y reunión." }
+      }
+    ]
+  },
+  "assessment": { "auto_criteria": ["Usa posesivos en plural correctamente.", "Reconoce vocabulario de familia extendida.", "Produce 2 frases sobre una reunión familiar."] }
+}
