@@ -23,7 +23,7 @@ export default function BottomNavBar() {
           <TablerChartLine className="text-[#999595] w-6 h-6" />
           <span className="text-[#999595] text-sm">Progress</span>
         </a> */}
-        <a href="/profile" className="flex flex-col items-center justify-center hover:cursor-pointer h-full px-4 lg:px-6">
+        <a href="/profile" className="flex flex-col items-center justify-center hover:cursor-pointer hover: h-full px-4 lg:px-6">
           <TablerUser className="text-[#999595] w-6 h-6" />
           <span className="text-[#999595] text-sm">Profile</span>
         </a>

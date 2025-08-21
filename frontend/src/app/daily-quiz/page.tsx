@@ -368,8 +368,8 @@ export default function DailyQuizUi() {
     const fd = new FormData();
     fd.append('audio', audioBlob, filename);
     // keep the daily-quiz API contract: "referenceText"
-    fd.append('referenceText', referenceText);
-    fd.append('uploadId', uploadId);
+    fd.append('targetPhrase', referenceText);
+    fd.append('attemptId', attemptIdRef.current || uploadId);
     if (hasFreshTranscript && spokenText?.trim()) {
       fd.append('spokenText', spokenText.trim());
     }
@@ -388,7 +388,7 @@ export default function DailyQuizUi() {
       setBreakdown({
         accuracy: result.accuracyScore || 0,
         fluency: result.fluencyScore || 0,
-        completeness: result.completenessScore || 0,
+        completeness: result.intonationScore || 0,
       });
 
       setTextFeedback({
