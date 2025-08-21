@@ -16,7 +16,8 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies and build
-RUN npm install && NODE_OPTIONS="--max-old-space-size=2048" npm run build
+RUN npm install && NODE_OPTIONS="--max-old-space-size=3072" npm run build
+
 
 # Expose frontend port
 EXPOSE 3000

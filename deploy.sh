@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SERVER="root@198.199.123.92"
+SERVER="root@157.230.214.76"
 REMOTE_DIR="/opt/yap-integration"
 
 MODE="${1:-all}"  # all | frontend | backend
