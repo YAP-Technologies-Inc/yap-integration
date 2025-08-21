@@ -13,11 +13,19 @@ export interface Lesson {
   status: Status;
 }
 
+export interface Quiz {
+  id: string;
+  title: string;
+  description: string;
+  status: Status;
+}
+
 export interface LessonGroup {
   slug: string;            // "lessons_1-5_first_contact"
   label: string;           // "First Contact"
   range: [number, number]; // [1, 5]
   lessons: Lesson[];
+  quiz?: Quiz;             // Quiz for this group
 }
 
 interface LessonModalProps {
@@ -69,7 +77,7 @@ export default function LessonModal({ onClose, groups, onLessonClick }: LessonMo
                         <img src="/assets/dappy.svg" alt="Dappy Icon" className="w-6 h-6" />
                     </span>
                     <h3 className="text-sm font-semibold text-secondary">
-                      Lessons {group.range[0]}–{group.range[1]} · {group.label}
+                      {group.label}
                     </h3>
                   </div>
                 </button>
@@ -113,6 +121,39 @@ export default function LessonModal({ onClose, groups, onLessonClick }: LessonMo
                         </div>
                       );
                     })}
+
+                    {/* Quiz - shown after all lessons */}
+                    {group.quiz && (
+                      <div
+                        key={group.quiz.id}
+                        className={`w-full p-4 rounded-xl ${groupColor} ${
+                          group.quiz.status === 'locked'
+                            ? `${groupColor} opacity-60`
+                            : group.quiz.status === 'completed'
+                            ? `${groupColor}`
+                            : `${groupColor}`
+                        }`}
+                      >
+                        <div className={`flex items-center justify-between ${groupColor}`}>
+                          <div>
+                            <h4 className={`font-semibold text-secondary ${groupColor}`}>Final Quiz</h4>
+                          </div>
+                          {/* Quiz status badges */}
+                          {/* <div className="flex items-center gap-2">
+                            {group.quiz.status === 'completed' && (
+                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs">✓</span>
+                              </div>
+                            )}
+                            {group.quiz.status === 'locked' && (
+                              <div className="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs">🔒</span>
+                              </div>
+                            )}
+                          </div> */}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </section>
