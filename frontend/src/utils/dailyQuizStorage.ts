@@ -106,10 +106,18 @@ export function clearToday(totalSteps: number) {
   return getQuizState(totalSteps);
 }
 
-export function computeAvg(scores: number[]) {
-  const filled = scores.filter((n) => typeof n === 'number' && n >= 0);
-  if (filled.length === 0) return 0;
-  const avg = filled.reduce((a, b) => a + b, 0) / filled.length;
+export function computeAvg(scores: Array<number | string | null | undefined>): number {
+  // keep only real, non-negative numbers
+  const vals = scores
+    .map((s) => Number(s))
+    .filter((n) => Number.isFinite(n) && n >= 0); // ignore -1 placeholders, null, NaN
+
+  if (vals.length === 0) return 0;
+
+  const sum = vals.reduce((a, b) => a + b, 0);
+  const avg = sum / vals.length;
+
+  // round only at the end
   return Math.round(avg);
 }
 

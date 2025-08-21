@@ -739,13 +739,13 @@ export default function LessonUi({
               <div className="flex justify-between gap-4 pt-2 w-full lg:w-1/2 lg:mx-auto">
                 <button
                   onClick={resetAudioState}
-                  className="flex-1 py-4 bg-white text-black rounded-full border-b-3 border-r-1 border-[#ebe6df] shadow"
+                  className="flex-1 py-4 bg-white text-black hover:cursor-pointer rounded-full border-b-3 border-r-1 border-[#ebe6df] shadow"
                 >
                   Retry
                 </button>
                 <button
                   onClick={next}
-                  className="flex-1 py-4 bg-[#2D1C1C] text-white rounded-full border-b-3 border-r-1 border-black"
+                  className="flex-1 py-4 bg-[#2D1C1C] text-white hover:cursor-pointer rounded-full border-b-3 border-r-1 border-black"
                 >
                   Next
                 </button>

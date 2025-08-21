@@ -21,6 +21,7 @@ import TestingNoticeModal from '@/components/TestingNoticeModal';
 import { useSnackbar } from '@/components/ui/SnackBar';
 import { getTodayStatus } from '@/utils/dailyQuizStorage';
 import LessonModal from '@/components/lesson/LessonModal';
+import type { LessonGroup } from '@/components/lesson/LessonModal';
 import { set } from 'zod';
 
 export default function HomePage() {
@@ -51,6 +52,19 @@ export default function HomePage() {
 
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
   const [lessonModalOpen, setLessonModalOpen] = useState(false);
+  const [groups, setGroups] = useState<LessonGroup[]>([]);
+
+  useEffect(() => {
+    if (!lessonModalOpen) return;
+
+    fetch('/api/lesson-catalog')
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.groups)) setGroups(d.groups);
+        else setGroups([]); // fallback to empty
+      })
+      .catch(() => setGroups([]));
+  }, [lessonModalOpen]);
 
   // Compute lesson availability based on completed lessons
   useEffect(() => {
@@ -82,7 +96,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!userId) return;
-    fetch(`${API_URL}/api/daily-quiz-status/${userId}`)
+    fetch(`${API_URL}/daily-quiz-status/${userId}`)
       .then((res) => res.json())
       .then((data) => setDailyQuizCompleted(!!data.completed))
       .catch(() => {});
@@ -219,7 +233,19 @@ export default function HomePage() {
       {/* Add the LessonModal here */}
       {lessonModalOpen && (
         <LessonModal
-          lessons={lessons}
+          groups={
+            groups.length
+              ? groups
+              : [
+                  // fallback: derive a single group from your flat lessons (first 5)
+                  {
+                    slug: 'fallback_1-5',
+                    label: 'Lessons',
+                    range: [1, Math.min(5, lessons.length)],
+                    lessons: lessons.slice(0, 5), // or chunk them here if you want more groups
+                  },
+                ]
+          }
           onClose={() => setLessonModalOpen(false)}
           onLessonClick={(lessonId) => {
             setLessonModalOpen(false);

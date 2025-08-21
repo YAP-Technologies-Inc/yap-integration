@@ -207,9 +207,32 @@ export default function DailyQuizUi() {
   // ==== Prepare chimes once (match LessonUi) ====
   const correctChime = '/audio/correct.mp3';
   const incorrectChime = '/audio/incorrect.mp3';
+
   useEffect(() => {
     prepareChimes({ correct: correctChime, incorrect: incorrectChime });
+    
+    // Test if audio files can be loaded
+    const testCorrect = new Audio(correctChime);
+    const testIncorrect = new Audio(incorrectChime);
+    
+    // Preload the audio files
+    testCorrect.load();
+    testIncorrect.load();
   }, []);
+
+  // ==== Play chime once per attempt key (like LessonUi) ====
+  useEffect(() => {
+    if (score == null) return;
+    
+    
+    const key = attemptIdRef.current && attemptIdRef.current.length > 0
+      ? attemptIdRef.current
+      : `daily:${stepIndex}`;
+      
+    const pass = score >= PASSING_CARD_SCORE;
+    
+    playChimeOnce(key, pass);
+  }, [score, stepIndex]);
 
   // ==== Recording controls (parity with LessonUi) ====
   const startRecording = async () => {
@@ -343,6 +366,7 @@ export default function DailyQuizUi() {
     }
 
     if (!audioBlob || !referenceText || isSubmitting) return;
+    setAttemptAvg(total, 0); // when resetting for a new run
 
     const uploadId = newUploadId();
     const extFromBlob = (() => {
@@ -367,7 +391,6 @@ export default function DailyQuizUi() {
 
     const fd = new FormData();
     fd.append('audio', audioBlob, filename);
-    // keep the daily-quiz API contract: "referenceText"
     fd.append('targetPhrase', referenceText);
     fd.append('attemptId', attemptIdRef.current || uploadId);
     if (hasFreshTranscript && spokenText?.trim()) {
@@ -390,7 +413,6 @@ export default function DailyQuizUi() {
         fluency: result.fluencyScore || 0,
         completeness: result.intonationScore || 0,
       });
-
       setTextFeedback({
         transcript: result.transcript || '',
         accuracyText: result.accuracyText || 'Pronunciation feedback unavailable.',
@@ -401,8 +423,19 @@ export default function DailyQuizUi() {
       });
 
       // persist per-step score so avg reflects latest on finish
-      const updated = updateScoreForStep(total, stepIndex, overall);
+      const updated = updateScoreForStep(stepIndex, overall, total);
+
       setScores(updated.scores);
+      // compute a running average over graded entries only
+      const graded = updated.scores.filter(
+        (v) => typeof v === 'number' && Number.isFinite(v) && v >= 0,
+      );
+      const currentAvg = graded.length
+        ? Math.round(graded.reduce((a, b) => a + b, 0) / graded.length)
+        : 0;
+
+      setAvgScore(currentAvg);
+      setAttemptAvg(total, currentAvg); // keep localStorage in sync for any widgets
 
       await new Promise((r) => setTimeout(r, 200)); // slight pause for UI smoothness
     } catch (err) {
@@ -427,7 +460,12 @@ export default function DailyQuizUi() {
     }
 
     const finalScores = scores.map((s, i) => (i === stepIndex && score != null ? score : s));
-    const avg = computeAvg(finalScores);
+    // ignore ungraded slots like -1 / null / NaN
+    const graded = finalScores.filter((v) => typeof v === 'number' && Number.isFinite(v) && v >= 0);
+    const avg = graded.length
+      ? Math.max(0, Math.min(100, Math.round(graded.reduce((a, b) => a + b, 0) / graded.length)))
+      : 0;
+
     setAvgScore(avg);
 
     if (avg >= PASSING_AVG) {
@@ -511,11 +549,14 @@ export default function DailyQuizUi() {
   // ==== Play chime once per attempt key (like LessonUi) ====
   useEffect(() => {
     if (score == null) return;
-    const key =
-      attemptIdRef.current && attemptIdRef.current.length > 0
-        ? attemptIdRef.current
-        : `daily:${stepIndex}`;
+    
+    
+    const key = attemptIdRef.current && attemptIdRef.current.length > 0
+      ? attemptIdRef.current
+      : `daily:${stepIndex}`;
+      
     const pass = score >= PASSING_CARD_SCORE;
+    
     playChimeOnce(key, pass);
   }, [score, stepIndex]);
 

@@ -3,7 +3,6 @@
 type Lesson = {
   lesson_id: string;
   prerequisite_lessons?: string[];
-  // ...other fields
 };
 
 export function lessonNum(id: string) {
