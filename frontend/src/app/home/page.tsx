@@ -23,6 +23,7 @@ import { getTodayStatus } from '@/utils/dailyQuizStorage';
 import LessonModal from '@/components/lesson/LessonModal';
 import type { LessonGroup } from '@/components/lesson/LessonModal';
 import { set } from 'zod';
+import React from 'react';
 
 export default function HomePage() {
   useInitializeUser();
@@ -53,6 +54,27 @@ export default function HomePage() {
   const [dailyQuizCompleted, setDailyQuizCompleted] = useState(false);
   const [lessonModalOpen, setLessonModalOpen] = useState(false);
   const [groups, setGroups] = useState<LessonGroup[]>([]);
+  // page.tsx (top of component)
+  type LessonScore = {
+    overall: number;
+    accuracy: number;
+    fluency: number;
+    intonation: number;
+    phrases?: Array<{ promptText: string; userSaid: string }>;
+    created_at?: string;
+  };
+
+  type QuizScore = {
+    overall: number;
+    accuracy: number;
+    fluency: number;
+    intonation: number;
+    created_at?: string;
+  };
+
+  // NEW: state for maps
+  const [lessonScoreMap, setLessonScoreMap] = React.useState<Map<string, LessonScore>>(new Map());
+  const [quizScoreMap, setQuizScoreMap] = React.useState<Map<string, QuizScore>>(new Map());
 
   useEffect(() => {
     if (!lessonModalOpen) return;
@@ -100,6 +122,65 @@ export default function HomePage() {
       .then((res) => res.json())
       .then((data) => setDailyQuizCompleted(!!data.completed))
       .catch(() => {});
+  }, [userId, API_URL]);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchScores = async () => {
+      try {
+        const [lr, qr] = await Promise.all([
+          fetch(`${API_URL}/lesson-run/latest/${encodeURIComponent(userId)}`),
+          fetch(`${API_URL}/quiz-run/latest/${encodeURIComponent(userId)}`),
+        ]);
+
+        if (!lr.ok) {
+          console.error('lesson-run/latest failed', await lr.text());
+          return;
+        }
+        if (!qr.ok) {
+          console.error('quiz-run/latest failed', await qr.text());
+          return;
+        }
+
+        const { lessons } = await lr.json();
+        const { quizzes } = await qr.json();
+
+        const ls = new Map<string, LessonScore>(
+          lessons.map((r: any) => [
+            r.lesson_id,
+            {
+              overall: r.score_overall,
+              accuracy: r.score_accuracy,
+              fluency: r.score_fluency,
+              intonation: r.score_intonation,
+              phrases: r.phrases,
+              created_at: r.created_at,
+            },
+          ]),
+        );
+
+        const qs = new Map<string, QuizScore>(
+          quizzes.map((r: any) => [
+            r.group_slug,
+            {
+              overall: r.score_overall,
+              accuracy: r.score_accuracy,
+              fluency: r.score_fluency,
+              intonation: r.score_intonation,
+              created_at: r.created_at,
+            },
+          ]),
+        );
+
+        setLessonScoreMap(ls);
+        setQuizScoreMap(qs);
+      } catch (e) {
+        console.error('scores fetch failed:', e);
+      }
+    };
+
+    fetchScores();
   }, [userId, API_URL]);
 
   const TOTAL_STEPS = 5;
@@ -237,20 +318,18 @@ export default function HomePage() {
             groups.length
               ? groups
               : [
-                  // fallback: derive a single group from your flat lessons (first 5)
                   {
                     slug: 'fallback_1-5',
                     label: 'Lessons',
                     range: [1, Math.min(5, lessons.length)],
-                    lessons: lessons.slice(0, 5), // or chunk them here if you want more groups
+                    lessons: lessons.slice(0, 5),
                   },
                 ]
           }
           onClose={() => setLessonModalOpen(false)}
-          onLessonClick={(lessonId) => {
-            setLessonModalOpen(false);
-            router.push(`/lesson/${lessonId}`);
-          }}
+          onLessonClick={() => {}}
+          lessonScoreMap={lessonScoreMap}
+          quizScoreMap={quizScoreMap} 
         />
       )}
     </div>

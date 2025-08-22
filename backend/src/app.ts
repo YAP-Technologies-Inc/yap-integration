@@ -13,6 +13,7 @@ import teacherRouter from "./routes/teacher.routes.js";
 import dailyQuizRouter from "./routes/dailyQuiz.routes.js";
 import ttsRouter from "./routes/tts.routes.js";
 import reportRouter from "./routes/report.routes.js";
+import attemptsRoutes from "./routes/attempts.routes.js";
 import cors from "cors";
 
 
@@ -42,5 +43,6 @@ app.use("/api", teacherRouter);
 app.use("/api", dailyQuizRouter);
 app.use("/api", ttsRouter);
 app.use("/api", reportRouter);
+app.use("/api", attemptsRoutes);
 
 export default app;

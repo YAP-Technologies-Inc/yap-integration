@@ -101,6 +101,15 @@ export default function LessonUi({
     intonationIssue?: string;
   }>(null);
 
+  // Collect step-level detail across the lesson
+  // before: stepIndex + promptText + userSaid
+  const [phrasesCollected, setPhrasesCollected] = useState<
+    Array<{
+      promptText: string;
+      userSaid: string;
+    }>
+  >([]);
+
   // === TEST MODE TOGGLE ===
   const TEST_MODE =
     process.env.NEXT_PUBLIC_PRON_TEST === '1' ||
@@ -422,6 +431,12 @@ export default function LessonUi({
         specificIssues: Array.isArray(result.specificIssues) ? result.specificIssues : [],
       });
       setFeedback(result.overallText || '');
+
+      setPhrasesCollected((prev) => [
+        ...(prev ?? []),
+        { promptText: referenceText, userSaid: textFeedback?.transcript || spokenText || '' },
+      ]);
+
       setShowBack(true);
     } catch (e) {
       console.error('[PRONUNCIATION] error', e);
@@ -446,12 +461,33 @@ export default function LessonUi({
     });
 
     try {
+      // 1) Persist the attempt (history/analytics)
+      const attemptPayload = {
+        userId,
+        lessonId,
+        attemptId: attemptIdRef.current, // uuid you set when recording starts
+        overall: score ?? 0,
+        accuracy: breakdown?.accuracy ?? 0,
+        fluency: breakdown?.fluency ?? 0,
+        intonation: breakdown?.completeness ?? 0,
+        // [{ promptText, userSaid }] — make sure you push into this when you get a result
+        phrases: Array.isArray(phrasesCollected) ? phrasesCollected : [],
+      };
+
+      // ⬇️ NEW ENDPOINT
+      const storeRes = await fetch(`${API_URL}/lesson-run`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(attemptPayload),
+      });
+      if (!storeRes.ok) throw new Error('Failed to store lesson attempt');
+
+      // 2) Rewards + stats
       const res = await fetch(`${API_URL}/complete-lesson`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, walletAddress, lessonId }),
       });
-
       if (!res.ok) throw new Error('Verification failed');
 
       removeSnackbar(snackId);
@@ -601,7 +637,7 @@ export default function LessonUi({
                       }
                     }}
                     disabled={isLoading || isVerifying}
-                    className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3]${
+                    className={`w-16 h-16 bg-white rounded-full shadow flex items-center justify-center border-b-3 border-r-1 border-[#e2ddd3] ${
                       isLoading || isVerifying
                         ? 'opacity-50 pointer-events-none'
                         : 'hover:cursor-pointer'
@@ -630,10 +666,10 @@ export default function LessonUi({
                 disabled={!audioURL || isLoading}
                 className={`w-full py-4 rounded-4xl border-b-3 border-[white]/30 transition-colors ${
                   audioURL
-                  ? 'bg-secondary text-white border-b-3 border-r-1 font-semibold border-black hover:bg-secondary-dark hover:cursor-pointer'
-                  : 'bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed'
+                    ? 'bg-secondary text-white border-b-3 border-r-1 font-semibold border-black hover:bg-secondary-dark hover:cursor-pointer'
+                    : 'bg-secondary/70 border-b-3 border-r-1 border-[black]/70 text-white cursor-not-allowed'
                 }`}
-                >
+              >
                 {isLoading ? 'Scoring…' : 'Submit'}
               </button>
             </div>

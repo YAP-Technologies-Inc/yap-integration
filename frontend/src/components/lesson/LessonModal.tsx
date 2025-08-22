@@ -1,8 +1,15 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { TablerChevronLeft } from '@/icons';
+import React from 'react';
+import {
+  TablerChevronLeft,
+  TablerChevronRight,
+  TablerVolume,
+  MdiApproximatelyEqual,
+  TablerClockFilled,
+} from '@/icons';
 import { getLessonColor } from '@/utils/lessonColor';
+import { useScoreSheet, LessonScore } from './LessonScore';
 
 type Status = 'locked' | 'available' | 'completed';
 
@@ -21,23 +28,37 @@ export interface Quiz {
 }
 
 export interface LessonGroup {
-  slug: string;            // "lessons_1-5_first_contact"
-  label: string;           // "First Contact"
-  range: [number, number]; // [1, 5]
+  slug: string;
+  label: string;
+  range: [number, number];
   lessons: Lesson[];
-  quiz?: Quiz;             // Quiz for this group
+  quiz?: Quiz;
 }
 
 interface LessonModalProps {
   onClose: () => void;
   groups: LessonGroup[];
-  onLessonClick: (lessonId: string) => void; // used only for "available"
+  lessonScoreMap: Map<string, LessonScore>;
+  quizScoreMap?: Map<string, LessonScore>;
+  onLessonClick?: (lessonId: string) => void; // optional nav for lessons with no score
 }
 
-export default function LessonModal({ onClose, groups, onLessonClick }: LessonModalProps) {
-  const [open, setOpen] = useState<Record<string, boolean>>({});
-  const ordered = useMemo(() => [...groups].sort((a, b) => a.range[0] - b.range[0]), [groups]);
-  const toggle = (slug: string) => setOpen((s) => ({ ...s, [slug]: !s[slug] }));
+export default function LessonModal({
+  onClose,
+  groups,
+  lessonScoreMap,
+  quizScoreMap,
+  onLessonClick,
+}: LessonModalProps) {
+  const [openGroup, setOpenGroup] = React.useState<Record<string, boolean>>({});
+  const { openWith, node: scoreSheetNode } = useScoreSheet();
+
+  const ordered = React.useMemo(
+    () => [...groups].sort((a, b) => a.range[0] - b.range[0]),
+    [groups],
+  );
+
+  const toggleGroup = (slug: string) => setOpenGroup((s) => ({ ...s, [slug]: !s[slug] }));
 
   return (
     <div className="fixed inset-0 z-[9999] bg-background-primary w-screen h-screen overflow-hidden">
@@ -45,7 +66,11 @@ export default function LessonModal({ onClose, groups, onLessonClick }: LessonMo
       <div className="w-full">
         <div className="w-full lg:w-1/2 lg:mx-auto flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <button onClick={onClose} className="text-secondary hover:cursor-pointer" aria-label="Back">
+            <button
+              onClick={onClose}
+              className="text-secondary hover:cursor-pointer"
+              aria-label="Back"
+            >
               <TablerChevronLeft className="w-6 h-6" />
             </button>
             <h2 className="text-xl font-semibold text-secondary">All Lessons</h2>
@@ -57,102 +82,129 @@ export default function LessonModal({ onClose, groups, onLessonClick }: LessonMo
       <div className="w-full h-[calc(100vh-80px)] overflow-y-auto">
         <div className="w-full lg:w-1/2 lg:mx-auto p-4 space-y-4">
           {ordered.map((group, gi) => {
-            const isOpen = !!open[group.slug];
-            const groupColor = getLessonColor(gi); // cycles through 5 colors
+            const groupBgClass = getLessonColor(gi);
+            const isOpen = !!openGroup[group.slug];
+
+            // collect lesson + quiz scores
+            const parts: LessonScore[] = [];
+            for (const l of group.lessons) {
+              const s = lessonScoreMap.get(l.id);
+              if (s) parts.push(s);
+            }
+            const q = quizScoreMap?.get(group.slug);
+            if (q) parts.push(q);
+
+            const avg = (xs: number[]) =>
+              xs.length ? Math.round(xs.reduce((a, b) => a + b, 0) / xs.length) : 0;
+
+            const groupStats =
+              parts.length === 0
+                ? null
+                : {
+                    overall: avg(parts.map((p) => p.overall)),
+                    accuracy: avg(parts.map((p) => p.accuracy)),
+                    fluency: avg(parts.map((p) => p.fluency)),
+                    intonation: avg(parts.map((p) => p.intonation)),
+                  };
+
+            const completedCount = parts.length;
+            const totalCount = group.lessons.length + (group.quiz ? 1 : 0);
 
             return (
-              <section key={group.slug} className={`rounded-xl ${groupColor} overflow-hidden border-b-3 border-r-1 border-[${groupColor}]v`}>
-                {/* Group header */}
-                <button
-                  onClick={() => toggle(group.slug)}
-                  aria-expanded={isOpen}
-                  aria-controls={`panel-${group.slug}`}
-                  className={`w-full flex items-center justify-between px-4 py-3  ${groupColor} transition-opacity`}
+              <section key={group.slug} className={`rounded-xl ${groupBgClass}`}>
+                {/* Group header (clickable, no chevron) */}
+                <div
+                  role="button"
+                  onClick={() => toggleGroup(group.slug)}
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer hover:bg-black/5 ${groupBgClass}`}
                 >
                   <div className="flex items-center gap-3">
-                    <span
-                      className={`inline-block transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`}
-                      aria-hidden
-                    >
-                        <img src="/assets/dappy.svg" alt="Dappy Icon" className="w-6 h-6" />
-                    </span>
-                    <h3 className="text-sm font-semibold text-secondary">
-                      {group.label}
-                    </h3>
-                  </div>
-                </button>
-
-                {/* Collapsible panel */}
-                {isOpen && (
-                  <div id={`panel-${group.slug}`} className={`px-4 py-3 space-y-3 ${groupColor}`}>
-                    {group.lessons.map((lesson) => {
-                      const isLocked = lesson.status === 'locked';
-                      const isCompleted = lesson.status === 'completed';
-
-                      return (
-                        <div
-                          key={lesson.id}
-                          className={`w-full p-4 rounded-xl ${groupColor}${
-                            isLocked
-                              ? 'bg-gray-100 opacity-60'
-                              : isCompleted
-                              ? 'bg-green-50'   
-                              : 'bg-white'
-                          }`}
-                        >
-                          <div className={`flex items-center justify-between ${groupColor}`}>
-                            <div>
-                            <h4 className={`font-semibold text-secondary ${groupColor}`}>{lesson.title}</h4>
-                            </div>
-                            {/* keep tiny status badges if you like */}
-                            <div className="flex items-center gap-2">
-                              {isCompleted && (
-                                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                                  <span className="text-white text-xs">✓</span>
-                                </div>
-                              )}
-                              {isLocked && (
-                                <div className="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
-                                  <span className="text-white text-xs">🔒</span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
+                    <img src="/assets/dappy.svg" alt="Dappy Icon" className="w-6 h-6" />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-semibold text-secondary">{group.label}</h3>
+                        <span className="text-[11px] text-secondary/60">
+                          {completedCount}/{totalCount} Complete
+                        </span>
+                      </div>
+                      {groupStats && (
+                        <div className="mt-1 flex items-center gap-2">
+                          <MiniPill
+                            label="Acc"
+                            value={groupStats.accuracy}
+                            icon={<TablerVolume className="w-3 h-3" />}
+                          />
+                          <MiniPill
+                            label="Flu"
+                            value={groupStats.fluency}
+                            icon={<TablerClockFilled className="w-3 h-3" />}
+                          />
+                          <MiniPill
+                            label="Int"
+                            value={groupStats.intonation}
+                            icon={<MdiApproximatelyEqual className="w-3 h-3" />}
+                          />
                         </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="text-3xl font-extrabold text-secondary leading-none">
+                      {groupStats ? groupStats.overall : '—'}
+                    </div>
+                    <div className="text-[11px] text-secondary/60 leading-tight">
+                      Overall
+                      <br />
+                      Score
+                    </div>
+                  </div>
+                </div>
+
+                {/* Lessons + quiz rows */}
+                {isOpen && (
+                  <div className="px-0 py-2">
+                    {group.lessons.map((lesson) => {
+                      const s = lessonScoreMap.get(lesson.id);
+                      const handleClick = () => {
+                        if (lesson.status === 'locked') return;
+                        if (s) {
+                          openWith(lesson.title, s);
+                        } else {
+                          console.log(`Lesson "${lesson.id}" clicked — no score yet`);
+                          onLessonClick?.(lesson.id);
+                        }
+                      };
+                      return (
+                        <Row
+                          key={lesson.id}
+                          title={lesson.title}
+                          rightValue={s ? `${Math.round(s.overall)}%` : undefined}
+                          disabled={lesson.status === 'locked'}
+                          onClick={handleClick}
+                          bgClass={groupBgClass}
+                        />
                       );
                     })}
 
-                    {/* Quiz - shown after all lessons */}
                     {group.quiz && (
-                      <div
-                        key={group.quiz.id}
-                        className={`w-full p-4 rounded-xl ${groupColor} ${
-                          group.quiz.status === 'locked'
-                            ? `${groupColor} opacity-60`
-                            : group.quiz.status === 'completed'
-                            ? `${groupColor}`
-                            : `${groupColor}`
-                        }`}
-                      >
-                        <div className={`flex items-center justify-between ${groupColor}`}>
-                          <div>
-                            <h4 className={`font-semibold text-secondary ${groupColor}`}>Final Quiz</h4>
-                          </div>
-                          {/* Quiz status badges */}
-                          {/* <div className="flex items-center gap-2">
-                            {group.quiz.status === 'completed' && (
-                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                                <span className="text-white text-xs">✓</span>
-                              </div>
-                            )}
-                            {group.quiz.status === 'locked' && (
-                              <div className="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center">
-                                <span className="text-white text-xs">🔒</span>
-                              </div>
-                            )}
-                          </div> */}
-                        </div>
-                      </div>
+                      <Row
+                        title="Final Quiz"
+                        rightValue={
+                          quizScoreMap?.get(group.slug)
+                            ? `${Math.round(quizScoreMap.get(group.slug)!.overall)}%`
+                            : undefined
+                        }
+                        onClick={() => {
+                          const qs = quizScoreMap?.get(group.slug);
+                          if (!qs) {
+                            console.log('Quiz clicked — no score yet');
+                            return;
+                          }
+                          openWith('Final Quiz', qs);
+                        }}
+                        bgClass={groupBgClass}
+                      />
                     )}
                   </div>
                 )}
@@ -161,6 +213,49 @@ export default function LessonModal({ onClose, groups, onLessonClick }: LessonMo
           })}
         </div>
       </div>
+
+      {/* score sheet portal */}
+      {scoreSheetNode}
     </div>
+  );
+}
+
+/* ------------ UI helpers ------------ */
+
+function Row({
+  title,
+  rightValue,
+  onClick,
+  disabled,
+  bgClass,
+}: {
+  title: string;
+  rightValue?: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  bgClass?: string;
+}) {
+  return (
+    <div
+      role="button"
+      onClick={disabled ? undefined : onClick}
+      className={`w-full px-4 py-3 flex items-center justify-between ${bgClass ?? 'bg-white'} ${
+        disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:bg-black/5'
+      }`}
+    >
+      <div className="font-medium text-secondary">{title}</div>
+      <div className="flex items-center gap-2 text-secondary">
+        <TablerChevronRight className="w-4 h-4" />
+      </div>
+    </div>
+  );
+}
+
+function MiniPill({ label, value, icon }: { label: string; value: number; icon: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-white text-secondary">
+      {icon}
+      <span>{Math.round(value)}</span>
+    </span>
   );
 }

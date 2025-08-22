@@ -33,3 +33,5 @@ export { TablerCopy } from './Copy';
 export { TablerInfoTriangle } from './ErrorTriangle';
 export { PhWechatLogoLight } from './Tutoricon';
 export { TablerDiscountCheckFilled } from './Checkicon';
+export { TablerClockFilled } from './Clock';
+export { MdiApproximatelyEqual } from './Approx';
