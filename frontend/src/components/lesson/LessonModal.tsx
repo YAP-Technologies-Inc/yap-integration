@@ -10,6 +10,8 @@ import {
 } from '@/icons';
 import { getLessonColor } from '@/utils/lessonColor';
 import { useScoreSheet, LessonScore } from './LessonScore';
+import { useState } from 'react';
+import { useSnackbar } from '@/components/ui/SnackBar';
 
 type Status = 'locked' | 'available' | 'completed';
 
@@ -40,7 +42,7 @@ interface LessonModalProps {
   groups: LessonGroup[];
   lessonScoreMap: Map<string, LessonScore>;
   quizScoreMap?: Map<string, LessonScore>;
-  onLessonClick?: (lessonId: string) => void; // optional nav for lessons with no score
+  onLessonClick?: (lessonId: string) => void;
 }
 
 export default function LessonModal({
@@ -116,54 +118,56 @@ export default function LessonModal({
                 <div
                   role="button"
                   onClick={() => toggleGroup(group.slug)}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer hover:bg-black/5 ${groupBgClass}`}
+                  className={`w-full cursor-pointer hover:bg-black/5 rounded-xl px-4 py-6 ${groupBgClass}`}
                 >
-                  <div className="flex items-center gap-3">
-                    <img src="/assets/dappy.svg" alt="Dappy Icon" className="w-6 h-6" />
-                    <div>
-                      <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <img src="/assets/dappy.svg" alt="Dappy Icon" className="w-8 h-8" />
+                      <div>
                         <h3 className="text-sm font-semibold text-secondary">{group.label}</h3>
-                        <span className="text-[11px] text-secondary/60">
+                        <span className="block text-[11px] text-secondary/60 mt-1">
                           {completedCount}/{totalCount} Complete
                         </span>
                       </div>
-                      {groupStats && (
-                        <div className="mt-1 flex items-center gap-2">
-                          <MiniPill
-                            label="Acc"
-                            value={groupStats.accuracy}
-                            icon={<TablerVolume className="w-3 h-3" />}
-                          />
-                          <MiniPill
-                            label="Flu"
-                            value={groupStats.fluency}
-                            icon={<TablerClockFilled className="w-3 h-3" />}
-                          />
-                          <MiniPill
-                            label="Int"
-                            value={groupStats.intonation}
-                            icon={<MdiApproximatelyEqual className="w-3 h-3" />}
-                          />
-                        </div>
-                      )}
+                    </div>
+                    <div className="flex flex-col items-center gap-0">
+                      <div className="text-4xl font-extrabold text-secondary leading-none">
+                        {groupStats ? groupStats.overall : '—'}
+                      </div>
+                      <div className="text-[11px] text-secondary/60 leading-tight mt-1">
+                        Overall Score
+                      </div>
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="text-3xl font-extrabold text-secondary leading-none">
-                      {groupStats ? groupStats.overall : '—'}
+                  
+                  {/* MiniPills under header - also clickable */}
+                  {groupStats && (
+                    <div className="flex items-center gap-2 mt-3">
+                      <MiniPill
+                        label="Acc"
+                        value={groupStats.accuracy}
+                        icon={<TablerVolume className="w-3 h-3" />}
+                      />
+                      <MiniPill
+                        label="Flu"
+                        value={groupStats.fluency}
+                        icon={<TablerClockFilled className="w-3 h-3" />}
+                      />
+                      <MiniPill
+                        label="Int"
+                        value={groupStats.intonation}
+                        icon={<MdiApproximatelyEqual className="w-3 h-3" />}
+                      />
                     </div>
-                    <div className="text-[11px] text-secondary/60 leading-tight">
-                      Overall
-                      <br />
-                      Score
-                    </div>
-                  </div>
+                  )}
+                  
+                  {/* Placeholder space when no stats to maintain consistent height */}
+                  {!groupStats && <div className="mt-3 h-6"></div>}
                 </div>
 
                 {/* Lessons + quiz rows */}
                 {isOpen && (
-                  <div className="px-0 py-2">
+                  <div className="px-0 py-2 space-y-0 divide-y divide-black/10">
                     {group.lessons.map((lesson) => {
                       const s = lessonScoreMap.get(lesson.id);
                       const handleClick = () => {
@@ -235,10 +239,24 @@ function Row({
   disabled?: boolean;
   bgClass?: string;
 }) {
+  const { showSnackbar } = useSnackbar();
+
+  const handleClick = () => {
+    if (disabled) {
+      showSnackbar({
+        message: 'Complete previous lessons to unlock this content.',
+        variant: 'info',
+        duration: 3000,
+      });
+      return;
+    }
+    onClick?.();
+  };
+
   return (
     <div
       role="button"
-      onClick={disabled ? undefined : onClick}
+      onClick={handleClick}
       className={`w-full px-4 py-3 flex items-center justify-between ${bgClass ?? 'bg-white'} ${
         disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:bg-black/5'
       }`}
