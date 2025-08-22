@@ -16,8 +16,35 @@ export default function AuthCard({ onEmailClick, hideFooter = false }: AuthCardP
 
       {/* Foreground content */}
       <div className="relative z-10 flex flex-col items-center w-full h-full">
-        <div className="flex items-center justify-center flex-1 ">
+        <div className="flex flex-col items-center justify-center flex-1 gap-6">
           <img src="/assets/yapwhite.svg" alt="YAP Logo" className="h-50 w-auto" />
+
+          {/* Animated text */}
+          <div className="flex flex-wrap items-center justify-center gap-2 px-4">
+            {['Get', 'Paid', 'to', 'Learn', 'a', 'New', 'Language'].map((word, index) => (
+              <span
+                key={word}
+                className="text-white text-xl font-bold"
+                style={{
+                  animation: `float 3s ease-in-out infinite`,
+                  animationDelay: `${index * 0.2}s`,
+                }}
+              >
+                {word}
+              </span>
+            ))}
+          </div>
+          <style jsx>{`
+            @keyframes float {
+              0%,
+              100% {
+                transform: translateY(0px);
+              }
+              50% {
+                transform: translateY(-8px);
+              }
+            }
+          `}</style>
         </div>
 
         <div
